@@ -60,9 +60,7 @@ Bakas, I., Herczeg, M., Henriksen, K., & Ladenberger, A. (2018). *Resource effic
 
 Beylot, A., Vaxelaire, S., Zdanevitch, I., Laforest, V., & Villeneuve, J. (2018). Life cycle assessment of mechanical biological treatment of municipal solid waste: A case study. *Waste Management*, *74*, 476–484. <!-- VERIFY: citation needed -->
 
-Caldecott, B., Harnett, E., Cojoianu, T., Kok, I., & Pfeiffer, A. (2017). *Stranded assets: A climate risk challenge*. Inter-American Development Bank. <!-- VERIFY: citation needed -->
-
-Comans, T., & Loban, L. (2013). Efficiency improvements in WtE facilities: Technology and management factors. *Waste Management*, *33*(4), 892–901. <!-- VERIFY: citation needed -->
+Caldecott, B., Harnett, E., Cojoianu, T., Kok, I., & Pfeiffer, A. (2016). *Stranded assets: A climate risk challenge*. Inter-American Development Bank.
 
 Ellen MacArthur Foundation. (2013). *Towards the circular economy: Economic and business rationale for an accelerated transition*. Ellen MacArthur Foundation.
 
@@ -70,13 +68,7 @@ Geels, F. W. (2004). From sectoral systems of innovation to socio-technical syst
 
 Genon, G., & Brizio, E. (2008). Perspectives and limits for cement kilns as a destination for RDF. *Waste Management*, *28*(11), 2375–2385. <!-- VERIFY: citation needed -->
 
-Grübb, M., & Wilson, C. (2018). *The economics of low-carbon industries*. Cambridge University Press. <!-- VERIFY: citation needed -->
-
 Hasegawa, M. (2012). *Radioactive waste management in Japan: Following the Fukushima nuclear power plant accident*. Sasakawa Peace Foundation. <!-- VERIFY: citation needed -->
-
-Haukohl, J. (2017). European waste-to-energy: State of the art and trends. *Proceedings of the 7th International Conference on Waste Management and Technology*. <!-- VERIFY: citation needed -->
-
-Ikegami, T., & Matsui, T. (2018). Municipal consolidation and waste management efficiency in Japan. *Journal of Material Cycles and Waste Management*, *20*(4), 2048–2059. <!-- VERIFY: citation needed -->
 
 Matsui, Y., Terada, M., & Nakao, N. (2015). Thermal treatment of municipal solid waste in Japan: Historical development and current situation. *Waste Management*, *37*, 30–43. <!-- VERIFY: citation needed -->
 
@@ -84,9 +76,9 @@ Ministry of the Environment Japan. (2022). *General waste treatment survey: Summ
 
 Ministry of the Environment Japan. (2024). *Greenhouse gas inventory report of Japan*. Ministry of the Environment Japan. <!-- VERIFY: citation needed -->
 
-Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste to energy — a consequential approach. *Waste Management*, *30*(12), 2510–2519. <!-- VERIFY: citation needed -->
+Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste to energy — a consequential approach. *Waste Management*, *30*(12), 2510–2519. https://doi.org/10.1016/j.wasman.2010.04.015
 
-Niessen, W. R. (2010). *Combustion and incineration processes: Applications in environmental engineering* (4th ed.). CRC Press. <!-- VERIFY: citation needed -->
+Niessen, W. R. (2010). *Combustion and incineration processes: Applications in environmental engineering* (4th ed.). CRC Press.
 
 Tanikawa, H., Hashimoto, S., Moriguchi, Y., & Tamura, T. (2015). The weight of society over time and space: A comprehensive account of the construction material stock of Japan, 1945–2010. *Journal of Industrial Ecology*, *19*(5), 778–791. <!-- VERIFY: citation needed -->
 
