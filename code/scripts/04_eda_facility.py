@@ -133,13 +133,16 @@ def phase1_bounds(df):
     print(f"  P99: {eff.quantile(0.99):.4f}")
 
     # Physical bounds check
-    # Typical WtE efficiency: 0.1-0.8 MWh/t (100-800 kWh/t)
-    # High-efficiency modern plants: up to ~0.7 MWh/t
-    # Below 0.01 or above 1.5 is suspicious
-    low_outliers = (eff < 0.01).sum()
-    high_outliers = (eff > 1.5).sum()
-    print(f"\n  Outliers (efficiency < 0.01 MWh/t): {low_outliers}")
-    print(f"  Outliers (efficiency > 1.5 MWh/t): {high_outliers}")
+    # Typical WtE efficiency: 0.05-0.80 MWh/t (50-800 kWh/t)
+    # High-efficiency modern plants: up to ~0.75 MWh/t
+    # Below 0.01 or above 0.80 is suspicious
+    EFF_FLOOR = 0.01
+    EFF_CEIL = 0.80
+    low_outliers = (eff < EFF_FLOOR).sum()
+    high_outliers = (eff > EFF_CEIL).sum()
+    print(f"\n  Outliers (efficiency < {EFF_FLOOR} MWh/t): {low_outliers}")
+    print(f"  Outliers (efficiency > {EFF_CEIL} MWh/t): {high_outliers}")
+    print(f"  → Will winsorize to [{EFF_FLOOR}, {EFF_CEIL}] before regression")
 
     # Log-transform assessment
     log_eff = np.log(eff[eff > 0])
