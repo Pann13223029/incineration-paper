@@ -60,7 +60,7 @@ Scale effects are similarly strong. Facilities with design capacity below 100 t/
 
 A crucial descriptive finding — one that motivates the choice of random effects over facility fixed effects and that directly speaks to the lock-in hypothesis — is the near-complete absence of within-facility efficiency change over time.
 
-The ratio of within-facility variance to total variance for log(efficiency) is 0.001. This means that approximately 99.9% of all variation in efficiency in the dataset is *between* facilities (explained by differences in age, scale, design, and operating conditions at construction) and only 0.1% is *within* facilities over time (explained by year-to-year operational changes at the same facility). In practical terms, if you know a facility's efficiency in one year, you can predict its efficiency in any subsequent year with extremely high accuracy — it will not meaningfully improve or decline.
+The ratio of within-facility variance to total variance for log(efficiency) in the winsorized sample is approximately 0.11. This means that roughly 89% of all variation in efficiency in the dataset is *between* facilities (explained by differences in age, scale, design, and operating conditions at construction) and only about 11% is *within* facilities over time. This ratio is stable across subsamples: 0.10 in the pre-Fukushima period (FY2005-2010) and 0.10 in the post-Fukushima period (FY2014-2024). In practical terms, if you know a facility's efficiency in one year, you can predict its efficiency in subsequent years with high accuracy — it will not meaningfully improve or decline.
 
 This is the empirical signature of lock-in. Facility performance is determined at the point of construction and embedded in the physical design of the boiler, turbine, and control systems. Operational management can optimize around this fixed performance ceiling, but cannot transcend it.
 
@@ -144,7 +144,7 @@ In FY2024, Japan's 416 power-generating incineration facilities collectively gen
 
 $$\text{Avoided CO}_2 \approx 9,300 \text{ GWh} \times 0.49 \text{ t-CO}_2/\text{MWh} \approx 4.56 \text{ million t-CO}_2$$
 
-Rounding to one significant figure: approximately **4.6 million t-CO₂** avoided in FY2024.
+Rounding to one significant figure: approximately **4.6 million t-CO₂** in gross avoided emissions in FY2024. This figure represents an upper bound on the net climate benefit, as it does not deduct process CO₂ from waste combustion (both biogenic and fossil fractions). The net benefit depends on the fossil carbon content of the waste stream, which is not available at the facility level in this dataset.
 
 ### 4.4.3 Distribution of Avoided Emissions
 
