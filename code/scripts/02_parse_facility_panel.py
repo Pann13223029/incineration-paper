@@ -4,36 +4,17 @@
 Parse all 20 years of MOE incineration facility Excel files into a single
 panel dataset with standardized column names.
 
-The header structure differs across eras:
-- FY2005: headers at row 0, data at row 1+ (some at row 2), 44 cols
-- FY2006-2009: headers at rows 0-5, data at row 6, ~80 cols (facility code format varies)
-- FY2010+: headers at rows 0-5, data at row 6, 78-100 cols
-
-Core variables extracted (available in all years):
-- prefecture: Prefecture name
-- muni_code: Municipality code
-- facility_code: Facility code (standardized)
-- facility_name: Facility name
-- throughput_t_year: Annual waste processed (t/year)
-- capacity_t_day: Total facility capacity (t/day)
-- n_furnaces: Number of furnaces
-- year_started: Fiscal year operations began
-- heat_util_status: Waste heat utilization description
-- heat_util_mj: Total heat utilization (MJ) — actual if available, else spec
-- power_capacity_kw: Power generation capacity (kW)
-- power_efficiency_pct: Power generation efficiency (%)
-- power_generated_mwh: Total electricity generated (MWh)
-- power_sold_mwh: Electricity sold externally (MWh) — from FY2016+
-- heating_value_kj_kg: Lower heating value of waste (kJ/kg)
-- furnace_type: Type of furnace
-- operation_mode: Continuous/batch operation
-- fiscal_year: The fiscal year of this observation
+Uses AUTO-DETECTION of column positions by searching for Japanese header
+keywords, eliminating the need for hardcoded per-year column mappings.
+Column positions shift across years (43 to 100 columns), but header text
+is consistent enough for reliable matching.
 """
 
 import os
 import sys
 import pandas as pd
 import numpy as np
+import unicodedata
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'raw', 'facility_annual')
@@ -42,213 +23,159 @@ OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
 os.makedirs(PROCESSED_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# --- Column mappings by era ---
-# Each mapping: {standardized_name: column_index}
-
-MAP_2005 = {
-    'prefecture': 1,
-    'muni_code': 2,
-    'facility_code': 3,
-    'facility_name': 7,
-    'throughput_t_year': 8,
-    'resource_recovery_t_year': 9,
-    'waste_type': 12,
-    'facility_type': 13,
-    'furnace_type': 14,
-    'operation_mode': 15,
-    'capacity_t_day': 16,
-    'n_furnaces': 17,
-    'year_started': 18,
-    'heat_util_status': 19,
-    'heat_util_mj': 20,
-    'power_capacity_kw': 21,
-    'power_efficiency_pct': 22,
-    'power_generated_mwh': 23,
-    'heating_value_kj_kg': 41,  # kcal/kg in 2005, needs conversion
-}
-
-# FY2006-2009 have a slightly different layout with an extra column for facility setter
-MAP_2006_2009 = {
-    'prefecture': 0,
-    'muni_code': 1,
-    'facility_code': 2,
-    'facility_name': 5,
-    'throughput_t_year': 6,
-    'resource_recovery_t_year': 7,
-    'waste_type': 10,
-    'facility_type': 12,
-    'furnace_type': 14,
-    'operation_mode': 15,
-    'capacity_t_day': 16,
-    'n_furnaces': 17,
-    'year_started': 18,
-    'heat_util_status': 19,
-    'heat_util_mj_spec': 20,
-    'heat_util_mj_actual': 22,
-    'power_capacity_kw': 24,
-    'power_efficiency_pct': 25,
-    'power_generated_mwh': 26,
-    'power_external_mwh': 27,
-    'heating_value_kj_kg': 46,
-}
-
-# FY2010-2015 (similar to 2006-2009 but may have minor shifts)
-MAP_2010_2015 = MAP_2006_2009.copy()
-
-# FY2016+ dropped the facility setter column, shifted some columns
-MAP_2016_PLUS = {
-    'prefecture': 0,
-    'muni_code': 1,
-    'facility_code': 2,
-    'facility_name': 4,
-    'throughput_t_year': 5,
-    'resource_recovery_t_year': 6,
-    'waste_type': 9,
-    'facility_type': 11,
-    'furnace_type': 13,
-    'operation_mode': 14,
-    'processing_scheme': 15,
-    'capacity_t_day': 16,
-    'n_furnaces': 17,
-    'year_started': 18,
-    'heat_util_status': 19,
-    'heat_util_mj_spec': 20,
-    'heat_util_mj_actual': 22,
-    'power_capacity_kw': 24,
-    'power_efficiency_pct': 25,
-    'power_generated_mwh': 26,
-    'power_external_mwh': 27,
-    'power_sold_mwh': 28,
-    'sell_revenue_yen': 29,
-    'heating_value_kj_kg': 66,
-}
-
-# FY2024 added facility address at col 5, shifting everything after
-MAP_2024 = {
-    'prefecture': 0,
-    'muni_code': 1,
-    'facility_code': 2,
-    'facility_name': 4,
-    'facility_address': 5,
-    'throughput_t_year': 6,
-    'resource_recovery_t_year': 7,
-    'waste_type': 10,
-    'facility_type': 12,
-    'furnace_type': 14,
-    'operation_mode': 15,
-    'processing_scheme': 16,
-    'capacity_t_day': 17,
-    'n_furnaces': 18,
-    'year_started': 19,
-    'heat_util_status': 20,
-    'heat_util_mj_spec': 21,
-    'heat_util_mj_actual': 23,
-    'power_capacity_kw': 25,
-    'power_efficiency_pct': 26,
-    'power_generated_mwh': 27,
-    'power_external_mwh': 28,
-    'power_sold_mwh': 29,
-    'sell_revenue_yen': 30,
-    'heating_value_kj_kg': 67,
-}
+# Header keywords for auto-detection
+# Each entry: (standardized_name, [keywords_to_search], search_rows)
+COLUMN_DEFS = [
+    ('prefecture',           ['都道府県名', '都道府県コード'],    ),
+    ('muni_code',            ['地方公共団体コード'],              ),
+    ('facility_code',        ['施設コード'],                      ),
+    ('facility_name',        ['施設名称'],                        ),
+    ('throughput_t_year',    ['年間処理量'],                      ),
+    ('capacity_t_day',       ['処理能力', '施設全体の処理能力'],  ),
+    ('n_furnaces',           ['炉数'],                            ),
+    ('year_started',         ['使用開始年度'],                    ),
+    ('heat_util_status',     ['余熱利用の状況'],                  ),
+    ('power_capacity_kw',    ['発電能力'],                        ),
+    ('power_efficiency_pct', ['発電効率'],                        ),
+    ('power_generated_mwh',  ['総発電量'],                        ),
+    ('power_sold_mwh',       ['売電量', '余剰電力'],             ),
+    ('heating_value_kj_kg',  ['低発熱量', '低位発熱量'],         ),
+    ('furnace_type',         ['処理方式'],                        ),
+    ('operation_mode',       ['炉型式'],                          ),
+    ('waste_type',           ['焼却対象廃棄物', '処理対象廃棄物'],),
+    ('facility_type',        ['施設の種類'],                      ),
+    ('sell_revenue_yen',     ['売電収入'],                        ),
+]
 
 
-def get_mapping(fy):
-    """Return column mapping and parsing config for a fiscal year."""
-    if fy == 2005:
-        return MAP_2005, {'header_rows': 1, 'data_start': 1, 'engine': 'xlrd'}
-    elif 2006 <= fy <= 2009:
-        return MAP_2006_2009, {'header_rows': 6, 'data_start': 6, 'engine': 'xlrd'}
-    elif 2010 <= fy <= 2015:
-        return MAP_2010_2015, {'header_rows': 6, 'data_start': 6,
-                               'engine': 'xlrd' if fy != 2014 else 'openpyxl'}
-    elif 2016 <= fy <= 2023:
-        return MAP_2016_PLUS, {'header_rows': 6, 'data_start': 6, 'engine': 'openpyxl'}
-    elif fy >= 2024:
-        return MAP_2024, {'header_rows': 6, 'data_start': 6, 'engine': 'openpyxl'}
+def normalize(s):
+    """Normalize Japanese text for matching (NFKC + strip)."""
+    if pd.isna(s):
+        return ''
+    return unicodedata.normalize('NFKC', str(s)).strip()
+
+
+def find_column(df_header, keywords, max_rows=6):
+    """Find the column index containing any of the keywords in the header rows."""
+    for r in range(min(max_rows, df_header.shape[0])):
+        for c in range(df_header.shape[1]):
+            val = normalize(df_header.iloc[r, c])
+            if any(kw in val for kw in keywords):
+                return c
+    return None
+
+
+def find_data_start(df_raw):
+    """Find the first row that looks like data (not headers/titles).
+    FY2005-2006: data starts at row 1-2 (headers in row 0)
+    FY2007+: data starts at row 6 (title + multi-row headers in rows 0-5)
+    """
+    # Check if row 0 contains '都道府県' (direct header = old format)
+    row0_text = ' '.join([normalize(df_raw.iloc[0, c]) for c in range(min(10, df_raw.shape[1]))])
+    if '都道府県コード' in row0_text or '都道府県名' in row0_text:
+        # Old format: row 0 is headers
+        # Check if row 1 is also header (sub-headers) or data
+        row1_val = normalize(df_raw.iloc[1, 0])
+        if row1_val and any(c.isdigit() for c in row1_val):
+            return 1  # row 1 is data (pure numeric prefecture code)
+        else:
+            return 2  # row 1 is sub-header
     else:
-        raise ValueError(f"No mapping for FY{fy}")
+        # New format: title at row 0, headers at rows 1-5, data at row 6
+        return 6
 
 
 def parse_year(fy):
-    """Parse a single fiscal year's facility file into a standardized DataFrame."""
-    # Find the file
+    """Parse a single fiscal year's facility file."""
     for ext in ['xlsx', 'xls']:
         fpath = os.path.join(RAW_DIR, f'fy{fy}_incineration.{ext}')
         if os.path.exists(fpath):
             break
     else:
-        print(f"  FY{fy}: file not found, skipping")
         return None
 
-    mapping, config = get_mapping(fy)
+    engine = 'openpyxl' if fpath.endswith('.xlsx') else 'xlrd'
+    df_raw = pd.read_excel(fpath, sheet_name=0, header=None, engine=engine)
 
-    # Read raw data
-    df_raw = pd.read_excel(
-        fpath, sheet_name=0, header=None,
-        engine=config['engine']
-    )
+    # Auto-detect column positions
+    col_map = {}
+    for col_name, keywords in COLUMN_DEFS:
+        idx = find_column(df_raw, keywords)
+        if idx is not None:
+            col_map[col_name] = idx
 
-    # Skip header rows
-    df_data = df_raw.iloc[config['data_start']:].copy()
-    df_data = df_data.reset_index(drop=True)
+    # Find data start
+    data_start = find_data_start(df_raw)
+    df_data = df_raw.iloc[data_start:].copy().reset_index(drop=True)
 
-    # Drop rows where prefecture is NaN (footer/summary rows)
-    pref_col = mapping['prefecture']
-    df_data = df_data[df_data.iloc[:, pref_col].notna()].copy()
-    df_data = df_data.reset_index(drop=True)
+    # For FY2005-2006, prefecture is in col 1 (都道府県名) but auto-detect
+    # may have found col 0 (都道府県コード). Use the name column.
+    # Check if col_map['prefecture'] points to a code or a name
+    if 'prefecture' in col_map:
+        sample_val = normalize(df_data.iloc[0, col_map['prefecture']])
+        if sample_val and sample_val.isdigit():
+            # This is a code column, look for the name column (usually +1)
+            name_col = col_map['prefecture'] + 1
+            if name_col < df_data.shape[1]:
+                sample_name = normalize(df_data.iloc[0, name_col])
+                if sample_name and not sample_name.isdigit():
+                    col_map['prefecture'] = name_col
 
-    # Extract columns
+    # Drop rows where prefecture is empty (footers/summaries)
+    if 'prefecture' in col_map:
+        pref_col = col_map['prefecture']
+        df_data = df_data[df_data.iloc[:, pref_col].apply(
+            lambda x: pd.notna(x) and normalize(x) != ''
+        )].reset_index(drop=True)
+
+    # Extract columns into standardized DataFrame
     result = pd.DataFrame()
 
-    for col_name, col_idx in mapping.items():
+    for col_name, col_idx in col_map.items():
         if col_idx < df_data.shape[1]:
             result[col_name] = df_data.iloc[:, col_idx].values
         else:
             result[col_name] = np.nan
 
-    # Set fiscal year as a proper column
+    # Set fiscal year AFTER columns are populated (avoids broadcast bug)
     result['fiscal_year'] = fy
-
-    # Standardize: merge spec/actual heat utilization
-    if 'heat_util_mj_actual' in result.columns and 'heat_util_mj_spec' in result.columns:
-        result['heat_util_mj'] = result['heat_util_mj_actual'].fillna(
-            result['heat_util_mj_spec']
-        )
-    elif 'heat_util_mj' not in result.columns:
-        result['heat_util_mj'] = np.nan
-
-    # FY2005 heating value is in kcal/kg, convert to kJ/kg (1 kcal = 4.184 kJ)
-    if fy == 2005 and 'heating_value_kj_kg' in result.columns:
-        result['heating_value_kj_kg'] = pd.to_numeric(
-            result['heating_value_kj_kg'], errors='coerce'
-        ) * 4.184
 
     # Convert numeric columns
     numeric_cols = [
-        'throughput_t_year', 'resource_recovery_t_year', 'capacity_t_day',
-        'n_furnaces', 'year_started', 'heat_util_mj', 'power_capacity_kw',
-        'power_efficiency_pct', 'power_generated_mwh', 'power_external_mwh',
+        'throughput_t_year', 'capacity_t_day', 'n_furnaces', 'year_started',
+        'power_capacity_kw', 'power_efficiency_pct', 'power_generated_mwh',
         'power_sold_mwh', 'sell_revenue_yen', 'heating_value_kj_kg',
     ]
     for col in numeric_cols:
         if col in result.columns:
             result[col] = pd.to_numeric(result[col], errors='coerce')
 
-    # Standardize facility code (remove dashes for consistency)
+    # FY2005-2006 heating value may be in kcal/kg (values ~1000-3000)
+    # FY2007+ uses kJ/kg (values ~4000-12000)
+    # Auto-detect by checking median value
+    if 'heating_value_kj_kg' in result.columns:
+        median_hv = result['heating_value_kj_kg'].median()
+        if pd.notna(median_hv) and median_hv < 3500:
+            # Likely kcal/kg, convert to kJ/kg
+            result['heating_value_kj_kg'] = result['heating_value_kj_kg'] * 4.184
+
+    # Normalize prefecture names
+    if 'prefecture' in result.columns:
+        result['prefecture'] = result['prefecture'].apply(normalize)
+
+    # Standardize facility code
     if 'facility_code' in result.columns:
         result['facility_code'] = (
-            result['facility_code']
-            .astype(str)
+            result['facility_code'].astype(str)
             .str.replace('-', '', regex=False)
+            .str.replace('.0', '', regex=False)
             .str.strip()
         )
 
     # Standardize municipality code
     if 'muni_code' in result.columns:
         result['muni_code'] = (
-            result['muni_code']
-            .astype(str)
+            result['muni_code'].astype(str)
             .str.replace('.0', '', regex=False)
             .str.strip()
         )
@@ -258,7 +185,7 @@ def parse_year(fy):
 
 def main():
     print("=" * 60)
-    print("Parsing MOE Incineration Facility Data")
+    print("Parsing MOE Incineration Facility Data (Auto-detect)")
     print("=" * 60)
 
     all_years = []
@@ -267,46 +194,34 @@ def main():
         try:
             df = parse_year(fy)
             if df is not None:
-                print(f"{len(df)} facilities, {len(df.columns)} cols")
+                # Quick validation: check power gen column looks right
+                pct_power = (df['power_capacity_kw'].notna() & (df['power_capacity_kw'] > 0)).mean() * 100 if 'power_capacity_kw' in df.columns else 0
+                print(f"{len(df)} facilities, {pct_power:.1f}% with power gen")
                 all_years.append(df)
-            else:
-                print("SKIPPED")
         except Exception as e:
             print(f"ERROR: {e}")
+            import traceback
+            traceback.print_exc()
 
-    # Combine all years
     panel = pd.concat(all_years, ignore_index=True)
 
-    # Keep only the standardized core columns
-    core_cols = [
-        'fiscal_year', 'prefecture', 'muni_code', 'facility_code',
-        'facility_name', 'throughput_t_year', 'capacity_t_day',
-        'n_furnaces', 'year_started', 'waste_type', 'facility_type',
-        'furnace_type', 'operation_mode', 'heat_util_status',
-        'heat_util_mj', 'power_capacity_kw', 'power_efficiency_pct',
-        'power_generated_mwh', 'power_sold_mwh', 'sell_revenue_yen',
-        'heating_value_kj_kg',
-    ]
-    # Only keep columns that exist
-    core_cols = [c for c in core_cols if c in panel.columns]
-    panel = panel[core_cols]
-
     # Compute derived variables
-    panel['facility_age'] = panel['fiscal_year'] - pd.to_numeric(
-        panel['year_started'], errors='coerce'
-    )
-    panel['has_power_gen'] = panel['power_capacity_kw'].notna() & (
-        panel['power_capacity_kw'] > 0
-    )
+    panel['facility_age'] = panel['fiscal_year'] - panel['year_started']
+    panel['has_power_gen'] = panel['power_capacity_kw'].notna() & (panel['power_capacity_kw'] > 0)
     panel['capacity_utilization'] = (
         panel['throughput_t_year'] / (panel['capacity_t_day'] * 365)
-    ).clip(0, 1.5)  # cap at 150% to handle edge cases
+    ).clip(0, 1.5)
+
+    # Energy recovery efficiency (MWh per tonne — key thesis variable)
+    panel['energy_efficiency_mwh_per_t'] = (
+        panel['power_generated_mwh'] / panel['throughput_t_year']
+    )
 
     # Save
     out_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
     panel.to_csv(out_path, index=False, encoding='utf-8-sig')
 
-    # --- Summary report ---
+    # --- Summary ---
     print("\n" + "=" * 60)
     print("PANEL DATASET SUMMARY")
     print("=" * 60)
@@ -315,39 +230,31 @@ def main():
     print(f"Unique facility codes: {panel['facility_code'].nunique():,}")
     print(f"Prefectures: {panel['prefecture'].nunique()}")
     print(f"Columns: {len(panel.columns)}")
+
     print(f"\nFacilities per year:")
-    for fy, count in panel.groupby('fiscal_year').size().items():
-        pct_power = panel[panel['fiscal_year'] == fy]['has_power_gen'].mean() * 100
-        print(f"  FY{fy}: {count:,} facilities ({pct_power:.1f}% with power generation)")
+    for fy, grp in panel.groupby('fiscal_year'):
+        n = len(grp)
+        pct = grp['has_power_gen'].mean() * 100
+        print(f"  FY{fy}: {n:,} facilities ({pct:.1f}% with power gen)")
 
     print(f"\nKey variable coverage (non-null %):")
     for col in ['throughput_t_year', 'capacity_t_day', 'year_started',
-                'power_capacity_kw', 'power_generated_mwh', 'heating_value_kj_kg',
-                'facility_age', 'has_power_gen', 'capacity_utilization']:
+                'power_capacity_kw', 'power_generated_mwh', 'power_sold_mwh',
+                'heating_value_kj_kg', 'facility_age', 'energy_efficiency_mwh_per_t']:
         if col in panel.columns:
             pct = panel[col].notna().mean() * 100
             print(f"  {col}: {pct:.1f}%")
 
+    print(f"\nPower-generating facilities subsample:")
+    power_sub = panel[panel['has_power_gen']]
+    print(f"  Observations: {len(power_sub):,}")
+    print(f"  Years: {power_sub['fiscal_year'].min()} to {power_sub['fiscal_year'].max()}")
+    for col in ['power_generated_mwh', 'energy_efficiency_mwh_per_t', 'power_efficiency_pct']:
+        if col in power_sub.columns:
+            pct = power_sub[col].notna().mean() * 100
+            print(f"  {col}: {pct:.1f}% coverage")
+
     print(f"\nSaved to: {os.path.abspath(out_path)}")
-
-    # Also save a summary report
-    report_path = os.path.join(OUTPUT_DIR, 'panel_summary.md')
-    with open(report_path, 'w', encoding='utf-8') as f:
-        f.write("# Incineration Facility Panel Dataset Summary\n\n")
-        f.write(f"- **Observations:** {len(panel):,}\n")
-        f.write(f"- **Years:** FY{panel['fiscal_year'].min()} to FY{panel['fiscal_year'].max()}\n")
-        f.write(f"- **Unique facilities:** {panel['facility_code'].nunique():,}\n")
-        f.write(f"- **Prefectures:** {panel['prefecture'].nunique()}\n")
-        f.write(f"- **Columns:** {len(panel.columns)}\n\n")
-
-        f.write("## Facilities per year\n\n")
-        f.write("| FY | Facilities | % with power gen |\n")
-        f.write("|:---|:----------:|:----------------:|\n")
-        for fy, count in panel.groupby('fiscal_year').size().items():
-            pct = panel[panel['fiscal_year'] == fy]['has_power_gen'].mean() * 100
-            f.write(f"| {fy} | {count:,} | {pct:.1f}% |\n")
-
-    print(f"Report saved to: {os.path.abspath(report_path)}")
 
 
 if __name__ == '__main__':
