@@ -48,7 +48,7 @@ Japan built an incineration fleet for an era when burning waste was the best ava
 
 ## References
 
-*Note: The reference list below includes all citations used in this thesis. Citations marked with <!-- VERIFY: citation needed --> in the text require verification against primary sources before submission. APA 7th edition format.*
+*APA 7th edition format.*
 
 Astrup, T., Møller, J., & Fruergaard, T. (2009). Incineration and co-combustion of waste: Accounting of greenhouse gases and global warming contributions. *Waste Management & Research*, *27*(8), 789–799.
 
@@ -78,6 +78,8 @@ Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste t
 Niessen, W. R. (2010). *Combustion and incineration processes: Applications in environmental engineering* (4th ed.). CRC Press.
 
 Tanikawa, H., Fishman, T., Okuoka, K., & Sugimoto, K. (2015). The weight of society over time and space: A comprehensive account of the construction material stock of Japan, 1945–2010. *Journal of Industrial Ecology*, *19*(5), 778–791.
+
+Rausch, A. (2006). The Heisei Dai Gappei: A case study for understanding the municipal mergers of the Heisei era. *Japan Forum*, *18*(1), 133–156.
 
 Unruh, G. C. (2000). Understanding carbon lock-in. *Energy Policy*, *28*(12), 817–830.
 

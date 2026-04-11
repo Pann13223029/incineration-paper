@@ -140,7 +140,7 @@ This calculation credits WtE with displacing grid electricity that would otherwi
 
 ### 4.4.2 FY2024 Fleet-Level Estimates
 
-In FY2024, Japan's 416 power-generating incineration facilities collectively generated approximately 9.3 billion kWh (9.3 TWh) of electricity from approximately 31 million tonnes of waste processed <!-- VERIFY: citation needed -->. Applying the average regional grid emission factor of 0.49 t-CO₂/MWh yields:
+In FY2024, Japan's 416 power-generating incineration facilities collectively generated approximately 9.3 billion kWh (9.3 TWh) of electricity from approximately 31 million tonnes of waste processed (computed from this thesis's dataset). Applying the average regional grid emission factor of 0.49 t-CO₂/MWh yields:
 
 $$\text{Avoided CO}_2 \approx 9,300 \text{ GWh} \times 0.49 \text{ t-CO}_2/\text{MWh} \approx 4.56 \text{ million t-CO}_2$$
 

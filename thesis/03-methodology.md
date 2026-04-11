@@ -10,7 +10,7 @@ The chapter proceeds as follows. Section 3.2 describes the data source and its s
 
 ### 3.2.1 The General Waste Treatment Survey
 
-The primary data source is the Ministry of the Environment (MOE) General Waste Treatment Survey (*Ippan Haikibutsu Shori Jittai Chosa*), an annual administrative survey covering all operating general waste treatment facilities in Japan. The survey collects facility-level data on waste input volumes, treatment method, facility capacity, operational status, and — for energy-recovering facilities — electricity generation and fuel consumption. The survey has been conducted annually since the 1960s in various forms; the analysis in this thesis uses the fiscal year (FY) 2005 through FY2024 editions, covering 20 years of fleet evolution <!-- VERIFY: citation needed -->.
+The primary data source is the Ministry of the Environment (MOE) General Waste Treatment Survey (*Ippan Haikibutsu Shori Jittai Chosa*), an annual administrative survey covering all operating general waste treatment facilities in Japan. The survey collects facility-level data on waste input volumes, treatment method, facility capacity, operational status, and — for energy-recovering facilities — electricity generation and fuel consumption. The survey has been conducted annually since the 1960s in various forms; the analysis in this thesis uses the fiscal year (FY) 2005 through FY2024 editions, covering 20 years of fleet evolution [@MOEJ2022].
 
 The survey is conducted by prefectural governments, which collect data from individual municipalities, which in turn collect from individual facilities. This administrative chain means the data are subject to reporting conventions that vary somewhat across prefectures and years. The cleaning process described in Section 3.3 addresses the most significant of these inconsistencies.
 
@@ -28,7 +28,7 @@ The full panel (before sample restriction to power-generating facilities) contai
 
 The most significant data quality challenge in working with the General Waste Treatment Survey is facility identification across years. Facilities are not consistently identified by a permanent numeric code across all years of the survey; instead, identification requires matching on facility name, municipality, and treatment type. This matching process was performed using a combination of exact string matching and fuzzy matching for facilities with minor name variations (e.g., transliteration differences or administrative reorganizations following municipal mergers).
 
-Municipal mergers (*heisei no daigappei*, the wave of municipal consolidations that reduced Japan's municipality count from approximately 3,200 to 1,700 between 1999 and 2010 <!-- VERIFY: citation needed -->) create particular challenges because facilities may be reported under different administrative units before and after merger without any change in physical characteristics. These cases were identified and corrected manually where possible.
+Municipal mergers (*heisei no daigappei*, the wave of municipal consolidations that reduced Japan's municipality count from approximately 3,200 to 1,700 between 1999 and 2010 [@Rausch2006]) create particular challenges because facilities may be reported under different administrative units before and after merger without any change in physical characteristics. These cases were identified and corrected manually where possible.
 
 ### 3.3.2 Variable Cleaning and Outlier Treatment
 
