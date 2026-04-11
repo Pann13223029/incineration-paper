@@ -56,9 +56,9 @@ Astrup, T. F., Tonini, D., Turconi, R., & Boldrin, A. (2015). Life cycle assessm
 
 Ayres, R. U., & Simonis, U. E. (Eds.). (1994). *Industrial metabolism: Restructuring for sustainable development*. United Nations University Press.
 
-Bakas, I., Herczeg, M., Henriksen, K., & Ladenberger, A. (2018). *Resource efficiency and the role of waste-to-energy in the circular economy*. European Environment Agency. <!-- VERIFY: citation needed -->
+European Commission. (2017). *The role of waste-to-energy in the circular economy* (COM(2017) 34 final). European Commission.
 
-Beylot, A., Vaxelaire, S., Zdanevitch, I., Laforest, V., & Villeneuve, J. (2018). Life cycle assessment of mechanical biological treatment of municipal solid waste: A case study. *Waste Management*, *74*, 476–484. <!-- VERIFY: citation needed -->
+Beylot, A., Vaxelaire, S., Zdanevitch, I., Auvinet, N., & Villeneuve, J. (2015). Life cycle assessment of mechanical biological pre-treatment of municipal solid waste: A case study. *Waste Management*, *39*, 287–294. https://doi.org/10.1016/j.wasman.2015.01.037
 
 Caldecott, B., Harnett, E., Cojoianu, T., Kok, I., & Pfeiffer, A. (2016). *Stranded assets: A climate risk challenge*. Inter-American Development Bank.
 
@@ -66,22 +66,19 @@ Ellen MacArthur Foundation. (2013). *Towards the circular economy: Economic and 
 
 Geels, F. W. (2004). From sectoral systems of innovation to socio-technical systems: Insights about dynamics and change from sociology and institutional theory. *Research Policy*, *33*(6–7), 897–920.
 
-Genon, G., & Brizio, E. (2008). Perspectives and limits for cement kilns as a destination for RDF. *Waste Management*, *28*(11), 2375–2385. <!-- VERIFY: citation needed -->
+Genon, G., & Brizio, E. (2008). Perspectives and limits for cement kilns as a destination for RDF. *Waste Management*, *28*(11), 2375–2385.
+Sasakawa Peace Foundation USA. (2012). *The Fukushima nuclear accident and crisis management: Lessons for Japan-U.S. alliance cooperation*. Sasakawa Peace Foundation.
 
-Hasegawa, M. (2012). *Radioactive waste management in Japan: Following the Fukushima nuclear power plant accident*. Sasakawa Peace Foundation. <!-- VERIFY: citation needed -->
+Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste incineration plants in Japan: Current situation and future challenges. *Waste Management & Research*, *34*(4), 345–351. https://doi.org/10.1177/0734242X15617009
 
-Matsui, Y., Terada, M., & Nakao, N. (2015). Thermal treatment of municipal solid waste in Japan: Historical development and current situation. *Waste Management*, *37*, 30–43. <!-- VERIFY: citation needed -->
-
-Ministry of the Environment Japan. (2022). *General waste treatment survey: Summary report FY2021*. Environmental Management Bureau, Ministry of the Environment Japan. <!-- VERIFY: citation needed -->
-
-Ministry of the Environment Japan. (2024). *Greenhouse gas inventory report of Japan*. Ministry of the Environment Japan. <!-- VERIFY: citation needed -->
-
+Ministry of the Environment Japan. (2022). *General waste treatment survey: Summary report FY2021*. Environmental Management Bureau, Ministry of the Environment Japan.
+Ministry of the Environment Japan. (2024). *Greenhouse gas inventory report of Japan*. Ministry of the Environment Japan.
 Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste to energy — a consequential approach. *Waste Management*, *30*(12), 2510–2519. https://doi.org/10.1016/j.wasman.2010.04.015
 
 Niessen, W. R. (2010). *Combustion and incineration processes: Applications in environmental engineering* (4th ed.). CRC Press.
 
-Tanikawa, H., Hashimoto, S., Moriguchi, Y., & Tamura, T. (2015). The weight of society over time and space: A comprehensive account of the construction material stock of Japan, 1945–2010. *Journal of Industrial Ecology*, *19*(5), 778–791. <!-- VERIFY: citation needed -->
+Tanikawa, H., Fishman, T., Okuoka, K., & Sugimoto, K. (2015). The weight of society over time and space: A comprehensive account of the construction material stock of Japan, 1945–2010. *Journal of Industrial Ecology*, *19*(5), 778–791.
 
 Unruh, G. C. (2000). Understanding carbon lock-in. *Energy Policy*, *28*(12), 817–830.
 
-van Beukering, P., Sehker, M., Gerlagh, R., & Kumar, V. (2012). *Analysing urban solid waste in developing countries: A perspective on Bangalore, India*. CREED Working Paper. <!-- VERIFY: citation needed -->
+van Beukering, P., Sehker, M., Gerlagh, R., & Kumar, V. (1999). *Analysing urban solid waste in developing countries: A perspective on Bangalore, India*. CREED Working Paper No. 24.

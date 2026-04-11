@@ -64,7 +64,7 @@ This framing has a direct implication for Japan's waste management planning cycl
 
 ### 5.5.1 The 59% Problem
 
-The persistence of non-power-generating facilities deserves specific attention. These 598 facilities represent a substantial share of Japan's incineration capacity and process a significant portion of the country's municipal waste. They burn that waste and release the thermal energy to the atmosphere — a waste of energy resource that has been characterized in the European WtE literature as "landfilling in the air" [@Bakas2018 <!-- VERIFY: citation needed -->].
+The persistence of non-power-generating facilities deserves specific attention. These 598 facilities represent a substantial share of Japan's incineration capacity and process a significant portion of the country's municipal waste. They burn that waste and release the thermal energy to the atmosphere — a waste of energy resource that has been characterized in the European WtE literature as "landfilling in the air" [@EuropeanCommission2017].
 
 The barriers to adding power generation at existing non-generating facilities are both technical and economic. Technically, many small and old non-generating facilities lack the boiler and turbine infrastructure required for electricity generation; adding this equipment requires major civil works that may approach or exceed the cost of new construction. Economically, the scale of waste processing at small facilities may be insufficient to justify the capital investment in power generation infrastructure, even at current electricity prices. For facilities processing fewer than 50–70 t/day, the economics of power generation are generally unfavorable regardless of facility age.
 
