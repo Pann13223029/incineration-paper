@@ -1,7 +1,18 @@
-data/raw/
-data/processed/
+# Python
 __pycache__/
 *.pyc
 .env
 .DS_Store
 *.xlsx.tmp
+
+# Data: the authoritative raw inputs and processed panels are published for
+# reproducibility. Everything else in data/ is ignored by default.
+data/raw/*
+!data/raw/facility_annual/
+!data/raw/README.md
+data/processed/*
+!data/processed/incineration_panel.csv
+!data/processed/incineration_panel_enriched.csv
+!data/processed/grid_emission_factors.csv
+!data/processed/prefecture_utility_crosswalk.csv
+!data/processed/README.md
