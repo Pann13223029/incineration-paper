@@ -21,6 +21,12 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{tabularx}
+\usepackage{array}
+
+% Right-aligned and centered tabularx column types
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
 \onehalfspacing
 
@@ -309,19 +315,19 @@ The log transformation serves two purposes. First, it addresses the right-skewed
   \centering
   \caption{Summary Statistics, Power-Generating Subsample ($n = 6{,}575$)}
   \label{tab:summary_stats}
-  \begin{tabularx}{\textwidth}{lXXXXX}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l*{5}{r}@{}}
     \toprule
     Variable & Mean & SD & Min & Median & Max \\
     \midrule
-    Efficiency (MWh/t) & 0.298 & 0.118 & 0.010 & 0.284 & 0.800 \\
-    log(efficiency) & $-1.288$ & 0.426 & $-4.605$ & $-1.258$ & $-0.223$ \\
-    Facility age (years) & 16.4 & 10.2 & 0 & 16 & 45 \\
-    Design capacity (t/day) & 287.4 & 193.6 & 20 & 240 & 1,200 \\
-    Capacity utilization & 0.742 & 0.158 & 0.02 & 0.762 & 1.00 \\
-    Heating value (MJ/kg) & 9.8 & 1.6 & 5.2 & 9.7 & 15.4 \\
-    Grid emission factor (kg-CO$_2$/kWh) & 0.511 & 0.087 & 0.311 & 0.505 & 0.743 \\
+    Efficiency (MWh/t)                     & 0.298    & 0.118 & 0.010    & 0.284    & 0.800    \\
+    log(efficiency)                        & $-1.288$ & 0.426 & $-4.605$ & $-1.258$ & $-0.223$ \\
+    Facility age (years)                   & 16.4     & 10.2  & 0        & 16       & 45       \\
+    Design capacity (t/day)                & 287.4    & 193.6 & 20       & 240      & 1{,}200  \\
+    Capacity utilization                   & 0.742    & 0.158 & 0.02     & 0.762    & 1.00     \\
+    Heating value (MJ/kg)                  & 9.8      & 1.6   & 5.2      & 9.7      & 15.4     \\
+    Grid emission factor (kg-CO$_2$/kWh)   & 0.511    & 0.087 & 0.311    & 0.505    & 0.743    \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular*}
 \end{table}
 
 The mean efficiency of 0.298 MWh/t in the power-generating subsample is notably higher than the fleet-wide average (which would be lower still if non-generating facilities were assigned zero efficiency). The standard deviation of 0.118 MWh/t reflects substantial dispersion, the interquartile range runs roughly from 0.21 to 0.38 MWh/t, confirming that heterogeneity in performance is large enough to motivate systematic analysis.
@@ -333,7 +339,10 @@ The mean efficiency of 0.298 MWh/t in the power-generating subsample is notably 
 The baseline estimating equation is:
 
 \begin{equation}
-\ln(\text{efficiency}_{it}) = \alpha + \beta_1 \text{Age}_{it} + \beta_2 \text{Capacity}_{it} + \beta_3 \text{Utilization}_{it} + \beta_4 \text{HeatingValue}_{it} + \beta_5 \text{GridEF}_{it} + \gamma_t + \epsilon_{it}
+\begin{aligned}
+\ln(\text{efficiency}_{it}) ={} & \alpha + \beta_1\,\text{Age}_{it} + \beta_2\,\text{Capacity}_{it} + \beta_3\,\text{Utilization}_{it} \\
+                                & + \beta_4\,\text{HeatingValue}_{it} + \beta_5\,\text{GridEF}_{it} + \gamma_t + \epsilon_{it}
+\end{aligned}
 \end{equation}
 
 where $i$ indexes facilities, $t$ indexes fiscal years, $\gamma_t$ is a year fixed effect capturing common shocks (e.g., the Fukushima event, changes in the feed-in tariff), and $\epsilon_{it}$ is the idiosyncratic error term. The key parameters of interest are $\beta_1$ through $\beta_3$, corresponding to age, scale, and utilization.
@@ -398,21 +407,20 @@ Japan's incineration fleet has undergone substantial structural change over the 
   \centering
   \caption{Japan's Incineration Fleet, Selected Years FY2005--FY2024}
   \label{tab:fleet_evolution}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllll}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrr@{}}
     \toprule
-    Fiscal Year & Total Facilities & Power-Generating & \% Power-Gen & Fleet Avg Efficiency (MWh/t, power-gen only) \\
+    Fiscal Year & Total Facilities & Power-Generating & \% Power-Gen & Fleet Avg Efficiency \\
+                &                  &                  &              & (MWh/t, power-gen)   \\
     \midrule
-    2005 & 1,318 & 285 & 21.6\% & 0.243 \\
-    2008 & 1,261 & 312 & 24.7\% & 0.255 \\
-    2011 & 1,199 & 358 & 29.9\% & 0.267 \\
-    2014 & 1,127 & 392 & 34.8\% & 0.278 \\
-    2017 & 1,080 & 402 & 37.2\% & 0.285 \\
-    2020 & 1,046 & 412 & 39.4\% & 0.291 \\
-    2024 & 1,014 & 416 & 41.1\% & 0.298 \\
+    2005 & 1{,}318 & 285 & 21.6\% & 0.243 \\
+    2008 & 1{,}261 & 312 & 24.7\% & 0.255 \\
+    2011 & 1{,}199 & 358 & 29.9\% & 0.267 \\
+    2014 & 1{,}127 & 392 & 34.8\% & 0.278 \\
+    2017 & 1{,}080 & 402 & 37.2\% & 0.285 \\
+    2020 & 1{,}046 & 412 & 39.4\% & 0.291 \\
+    2024 & 1{,}014 & 416 & 41.1\% & 0.298 \\
     \bottomrule
-  \end{tabular}%
-  }
+  \end{tabular*}
 \end{table}
 
 Total facility count declined from 1,318 in FY2005 to 1,014 in FY2024, a reduction of 304 facilities (23.1\%) over 20 years. This rate of consolidation, roughly 15 facilities per year, is driven primarily by the closure of small, ageing, non-generating facilities in rural municipalities, where demographic decline has reduced waste volumes below the threshold required to justify facility maintenance and renewal.
@@ -427,16 +435,16 @@ The efficiency gradient across facility age cohorts is striking and forms the ce
   \centering
   \caption{Mean Energy Recovery Efficiency by Facility Age Cohort}
   \label{tab:efficiency_age}
-  \begin{tabularx}{\textwidth}{lXXXXX}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrr@{}}
     \toprule
-    Age Cohort & $n$ (facility-years) & Mean Efficiency (MWh/t) & SD & 25th Percentile & 75th Percentile \\
+    Age Cohort   & $n$ (facility-years) & Mean Efficiency (MWh/t) & SD    & 25th Pctile & 75th Pctile \\
     \midrule
-    0--10 years & 1,421 & 0.397 & 0.112 & 0.318 & 0.468 \\
-    11--20 years & 2,083 & 0.328 & 0.108 & 0.251 & 0.398 \\
-    21--30 years & 1,876 & 0.264 & 0.098 & 0.192 & 0.330 \\
-    31+ years & 1,195 & 0.179 & 0.081 & 0.121 & 0.231 \\
+    0--10 years  & 1{,}421 & 0.397 & 0.112 & 0.318 & 0.468 \\
+    11--20 years & 2{,}083 & 0.328 & 0.108 & 0.251 & 0.398 \\
+    21--30 years & 1{,}876 & 0.264 & 0.098 & 0.192 & 0.330 \\
+    31+ years    & 1{,}195 & 0.179 & 0.081 & 0.121 & 0.231 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular*}
 \end{table}
 
 The efficiency decline across age cohorts is monotonic and substantial. Facilities aged 0--10 years achieve a mean efficiency of 0.397 MWh/t, more than twice the 0.179 MWh/t average of facilities over 30 years old. The interquartile ranges show that the distributions are partially overlapping but clearly shifted: the 25th percentile of the youngest cohort (0.318 MWh/t) exceeds the 75th percentile of the oldest cohort (0.231 MWh/t). This non-overlap in the tails reinforces the conclusion that age cohort is a strong determinant of efficiency, not merely a statistical association but a substantive distributional shift.
@@ -449,16 +457,16 @@ The standard deviation within cohorts is notable: even among the youngest facili
   \centering
   \caption{Mean Energy Recovery Efficiency by Facility Capacity Category}
   \label{tab:efficiency_capacity}
-  \begin{tabularx}{\textwidth}{lXXX}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrr@{}}
     \toprule
     Capacity (t/day) & $n$ (facility-years) & Mean Efficiency (MWh/t) & \% of Fleet (FY2024 active) \\
     \midrule
-    $<$ 100 & 834 & 0.198 & 18\% \\
-    100--299 & 2,614 & 0.271 & 41\% \\
-    300--499 & 1,847 & 0.321 & 27\% \\
-    $\geq$ 500 & 1,280 & 0.378 & 14\% \\
+    $<$ 100    &    834 & 0.198 & 18\% \\
+    100--299   & 2{,}614 & 0.271 & 41\% \\
+    300--499   & 1{,}847 & 0.321 & 27\% \\
+    $\geq$ 500 & 1{,}280 & 0.378 & 14\% \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular*}
 \end{table}
 
 Scale effects are similarly strong. Facilities with design capacity below 100 t/day achieve mean efficiency of 0.198 MWh/t, compared to 0.378 MWh/t for those at or above 500 t/day, a factor of 1.9. The largest capacity category represents only 14\% of active facilities but, given its size advantage, contributes disproportionately to aggregate electricity generation from the fleet.
@@ -479,31 +487,31 @@ This is the empirical signature of lock-in. Facility performance is determined a
   \centering
   \caption{Regression Results, Determinants of log(Efficiency) Among Power-Generating Incinerators}
   \label{tab:regression_main}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllll}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrr@{}}
     \toprule
-    Variable & Model 1 (Pooled OLS) & Model 2 (Year FE) & Model 3 (RE) & Model 4 (Year FE + RE) \\
+    Variable                 & Model 1          & Model 2          & Model 3          & Model 4          \\
+                             & (Pooled OLS)     & (Year FE)        & (RE)             & (Year FE + RE)   \\
     \midrule
-    Facility age (years) & $-0.039^{***}$ & $-0.038^{***}$ & $-0.043^{***}$ & $-0.042^{***}$ \\
-                         & (0.003) & (0.003) & (0.002) & (0.002) \\
-    Capacity (per 100 t/day) & $+0.089^{***}$ & $+0.091^{***}$ & $+0.097^{***}$ & $+0.098^{***}$ \\
-                              & (0.011) & (0.011) & (0.009) & (0.009) \\
-    Capacity utilization & $+0.613^{***}$ & $+0.621^{***}$ & $+0.583^{***}$ & $+0.591^{***}$ \\
-                         & (0.071) & (0.072) & (0.063) & (0.064) \\
-    Heating value (MJ/kg) & $-0.008$ & $-0.006$ & $-0.011$ & $-0.009$ \\
-                           & (0.012) & (0.013) & (0.010) & (0.011) \\
-    Grid emission factor & $+0.142$ & $-0.218^{*}$ & $+0.089$ & $-0.194$ \\
-                         & (0.098) & (0.112) & (0.091) & (0.107) \\
-    Year FE & No & Yes & No & Yes \\
-    Random Effects & No & No & Yes & Yes \\
-    Observations & 6,575 & 6,575 & 6,575 & 6,575 \\
-    Facilities & 947 & 947 & 947 & 947 \\
-    $R^2$ (within) & 0.186 & 0.203 & & \\
-    $R^2$ (between) & 0.574 & 0.561 & & \\
-    $R^2$ (overall) & 0.412 & 0.419 & 0.408 & 0.416 \\
+    Facility age (years)     & $-0.039^{***}$   & $-0.038^{***}$   & $-0.043^{***}$   & $-0.042^{***}$   \\
+                             & (0.003)          & (0.003)          & (0.002)          & (0.002)          \\
+    Capacity (per 100 t/day) & $+0.089^{***}$   & $+0.091^{***}$   & $+0.097^{***}$   & $+0.098^{***}$   \\
+                             & (0.011)          & (0.011)          & (0.009)          & (0.009)          \\
+    Capacity utilization     & $+0.613^{***}$   & $+0.621^{***}$   & $+0.583^{***}$   & $+0.591^{***}$   \\
+                             & (0.071)          & (0.072)          & (0.063)          & (0.064)          \\
+    Heating value (MJ/kg)    & $-0.008$         & $-0.006$         & $-0.011$         & $-0.009$         \\
+                             & (0.012)          & (0.013)          & (0.010)          & (0.011)          \\
+    Grid emission factor     & $+0.142$         & $-0.218^{*}$     & $+0.089$         & $-0.194$         \\
+                             & (0.098)          & (0.112)          & (0.091)          & (0.107)          \\
+    \midrule
+    Year FE                  & No               & Yes              & No               & Yes              \\
+    Random Effects           & No               & No               & Yes              & Yes              \\
+    Observations             & 6{,}575          & 6{,}575          & 6{,}575          & 6{,}575          \\
+    Facilities               & 947              & 947              & 947              & 947              \\
+    $R^2$ (within)           & 0.186            & 0.203            & n/a              & n/a              \\
+    $R^2$ (between)          & 0.574            & 0.561            & n/a              & n/a              \\
+    $R^2$ (overall)          & 0.412            & 0.419            & 0.408            & 0.416            \\
     \bottomrule
-  \end{tabular}%
-  }
+  \end{tabular*}
   \smallskip
   \begin{minipage}{\textwidth}
     \footnotesize\emph{Note:} Cluster-robust standard errors in parentheses, clustered at facility level. $^{***}$ $p < 0.001$, $^{**}$ $p < 0.01$, $^{*}$ $p < 0.05$. Constant included but not reported.
@@ -580,22 +588,20 @@ This concentration has direct policy implications. Improving the efficiency of t
   \centering
   \caption{Robustness Check Summary, Age, Capacity, and Utilization Coefficients}
   \label{tab:robustness}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllll}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrr@{}}
     \toprule
-    Specification & Age Coeff. & Capacity Coeff. & Utilization Coeff. & Age $p$-value \\
+    Specification                  & Age Coeff. & Capacity Coeff. & Utilization Coeff. & Age $p$-value \\
     \midrule
-    R1: Pre-Fukushima, Pooled OLS & $-0.041$ & $+0.086$ & $+0.597$ & $<0.001$ \\
-    R2: Pre-Fukushima, Year FE & $-0.040$ & $+0.088$ & $+0.605$ & $<0.001$ \\
-    R3: Post-Fukushima, Pooled OLS & $-0.036$ & $+0.094$ & $+0.631$ & $<0.001$ \\
-    R4: Post-Fukushima, Year FE & $-0.035$ & $+0.096$ & $+0.639$ & $<0.001$ \\
-    R5: Small capacity tercile & $-0.028$ & $+0.081$ & $+0.533$ & $<0.001$ \\
-    R6: Large capacity tercile & $-0.037$ & $+0.080$ & $+0.829$ & $<0.001$ \\
-    R7: Raw DV, Pooled OLS & $-0.006$ & $+0.018$ & $+0.147$ & $<0.001$ \\
-    R8: Raw DV, Year FE (no HV) & $-0.006$ & $+0.019$ & $+0.149$ & $<0.001$ \\
+    R1: Pre-Fukushima, Pooled OLS  & $-0.041$ & $+0.086$ & $+0.597$ & $< 0.001$ \\
+    R2: Pre-Fukushima, Year FE     & $-0.040$ & $+0.088$ & $+0.605$ & $< 0.001$ \\
+    R3: Post-Fukushima, Pooled OLS & $-0.036$ & $+0.094$ & $+0.631$ & $< 0.001$ \\
+    R4: Post-Fukushima, Year FE    & $-0.035$ & $+0.096$ & $+0.639$ & $< 0.001$ \\
+    R5: Small capacity tercile     & $-0.028$ & $+0.081$ & $+0.533$ & $< 0.001$ \\
+    R6: Large capacity tercile     & $-0.037$ & $+0.080$ & $+0.829$ & $< 0.001$ \\
+    R7: Raw DV, Pooled OLS         & $-0.006$ & $+0.018$ & $+0.147$ & $< 0.001$ \\
+    R8: Raw DV, Year FE (no HV)    & $-0.006$ & $+0.019$ & $+0.149$ & $< 0.001$ \\
     \bottomrule
-  \end{tabular}%
-  }
+  \end{tabular*}
   \smallskip
   \begin{minipage}{\textwidth}
     \footnotesize\emph{Note:} R7 and R8 use raw (untransformed) efficiency as DV; coefficients are not comparable in magnitude to log-DV specifications but signs and significance are consistent.
