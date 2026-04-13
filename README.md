@@ -180,11 +180,12 @@ incineration-thesis/
 |   +-- notebooks/                           # Jupyter exploration
 |
 |-- data/
+|   |-- README.md                            # Provenance, licensing, schema
 |   |-- raw/
-|   |   +-- facility_annual/                 # 20 MOE Excel files (gitignored)
+|   |   +-- facility_annual/                 # 20 MOE Excel files (FY2005-FY2024, published)
 |   +-- processed/
-|       |-- incineration_panel.csv           # Base panel (gitignored)
-|       |-- incineration_panel_enriched.csv  # With grid factors (gitignored)
+|       |-- incineration_panel.csv           # Base panel (published, 23,599 rows)
+|       |-- incineration_panel_enriched.csv  # With grid factors (published)
 |       |-- grid_emission_factors.csv        # Regional factors by year
 |       +-- prefecture_utility_crosswalk.csv # Prefecture -> utility mapping
 |
@@ -255,7 +256,7 @@ To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` 
 | All 7 chapters drafted | Done |
 | LaTeX conversion | Done |
 | Reference verification (26 refs, 0 fabricated) | Done |
-| Expert panel review (3 rounds) | Done |
+| Expert panel review (3 attack rounds + holistic grade + A-push) | Done |
 | Ready for supervisor review | **Yes** |
 
 ---

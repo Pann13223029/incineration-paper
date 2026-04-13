@@ -20,24 +20,34 @@ metabolism, low-carbon society, spatial analysis)
 efficiency among Japan's power-generating incinerators, and how has this
 changed as the fleet modernizes?
 
-**Methods:** Two-way fixed-effects panel (facility FE + year FE), FY2005-2024.
-See `ARCHITECTURE.md` for the full blueprint.
+**Methods:** Unbalanced facility-year panel, FY2005–FY2024. Primary estimators
+are pooled OLS and random effects with cluster-robust SEs at the facility
+level, plus year fixed effects as robustness. Facility FE is rejected as the
+primary estimator because (a) age is nearly collinear with year FE in a two-
+way setup and (b) the within/total variance ratio is only ~0.13, so FE
+discards 87% of DV variation. See `ARCHITECTURE.md` §Methodology for the
+full justification including the Hausman disclosure.
 
-**Status:** Data pipeline complete (23,599 obs, 20 years). Next: EDA + grid
-emission factors + regression.
+**Status:** Thesis defended-ready. Data pipeline, regression, robustness,
+all seven chapters, bibliography verification, three rounds of panel attack,
+holistic panel grading, and A-push discussion additions are all complete.
+Authoritative source is `thesis/thesis.tex` (~13,600 words, 26 references,
+6 tables, 4 equations). Ready for Prof. Han Ji's review.
 
 ---
 
 ## Repo Structure
-- `thesis/` — Chapters in Markdown (to be drafted)
-- `research/literature/` — Paper summaries and annotated bibliography
-- `research/notes/` — Expert panel outputs, working notes
-- `data/raw/` — Downloaded MOE Excel files (gitignored)
-- `data/processed/` — Cleaned panel dataset (gitignored)
-- `code/scripts/` — Numbered Python scripts
-- `code/notebooks/` — Jupyter notebooks
-- `output/` — Generated figures, tables, reports
-- `archive/` — Deprecated work
+- `thesis/thesis.tex` — Authoritative LaTeX source (Overleaf-compileable)
+- `thesis/figures/` — EDA figures embedded in thesis.tex
+- `thesis/0*-*.md` — SUPERSEDED authoring drafts; do NOT regenerate thesis.tex from these
+- `research/literature/` — Paper summaries and annotated bibliography (placeholder, empty)
+- `research/notes/` — Expert panel outputs, executive summary, reference verification report
+- `data/raw/facility_annual/` — 20 MOE Excel files (FY2005–FY2024), published for reproducibility
+- `data/processed/` — Authoritative panels (base, enriched, grid factors, crosswalk), published
+- `code/scripts/` — Numbered Python pipeline (00 probe → 06 robustness)
+- `code/notebooks/` — Jupyter exploration
+- `output/` — Generated figures, tables, reports (markdown summaries per stage)
+- `archive/` — Deprecated work (placeholder, empty)
 
 ---
 
@@ -79,8 +89,11 @@ emission factors + regression.
 ## Sub-Agent Protocol
 
 ### Expert Panel Discussions
-- Follow the protocol in the first thesis's panel protocol (3-round structure).
-- All panel outputs saved to `research/notes/expert-panel/`.
+- Follow the protocol in `research/notes/PANEL-PROTOCOL.md`.
+- Panel history for this thesis: three hostile-attack rounds (round 1 ~40 items,
+  round 2 ~21 items, round 3 ~6 items), one holistic grade + future-direction
+  round, and one A-push execution round based on panel feedback. All items
+  cleared; all corrections back-ported to `thesis/thesis.tex`.
 
 ### Writing Agents
 - Must read the target chapter and adjacent chapters before drafting.

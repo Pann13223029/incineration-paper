@@ -66,13 +66,13 @@ Because within-facility efficiency responds to incentives only within a narrow e
 
 | Item | Status |
 |:-----|:-------|
-| Thesis body word count | ~13,500 words (~15,200 including tables, equations, bibliography) |
+| Thesis body word count | ~13,600 words (body + tables + equations + bibliography) |
 | Chapters drafted | 7 of 7 (Abstract + Ch 1–6) |
 | Authoritative source file | `thesis/thesis.tex` — Overleaf-compileable |
 | Bibliography | 26 entries, all DOI/URL-verified, 0 orphans, 0 fabricated |
 | Tables | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, main regression, robustness) |
 | Figures | 2 (establishing shot + heterogeneity shot, in `thesis/figures/`) |
-| Expert panel review | 3 rounds completed; all HIGH, MEDIUM, LOW items addressed |
+| Expert panel review | 3 attack rounds + 1 holistic grade + 1 A-push execution round; all items addressed |
 | Ready for supervisor read | **Yes** |
 
 ---

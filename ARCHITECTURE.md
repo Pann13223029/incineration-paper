@@ -141,7 +141,8 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 | Tables in thesis.tex | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, regression results, robustness) |
 | Equations in thesis.tex | 4 (log efficiency, baseline regression, avoided CO₂ formula, avoided CO₂ computation) |
 | Bibliography entries | 26 (all DOI/URL-verified, all cited in text, 0 orphans) |
-| Expert panel review rounds | 3 (round 1: ~40 items; round 2: 21 items; round 3: 6 items) |
+| Expert panel review rounds | 3 hostile-attack rounds (r1: ~40 items; r2: ~21 items; r3: ~6 items) + 1 holistic grade/direction round + 1 A-push execution round |
+| Thesis body word count | ~13,600 words (text + equations + tables + bibliography) |
 
 ---
 
@@ -183,8 +184,8 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 ## Confidence: HIGH
 
-Data is strong (near-census administrative panel, 20 years). RQ is estimable and has been answered with coefficients that are stable across 12 distinct specifications. Methodology pivot from FE to pooled OLS + RE is substantively justified (collinearity of age with year FE; variance-ratio power problem) rather than ad hoc, and the Hausman rejection is disclosed openly. All 26 references verified against Crossref or publisher catalogs; 0 fabricated citations remain. Three rounds of expert-panel review have cleared all HIGH, MEDIUM, LOW, and NITS items flagged; round 3 in particular softened "lock-in proven" language to "strongly consistent with lock-in," reframed the Fukushima subsample result as bounded (rather than absent) responsiveness, and unified the retrofit framing across §5.2 and §5.5.1 from "cannot be converted" to "unlikely under foreseeable economics."
+Data is strong (near-census administrative panel, 20 years). RQ is estimable and has been answered with coefficients that are stable across 12 distinct specifications. Methodology pivot from FE to pooled OLS + RE is substantively justified (collinearity of age with year FE; variance-ratio power problem) rather than ad hoc, and the Hausman rejection is disclosed openly. All 26 references verified against Crossref or publisher catalogs; 0 fabricated citations remain. Three rounds of expert-panel review have cleared all HIGH, MEDIUM, LOW, and NITS items flagged; round 3 in particular softened "lock-in proven" language to "strongly consistent with lock-in," reframed the Fukushima subsample result as bounded (rather than absent) responsiveness, and unified the retrofit framing across §5.2 and §5.5.1 from "cannot be converted" to "unlikely under foreseeable economics." A subsequent holistic panel grade round converged on a 良/優 consensus (mean 85.4/100) with the supervisor giving 優/90; a targeted A-push round added three surgical discussion sections (§5.3.1 heat-integration institutional case, §5.5.1 retrofit break-even calculation, §5.5.2 declining grid-EF sensitivity) that close the consensus weaknesses identified by the panel without touching the empirical core, targeting a re-graded band of 89–93 across all panelists.
 
 ---
 
-*Last updated: 2026-04-13. Reflects thesis.tex state at commit 1ae13f7.*
+*Last updated: 2026-04-13. Reflects thesis.tex state at commit 3c2b6c8.*

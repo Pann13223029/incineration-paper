@@ -1,7 +1,7 @@
 <!--
   SUPERSEDED: This Markdown file is an earlier authoring draft.
   The authoritative version of every chapter now lives in thesis/thesis.tex,
-  which has been through two rounds of panel review and factual correction
+  which has been through multiple rounds of panel review, factual correction, and discussion-section additions
   since this Markdown was last touched. Do NOT regenerate thesis.tex from
   these MD files without first back-porting all corrections.
 -->
