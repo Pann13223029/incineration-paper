@@ -1,3 +1,11 @@
+<!--
+  SUPERSEDED: This Markdown file is an earlier authoring draft.
+  The authoritative version of every chapter now lives in thesis/thesis.tex,
+  which has been through two rounds of panel review and factual correction
+  since this Markdown was last touched. Do NOT regenerate thesis.tex from
+  these MD files without first back-porting all corrections.
+-->
+
 # Abstract
 
 Japan's waste incinerators are not all the same — and that heterogeneity determines whether incineration helps or hurts the country's carbon goals. Using a 20-year facility-level panel of 23,599 observations across 2,949 incinerators (Ministry of the Environment, FY2005-2024), this thesis identifies the characteristics that predict energy recovery efficiency among Japan's power-generating facilities.

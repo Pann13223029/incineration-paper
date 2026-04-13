@@ -1,3 +1,11 @@
+<!--
+  SUPERSEDED: This Markdown file is an earlier authoring draft.
+  The authoritative version of every chapter now lives in thesis/thesis.tex,
+  which has been through two rounds of panel review and factual correction
+  since this Markdown was last touched. Do NOT regenerate thesis.tex from
+  these MD files without first back-porting all corrections.
+-->
+
 # Chapter 6: Conclusion
 
 ## 6.1 Summary of Findings
