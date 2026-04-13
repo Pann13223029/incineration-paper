@@ -1,4 +1,6 @@
-# Reference Verification Report
+# Reference Verification Report (Historical)
+
+> **Note (2026-04-13):** This report documents the FIRST round of reference verification, which ran when the draft bibliography contained 38 citations. The thesis now has 23 verified references in `thesis/thesis.tex`, all with confirmed DOIs or retrieval URLs, 0 fabricated, 0 orphans. This file is kept as a historical record of the cleanup process and should not be used as the current reference list. See `thesis/thesis.tex` lines 777–897 for the authoritative bibliography.
 
 **Date:** 2026-04-11
 **Method:** Web search verification of all 38 citations listed in thesis chapters and conclusion references.
