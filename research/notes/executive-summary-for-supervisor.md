@@ -28,7 +28,7 @@
 | Facility age | −0.028 to −0.043 per year (p < 0.001) | Each additional year ≈ 2.8–4.3% lower efficiency, holding other factors constant |
 | Design capacity | +0.08 to +0.10 log-units per 100 t/day (p < 0.001) | Engineering economics of boiler and turbine systems at scale |
 | Capacity utilization | +0.58 to +0.62 (p < 0.001) | Thermodynamic gains from operating near design conditions |
-| **Within/total variance ratio** | **0.13 pooled, 0.10 pre-Fuku, 0.07 post-Fuku** | **The signature finding: 87% of variation is between facilities, not within them over time** |
+| **Within/total variance ratio** | **0.13 pooled, 0.10 pre-Fuku, 0.07 post-Fuku** | **The signature finding: 87% of variation is between facilities, not within them over time. Stability of the ratio across the pre- and post-Fukushima subsamples is the empirical signature of bounded-responsiveness lock-in as defined by Seto et al. (2016).** |
 
 **Null results:** Heating value is not significant in any specification. Grid emission factor is sign-unstable across specifications and is not interpretable as a causal effect.
 
@@ -38,25 +38,25 @@
 
 ## Theoretical contribution
 
-This is unusually clean empirical evidence for Unruh's (2000) carbon lock-in hypothesis in the waste sector. Lock-in theory predicts that infrastructure systems exhibit low within-facility variation in performance over time because physical capital embeds past design decisions. The prediction is confirmed: facilities that were efficient in 2005 remain efficient in 2024; facilities that were inefficient remain inefficient. In a dataset spanning 20 years and covering nearly a thousand facilities, the absence of within-facility efficiency trends is a systematic property of the data. The literature cited includes Arthur (1989) on technological lock-in, Geels (2004) on socio-technical transitions, and Caldecott et al. (2016) on stranded-asset framing. The waste-sector-specific context draws on Sakai et al. (2008, 2011), Sun et al. (2018), Tabata & Tsai (2016), and the MOE survey data itself.
+The thesis positions itself as answering Seto et al.'s (2016) explicit call for facility-level empirical operationalisation of infrastructural lock-in, rather than applying Unruh's (2000) hypothesis as unexamined theory. Seto et al. define infrastructural lock-in as facility-level performance remaining stable in the face of changing external incentives; the pre/post-Fukushima stability of the within/total ratio, over a period in which the value of grid electricity, the FiT structure, and the policy environment all changed dramatically, is therefore a direct test rather than an illustration. The Fukushima subsample does show a small (0.005 log-unit) attenuation of the age coefficient — this is reported as bounded responsiveness within a lock-in envelope rather than waved away as sampling noise. The thesis also acknowledges two alternative interpretations of the 0.13 ratio (correlated measurement error in the efficiency numerator and denominator; retrofits technically possible but not pursued at scale) and argues that the pre/post-Fukushima stability pushes against both to some degree, without claiming to fully adjudicate. Convergent external evidence comes from Cui et al. (2026) on the Chinese incinerator fleet; the facility-level estimates feed into Yamada et al. (2023)'s Japan net-zero scenario model. Other cited theory includes Arthur (1989), Geels (2004), and Caldecott et al. (2016). Waste-sector context draws on Sakai (2008, 2011), Sun et al. (2018), and Tabata & Tsai (2016).
 
 ---
 
 ## Policy implication
 
-Because efficiency is locked in at the design stage, fleet-wide improvement cannot come from operational intervention. Four recommendations, developed in Chapter 6:
+Because within-facility efficiency responds to incentives only within a narrow envelope set by the original design, fleet-wide improvement cannot meaningfully come from operational intervention at already-built facilities. Four recommendations, developed in Chapter 6:
 
 1. **Accelerate targeted retirement** of the ~277 pre-1995 non-power-generating facilities still operating in FY2024.
 2. **Scale regional consolidation planning** from the municipal to the prefectural level, backed by national coordination grants.
 3. **Redesign monitoring** to serve fleet planning (vintage register, retirement calendar) rather than facility-level efficiency auditing, since within-facility efficiency is effectively fixed.
-4. **Concentrate WtE capital incentives** on new-build and major-refurbishment decisions — the points at which design vintage is actually set — rather than operating-side subsidies for already-built facilities.
+4. **Concentrate WtE capital incentives** on new-build and major-refurbishment decisions (the points at which design vintage is actually set) rather than operating-side subsidies for already-built facilities.
 
 ---
 
 ## What I would like feedback on
 
 - **Methodological framing in Chapter 3.** The pivot away from two-way FE to pooled OLS + RE is justified on two grounds (collinearity + variance-ratio), but I want to confirm this framing is legible to an industrial-ecology audience and does not read as avoiding the "default" panel estimator.
-- **Chapter 5 discussion of the 59% non-power-generating problem.** I argue these facilities cannot be converted in place and must be replaced via regional consolidation. I would welcome your view on whether this framing is too pessimistic, or whether it matches what you see in the policy literature on Japanese WtE.
+- **Chapter 5 discussion of the 59% non-power-generating problem.** Following panel review, the framing has been softened from "cannot be converted in place" to "unlikely to be converted under foreseeable economics — at fleet scale, replacement rather than retrofit is the dominant feasible pathway," combining architectural and economic barriers explicitly rather than claiming physical impossibility. I would welcome your view on whether this weaker-but-better-defended claim matches what you see in the Japanese WtE policy literature.
 - **The "modernizing vanguard vs ageing majority" framing in §5.5.** The thesis uses this split to organise the policy discussion. The vanguard count (137 facilities: built after 2000, capacity > 200 t/day) and the pre-1995 power-gen count (54) are drawn directly from the FY2024 cross-section of the dataset. Please let me know if the framing reads as too binary.
 - **The null result on heating value** is argued in Section 2.4.4 to be consistent with combustion-control technology buffering the input–output relationship, though measurement noise cannot be ruled out since heating value is estimated rather than directly measured. I would value your view on whether the Chapter 5 discussion gives this null result appropriate weight.
 
@@ -69,10 +69,10 @@ Because efficiency is locked in at the design stage, fleet-wide improvement cann
 | Thesis body word count | ~13,500 words (~15,200 including tables, equations, bibliography) |
 | Chapters drafted | 7 of 7 (Abstract + Ch 1–6) |
 | Authoritative source file | `thesis/thesis.tex` — Overleaf-compileable |
-| Bibliography | 23 entries, all DOI/URL-verified, 0 orphans, 0 fabricated |
+| Bibliography | 26 entries, all DOI/URL-verified, 0 orphans, 0 fabricated |
 | Tables | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, main regression, robustness) |
 | Figures | 2 (establishing shot + heterogeneity shot, in `thesis/figures/`) |
-| Expert panel review | 2 rounds completed; all HIGH, MEDIUM, LOW items addressed |
+| Expert panel review | 3 rounds completed; all HIGH, MEDIUM, LOW items addressed |
 | Ready for supervisor read | **Yes** |
 
 ---

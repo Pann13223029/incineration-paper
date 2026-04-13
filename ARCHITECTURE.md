@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,949 unique facilities, FY2005–FY2024) to document heterogeneity in energy recovery efficiency and identify what drives it. The central empirical finding is that within-facility efficiency is essentially fixed over time (only ~13% of variation is within facilities; 87% is between them), meaning efficiency is locked in at the design stage and cannot be improved through operational intervention. The policy implication is that fleet-wide progress toward net-zero requires accelerated retirement and replacement of old facilities, not optimisation of existing ones.
+Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,949 unique facilities, FY2005–FY2024) to document heterogeneity in energy recovery efficiency and identify what drives it. The central empirical finding is that within-facility efficiency is nearly fixed over time (only ~13% of variation is within facilities; 87% is between them), and that this ratio is stable across the pre- and post-Fukushima subsamples despite the large shock to electricity prices and policy incentives. This is strongly consistent with Seto et al.'s (2016) definition of infrastructural lock-in: facility-level performance responds to incentives within a bounded envelope set by the original design. The policy implication is that fleet-wide progress toward net-zero passes through construction and retirement decisions — the points at which design vintage is set — rather than through operational intervention at already-built facilities.
 
 ---
 
@@ -65,6 +65,8 @@ The persistence of the non-power-generating segment is itself a finding: 598 of 
 
 1. **Identification problem.** Facility age increases deterministically by one unit per year, making it nearly collinear with year fixed effects in a two-way FE specification. The age coefficient — the primary variable of interest — is poorly identified within the FE framework.
 2. **Variance problem.** The within-to-total variance ratio of log-efficiency is only ~0.13. Facility FE would discard ~87% of the variation in the dependent variable, yielding imprecise estimates. This is itself a substantively important finding: facilities do not meaningfully improve or decline in efficiency over their operational lives.
+
+A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.0001) and is disclosed in §3.5.3, but does not drive the estimator choice: the Hausman test presumes that the FE specification can cleanly recover the parameters of interest, which fails for both reasons above. Pooled OLS and RE are therefore reported as primary; FE is referenced only to document that within-facility variation is negligible.
 
 **Primary estimators:** Pooled OLS (Model 1), Pooled OLS with year fixed effects (Model 2), Random Effects (Model 3), Random Effects with year fixed effects (Model 4). All use cluster-robust standard errors clustered at the facility level, following Wooldridge (2010).
 
@@ -138,8 +140,8 @@ The persistence of the non-power-generating segment is itself a finding: 598 of 
 | Figures | 2 (establishing shot + heterogeneity shot) |
 | Tables in thesis.tex | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, regression results, robustness) |
 | Equations in thesis.tex | 4 (log efficiency, baseline regression, avoided CO₂ formula, avoided CO₂ computation) |
-| Bibliography entries | 23 (all DOI/URL-verified, all cited in text, 0 orphans) |
-| Expert panel review rounds | 2 (round 1: ~40 items; round 2: 21 items) |
+| Bibliography entries | 26 (all DOI/URL-verified, all cited in text, 0 orphans) |
+| Expert panel review rounds | 3 (round 1: ~40 items; round 2: 21 items; round 3: 6 items) |
 
 ---
 
@@ -181,8 +183,8 @@ The persistence of the non-power-generating segment is itself a finding: 598 of 
 
 ## Confidence: HIGH
 
-Data is strong (near-census administrative panel, 20 years). RQ is estimable and has been answered with coefficients that are stable across 12 distinct specifications. Methodology pivot from FE to pooled OLS + RE is substantively justified (collinearity of age with year FE; variance-ratio power problem) rather than ad hoc. All 23 references verified against Crossref or publisher catalogs; 0 fabricated citations remain. Two rounds of expert-panel review have cleared all HIGH, MEDIUM, LOW, and NITS items flagged. Remaining uncertainty is on the policy-interpretation margin (Ch 5 and Ch 6) rather than on the empirical findings themselves.
+Data is strong (near-census administrative panel, 20 years). RQ is estimable and has been answered with coefficients that are stable across 12 distinct specifications. Methodology pivot from FE to pooled OLS + RE is substantively justified (collinearity of age with year FE; variance-ratio power problem) rather than ad hoc, and the Hausman rejection is disclosed openly. All 26 references verified against Crossref or publisher catalogs; 0 fabricated citations remain. Three rounds of expert-panel review have cleared all HIGH, MEDIUM, LOW, and NITS items flagged; round 3 in particular softened "lock-in proven" language to "strongly consistent with lock-in," reframed the Fukushima subsample result as bounded (rather than absent) responsiveness, and unified the retrofit framing across §5.2 and §5.5.1 from "cannot be converted" to "unlikely under foreseeable economics."
 
 ---
 
-*Last updated: 2026-04-13. Reflects thesis.tex state at commit 24efb5a.*
+*Last updated: 2026-04-13. Reflects thesis.tex state at commit 1ae13f7.*

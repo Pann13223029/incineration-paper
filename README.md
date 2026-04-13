@@ -4,13 +4,13 @@
 
 **Author:** Pann Phetra | **Supervisor:** Prof. Han Ji | **Institution:** Ritsumeikan Asia Pacific University | **Degree:** Bachelor's Thesis, Sustainability | **Year:** 2026
 
-> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis asks which facility characteristics predict energy recovery efficiency, finds that efficiency is essentially fixed at construction (87% of variation is between facilities, not within them over time), and argues that Japan's net-zero trajectory in the waste sector depends on retiring old facilities rather than optimising existing ones.
+> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis asks which facility characteristics predict energy recovery efficiency, finds that within-facility efficiency is nearly fixed over time (87% of variation is between facilities, not within them), and argues that this is strongly consistent with infrastructure lock-in and that Japan's net-zero trajectory in the waste sector therefore depends on replacing old facilities rather than optimising them.
 
 ---
 
 ## The Finding in One Paragraph
 
-Using a 20-year facility-level panel (23,599 observations across 2,949 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this thesis identifies three robust determinants of energy recovery efficiency among power-generating incinerators: facility age (−2.8% to −4.3% per year, p < 0.001), design capacity (+0.08 to +0.10 log-units per 100 t/day, p < 0.001), and capacity utilization (+0.58 to +0.62, p < 0.001). The single most consequential finding, however, is not a regression coefficient: it is that within-facility efficiency is essentially fixed over time. Only about 13% of efficiency variation is within facilities; the remaining 87% is between them. This is the empirical signature of infrastructure lock-in — efficiency is locked in at the design stage and cannot be meaningfully improved through operational adjustment once a facility is built. The policy implication is direct: fleet-wide improvement requires retiring old facilities, not optimising them.
+Using a 20-year facility-level panel (23,599 observations across 2,949 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this thesis identifies three robust determinants of energy recovery efficiency among power-generating incinerators: facility age (−2.8% to −4.3% per year, p < 0.001), design capacity (+0.08 to +0.10 log-units per 100 t/day, p < 0.001), and capacity utilization (+0.58 to +0.62, p < 0.001). The single most consequential finding, however, is not a regression coefficient: it is that within-facility efficiency is nearly fixed over time. Only about 13% of efficiency variation is within facilities; the remaining 87% is between them, and this ratio is stable across the pre- and post-Fukushima subsamples despite the large shock to electricity prices and policy incentives. This is the empirical signature of infrastructure lock-in as defined by Seto et al. (2016): facility-level performance responds to incentives only within a narrow envelope set by the original design. The policy implication is direct: fleet-wide improvement passes through construction and retirement decisions, not through operational intervention at already-built facilities.
 
 ---
 
@@ -254,8 +254,8 @@ To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` 
 | Robustness checks | Done |
 | All 7 chapters drafted | Done |
 | LaTeX conversion | Done |
-| Reference verification (23 refs, 0 fabricated) | Done |
-| Expert panel review (2 rounds) | Done |
+| Reference verification (26 refs, 0 fabricated) | Done |
+| Expert panel review (3 rounds) | Done |
 | Ready for supervisor review | **Yes** |
 
 ---
