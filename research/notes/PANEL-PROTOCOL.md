@@ -1,6 +1,6 @@
-# Optimized Multi-Agent Discussion Protocol v2.5
+# Optimized Multi-Agent Discussion Protocol v2.6
 
-*Dual-mode protocol: `Fast / Decision` for clean, quick convergence and `High-Output / Discovery` for maximum idea yield. v2.5 adds flow-control gates on top of v2.4: preflight, evidence intake, mode-switch rules, closure, and fresh-agent policy.*
+*Dual-mode protocol: `Fast / Decision` for clean, quick convergence and `High-Output / Discovery` for maximum idea yield. v2.6 adds a claim-normalization stage on top of v2.5 so converged Round 1 ideas are critiqued cleanly instead of wasting budget on duplicates.*
 
 ---
 
@@ -25,7 +25,7 @@ Use this protocol to extract better answers from multiple agents than a single-p
 ### Standard Outputs
 
 - `Executive synthesis`
-- `Lightweight claim ledger with scores`
+- `Normalized claim ledger with scores`
 - `Named dissents`
 - `Recommended next action`
 - `Closure block`
@@ -56,6 +56,7 @@ The orchestrator must:
 - run preflight before choosing mode
 - decide whether evidence intake is required before Round 1
 - define coverage axes before Round 1
+- normalize overlapping Round 1 claims before assigning critique
 - assign critique so agents do not review their own claims
 - update the claim ledger after every round
 - apply scoring, truncation, and ranking rules consistently
@@ -202,6 +203,33 @@ Every claim should carry:
 - `Assumption / constraint`
 - `Confidence`
 
+### Claim Normalization
+
+After Round 1 and before critique, merge duplicate or near-duplicate claims into normalized claims whenever two or more claims:
+
+- imply the same next action
+- rely on the same underlying mechanism or evidence basis
+- differ mainly in wording, emphasis, or confidence
+
+Do not merge claims just because they live in the same theme. Keep them separate if they differ materially in:
+
+- next action
+- evidence basis
+- stakeholder impact
+- risk profile
+
+Each normalized claim must record:
+
+- normalized ID such as `N1`, `N2`
+- alias source claim IDs
+- originating agents
+- merged claim text
+- distinct caveats or variants worth preserving
+
+Critique assignment happens against normalized IDs, not raw Round 1 IDs.
+
+If a narrow question causes heavy early convergence, normalize aggressively. If more than half of Round 1 claims collapse into 1-3 normalized claims, critique the normalized set directly rather than pretending the duplicates are independent signal.
+
 ### Lightweight Claim Ledger
 
 Track at minimum:
@@ -256,9 +284,11 @@ Use these working definitions:
 
 ### Context Budget Rule
 
-If Round 1 produces 15 claims or fewer, pass full outputs forward.
+Normalize claims before applying truncation.
 
-If Round 1 produces more than 15 claims:
+If the normalized Round 1 set produces 15 claims or fewer, pass full outputs forward.
+
+If the normalized Round 1 set produces more than 15 claims:
 
 - pass all claim IDs and one-line claim summaries
 - pass full text only for the highest provisional-priority claims across the whole panel, not per-agent quotas
@@ -471,6 +501,7 @@ The main upgrades are:
 - coverage axes instead of vague "different personas"
 - claim IDs and a lightweight ledger
 - evidence fields and explicit scoring
+- claim normalization before critique when convergence happens early
 - cross-assigned critique instead of self-anchored critique
 - a discovery path that mines gaps and recombines surviving ideas
 - stricter conditions on early exit
@@ -498,7 +529,7 @@ This keeps the fast path lean while giving brainstorming runs a protocol that do
 ### Template A: Fast / Decision
 
 ```text
-=== MULTI-AGENT DISCUSSION PROTOCOL v2.5 / FAST-DECISION ===
+=== MULTI-AGENT DISCUSSION PROTOCOL v2.6 / FAST-DECISION ===
 
 TOPIC: {{TOPIC}}
 QUESTION: {{QUESTION}}
@@ -547,12 +578,15 @@ Rules:
 - Reason independently. You have not seen other agents.
 """
 
---- LEDGER UPDATE AFTER ROUND 1 ---
+--- CLAIM NORMALIZATION + LEDGER UPDATE AFTER ROUND 1 ---
 
 Orchestrator action:
-- Create one ledger row per claim.
+- Create one ledger row per raw claim.
+- Merge duplicate or near-duplicate claims into normalized IDs (`N1`, `N2`, ...).
+- Preserve alias source IDs and originating agents for every normalized claim.
 - Score provisional `Evidence`, `Novelty`, and `Actionability`.
-- If claim count exceeds 15, carry forward all IDs plus summaries and the highest provisional-priority full texts across the whole panel.
+- Assign critique against normalized IDs, not raw claim IDs.
+- If normalized claim count exceeds 15, carry forward all IDs plus summaries and the highest provisional-priority full texts across the whole panel.
 
 --- ROUND 2: CRITIQUE-WITH-STAKES ---
 
@@ -560,10 +594,13 @@ Orchestrator action:
 You are {{PERSONA_NAME}}, a {{PERSONA_DESCRIPTION}}.
 {{OPTIONAL_ADVERSARIAL_LINE}}
 
-Assigned claim IDs:
+Assigned normalized claim IDs:
 {{ASSIGNED_CLAIM_IDS}}
 
-Round 1 outputs:
+Normalized claim ledger:
+{{NORMALIZED_CLAIM_LEDGER}}
+
+Round 1 raw outputs:
 {{ALL_ROUND_1_OUTPUTS}}
 
 Rules:
@@ -621,7 +658,7 @@ Maximum 500 words.
 ### Template B: High-Output / Discovery
 
 ```text
-=== MULTI-AGENT DISCUSSION PROTOCOL v2.5 / HIGH-OUTPUT-DISCOVERY ===
+=== MULTI-AGENT DISCUSSION PROTOCOL v2.6 / HIGH-OUTPUT-DISCOVERY ===
 
 TOPIC: {{TOPIC}}
 QUESTION: {{QUESTION}}
@@ -677,11 +714,14 @@ Rules:
 - Do not repeat generic points. Explore your assigned axis.
 """
 
---- LEDGER UPDATE AFTER ROUND 1 ---
+--- CLAIM NORMALIZATION + LEDGER UPDATE AFTER ROUND 1 ---
 
 Orchestrator action:
-- Create one ledger row per claim with axis, basis, and provisional scores.
-- If claim count exceeds 15, carry forward all IDs plus summaries and only the highest provisional-priority full texts, with at least one per axis.
+- Create one ledger row per raw claim with axis, basis, and provisional scores.
+- Merge duplicate or near-duplicate claims into normalized IDs (`N1`, `N2`, ...).
+- Preserve alias source IDs and originating agents for every normalized claim.
+- Assign critique against normalized IDs, not raw claim IDs.
+- If normalized claim count exceeds 15, carry forward all IDs plus summaries and only the highest provisional-priority full texts, with at least one per axis.
 
 --- ROUND 2: CRITIQUE + GAP MINING ---
 
@@ -689,10 +729,13 @@ Orchestrator action:
 You are {{PERSONA_NAME}}, a {{PERSONA_DESCRIPTION}}.
 {{OPTIONAL_ADVERSARIAL_LINE}}
 
-Assigned claim IDs:
+Assigned normalized claim IDs:
 {{ASSIGNED_CLAIM_IDS}}
 
-Round 1 outputs:
+Normalized claim ledger:
+{{NORMALIZED_CLAIM_LEDGER}}
+
+Round 1 raw outputs:
 {{ALL_ROUND_1_OUTPUTS}}
 
 Rules:
@@ -998,6 +1041,10 @@ COVERAGE AXES:
 PERSONA PACK:
 - Fast pack / Discovery pack / Custom
 
+NORMALIZATION RULE:
+- Merge if same next action + same mechanism/evidence.
+- Keep separate if materially different action, evidence, stakeholder impact, or risk.
+
 CRITIC ROLE:
 - Which persona is the adversarial critic and why?
 
@@ -1077,6 +1124,19 @@ Recovery:
 - lower the number of carried full-text claims
 - preserve summaries plus ledger rows, not raw transcripts
 - reduce the number of claims reviewed per agent
+
+### 3.5. Duplicate Flood
+
+Signature:
+
+- Round 1 produces many claims, but most collapse into the same few ideas
+- critique budget gets spent restating overlaps rather than testing differences
+
+Recovery:
+
+- normalize claims before critique
+- preserve alias IDs and caveats in the ledger
+- critique the normalized set directly on narrow questions
 
 ### 4. False Novelty
 
@@ -1184,6 +1244,7 @@ Operator rule:
 - `v2.3` (2026-04-14): operator scaffolding pass. Added default persona preset packs and a worked example so the protocol is easier to run consistently without inventing setup structure from scratch each time.
 - `v2.4` (2026-04-14): execution scaffolding pass. Added a minimal run sheet, a copyable ledger template, and a failure-signatures recovery playbook for real repeated use.
 - `v2.5` (2026-04-14): flow-control pass. Added preflight, question taxonomy, evidence intake, explicit mode-switch and abort rules, closure blocks, and a fresh-agent policy.
+- `v2.6` (2026-04-14): normalization pass. Added an explicit claim-normalization stage between Round 1 and critique, preserved alias IDs/origins in the ledger, and wired normalization into the templates, run sheet, and failure-recovery playbook.
 
 ### Named Dissents Preserved
 
