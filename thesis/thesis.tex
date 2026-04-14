@@ -437,18 +437,19 @@ The efficiency gradient across facility age cohorts is striking and forms the ce
 
 \begin{table}[H]
   \centering
+  \small
   \caption{Mean Energy Recovery Efficiency by Facility Age Cohort}
   \label{tab:efficiency_age}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+  \begin{tabularx}{\textwidth}{@{}Lrrrrr@{}}
     \toprule
-    Age Cohort   & $n$ (facility-years) & Mean Efficiency (MWh/t) & SD    & 25th Pctile & 75th Pctile \\
+    Age Cohort   & \shortstack[c]{$n$\\(facility-years)} & \shortstack[c]{Mean Eff.\\(MWh/t)} & SD    & \shortstack[c]{25th\\Pctile} & \shortstack[c]{75th\\Pctile} \\
     \midrule
     0--10 years  & 1{,}900 & 0.400 & 0.127 & 0.321 & 0.484 \\
     10--20 years & 1{,}928 & 0.338 & 0.120 & 0.262 & 0.408 \\
     20--30 years & 1{,}440 & 0.272 & 0.105 & 0.197 & 0.339 \\
     30+ years    &   415   & 0.183 & 0.094 & 0.124 & 0.244 \\
     \bottomrule
-  \end{tabular*}
+  \end{tabularx}
 \end{table}
 
 The efficiency decline across age cohorts is monotonic and substantial. Facilities aged 0--10 years achieve a mean efficiency of 0.400 MWh/t, more than twice the 0.183 MWh/t average of facilities over 30 years old. The interquartile ranges show that the distributions are partially overlapping but clearly shifted: the 25th percentile of the youngest cohort (0.321 MWh/t) exceeds the 75th percentile of the oldest cohort (0.244 MWh/t). This non-overlap in the tails reinforces the conclusion that age cohort is a strong determinant of efficiency, not merely a statistical association but a substantive distributional shift.
@@ -459,18 +460,19 @@ The standard deviation within cohorts is notable: even among the youngest facili
 
 \begin{table}[H]
   \centering
+  \small
   \caption{Mean Energy Recovery Efficiency by Facility Capacity Category}
   \label{tab:efficiency_capacity}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrr@{}}
+  \begin{tabularx}{\textwidth}{@{}Lrrr@{}}
     \toprule
-    Capacity (t/day) & $n$ (facility-years) & Mean Efficiency (MWh/t) & \% of Fleet (FY2024 active) \\
+    \shortstack[c]{Capacity\\(t/day)} & \shortstack[c]{$n$\\(facility-years)} & \shortstack[c]{Mean Eff.\\(MWh/t)} & \shortstack[c]{Share of Fleet\\(FY2024 active)} \\
     \midrule
     $<$ 100    &    834 & 0.198 & 18\% \\
     100--299   & 2{,}614 & 0.271 & 41\% \\
     300--499   & 1{,}847 & 0.321 & 27\% \\
     $\geq$ 500 & 1{,}280 & 0.378 & 14\% \\
     \bottomrule
-  \end{tabular*}
+  \end{tabularx}
 \end{table}
 
 Scale effects are similarly strong. Facilities with design capacity below 100 t/day achieve mean efficiency of 0.198 MWh/t, compared to 0.378 MWh/t for those at or above 500 t/day, a factor of 1.9. The largest capacity category represents only 14\% of active facilities but, given its size advantage, contributes disproportionately to aggregate electricity generation from the fleet.
@@ -588,11 +590,12 @@ This concentration has direct policy implications. Improving the efficiency of t
 
 \begin{table}[H]
   \centering
+  \footnotesize
   \caption{Robustness Check Summary, Age, Capacity, and Utilization Coefficients}
   \label{tab:robustness}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrr@{}}
+  \begin{tabularx}{\textwidth}{@{}Lrrrr@{}}
     \toprule
-    Specification                  & Age Coeff. & Capacity Coeff. & Utilization Coeff. & Age $p$-value \\
+    Specification                  & \shortstack[c]{Age\\Coeff.} & \shortstack[c]{Capacity\\Coeff.} & \shortstack[c]{Utilization\\Coeff.} & \shortstack[c]{Age\\$p$-value} \\
     \midrule
     R1: Pre-Fukushima, Pooled OLS  & $-0.042$ & $+0.085$ & $+0.631$ & $< 0.001$ \\
     R2: Pre-Fukushima, Year FE     & $-0.043$ & $+0.086$ & $+0.742$ & $< 0.001$ \\
@@ -603,7 +606,7 @@ This concentration has direct policy implications. Improving the efficiency of t
     R7: Raw DV, Pooled OLS         & $-0.007$ & $+0.021$ & $+0.172$ & $< 0.001$ \\
     R8: Raw DV, Year FE            & $-0.009$ & $+0.026$ & $+0.178$ & $< 0.001$ \\
     \bottomrule
-  \end{tabular*}
+  \end{tabularx}
   \smallskip
   \begin{minipage}{\textwidth}
     \footnotesize\emph{Note:} R7 and R8 use the winsorized raw efficiency as the dependent variable; coefficients are not comparable in magnitude to log-DV specifications but signs and significance are consistent.
