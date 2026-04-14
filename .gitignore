@@ -5,6 +5,13 @@ __pycache__/
 .DS_Store
 *.xlsx.tmp
 
+# Thesis build artifacts
+thesis/*.aux
+thesis/*.log
+thesis/*.out
+thesis/*.pdf
+thesis/*.toc
+
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.
 data/raw/*
