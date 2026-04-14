@@ -205,7 +205,8 @@ incineration-thesis/
 |   +-- notes/                               # Expert panel transcripts, verification reports
 |
 |-- ARCHITECTURE.md                          # Technical blueprint
-|-- CLAUDE.md                                # AI-assisted research protocol
+|-- AGENTS.md                                # Assistant-agnostic repo workflow
+|-- CLAUDE.md                                # Thin compatibility wrapper
 +-- requirements.txt                         # Python dependencies
 ```
 
