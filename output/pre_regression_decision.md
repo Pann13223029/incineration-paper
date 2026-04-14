@@ -1,6 +1,6 @@
 # Pre-Regression Decision
 
-- Power-gen subsample: 6,694 obs, 1022 facilities.
-- Facilities with 10+ years: 159.
-- Within/overall efficiency SD ratio: 0.001.
-- DECISION: Insufficient within-facility variation. FE will be imprecise. Consider pooled OLS or RE as primary.
+- Regression frame: 5,683 obs, 1016 facilities.
+- Facilities with 10+ years: 154.
+- Within/total variance ratio of log-efficiency: 0.150.
+- DECISION: Keep pooled OLS, year-FE OLS, and random effects as the primary specifications. Facility age remains mechanically linked to year, so two-way FE is not the clean identifying design for the thesis question even when the within/total ratio is non-zero.

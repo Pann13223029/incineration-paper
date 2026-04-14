@@ -4,13 +4,13 @@
 
 **Author:** Pann Phetra | **Supervisor:** Prof. Han Ji | **Institution:** Ritsumeikan Asia Pacific University | **Degree:** Bachelor's Thesis, Sustainability | **Year:** 2026
 
-> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis asks which facility characteristics predict energy recovery efficiency, finds that within-facility efficiency is nearly fixed over time (87% of variation is between facilities, not within them), and argues that this is strongly consistent with infrastructure lock-in and that Japan's net-zero trajectory in the waste sector therefore depends on replacing old facilities rather than optimising them.
+> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis asks which facility characteristics predict energy recovery efficiency, finds that within-facility efficiency is still dominated by between-facility differences in the canonical regression frame, and argues that this is strongly consistent with infrastructure lock-in and that Japan's net-zero trajectory in the waste sector therefore depends on replacement and consolidation rather than operational fine-tuning alone.
 
 ---
 
 ## The Finding in One Paragraph
 
-Using a 20-year facility-level panel (23,599 observations across 2,949 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this thesis identifies three robust determinants of energy recovery efficiency among power-generating incinerators: facility age (−2.8% to −4.3% per year, p < 0.001), design capacity (+0.08 to +0.10 log-units per 100 t/day, p < 0.001), and capacity utilization (+0.58 to +0.62, p < 0.001). The single most consequential finding, however, is not a regression coefficient: it is that within-facility efficiency is nearly fixed over time. Only about 13% of efficiency variation is within facilities; the remaining 87% is between them, and this ratio is stable across the pre- and post-Fukushima subsamples despite the large shock to electricity prices and policy incentives. This is the empirical signature of infrastructure lock-in as defined by Seto et al. (2016): facility-level performance responds to incentives only within a narrow envelope set by the original design. The policy implication is direct: fleet-wide improvement passes through construction and retirement decisions, not through operational intervention at already-built facilities.
+Using a 20-year facility-level panel (23,599 observations across 2,948 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this repo now builds a canonical regression frame of 5,683 facility-year observations across 1,016 facilities with explicit sample rules documented in `output/sample_definition.md`. Across the four main specifications, facility age is consistently negative (−0.019 to −0.035 log-units/year), design capacity is positive (+0.041 to +0.103 log-units per 100 t/day), and capacity utilization is strongly positive (+0.541 to +0.779, all p < 0.001). The single most consequential finding, however, is not a regression coefficient: it is that within-facility efficiency changes much less than efficiency differs across facilities. The pooled within/total variance ratio in the canonical frame is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024. This remains strongly consistent with infrastructure lock-in as defined by Seto et al. (2016): facility-level performance responds within a bounded design envelope, so fleet-wide improvement passes primarily through construction, retirement, and consolidation decisions.
 
 ---
 
@@ -59,7 +59,7 @@ flowchart TD
 
     subgraph Parse["Stage 2: Panel Construction (DONE)"]
         B --> C["02: Auto-detect<br/>column positions<br/>(format varies by year)"]
-        C --> D["23,599 facility-year<br/>observations<br/>2,949 unique facilities"]
+        C --> D["23,599 facility-year<br/>observations<br/>2,948 unique facilities"]
     end
 
     subgraph Enrich["Stage 3: Enrichment (DONE)"]
@@ -110,11 +110,11 @@ graph TD
 
 | Choice | What | Why |
 |:-------|:-----|:----|
-| **Primary estimator** | Pooled OLS + Random Effects (RE) | The within-to-total variance ratio is only ~0.13, so facility FE would discard 87% of the dependent-variable variation and yield imprecise estimates. Age is also nearly collinear with year FE in a two-way FE specification. |
-| **Regression sample** | 6,575 facility-years (power-generating, winsorised) | Efficiency measure requires positive electricity output; winsorising at [0.01, 0.80] MWh/t removes reporting errors. |
+| **Primary estimator** | Pooled OLS + Random Effects (RE), with year-FE variants reported alongside them | Facility age remains mechanically linked to year in a two-way FE design, so the canonical pipeline treats pooled OLS, year-FE OLS, RE, and RE + year FE as the main comparison set. |
+| **Regression sample** | 5,683 facility-years (1,016 facilities) | Canonical frame: power-generation rows with positive throughput and positive output, official facility code present, complete model covariates, utilization capped at 1.0, and efficiency winsorized to [0.01, 0.80] MWh/t. |
 | **Dependent variable** | log(energy_efficiency_mwh_per_t) | Log transformation produces symmetric distribution and coefficients interpretable as proportional effects. |
 | **Main regressors** | Facility age, design capacity (per 100 t/day), capacity utilization, heating value, grid emission factor | Theoretical priors from industrial-ecology / lock-in literature. |
-| **Robustness** | 8 specifications: pre/post-Fukushima split (R1–R4), capacity tercile endpoints (R5–R6), raw DV (R7–R8) | Tests stability across sample splits, distributional assumptions, and variable transformations. |
+| **Robustness** | 8 specifications: pre/post-Fukushima split (R1–R4), capacity tercile endpoints (R5–R6), raw DV pooled/year-FE replications (R7–R8) | Tests stability across sample splits, distributional assumptions, and variable transformations. |
 | **Standard errors** | Cluster-robust, clustered at facility | Accounts for within-facility autocorrelation of errors across years. |
 
 ---
@@ -124,13 +124,13 @@ graph TD
 | Metric | Value |
 |:-------|:------|
 | Panel observations | 23,599 facility-years |
-| Unique facilities | 2,949 |
-| Regression sample | 6,575 facility-years (947 facilities) |
+| Unique facilities | 2,948 |
+| Regression sample | 5,683 facility-years (1,016 facilities) |
 | Time coverage | FY2005 – FY2024 (20 years) |
-| Facility age coefficient | −0.028 to −0.043 per year (p < 0.001) |
-| Design capacity coefficient | +0.08 to +0.10 log-units per 100 t/day |
-| Capacity utilization coefficient | +0.58 to +0.62 |
-| Within/total variance ratio | 0.13 (pooled), 0.10 (pre-Fuku), 0.07 (post-Fuku) |
+| Facility age coefficient | −0.019 to −0.035 per year in the four main specifications |
+| Design capacity coefficient | +0.041 to +0.103 log-units per 100 t/day in the four main specifications |
+| Capacity utilization coefficient | +0.541 to +0.779 in the four main specifications |
+| Within/total variance ratio | 0.1499 (pooled), 0.1795 (pre-Fuku), 0.0956 (post-Fuku) |
 | FY2024 gross avoided CO₂ | ~4.6 Mt-CO₂ (upper bound, excludes process emissions) |
 | FY2024 share non-power-generating | 59% |
 
@@ -144,8 +144,8 @@ graph TD
 | **Energy recovery efficiency** | How much electricity a facility generates per tonne of waste it burns. Higher = better at extracting useful energy. |
 | **Pooled OLS** | Ordinary least squares regression that ignores the panel structure — every observation is treated as independent. Used here as the primary estimator because within-facility variance is small. |
 | **Random Effects (RE)** | A panel regression method that treats unobserved facility characteristics as random draws from a distribution. Uses both within and between variation. |
-| **Panel data** | Tracking the same units (facilities) across multiple time periods. Ours: 2,949 facilities × up to 20 years. |
-| **Within/between variance ratio** | The share of variation in the dependent variable that comes from changes within each facility over time, versus differences between facilities. A ratio of 0.13 means 87% of variation is between facilities — facilities differ from each other much more than they change over time. |
+| **Panel data** | Tracking the same units (facilities) across multiple time periods. Ours: 2,948 facilities × up to 20 years. |
+| **Within/between variance ratio** | The share of variation in the dependent variable that comes from changes within each facility over time, versus differences between facilities. In the canonical regression frame the pooled within/total ratio is 0.1499, meaning most variation still comes from differences between facilities. |
 | **Grid emission factor** | How much CO₂ is produced per kWh of electricity on the regional grid. If the grid is dirty (coal-heavy), displacing grid electricity with waste-to-energy saves more carbon. |
 | **Capacity utilization** | What fraction of a facility's design capacity it actually uses. A 300 t/day plant processing 200 t/day has 67% utilization. |
 | **Fleet heterogeneity** | The fact that Japan's incinerators are not all the same — they vary in age, size, technology, and energy recovery capability. |
@@ -175,8 +175,10 @@ incineration-thesis/
 |   |   |-- 02_parse_facility_panel.py       # Auto-detect parser -> panel CSV
 |   |   |-- 03_grid_emission_factors.py      # Regional grid factors + crosswalk
 |   |   |-- 04_eda_facility.py               # Exploratory analysis + figures
-|   |   |-- 05_panel_regression.py           # Pooled OLS, Year FE, RE models
-|   |   +-- 06_robustness.py                 # 8 robustness specifications
+|   |   |-- 05_panel_regression.py           # Canonical regression frame + 4 main models
+|   |   |-- 06_robustness.py                 # 8 robustness specifications
+|   |   |-- 07_rebuild_analysis.py           # One-command local rebuild from checked-in raw data
+|   |   +-- panel_utils.py                   # Shared sample-construction and manifest helpers
 |   +-- notebooks/                           # Jupyter exploration
 |
 |-- data/
@@ -197,7 +199,7 @@ incineration-thesis/
 |   |-- ...                                  # (SUPERSEDED - drafts)
 |   +-- 06-conclusion.md                     # (SUPERSEDED - draft)
 |
-|-- output/                                  # Generated figures and tables
+|-- output/                                  # Generated figures, tables, sample report, manifests
 |-- research/
 |   |-- literature/                          # Paper summaries
 |   +-- notes/                               # Expert panel transcripts, verification reports
@@ -219,24 +221,14 @@ git clone https://github.com/Pann13223029/incineration-thesis.git
 cd incineration-thesis
 pip install -r requirements.txt
 
-# 2. Download raw data (requires internet)
+# 2. Optional: download raw data (requires internet)
 python code/scripts/01_download_facility_data.py
 
-# 3. Build the panel dataset
-python code/scripts/02_parse_facility_panel.py
-
-# 4. Enrich with grid emission factors
-python code/scripts/03_grid_emission_factors.py
-
-# 5. Exploratory analysis
-python code/scripts/04_eda_facility.py
-
-# 6. Panel regression (four main specifications)
-python code/scripts/05_panel_regression.py
-
-# 7. Robustness checks (eight specifications)
-python code/scripts/06_robustness.py
+# 3. Rebuild all thesis-facing analysis artifacts from the checked-in raw files
+python code/scripts/07_rebuild_analysis.py
 ```
+
+The canonical sample definition is written to `output/sample_definition.md`, and each stage writes a JSON provenance record under `output/manifests/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

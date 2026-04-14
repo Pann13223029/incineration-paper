@@ -1,194 +1,197 @@
 """
 06_robustness.py
 =================
-Robustness checks for the energy recovery efficiency regression.
+Robustness checks built from the shared regression frame.
 
-Tests:
-1. Pre/post Fukushima subsample (2005-2010 vs 2014-2024)
-2. Capacity tercile subsample (small/medium/large)
-3. Raw DV (MWh/t) instead of log
-4. Dropping heating value (not significant in main models)
-5. Hausman-style comparison: pooled OLS vs RE coefficients
+Specifications:
+1. Pre-Fukushima pooled OLS
+2. Pre-Fukushima OLS with year FE
+3. Post-Fukushima pooled OLS
+4. Post-Fukushima OLS with year FE
+5. Small capacity tercile (pooled OLS)
+6. Large capacity tercile (pooled OLS)
+7. Raw DV pooled OLS
+8. Raw DV OLS with year FE
 """
 
+from __future__ import annotations
+
 import os
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 import statsmodels.api as sm
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROCESSED_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'processed')
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
+from panel_utils import (
+    OUTPUT_DIR,
+    POST_FUKUSHIMA_START,
+    PRE_FUKUSHIMA_END,
+    build_regression_frame,
+    load_panel,
+    significance_stars,
+    write_stage_manifest,
+)
 
-EFF_FLOOR = 0.01
-EFF_CEIL = 0.80
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-
-def load_clean():
-    """Load and clean — same as 05."""
-    path = os.path.join(PROCESSED_DIR, 'incineration_panel_enriched.csv')
-    df = pd.read_csv(path)
-    df = df[df['throughput_t_year'].notna() & (df['throughput_t_year'] > 0)]
-    power = df[df['has_power_gen'] == True].copy()
-    power = power[power['energy_efficiency_mwh_per_t'].notna()]
-    power = power[
-        (power['energy_efficiency_mwh_per_t'] >= EFF_FLOOR) &
-        (power['energy_efficiency_mwh_per_t'] <= EFF_CEIL)
-    ].copy()
-    power['log_efficiency'] = np.log(power['energy_efficiency_mwh_per_t'])
-    power['capacity_100t'] = power['capacity_t_day'] / 100
-    power['heating_value_1000kj'] = power['heating_value_kj_kg'] / 1000
-    return power
+CORE_IVS = [
+    "facility_age_years",
+    "capacity_100t",
+    "capacity_utilization_capped",
+    "heating_value_mj_kg",
+    "grid_ef_kgco2_kwh",
+]
 
 
-def run_ols(data, label, dv='log_efficiency', extra_drop=None):
-    """Run pooled OLS with cluster-robust SEs. Return summary dict."""
-    ivs = ['facility_age', 'capacity_100t', 'capacity_utilization',
-           'heating_value_1000kj', 'grid_ef_kgco2_kwh']
-    if extra_drop:
-        ivs = [v for v in ivs if v not in extra_drop]
+def load_regression_frame():
+    """Load the canonical regression frame."""
+    frame = build_regression_frame(load_panel())
+    print(f"Regression frame: {len(frame):,} obs across {frame['analysis_facility_id'].nunique():,} facilities")
+    return frame
 
-    reg_data = data[[dv] + ivs + ['facility_code']].dropna()
-    if len(reg_data) < 50:
-        print(f"  {label}: too few obs ({len(reg_data)}), skipping")
+
+def run_ols(data, label, dv="log_efficiency", include_year_fe=False):
+    """Run pooled OLS with facility-clustered SEs and return summary stats."""
+    ivs = CORE_IVS
+    reg = data[[dv, "analysis_facility_id", "fiscal_year"] + ivs].dropna().copy()
+    if len(reg) < 50:
+        print(f"  {label}: too few observations ({len(reg)}), skipping")
         return None
 
-    y = reg_data[dv]
-    X = sm.add_constant(reg_data[ivs])
-    model = sm.OLS(y, X).fit(cov_type='cluster',
-                              cov_kwds={'groups': reg_data['facility_code']})
+    y = reg[dv]
+    X = reg[ivs].copy()
+    if include_year_fe:
+        year_dummies = pd.get_dummies(
+            reg["fiscal_year"],
+            prefix="fy",
+            drop_first=True,
+            dtype=float,
+        )
+        X = pd.concat([X, year_dummies], axis=1)
+    X = sm.add_constant(X)
+
+    model = sm.OLS(y, X).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": reg["analysis_facility_id"]},
+    )
 
     result = {
-        'label': label,
-        'n': int(model.nobs),
-        'r2': model.rsquared,
+        "label": label,
+        "n": int(model.nobs),
+        "facilities": int(reg["analysis_facility_id"].nunique()),
+        "r2": float(model.rsquared),
+        "dv": dv,
+        "year_fe": include_year_fe,
     }
-    for var in ivs:
-        result[f'{var}_coef'] = model.params.get(var, np.nan)
-        result[f'{var}_p'] = model.pvalues.get(var, np.nan)
+    for var in ivs[:3]:
+        result[f"{var}_coef"] = float(model.params[var])
+        result[f"{var}_p"] = float(model.pvalues[var])
 
-    sig = lambda p: '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-    print(f"\n  {label} (N={result['n']}, R²={result['r2']:.3f}):")
-    for var in ivs:
-        c = result[f'{var}_coef']
-        p = result[f'{var}_p']
-        print(f"    {var:<25} {c:>8.4f} {sig(p):>4}")
+    print(f"\n  {label} (N={result['n']:,}, facilities={result['facilities']:,}, R²={result['r2']:.3f})")
+    for var in ivs[:3]:
+        coef = result[f"{var}_coef"]
+        p = result[f"{var}_p"]
+        print(f"    {var:<28} {coef:>8.4f} {significance_stars(p):>3}")
 
     return result
 
 
 def main():
-    power = load_clean()
-    print(f"Clean sample: {len(power):,} obs\n")
-
+    frame = load_regression_frame()
     results = []
 
-    # --- Baseline (reproduce Model 1) ---
     print("=" * 60)
-    print("BASELINE: Full sample, log(efficiency)")
-    print("=" * 60)
-    r = run_ols(power, 'Baseline (full sample)')
-    if r: results.append(r)
-
-    # --- Test 1: Pre/Post Fukushima ---
-    print("\n" + "=" * 60)
     print("TEST 1: Pre/Post Fukushima")
     print("=" * 60)
-    pre = power[power['fiscal_year'] <= 2010]
-    post = power[power['fiscal_year'] >= 2014]
-    r = run_ols(pre, 'Pre-Fukushima (2005-2010)')
-    if r: results.append(r)
-    r = run_ols(post, 'Post-Fukushima (2014-2024)')
-    if r: results.append(r)
+    pre = frame[frame["fiscal_year"] <= PRE_FUKUSHIMA_END].copy()
+    post = frame[frame["fiscal_year"] >= POST_FUKUSHIMA_START].copy()
+    for label, subset, year_fe in [
+        (f"R1: Pre-Fukushima pooled OLS (FY2005-FY{PRE_FUKUSHIMA_END})", pre, False),
+        (f"R2: Pre-Fukushima year FE (FY2005-FY{PRE_FUKUSHIMA_END})", pre, True),
+        (f"R3: Post-Fukushima pooled OLS (FY{POST_FUKUSHIMA_START}-FY2024)", post, False),
+        (f"R4: Post-Fukushima year FE (FY{POST_FUKUSHIMA_START}-FY2024)", post, True),
+    ]:
+        result = run_ols(subset, label, include_year_fe=year_fe)
+        if result:
+            results.append(result)
 
-    # --- Test 2: Capacity terciles ---
     print("\n" + "=" * 60)
-    print("TEST 2: Capacity Terciles")
+    print("TEST 2: Capacity Tercile Endpoints")
     print("=" * 60)
-    terciles = pd.qcut(power['capacity_t_day'], 3, labels=['Small', 'Medium', 'Large'])
-    for tier in ['Small', 'Medium', 'Large']:
-        subset = power[terciles == tier]
-        r = run_ols(subset, f'Capacity: {tier}')
-        if r: results.append(r)
+    terciles = pd.qcut(frame["capacity_t_day"], 3, labels=["Small", "Medium", "Large"])
+    for label, subset in [
+        ("R5: Small capacity tercile", frame[terciles == "Small"].copy()),
+        ("R6: Large capacity tercile", frame[terciles == "Large"].copy()),
+    ]:
+        result = run_ols(subset, label, include_year_fe=False)
+        if result:
+            results.append(result)
 
-    # --- Test 3: Raw DV ---
     print("\n" + "=" * 60)
-    print("TEST 3: Raw DV (MWh/t, not log)")
+    print("TEST 3: Raw Dependent Variable")
     print("=" * 60)
-    r = run_ols(power, 'Raw DV (MWh/t)', dv='energy_efficiency_mwh_per_t')
-    if r: results.append(r)
+    for label, year_fe in [
+        ("R7: Raw DV pooled OLS", False),
+        ("R8: Raw DV year FE", True),
+    ]:
+        result = run_ols(frame, label, dv="energy_efficiency_mwh_per_t", include_year_fe=year_fe)
+        if result:
+            results.append(result)
 
-    # --- Test 4: Drop heating value ---
-    print("\n" + "=" * 60)
-    print("TEST 4: Drop heating value (not significant)")
-    print("=" * 60)
-    r = run_ols(power, 'Without heating value', extra_drop=['heating_value_1000kj'])
-    if r: results.append(r)
+    df_results = pd.DataFrame(results)
+    core_vars = [
+        "facility_age_years",
+        "capacity_100t",
+        "capacity_utilization_capped",
+    ]
 
-    # --- Save comparison table ---
     print("\n" + "=" * 60)
     print("ROBUSTNESS SUMMARY")
     print("=" * 60)
-
-    df_results = pd.DataFrame(results)
-    core_vars = ['facility_age', 'capacity_100t', 'capacity_utilization']
-
-    print(f"\n{'Specification':<30} {'N':>6} {'R²':>6}", end='')
+    print(f"\n{'Specification':<42} {'N':>6} {'R²':>6}", end="")
     for var in core_vars:
-        print(f" {var[:10]:>12}", end='')
+        print(f" {var[:12]:>14}", end="")
     print()
-    print("-" * 80)
+    print("-" * 112)
 
     for _, row in df_results.iterrows():
-        print(f"{row['label']:<30} {row['n']:>6} {row['r2']:>6.3f}", end='')
+        print(f"{row['label']:<42} {row['n']:>6} {row['r2']:>6.3f}", end="")
         for var in core_vars:
-            c = row.get(f'{var}_coef', np.nan)
-            p = row.get(f'{var}_p', np.nan)
-            sig = '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-            if pd.notna(c):
-                print(f" {c:>9.4f}{sig:<3}", end='')
-            else:
-                print(f" {'—':>12}", end='')
+            coef = row[f"{var}_coef"]
+            p = row[f"{var}_p"]
+            print(f" {coef:>11.4f}{significance_stars(p):<3}", end="")
         print()
 
-    # Stability assessment
-    print("\n  STABILITY ASSESSMENT:")
-    age_coefs = [r[f'facility_age_coef'] for r in results
-                 if r and pd.notna(r.get('facility_age_coef'))]
-    cap_coefs = [r[f'capacity_100t_coef'] for r in results
-                 if r and pd.notna(r.get('capacity_100t_coef'))]
-    util_coefs = [r[f'capacity_utilization_coef'] for r in results
-                  if r and pd.notna(r.get('capacity_utilization_coef'))]
-
-    for name, coefs in [('facility_age', age_coefs),
-                        ('capacity_100t', cap_coefs),
-                        ('capacity_utilization', util_coefs)]:
-        if coefs:
-            all_same_sign = all(c < 0 for c in coefs) or all(c > 0 for c in coefs)
-            print(f"    {name}: {'STABLE (same sign)' if all_same_sign else 'UNSTABLE (sign changes)'} "
-                  f"[range: {min(coefs):.4f} to {max(coefs):.4f}]")
-
-    # Save
-    path = os.path.join(OUTPUT_DIR, 'robustness_results.md')
-    with open(path, 'w') as f:
+    path = os.path.join(OUTPUT_DIR, "robustness_results.md")
+    with open(path, "w", encoding="utf-8") as f:
         f.write("# Robustness Checks\n\n")
-        f.write("All models: Pooled OLS, cluster-robust SEs, DV = log(MWh/t) unless noted.\n\n")
-        f.write(f"| Specification | N | R² | facility_age | capacity_100t | cap_utilization |\n")
-        f.write(f"|:---|---:|---:|---:|---:|---:|\n")
+        f.write("All models use the canonical regression frame and facility-clustered standard errors.\n\n")
+        f.write("| Specification | N | Facilities | R² | facility_age | capacity_100t | cap_utilization |\n")
+        f.write("|:---|---:|---:|---:|---:|---:|---:|\n")
         for _, row in df_results.iterrows():
-            f.write(f"| {row['label']} | {row['n']} | {row['r2']:.3f} |")
+            f.write(
+                f"| {row['label']} | {row['n']} | {row['facilities']} | {row['r2']:.3f} |"
+            )
             for var in core_vars:
-                c = row.get(f'{var}_coef', np.nan)
-                p = row.get(f'{var}_p', np.nan)
-                sig = '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-                if pd.notna(c):
-                    f.write(f" {c:.4f}{sig} |")
-                else:
-                    f.write(" — |")
+                coef = row[f"{var}_coef"]
+                p = row[f"{var}_p"]
+                f.write(f" {coef:.4f}{significance_stars(p)} |")
             f.write("\n")
 
     print(f"\n  Saved: {path}")
 
+    manifest_path = write_stage_manifest(
+        "06_robustness",
+        inputs=["data/processed/incineration_panel_enriched.csv"],
+        outputs=["output/robustness_results.md"],
+        metadata={
+            "specifications": results,
+            "pre_fukushima_window": [2005, PRE_FUKUSHIMA_END],
+            "post_fukushima_window": [POST_FUKUSHIMA_START, 2024],
+        },
+    )
+    print(f"Manifest: {manifest_path}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

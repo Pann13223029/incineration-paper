@@ -2,7 +2,7 @@
 
 - **Observations:** 23,599
 - **Years:** FY2005 to FY2024 (20 years)
-- **Unique facilities:** 2,949
+- **Unique facilities:** 2,948
 - **Prefectures:** 47
 - **Columns:** 24
 
@@ -42,7 +42,7 @@
 | heating_value_kj_kg | 96.2% | Energy content of waste |
 | power_capacity_kw | 35.4% | Only for power-gen facilities |
 | power_generated_mwh | 34.6% | Only for power-gen facilities |
-| power_sold_mwh | 7.9% | FY2018+ only |
+| power_sold_mwh | 7.9% | Only for power-gen facilities |
 | energy_efficiency_mwh_per_t | 33.2% | Derived: MWh / throughput |
 
 ## Power-generating subsample

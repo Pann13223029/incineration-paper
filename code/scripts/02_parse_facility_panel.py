@@ -12,9 +12,12 @@ is consistent enough for reliable matching.
 
 import os
 import sys
+import warnings
 import pandas as pd
 import numpy as np
 import unicodedata
+
+from panel_utils import write_stage_manifest
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'raw', 'facility_annual')
@@ -48,11 +51,28 @@ COLUMN_DEFS = [
 ]
 
 
+warnings.filterwarnings(
+    "ignore",
+    message=r"Print area cannot be set to Defined name: .*",
+    category=UserWarning,
+    module=r"openpyxl\.reader\.workbook",
+)
+
+
 def normalize(s):
     """Normalize Japanese text for matching (NFKC + strip)."""
     if pd.isna(s):
         return ''
     return unicodedata.normalize('NFKC', str(s)).strip()
+
+
+def normalize_identifier(series):
+    """Preserve missing values while standardizing administrative identifiers."""
+    cleaned = series.astype("string").str.strip()
+    cleaned = cleaned.str.replace(".0", "", regex=False)
+    cleaned = cleaned.str.replace("-", "", regex=False)
+    cleaned = cleaned.replace({"": pd.NA, "nan": pd.NA, "None": pd.NA, "<NA>": pd.NA})
+    return cleaned
 
 
 def find_column(df_header, keywords, max_rows=6):
@@ -165,22 +185,85 @@ def parse_year(fy):
 
     # Standardize facility code
     if 'facility_code' in result.columns:
-        result['facility_code'] = (
-            result['facility_code'].astype(str)
-            .str.replace('-', '', regex=False)
-            .str.replace('.0', '', regex=False)
-            .str.strip()
-        )
+        result['facility_code'] = normalize_identifier(result['facility_code'])
 
     # Standardize municipality code
     if 'muni_code' in result.columns:
-        result['muni_code'] = (
-            result['muni_code'].astype(str)
-            .str.replace('.0', '', regex=False)
-            .str.strip()
-        )
+        result['muni_code'] = normalize_identifier(result['muni_code'])
 
     return result
+
+
+def write_panel_summary_report(panel, output_path):
+    """Write a markdown summary for the parsed facility panel."""
+    lines = [
+        "# Incineration Facility Panel Dataset Summary",
+        "",
+        f"- **Observations:** {len(panel):,}",
+        (
+            f"- **Years:** FY{panel['fiscal_year'].min()} to "
+            f"FY{panel['fiscal_year'].max()} "
+            f"({panel['fiscal_year'].nunique()} years)"
+        ),
+        f"- **Unique facilities:** {panel['facility_code'].nunique():,}",
+        f"- **Prefectures:** {panel['prefecture'].nunique()}",
+        f"- **Columns:** {len(panel.columns)}",
+        "",
+        "## Facilities per year",
+        "",
+        "| FY | Facilities | % with power gen |",
+        "|:---|:----------:|:----------------:|",
+    ]
+
+    for fy, grp in panel.groupby('fiscal_year'):
+        lines.append(f"| {fy} | {len(grp):,} | {grp['has_power_gen'].mean() * 100:.1f}% |")
+
+    lines.extend(
+        [
+            "",
+            "## Key variable coverage",
+            "",
+            "| Variable | Coverage | Notes |",
+            "|:---------|:--------:|:------|",
+        ]
+    )
+
+    coverage_notes = {
+        "throughput_t_year": "Annual waste processed",
+        "capacity_t_day": "Design capacity",
+        "year_started": "Year operations began",
+        "facility_age": "Derived: fiscal_year - year_started",
+        "heating_value_kj_kg": "Energy content of waste",
+        "power_capacity_kw": "Only for power-gen facilities",
+        "power_generated_mwh": "Only for power-gen facilities",
+        "power_sold_mwh": "Only for power-gen facilities",
+        "energy_efficiency_mwh_per_t": "Derived: MWh / throughput",
+    }
+    for column, note in coverage_notes.items():
+        coverage = panel[column].notna().mean() * 100
+        lines.append(f"| {column} | {coverage:.1f}% | {note} |")
+
+    power_sub = panel[panel['has_power_gen']]
+    lines.extend(
+        [
+            "",
+            "## Power-generating subsample",
+            "",
+            "| Metric | Value |",
+            "|:-------|:------|",
+            f"| Observations | {len(power_sub):,} |",
+            (
+                f"| Years | FY{power_sub['fiscal_year'].min()} to "
+                f"FY{power_sub['fiscal_year'].max()} |"
+            ),
+        ]
+    )
+    for col in ['power_generated_mwh', 'energy_efficiency_mwh_per_t', 'power_efficiency_pct']:
+        if col in power_sub.columns:
+            lines.append(f"| {col} coverage | {power_sub[col].notna().mean() * 100:.1f}% |")
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 def main():
@@ -208,9 +291,11 @@ def main():
     # Compute derived variables
     panel['facility_age'] = panel['fiscal_year'] - panel['year_started']
     panel['has_power_gen'] = panel['power_capacity_kw'].notna() & (panel['power_capacity_kw'] > 0)
+    # Keep the raw utilization ratio here; analysis-time caps are applied
+    # centrally in panel_utils so every downstream script shares one rule.
     panel['capacity_utilization'] = (
         panel['throughput_t_year'] / (panel['capacity_t_day'] * 365)
-    ).clip(0, 1.5)
+    )
 
     # Energy recovery efficiency (MWh per tonne — key thesis variable)
     panel['energy_efficiency_mwh_per_t'] = (
@@ -219,7 +304,9 @@ def main():
 
     # Save
     out_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
+    summary_path = os.path.join(OUTPUT_DIR, 'panel_summary.md')
     panel.to_csv(out_path, index=False, encoding='utf-8-sig')
+    write_panel_summary_report(panel, summary_path)
 
     # --- Summary ---
     print("\n" + "=" * 60)
@@ -255,6 +342,22 @@ def main():
             print(f"  {col}: {pct:.1f}% coverage")
 
     print(f"\nSaved to: {os.path.abspath(out_path)}")
+
+    manifest_path = write_stage_manifest(
+        "02_parse_facility_panel",
+        inputs=[os.path.relpath(RAW_DIR, os.path.join(SCRIPT_DIR, "..", ".."))],
+        outputs=[
+            os.path.relpath(out_path, os.path.join(SCRIPT_DIR, "..", "..")),
+            os.path.relpath(summary_path, os.path.join(SCRIPT_DIR, "..", "..")),
+        ],
+        metadata={
+            "rows": int(len(panel)),
+            "years": [int(panel['fiscal_year'].min()), int(panel['fiscal_year'].max())],
+            "facilities_with_codes": int(panel['facility_code'].nunique()),
+            "power_generation_rows": int(panel['has_power_gen'].sum()),
+        },
+    )
+    print(f"Manifest: {manifest_path}")
 
 
 if __name__ == '__main__':

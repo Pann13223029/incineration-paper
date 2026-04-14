@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,949 unique facilities, FY2005–FY2024) to document heterogeneity in energy recovery efficiency and identify what drives it. The central empirical finding is that within-facility efficiency is nearly fixed over time (only ~13% of variation is within facilities; 87% is between them), and that this ratio is stable across the pre- and post-Fukushima subsamples despite the large shock to electricity prices and policy incentives. This is strongly consistent with Seto et al.'s (2016) definition of infrastructural lock-in: facility-level performance responds to incentives within a bounded envelope set by the original design. The policy implication is that fleet-wide progress toward net-zero passes through construction and retirement decisions — the points at which design vintage is set — rather than through operational intervention at already-built facilities.
+Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,948 unique facilities, FY2005–FY2024) to document heterogeneity in energy recovery efficiency and identify what drives it. The canonical analysis pipeline now writes an explicit sample-definition report and stage manifests so the published outputs are tied to one reproducible empirical design. In that canonical regression frame (5,683 facility-years, 1,016 facilities), the pooled within/total variance ratio of log-efficiency is 0.1499, falling from 0.1795 pre-Fukushima to 0.0956 post-Fukushima. This remains strongly consistent with Seto et al.'s (2016) definition of infrastructural lock-in: facility-level performance responds to incentives within a bounded envelope set by the original design. The policy implication is that fleet-wide progress toward net-zero passes through construction and retirement decisions — the points at which design vintage is set — rather than through operational intervention at already-built facilities.
 
 ---
 
@@ -50,7 +50,7 @@ The dataset splits into two analytically distinct populations:
 
 | Population | Obs in full panel | % of total | Role in analysis |
 |------------|:-----------------:|:----------:|------------------|
-| **Power-generating facilities** | ~6,950 | 29.4% | Main regression sample (after winsorising: 6,575 facility-years / 947 facilities) |
+| **Power-generating facilities** | ~6,950 | 29.4% | Canonical operating sample: 6,660 facility-years with positive throughput and positive output; canonical regression frame: 5,683 facility-years / 1,016 facilities |
 | **Non-power-generating facilities** | ~16,649 | 70.6% | Descriptive comparison; represent the carbon lock-in challenge |
 
 The persistence of the non-power-generating segment is itself a finding: 598 of the 1,014 active FY2024 facilities generate no electricity — the "59% problem" discussed in Chapter 5.
@@ -64,11 +64,11 @@ The persistence of the non-power-generating segment is itself a finding: 598 of 
 **Why not facility fixed effects?** The natural candidate for a panel setting is the two-way facility-and-year fixed-effects estimator, but it is inappropriate here for two reasons:
 
 1. **Identification problem.** Facility age increases deterministically by one unit per year, making it nearly collinear with year fixed effects in a two-way FE specification. The age coefficient — the primary variable of interest — is poorly identified within the FE framework.
-2. **Variance problem.** The within-to-total variance ratio of log-efficiency is only ~0.13. Facility FE would discard ~87% of the variation in the dependent variable, yielding imprecise estimates. This is itself a substantively important finding: facilities do not meaningfully improve or decline in efficiency over their operational lives.
+2. **Variance problem.** The pooled within-to-total variance ratio of log-efficiency in the canonical regression frame is 0.1499, and the post-Fukushima ratio is lower still at 0.0956. Facility FE therefore leans on the smaller part of the signal, even before confronting the age/year identification problem.
 
 A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.0001) and is disclosed in §3.5.3, but does not drive the estimator choice: the Hausman test presumes that the FE specification can cleanly recover the parameters of interest, which fails for both reasons above. Pooled OLS and RE are therefore reported as primary; FE is referenced only to document that within-facility variation is negligible.
 
-**Primary estimators:** Pooled OLS (Model 1), Pooled OLS with year fixed effects (Model 2), Random Effects (Model 3), Random Effects with year fixed effects (Model 4). All use cluster-robust standard errors clustered at the facility level, following Wooldridge (2010).
+**Primary estimators:** Pooled OLS (Model 1), Pooled OLS with year fixed effects (Model 2), Random Effects (Model 3), Random Effects with year fixed effects (Model 4). All use facility-clustered standard errors, and the regression sample is built once in `code/scripts/panel_utils.py` so every main and robustness model consumes the same canonical frame.
 
 **Panel window:** FY2005–FY2024 (20 years, post-dioxin regulatory stabilisation of Japan's fleet).
 
@@ -76,9 +76,9 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 **Key independent variables:**
 
-- Facility age (years since year_started)
+- Facility age (years since year_started, floored at zero for one-year commissioning mismatches)
 - Design capacity (per 100 t/day)
-- Capacity utilization (throughput ÷ capacity × 365, capped at 1.0)
+- Capacity utilization (throughput ÷ capacity × 365, capped at 1.0 at analysis time)
 - Heating value of waste input (MJ/kg)
 - Regional grid emission factor (kg-CO₂/kWh)
 
@@ -86,7 +86,7 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 - R1–R4: Models 1 and 2 estimated separately on pre-Fukushima (FY2005–FY2011) and post-Fukushima (FY2012–FY2024) subsamples
 - R5–R6: Models estimated on small and large capacity tercile endpoints (middle tercile omitted by construction)
-- R7–R8: Raw (untransformed) efficiency as dependent variable, with and without heating value
+- R7–R8: Raw (untransformed) winsorized efficiency as dependent variable, in pooled OLS and year-FE variants
 
 **What this is NOT:**
 
@@ -115,13 +115,13 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Finding | Magnitude | Significance |
 |---------|-----------|--------------|
-| Facility age effect | −0.028 to −0.043 log-units/year | p < 0.001 in all 12 specifications |
-| Design capacity effect | +0.08 to +0.10 log-units per 100 t/day | p < 0.001 in all specifications |
-| Capacity utilization effect | +0.58 to +0.62 log-units | p < 0.001 in all specifications |
-| Heating value effect | −0.01 to +0.01 | Not significant in any specification |
+| Facility age effect | −0.019 to −0.035 in the four main specifications; −0.025 to −0.043 across robustness | p < 0.001 in every reported specification |
+| Design capacity effect | +0.041 to +0.103 in the four main specifications | Positive in every main specification |
+| Capacity utilization effect | +0.541 to +0.779 in the four main specifications | Positive in every main specification |
+| Heating value effect | Approximately zero in the canonical main models | Not significant in any of the four main specifications |
 | Grid emission factor effect | Sign-unstable across specifications | Uninterpretable as causal effect |
-| Within/total variance ratio | 0.13 pooled / 0.10 pre-Fuku / 0.07 post-Fuku | Consistent across subsamples |
-| Mean efficiency by age cohort | 0.397 MWh/t (0–10 yrs) → 0.179 MWh/t (31+ yrs) | Monotonic decline |
+| Within/total variance ratio | 0.1499 pooled / 0.1795 pre-Fuku / 0.0956 post-Fuku | Between-facility variation still dominates |
+| Mean efficiency by age cohort | 0.400 MWh/t (0–10 yrs) → 0.183 MWh/t (30+ yrs) | Monotonic decline in the canonical regression frame |
 | Fleet consolidation (FY2005–FY2024) | 1,318 → 1,014 facilities (−23%) | ~15 closures/year |
 | Power-generating share | 21.6% → 41.1% | Nearly doubled |
 | FY2024 gross avoided CO₂ | ~4.6 Mt-CO₂ (upper bound) | Excludes process emissions from combustion |
@@ -132,11 +132,11 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Category | Count |
 |----------|:-----:|
-| Python scripts | 7 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05 regression, 06 robustness) |
+| Python scripts | 9 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05 regression, 06 robustness, 07 rebuild, shared panel utils) |
 | Raw data files | 20 (one per fiscal year) |
 | Processed panel | 23,599 rows × 28 columns |
 | Enriched panel (with grid factors) | 23,599 rows × 28 columns (100% grid-factor match) |
-| Regression sample (winsorised power-gen) | 6,575 rows × 947 facilities |
+| Regression sample (canonical frame) | 5,683 rows × 1,016 facilities |
 | Figures | 2 (establishing shot + heterogeneity shot) |
 | Tables in thesis.tex | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, regression results, robustness) |
 | Equations in thesis.tex | 4 (log efficiency, baseline regression, avoided CO₂ formula, avoided CO₂ computation) |
@@ -175,9 +175,10 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 01_download_facility_data.py     -> 20 Excel files (FY2005-FY2024)
 02_parse_facility_panel.py       -> incineration_panel.csv (23,599 rows)
 03_grid_emission_factors.py      -> incineration_panel_enriched.csv + grid_emission_factors.csv
-04_eda_facility.py               -> figures + EDA report
-05_panel_regression.py           -> 4 main regression specifications
+04_eda_facility.py               -> figures + EDA report + pre_regression_decision.md
+05_panel_regression.py           -> sample_definition.md + 4 main regression specifications
 06_robustness.py                 -> 8 robustness specifications
+07_rebuild_analysis.py           -> one-command local rebuild from checked-in raw data
 ```
 
 ---

@@ -1,321 +1,355 @@
 """
 05_panel_regression.py
 ======================
-Panel regression: what predicts energy recovery efficiency among
-Japan's power-generating incinerators?
+Canonical regression pipeline for the thesis analysis.
 
-METHODOLOGY PIVOT (from EDA findings):
-- Within-facility efficiency SD ratio = 0.001
-- Facility FE absorbs all signal (efficiency is design-determined)
-- PRIMARY: Pooled OLS with cluster-robust SEs (clustered by facility)
-- COMPARISON: Random Effects (RE) + Hausman test
-- ROBUSTNESS: Year FE only (to absorb time trends)
-
-DV: log(energy_efficiency_mwh_per_t) — winsorized to [0.01, 0.80]
-IVs: facility_age, capacity_t_day, capacity_utilization,
-     heating_value_kj_kg, grid_ef_kgco2_kwh
-
-Sample: power-generating facilities only (has_power_gen == True)
+This script consumes the shared estimation frame from panel_utils so the
+reported sample, transformations, and covariance assumptions are explicit.
 """
 
+from __future__ import annotations
+
 import os
+import warnings
+
 import pandas as pd
-import numpy as np
 import statsmodels.api as sm
-from scipy import stats
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROCESSED_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'processed')
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
+from panel_utils import (
+    OUTPUT_DIR,
+    build_regression_frame,
+    load_panel,
+    model_pvalues,
+    model_std_errors,
+    sample_summary,
+    significance_stars,
+    write_sample_definition_report,
+    write_stage_manifest,
+)
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+warnings.filterwarnings("ignore", category=RuntimeWarning, module=r"linearmodels\..*")
 
-# Physical bounds for efficiency winsorization
-EFF_FLOOR = 0.01  # MWh/t
-EFF_CEIL = 0.80   # MWh/t
+MODEL_VARS = [
+    "facility_age_years",
+    "capacity_100t",
+    "capacity_utilization_capped",
+    "heating_value_mj_kg",
+    "grid_ef_kgco2_kwh",
+]
 
 
-def load_and_clean():
-    """Load enriched panel, apply cleaning rules from EDA."""
-    path = os.path.join(PROCESSED_DIR, 'incineration_panel_enriched.csv')
-    df = pd.read_csv(path)
+def load_regression_frame():
+    """Load the enriched panel and build the shared regression frame."""
+    panel = load_panel()
+    regression = build_regression_frame(panel)
+    summary = sample_summary(panel)
 
-    # Drop zero/missing throughput
-    df = df[df['throughput_t_year'].notna() & (df['throughput_t_year'] > 0)].copy()
-
-    # Power-gen subsample only
-    power = df[df['has_power_gen'] == True].copy()
-
-    # Require non-missing efficiency
-    power = power[power['energy_efficiency_mwh_per_t'].notna()].copy()
-
-    # Winsorize efficiency to physical bounds
-    n_before = len(power)
-    power = power[
-        (power['energy_efficiency_mwh_per_t'] >= EFF_FLOOR) &
-        (power['energy_efficiency_mwh_per_t'] <= EFF_CEIL)
-    ].copy()
-    n_dropped = n_before - len(power)
-
-    # Log-transform DV
-    power['log_efficiency'] = np.log(power['energy_efficiency_mwh_per_t'])
-
-    # Create age bins for descriptive analysis
-    power['age_group'] = pd.cut(
-        power['facility_age'],
-        bins=[0, 10, 20, 30, 100],
-        labels=['0-10 yrs', '10-20 yrs', '20-30 yrs', '30+ yrs'],
-        right=False
+    print(f"Regression frame: {len(regression):,} obs")
+    print(f"  Facilities: {regression['analysis_facility_id'].nunique():,}")
+    print(f"  Years: FY{regression['fiscal_year'].min()}-FY{regression['fiscal_year'].max()}")
+    print(
+        "  Within/total ratio (log-efficiency): "
+        f"{summary['regression_within_total_ratio']:.4f}"
     )
 
-    # Standardize capacity for interpretability
-    power['capacity_100t'] = power['capacity_t_day'] / 100
-    power['heating_value_1000kj'] = power['heating_value_kj_kg'] / 1000
-
-    print(f"Clean power-gen sample: {len(power):,} obs")
-    print(f"  Dropped {n_dropped} outliers outside [{EFF_FLOOR}, {EFF_CEIL}] MWh/t")
-    print(f"  Facilities: {power['facility_code'].nunique()}")
-    print(f"  Years: {power['fiscal_year'].min()}-{power['fiscal_year'].max()}")
-
-    return power
+    return panel, regression, summary
 
 
-def descriptive_stats(power):
-    """Table 1: Summary statistics."""
+def descriptive_stats(regression):
+    """Table 1: Summary statistics on the canonical regression frame."""
     print("\n" + "=" * 60)
-    print("TABLE 1: Summary Statistics (Power-Gen Subsample)")
+    print("TABLE 1: Summary Statistics (Regression Frame)")
     print("=" * 60)
 
     desc_vars = {
-        'energy_efficiency_mwh_per_t': 'Efficiency (MWh/t)',
-        'log_efficiency': 'log(Efficiency)',
-        'facility_age': 'Facility Age (years)',
-        'capacity_t_day': 'Capacity (t/day)',
-        'capacity_utilization': 'Capacity Utilization',
-        'heating_value_kj_kg': 'Heating Value (kJ/kg)',
-        'power_capacity_kw': 'Power Capacity (kW)',
-        'grid_ef_kgco2_kwh': 'Grid EF (kg-CO2/kWh)',
-        'avoided_co2_t': 'Avoided CO2 (t/year)',
+        "energy_efficiency_mwh_per_t": "Efficiency (MWh/t, winsorized)",
+        "log_efficiency": "log(Efficiency)",
+        "facility_age_years": "Facility Age (years)",
+        "capacity_t_day": "Capacity (t/day)",
+        "capacity_utilization_capped": "Capacity Utilization",
+        "heating_value_mj_kg": "Heating Value (MJ/kg)",
+        "grid_ef_kgco2_kwh": "Grid EF (kg-CO2/kWh)",
     }
 
     rows = []
     for var, label in desc_vars.items():
-        if var in power.columns:
-            s = power[var].dropna()
-            rows.append({
-                'Variable': label,
-                'N': len(s),
-                'Mean': f'{s.mean():.3f}',
-                'Median': f'{s.median():.3f}',
-                'SD': f'{s.std():.3f}',
-                'Min': f'{s.min():.3f}',
-                'Max': f'{s.max():.3f}',
-            })
+        s = regression[var].dropna()
+        rows.append(
+            {
+                "Variable": label,
+                "N": len(s),
+                "Mean": f"{s.mean():.3f}",
+                "Median": f"{s.median():.3f}",
+                "SD": f"{s.std():.3f}",
+                "Min": f"{s.min():.3f}",
+                "Max": f"{s.max():.3f}",
+            }
+        )
 
     desc_df = pd.DataFrame(rows)
     print(desc_df.to_string(index=False))
 
-    # Save
-    path = os.path.join(OUTPUT_DIR, 'table1_summary_stats.md')
-    with open(path, 'w') as f:
-        f.write("# Table 1: Summary Statistics (Power-Generating Facilities)\n\n")
+    path = os.path.join(OUTPUT_DIR, "table1_summary_stats.md")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("# Table 1: Summary Statistics (Canonical Regression Frame)\n\n")
         f.write(desc_df.to_markdown(index=False))
+        f.write(
+            "\n\n"
+            "*Note: heating value is a noisy administrative estimate derived from the "
+            "source files and retained as a control variable rather than interpreted "
+            "as a clean engineering measurement.*\n"
+        )
     print(f"\n  Saved: {path}")
 
-    return desc_df
+    return path
 
 
-def efficiency_by_age_group(power):
-    """Table 2: Efficiency by age group."""
+def efficiency_by_age_group(regression):
+    """Table 2: Efficiency by age group on the regression frame."""
     print("\n" + "=" * 60)
     print("TABLE 2: Efficiency by Facility Age Group")
     print("=" * 60)
 
-    grouped = power.groupby('age_group', observed=True).agg(
-        n_obs=('energy_efficiency_mwh_per_t', 'count'),
-        mean_eff=('energy_efficiency_mwh_per_t', 'mean'),
-        median_eff=('energy_efficiency_mwh_per_t', 'median'),
-        mean_capacity=('capacity_t_day', 'mean'),
-        mean_avoided=('avoided_co2_t', 'mean'),
-        pct_of_total_avoided=('avoided_co2_t', lambda x: x.sum()),
+    grouped = regression.copy()
+    grouped["age_group"] = pd.cut(
+        grouped["facility_age_years"],
+        bins=[0, 10, 20, 30, 100],
+        labels=["0-10 yrs", "10-20 yrs", "20-30 yrs", "30+ yrs"],
+        right=False,
+    )
+
+    table = grouped.groupby("age_group", observed=True).agg(
+        n_obs=("energy_efficiency_mwh_per_t", "count"),
+        mean_eff=("energy_efficiency_mwh_per_t", "mean"),
+        median_eff=("energy_efficiency_mwh_per_t", "median"),
+        mean_capacity=("capacity_t_day", "mean"),
+        mean_avoided=("avoided_co2_t", "mean"),
+        total_avoided=("avoided_co2_t", "sum"),
     ).reset_index()
+    total_avoided = grouped["avoided_co2_t"].sum()
+    table["pct_of_total_avoided"] = (
+        table["total_avoided"] / total_avoided * 100
+    ).round(1)
+    table = table.drop(columns=["total_avoided"])
 
-    total_avoided = power['avoided_co2_t'].sum()
-    grouped['pct_of_total_avoided'] = (grouped['pct_of_total_avoided'] / total_avoided * 100).round(1)
+    print(table.to_string(index=False))
 
-    print(grouped.to_string(index=False))
-
-    path = os.path.join(OUTPUT_DIR, 'table2_efficiency_by_age.md')
-    with open(path, 'w') as f:
+    path = os.path.join(OUTPUT_DIR, "table2_efficiency_by_age.md")
+    with open(path, "w", encoding="utf-8") as f:
         f.write("# Table 2: Energy Recovery Efficiency by Facility Age Group\n\n")
-        f.write(grouped.to_markdown(index=False))
+        f.write(table.to_markdown(index=False))
     print(f"\n  Saved: {path}")
 
+    return path
 
-def run_pooled_ols(power):
-    """Model 1: Pooled OLS with cluster-robust SEs."""
+
+def run_pooled_ols(regression):
+    """Model 1: Pooled OLS with facility-clustered standard errors."""
     print("\n" + "=" * 60)
-    print("MODEL 1: Pooled OLS (cluster-robust SEs)")
+    print("MODEL 1: Pooled OLS (clustered by facility)")
     print("=" * 60)
 
-    # Prepare regression data
-    reg_vars = ['log_efficiency', 'facility_age', 'capacity_100t',
-                'capacity_utilization', 'heating_value_1000kj', 'grid_ef_kgco2_kwh']
-    reg_data = power[reg_vars + ['facility_code']].dropna()
-    print(f"  Regression sample: {len(reg_data):,} obs")
+    y = regression["log_efficiency"]
+    X = sm.add_constant(regression[MODEL_VARS])
 
-    y = reg_data['log_efficiency']
-    X = reg_data[['facility_age', 'capacity_100t', 'capacity_utilization',
-                   'heating_value_1000kj', 'grid_ef_kgco2_kwh']]
-    X = sm.add_constant(X)
-
-    # Fit with cluster-robust SEs
     model = sm.OLS(y, X).fit(
-        cov_type='cluster',
-        cov_kwds={'groups': reg_data['facility_code']}
+        cov_type="cluster",
+        cov_kwds={"groups": regression["analysis_facility_id"]},
     )
     print(model.summary())
-
     return model
 
 
-def run_ols_with_year_fe(power):
-    """Model 2: OLS with year fixed effects."""
+def run_ols_with_year_fe(regression):
+    """Model 2: OLS with year fixed effects and clustered SEs."""
     print("\n" + "=" * 60)
     print("MODEL 2: OLS with Year Fixed Effects")
     print("=" * 60)
 
-    reg_vars = ['log_efficiency', 'facility_age', 'capacity_100t',
-                'capacity_utilization', 'heating_value_1000kj', 'grid_ef_kgco2_kwh',
-                'fiscal_year', 'facility_code']
-    reg_data = power[reg_vars].dropna()
-
-    y = reg_data['log_efficiency']
-
-    # Year dummies (drop first for identification)
-    year_dummies = pd.get_dummies(reg_data['fiscal_year'], prefix='fy', drop_first=True, dtype=float)
-    X = pd.concat([
-        reg_data[['facility_age', 'capacity_100t', 'capacity_utilization',
-                   'heating_value_1000kj', 'grid_ef_kgco2_kwh']],
-        year_dummies
-    ], axis=1)
-    X = sm.add_constant(X)
+    y = regression["log_efficiency"]
+    year_dummies = pd.get_dummies(
+        regression["fiscal_year"],
+        prefix="fy",
+        drop_first=True,
+        dtype=float,
+    )
+    X = sm.add_constant(pd.concat([regression[MODEL_VARS], year_dummies], axis=1))
 
     model = sm.OLS(y, X).fit(
-        cov_type='cluster',
-        cov_kwds={'groups': reg_data['facility_code']}
+        cov_type="cluster",
+        cov_kwds={"groups": regression["analysis_facility_id"]},
     )
-
-    # Print only the main coefficients (not 19 year dummies)
-    main_vars = ['const', 'facility_age', 'capacity_100t', 'capacity_utilization',
-                 'heating_value_1000kj', 'grid_ef_kgco2_kwh']
-    print(f"\n  R-squared: {model.rsquared:.4f}")
+    print(f"  R-squared: {model.rsquared:.4f}")
     print(f"  Adj R-squared: {model.rsquared_adj:.4f}")
-    print(f"  N: {model.nobs:.0f}")
-    print(f"\n  Main coefficients (year FE suppressed):")
-    print(f"  {'Variable':<25} {'Coef':>10} {'SE':>10} {'t':>8} {'p':>8}")
-    print("  " + "-" * 65)
-    for var in main_vars:
-        if var in model.params.index:
-            coef = model.params[var]
-            se = model.bse[var]
-            t = model.tvalues[var]
-            p = model.pvalues[var]
-            sig = '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-            print(f"  {var:<25} {coef:>10.4f} {se:>10.4f} {t:>8.2f} {p:>8.4f} {sig}")
-
+    print(f"  N: {int(model.nobs):,}")
     return model
 
 
-def run_random_effects(power):
-    """Model 3: Random Effects (if linearmodels available)."""
+def _fit_random_effects(regression, include_year_fe):
+    """Shared RE estimator helper."""
+    from linearmodels.panel import RandomEffects
+
+    pdata = regression.set_index(["analysis_facility_id", "fiscal_year"])
+    X = pdata[MODEL_VARS].copy()
+    if include_year_fe:
+        year_dummies = pd.get_dummies(
+            pdata.index.get_level_values("fiscal_year"),
+            prefix="fy",
+            drop_first=True,
+            dtype=float,
+        )
+        year_dummies.index = pdata.index
+        X = pd.concat([X, year_dummies], axis=1)
+    X = sm.add_constant(X)
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            category=RuntimeWarning,
+            module=r"linearmodels\..*",
+        )
+        return RandomEffects(pdata["log_efficiency"], X).fit(
+            cov_type="clustered",
+            cluster_entity=True,
+        )
+
+
+def run_random_effects(regression):
+    """Model 3: Random effects with clustered SEs."""
     print("\n" + "=" * 60)
     print("MODEL 3: Random Effects")
     print("=" * 60)
-
-    try:
-        from linearmodels.panel import RandomEffects
-    except ImportError:
-        print("  linearmodels not installed. Skipping RE.")
-        return None
-
-    reg_vars = ['log_efficiency', 'facility_age', 'capacity_100t',
-                'capacity_utilization', 'heating_value_1000kj', 'grid_ef_kgco2_kwh',
-                'fiscal_year', 'facility_code']
-    reg_data = power[reg_vars].dropna()
-
-    # Set panel index
-    reg_data = reg_data.set_index(['facility_code', 'fiscal_year'])
-
-    y = reg_data['log_efficiency']
-    X = reg_data[['facility_age', 'capacity_100t', 'capacity_utilization',
-                   'heating_value_1000kj', 'grid_ef_kgco2_kwh']]
-    X = sm.add_constant(X)
-
-    model = RandomEffects(y, X).fit()
-    print(model.summary)
-
+    model = _fit_random_effects(regression, include_year_fe=False)
+    print(f"  R-squared: {float(model.rsquared):.4f}")
+    print(f"  N: {int(model.nobs):,}")
+    for var in MODEL_VARS:
+        coef = float(model.params[var])
+        se = float(model_std_errors(model)[var])
+        p = float(model_pvalues(model)[var])
+        print(f"  {var:<28} {coef:>8.4f}  SE={se:>7.4f}  p={p:>7.4f}")
     return model
 
 
-def comparison_table(m1, m2, m3=None):
-    """Save model comparison table."""
+def run_random_effects_with_year_fe(regression):
+    """Model 4: Random effects plus year dummies, clustered by facility."""
+    print("\n" + "=" * 60)
+    print("MODEL 4: Random Effects + Year Fixed Effects")
+    print("=" * 60)
+    model = _fit_random_effects(regression, include_year_fe=True)
+    print(f"  R-squared: {float(model.rsquared):.4f}")
+    print(f"  N: {int(model.nobs):,}")
+    for var in MODEL_VARS:
+        coef = float(model.params[var])
+        se = float(model_std_errors(model)[var])
+        p = float(model_pvalues(model)[var])
+        print(f"  {var:<28} {coef:>8.4f}  SE={se:>7.4f}  p={p:>7.4f}")
+    return model
+
+
+def comparison_table(models, regression, sample_report_path):
+    """Write a markdown comparison table for the four main models."""
     print("\n" + "=" * 60)
     print("MODEL COMPARISON")
     print("=" * 60)
 
-    path = os.path.join(OUTPUT_DIR, 'regression_results.md')
-    with open(path, 'w') as f:
+    labels = [
+        "Model 1 (Pooled OLS)",
+        "Model 2 (Year FE)",
+        "Model 3 (RE)",
+        "Model 4 (Year FE + RE)",
+    ]
+    path = os.path.join(OUTPUT_DIR, "regression_results.md")
+
+    with open(path, "w", encoding="utf-8") as f:
         f.write("# Regression Results: Determinants of Energy Recovery Efficiency\n\n")
-        f.write("DV: log(MWh per tonne processed)\n\n")
-        f.write("| Variable | Model 1 (Pooled OLS) | Model 2 (Year FE) |")
-        if m3:
-            f.write(" Model 3 (RE) |")
-        f.write("\n")
-        f.write("|:---------|:--------------------:|:-----------------:|")
-        if m3:
-            f.write(":------------:|")
-        f.write("\n")
+        f.write("DV: winsorized log(MWh per tonne processed)\n\n")
+        f.write(
+            f"Canonical regression frame: {len(regression):,} observations across "
+            f"{regression['analysis_facility_id'].nunique():,} facilities.\n\n"
+        )
+        f.write(f"Sample definition: `{os.path.basename(sample_report_path)}`\n\n")
+        f.write("| Variable | " + " | ".join(labels) + " |\n")
+        f.write("|:---------|" + "|".join([":--------------------:"] * 4) + "|\n")
 
-        main_vars = ['facility_age', 'capacity_100t', 'capacity_utilization',
-                     'heating_value_1000kj', 'grid_ef_kgco2_kwh']
+        for var in MODEL_VARS:
+            row = [var]
+            for model in models:
+                coef = float(model.params[var])
+                p = float(model_pvalues(model)[var])
+                row.append(f"{coef:.4f}{significance_stars(p)}")
+            f.write("| " + " | ".join(row) + " |\n")
 
-        for var in main_vars:
-            f.write(f"| {var} |")
-            for m in ([m1, m2] + ([m3] if m3 else [])):
-                if m is not None and var in m.params.index:
-                    coef = m.params[var]
-                    p = m.pvalues[var]
-                    sig = '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-                    f.write(f" {coef:.4f}{sig} |")
-                else:
-                    f.write(" — |")
-            f.write("\n")
+            se_row = ["SE"]
+            for model in models:
+                se = float(model_std_errors(model)[var])
+                se_row.append(f"({se:.4f})")
+            f.write("| " + " | ".join(se_row) + " |\n")
 
-        f.write(f"| R-squared | {m1.rsquared:.4f} | {m2.rsquared:.4f} |")
-        if m3:
-            f.write(f" {m3.rsquared:.4f} |")
-        f.write("\n")
-        f.write(f"| N | {m1.nobs:.0f} | {m2.nobs:.0f} |")
-        if m3:
-            f.write(f" {m3.nobs} |")
-        f.write("\n")
+        f.write(
+            "| Observations | "
+            + " | ".join([f"{int(model.nobs):,}" for model in models])
+            + " |\n"
+        )
+        f.write(
+            "| Facilities | "
+            + " | ".join([f"{regression['analysis_facility_id'].nunique():,}"] * 4)
+            + " |\n"
+        )
+        f.write(
+            "| R-squared | "
+            + " | ".join([f"{float(model.rsquared):.4f}" for model in models])
+            + " |\n"
+        )
 
     print(f"  Saved: {path}")
+    return path
 
 
 def main():
-    power = load_and_clean()
-    descriptive_stats(power)
-    efficiency_by_age_group(power)
-    m1 = run_pooled_ols(power)
-    m2 = run_ols_with_year_fe(power)
-    m3 = run_random_effects(power)
-    comparison_table(m1, m2, m3)
+    panel, regression, summary = load_regression_frame()
+
+    sample_report_path = os.path.join(OUTPUT_DIR, "sample_definition.md")
+    write_sample_definition_report(sample_report_path, summary)
+    print(f"Sample report: {sample_report_path}")
+
+    summary_stats_path = descriptive_stats(regression)
+    age_table_path = efficiency_by_age_group(regression)
+    m1 = run_pooled_ols(regression)
+    m2 = run_ols_with_year_fe(regression)
+    m3 = run_random_effects(regression)
+    m4 = run_random_effects_with_year_fe(regression)
+    results_path = comparison_table([m1, m2, m3, m4], regression, sample_report_path)
+
+    manifest_path = write_stage_manifest(
+        "05_panel_regression",
+        inputs=["data/processed/incineration_panel_enriched.csv"],
+        outputs=[
+            "output/sample_definition.md",
+            "output/table1_summary_stats.md",
+            "output/table2_efficiency_by_age.md",
+            "output/regression_results.md",
+        ],
+        metadata={
+            "regression_obs": summary["regression_obs"],
+            "regression_facilities": summary["regression_facilities"],
+            "within_total_ratio": summary["regression_within_total_ratio"],
+            "pre_fukushima_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
+            "post_fukushima_within_total_ratio": summary["post_fukushima_within_total_ratio"],
+            "outputs": {
+                "sample_report": os.path.basename(sample_report_path),
+                "summary_stats": os.path.basename(summary_stats_path),
+                "age_table": os.path.basename(age_table_path),
+                "regression_results": os.path.basename(results_path),
+            },
+        },
+    )
+    print(f"Manifest: {manifest_path}")
 
     print("\n" + "=" * 60)
     print("REGRESSION COMPLETE")
     print("=" * 60)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,0 +1,147 @@
+{
+  "stage": "06_robustness",
+  "timestamp_utc": "2026-04-14T06:04:12.918186+00:00",
+  "git_sha": "a6398ffa0178a5d58f37e50a7556d230adb4c200",
+  "python": "3.9.6",
+  "platform": "macOS-15.6-arm64-arm-64bit",
+  "analysis_config": {
+    "efficiency_floor_mwh_per_t": 0.01,
+    "efficiency_ceiling_mwh_per_t": 0.8,
+    "capacity_utilization_cap": 1.0,
+    "pre_fukushima_end": 2011,
+    "post_fukushima_start": 2012,
+    "regression_requires_positive_output": true,
+    "regression_requires_official_facility_code": true,
+    "regression_winsorization_method": "clip"
+  },
+  "inputs": [
+    "data/processed/incineration_panel_enriched.csv"
+  ],
+  "outputs": [
+    "output/robustness_results.md"
+  ],
+  "metadata": {
+    "specifications": [
+      {
+        "label": "R1: Pre-Fukushima pooled OLS (FY2005-FY2011)",
+        "n": 1400,
+        "facilities": 335,
+        "r2": 0.35919321460822573,
+        "dv": "log_efficiency",
+        "year_fe": false,
+        "facility_age_years_coef": -0.04175911289917529,
+        "facility_age_years_p": 1.2421088700193528e-36,
+        "capacity_100t_coef": 0.08465355464385152,
+        "capacity_100t_p": 3.799094289290607e-17,
+        "capacity_utilization_capped_coef": 0.6309767879515639,
+        "capacity_utilization_capped_p": 0.0003477962534407751
+      },
+      {
+        "label": "R2: Pre-Fukushima year FE (FY2005-FY2011)",
+        "n": 1400,
+        "facilities": 335,
+        "r2": 0.3813462906572458,
+        "dv": "log_efficiency",
+        "year_fe": true,
+        "facility_age_years_coef": -0.04269453994695333,
+        "facility_age_years_p": 8.54904945260426e-39,
+        "capacity_100t_coef": 0.08567538679271688,
+        "capacity_100t_p": 5.468629603163526e-17,
+        "capacity_utilization_capped_coef": 0.7416530025683155,
+        "capacity_utilization_capped_p": 3.984187353125414e-05
+      },
+      {
+        "label": "R3: Post-Fukushima pooled OLS (FY2012-FY2024)",
+        "n": 4283,
+        "facilities": 878,
+        "r2": 0.33017998102857593,
+        "dv": "log_efficiency",
+        "year_fe": false,
+        "facility_age_years_coef": -0.0317051696530427,
+        "facility_age_years_p": 2.0117245333573732e-39,
+        "capacity_100t_coef": 0.10328472184446971,
+        "capacity_100t_p": 3.975782564472118e-22,
+        "capacity_utilization_capped_coef": 0.8308022639212761,
+        "capacity_utilization_capped_p": 6.88020418300078e-08
+      },
+      {
+        "label": "R4: Post-Fukushima year FE (FY2012-FY2024)",
+        "n": 4283,
+        "facilities": 878,
+        "r2": 0.35387759419202447,
+        "dv": "log_efficiency",
+        "year_fe": true,
+        "facility_age_years_coef": -0.03308574723159149,
+        "facility_age_years_p": 4.7259386565746815e-40,
+        "capacity_100t_coef": 0.11039454487123725,
+        "capacity_100t_p": 9.20786254148881e-24,
+        "capacity_utilization_capped_coef": 0.8158738010834695,
+        "capacity_utilization_capped_p": 1.9360402058071286e-07
+      },
+      {
+        "label": "R5: Small capacity tercile",
+        "n": 1938,
+        "facilities": 414,
+        "r2": 0.2081509930685449,
+        "dv": "log_efficiency",
+        "year_fe": false,
+        "facility_age_years_coef": -0.0328672313324613,
+        "facility_age_years_p": 3.502915838883888e-10,
+        "capacity_100t_coef": 0.4520501029355922,
+        "capacity_100t_p": 2.4717499293528066e-05,
+        "capacity_utilization_capped_coef": 1.2492746836711979,
+        "capacity_utilization_capped_p": 5.077388893829194e-06
+      },
+      {
+        "label": "R6: Large capacity tercile",
+        "n": 1885,
+        "facilities": 320,
+        "r2": 0.3413815257879331,
+        "dv": "log_efficiency",
+        "year_fe": false,
+        "facility_age_years_coef": -0.025144651553204656,
+        "facility_age_years_p": 1.4885829923473402e-18,
+        "capacity_100t_coef": 0.046429904974430024,
+        "capacity_100t_p": 4.97965060866398e-07,
+        "capacity_utilization_capped_coef": 0.5969148502312795,
+        "capacity_utilization_capped_p": 0.001470984686309056
+      },
+      {
+        "label": "R7: Raw DV pooled OLS",
+        "n": 5683,
+        "facilities": 1016,
+        "r2": 0.3086792523356562,
+        "dv": "energy_efficiency_mwh_per_t",
+        "year_fe": false,
+        "facility_age_years_coef": -0.007060288501633886,
+        "facility_age_years_p": 4.571277217959778e-56,
+        "capacity_100t_coef": 0.02095176285504476,
+        "capacity_100t_p": 3.9388847696425776e-27,
+        "capacity_utilization_capped_coef": 0.17156862605523632,
+        "capacity_utilization_capped_p": 3.506104095844717e-10
+      },
+      {
+        "label": "R8: Raw DV year FE",
+        "n": 5683,
+        "facilities": 1016,
+        "r2": 0.5192181418453814,
+        "dv": "energy_efficiency_mwh_per_t",
+        "year_fe": true,
+        "facility_age_years_coef": -0.009054587565377765,
+        "facility_age_years_p": 8.969422140328607e-85,
+        "capacity_100t_coef": 0.025557319918249433,
+        "capacity_100t_p": 5.287600641706208e-36,
+        "capacity_utilization_capped_coef": 0.177840226991641,
+        "capacity_utilization_capped_p": 1.0109924978787683e-13
+      }
+    ],
+    "pre_fukushima_window": [
+      2005,
+      2011
+    ],
+    "post_fukushima_window": [
+      2012,
+      2024
+    ]
+  }
+}

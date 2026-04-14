@@ -28,6 +28,15 @@ import matplotlib.ticker as mticker
 import seaborn as sns
 from scipy import stats
 
+from panel_utils import (
+    build_operating_power_frame,
+    build_regression_frame,
+    load_panel as load_processed_panel,
+    sample_summary,
+    within_total_variance_ratio,
+    write_stage_manifest,
+)
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROCESSED_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'processed')
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
@@ -40,8 +49,7 @@ plt.rcParams['font.size'] = 10
 
 def load_panel():
     """Load enriched panel."""
-    path = os.path.join(PROCESSED_DIR, 'incineration_panel_enriched.csv')
-    df = pd.read_csv(path)
+    df = load_processed_panel()
     print(f"Loaded: {len(df):,} rows, {df['fiscal_year'].nunique()} years, "
           f"{df['facility_code'].nunique():,} facilities")
     return df
@@ -118,8 +126,8 @@ def phase1_bounds(df):
     print("=" * 60)
 
     # Focus on power-gen subsample
-    power = df[df['has_power_gen'] == True].copy()
-    eff = power['energy_efficiency_mwh_per_t'].dropna()
+    power = build_operating_power_frame(df)
+    eff = power['energy_efficiency_raw_mwh_per_t'].dropna()
 
     print(f"\nEnergy efficiency (MWh/t) among power-gen facilities:")
     print(f"  N: {len(eff):,}")
@@ -142,7 +150,7 @@ def phase1_bounds(df):
     high_outliers = (eff > EFF_CEIL).sum()
     print(f"\n  Outliers (efficiency < {EFF_FLOOR} MWh/t): {low_outliers}")
     print(f"  Outliers (efficiency > {EFF_CEIL} MWh/t): {high_outliers}")
-    print(f"  → Will winsorize to [{EFF_FLOOR}, {EFF_CEIL}] before regression")
+    print(f"  → Canonical analysis frame winsorizes to [{EFF_FLOOR}, {EFF_CEIL}]")
 
     # Log-transform assessment
     log_eff = np.log(eff[eff > 0])
@@ -160,10 +168,10 @@ def phase1_panel_balance(df):
     print("PHASE 1.3: Panel Balance & Within-Facility Variation")
     print("=" * 60)
 
-    power = df[df['has_power_gen'] == True].copy()
+    power = build_regression_frame(df).copy()
 
     # Panel balance
-    obs_per_facility = power.groupby('facility_code').size()
+    obs_per_facility = power.groupby('analysis_facility_id').size()
     print(f"\nPower-gen subsample panel balance:")
     print(f"  Unique facilities: {len(obs_per_facility):,}")
     print(f"  Mean years per facility: {obs_per_facility.mean():.1f}")
@@ -177,8 +185,8 @@ def phase1_panel_balance(df):
     # Define: "survivor" = facility present in FY2024
     # "exiter" = facility NOT present in FY2024 but was present at some point
     latest_year = power['fiscal_year'].max()
-    survivors = set(power[power['fiscal_year'] == latest_year]['facility_code'].unique())
-    all_facs = set(power['facility_code'].unique())
+    survivors = set(power[power['fiscal_year'] == latest_year]['analysis_facility_id'].unique())
+    all_facs = set(power['analysis_facility_id'].unique())
     exiters = all_facs - survivors
 
     print(f"\n  Attrition test:")
@@ -187,7 +195,7 @@ def phase1_panel_balance(df):
 
     if len(exiters) > 5:
         # Compare baseline characteristics (first observation per facility)
-        first_obs = power.sort_values('fiscal_year').groupby('facility_code').first()
+        first_obs = power.sort_values('fiscal_year').groupby('analysis_facility_id').first()
         first_obs['is_survivor'] = first_obs.index.isin(survivors)
 
         compare_vars = ['capacity_t_day', 'facility_age', 'energy_efficiency_mwh_per_t',
@@ -207,9 +215,9 @@ def phase1_panel_balance(df):
 
     # Within-facility variation
     print(f"\n  Within-facility standard deviation of key variables:")
-    within_sd = power.groupby('facility_code').agg({
-        'energy_efficiency_mwh_per_t': 'std',
-        'capacity_utilization': 'std',
+    within_sd = power.groupby('analysis_facility_id').agg({
+        'log_efficiency': 'std',
+        'capacity_utilization_capped': 'std',
         'throughput_t_year': 'std',
     }).dropna()
 
@@ -220,7 +228,9 @@ def phase1_panel_balance(df):
         print(f"    {col:<35} within-SD median: {med_sd:.4f}  "
               f"overall-SD: {overall_sd:.4f}  ratio: {ratio:.2f}")
 
-    print(f"\n  → If within/overall ratio < 0.10, FE will struggle to identify effects.")
+    variance_ratio = within_total_variance_ratio(power, 'log_efficiency')
+    print(f"\n  Within/total variance ratio of log-efficiency: {variance_ratio:.4f}")
+    print("  → Low within-facility variation weakens FE identification.")
 
 
 # ================================================================
@@ -233,13 +243,17 @@ def figure1_establishing_shot(df):
     print("PHASE 2.1: Figure 1 — Establishing Shot")
     print("=" * 60)
 
-    power = df[df['has_power_gen'] == True].copy()
+    power_flagged = df[df['has_power_gen'] == True].copy()
+    power_operating = build_operating_power_frame(df)
 
-    yearly = power.groupby('fiscal_year').agg(
-        n_facilities=('facility_code', 'nunique'),
+    count_yearly = power_flagged.groupby('fiscal_year').agg(
+        n_facilities=('facility_name', 'count'),
+    ).reset_index()
+    eff_yearly = power_operating.groupby('fiscal_year').agg(
         mean_efficiency=('energy_efficiency_mwh_per_t', 'mean'),
         median_efficiency=('energy_efficiency_mwh_per_t', 'median'),
     ).reset_index()
+    yearly = count_yearly.merge(eff_yearly, on='fiscal_year', how='left')
 
     fig, ax1 = plt.subplots(figsize=(12, 6))
 
@@ -290,17 +304,24 @@ def figure2_heterogeneity_shot(df):
 
     # Use latest year for cross-sectional snapshot
     latest = df['fiscal_year'].max()
-    power = df[(df['has_power_gen'] == True) & (df['fiscal_year'] == latest)].copy()
+    operating = build_operating_power_frame(df)
+    operating = operating[operating['analysis_facility_id'].notna()].copy()
+    power = operating[operating['fiscal_year'] == latest].copy()
 
     # Also get facilities that existed in earlier years but are gone now
-    all_power = df[df['has_power_gen'] == True].copy()
-    latest_facilities = set(power['facility_code'].unique())
-    all_facilities = set(all_power['facility_code'].unique())
+    all_power = operating.copy()
+    latest_facilities = set(power['analysis_facility_id'].unique())
+    all_facilities = set(all_power['analysis_facility_id'].unique())
 
     # For closed facilities, use their last observation
     closed_codes = all_facilities - latest_facilities
-    closed = all_power[all_power['facility_code'].isin(closed_codes)].copy()
-    closed_last = closed.sort_values('fiscal_year').groupby('facility_code').last().reset_index()
+    closed = all_power[all_power['analysis_facility_id'].isin(closed_codes)].copy()
+    closed_last = (
+        closed.sort_values('fiscal_year')
+        .groupby('analysis_facility_id')
+        .last()
+        .reset_index()
+    )
 
     power['status'] = 'Active (FY' + str(latest) + ')'
     closed_last['status'] = 'Closed'
@@ -354,31 +375,26 @@ def phase3_decision(df):
     print("PHASE 3: Pre-Regression Decision")
     print("=" * 60)
 
-    power = df[df['has_power_gen'] == True].copy()
-    obs_per_fac = power.groupby('facility_code').size()
-
-    within_sd_eff = power.groupby('facility_code')['energy_efficiency_mwh_per_t'].std().dropna()
-    overall_sd_eff = power['energy_efficiency_mwh_per_t'].std()
-    ratio = within_sd_eff.median() / overall_sd_eff if overall_sd_eff > 0 else 0
+    power = build_regression_frame(df)
+    obs_per_fac = power.groupby('analysis_facility_id').size()
+    ratio = within_total_variance_ratio(power, 'log_efficiency')
 
     n_fac_10plus = (obs_per_fac >= 10).sum()
 
     decision = []
-    decision.append(f"Power-gen subsample: {len(power):,} obs, "
-                    f"{power['facility_code'].nunique()} facilities.")
+    decision.append(
+        f"Regression frame: {len(power):,} obs, "
+        f"{power['analysis_facility_id'].nunique()} facilities."
+    )
     decision.append(f"Facilities with 10+ years: {n_fac_10plus}.")
-    decision.append(f"Within/overall efficiency SD ratio: {ratio:.3f}.")
+    decision.append(f"Within/total variance ratio of log-efficiency: {ratio:.3f}.")
 
-    if ratio >= 0.10:
-        decision.append("DECISION: Sufficient within-facility variation. "
-                        "Proceed with two-way FE.")
-    elif ratio >= 0.05:
-        decision.append("DECISION: Marginal within-facility variation. "
-                        "Run FE but compare with pooled OLS and RE. "
-                        "Report Hausman test.")
-    else:
-        decision.append("DECISION: Insufficient within-facility variation. "
-                        "FE will be imprecise. Consider pooled OLS or RE as primary.")
+    decision.append(
+        "DECISION: Keep pooled OLS, year-FE OLS, and random effects as the primary "
+        "specifications. Facility age remains mechanically linked to year, so two-way "
+        "FE is not the clean identifying design for the thesis question even when the "
+        "within/total ratio is non-zero."
+    )
 
     for line in decision:
         print(f"  {line}")
@@ -398,6 +414,7 @@ def phase3_decision(df):
 
 def main():
     df = load_panel()
+    summary = sample_summary(df)
 
     # Phase 1
     df = phase1_hard_rule(df)
@@ -411,6 +428,23 @@ def main():
 
     # Phase 3
     phase3_decision(df)
+
+    manifest_path = write_stage_manifest(
+        "04_eda_facility",
+        inputs=["data/processed/incineration_panel_enriched.csv"],
+        outputs=[
+            "output/fig01_establishing_shot.png",
+            "output/fig02_heterogeneity_shot.png",
+            "output/pre_regression_decision.md",
+        ],
+        metadata={
+            "operating_power_obs": summary["operating_power_obs"],
+            "regression_obs": summary["regression_obs"],
+            "regression_facilities": summary["regression_facilities"],
+            "within_total_ratio": summary["regression_within_total_ratio"],
+        },
+    )
+    print(f"Manifest: {manifest_path}")
 
     print("\n" + "=" * 60)
     print("EDA COMPLETE. Review output/ for figures and decisions.")

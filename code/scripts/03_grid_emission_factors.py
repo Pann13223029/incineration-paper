@@ -28,6 +28,8 @@ import os
 import pandas as pd
 import numpy as np
 
+from panel_utils import write_stage_manifest
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROCESSED_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'data', 'processed')
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
@@ -214,7 +216,10 @@ def main():
     # 4. Merge into the main panel
     panel_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
     if os.path.exists(panel_path):
-        panel = pd.read_csv(panel_path)
+        panel = pd.read_csv(
+            panel_path,
+            dtype={"facility_code": "string", "muni_code": "string"},
+        )
         print(f"\nLoaded panel: {len(panel):,} rows")
 
         # Join: panel.prefecture → crosswalk → grid_df
@@ -269,6 +274,31 @@ def main():
         f.write("\n*Values in kg-CO2/kWh. Anchor years are reported; intermediate years interpolated.*\n")
 
     print(f"\nReport: {report_path}")
+
+    outputs = [
+        os.path.relpath(grid_path, os.path.join(SCRIPT_DIR, "..", "..")),
+        os.path.relpath(crosswalk_path, os.path.join(SCRIPT_DIR, "..", "..")),
+        os.path.relpath(report_path, os.path.join(SCRIPT_DIR, "..", "..")),
+    ]
+    metadata = {
+        "grid_rows": int(len(grid_df)),
+        "crosswalk_rows": int(len(crosswalk)),
+    }
+    if os.path.exists(panel_path):
+        outputs.append(os.path.relpath(enriched_path, os.path.join(SCRIPT_DIR, "..", "..")))
+        metadata["panel_rows"] = int(len(panel))
+        metadata["grid_match_rate_pct"] = round(float(matched), 2)
+        metadata["power_rows_with_avoided_co2"] = int(power_sub['avoided_co2_t'].notna().sum())
+
+    manifest_path = write_stage_manifest(
+        "03_grid_emission_factors",
+        inputs=[
+            os.path.relpath(panel_path, os.path.join(SCRIPT_DIR, "..", "..")),
+        ],
+        outputs=outputs,
+        metadata=metadata,
+    )
+    print(f"Manifest: {manifest_path}")
 
 
 if __name__ == '__main__':
