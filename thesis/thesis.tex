@@ -15,6 +15,7 @@
 \graphicspath{{figures/}}
 \usepackage{booktabs}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \usepackage[round]{natbib}
 \usepackage{setspace}
 \usepackage{float}
@@ -29,6 +30,7 @@
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
 \onehalfspacing
+\setlength{\emergencystretch}{2em}
 
 %% ---------- title information ----------
 \title{%
@@ -383,7 +385,7 @@ Statistical significance is assessed at the 1\%, 5\%, and 10\% levels, but given
 
 The robustness strategy addresses four potential concerns about the primary estimates.
 
-\textbf{Pre/post-Fukushima split.} The 2011 Fukushima disaster represents a major exogenous shock to Japan's energy system. If the determinants of efficiency changed meaningfully between the pre-Fukushima (FY2005--FY2011) and post-Fukushima (FY2012--FY2024) periods, for example, because the increased value of electricity generation changed operational incentives, then pooling the full period could be misleading. To check this, Models 1 and 2 are estimated separately on pre- and post-Fukushima subsamples, yielding four additional specifications (Robustness Specifications R1--R4).
+\textbf{Pre/post-Fukushima split.} The 2011 Fukushima disaster represents a major exogenous shock to Japan's energy system. If the determinants of efficiency changed meaningfully between the pre-Fukushima (FY2005--FY2011) and post-Fukushima (FY2012--FY2024) periods, pooling the full period could be misleading. One plausible channel is that the increased value of electricity generation changed operational incentives. To check this, Models 1 and 2 are estimated separately on pre- and post-Fukushima subsamples, yielding four additional specifications (Robustness Specifications R1--R4).
 
 \textbf{Capacity subsample analysis.} If the relationships between efficiency and its predictors are nonlinear, for example, if scale effects are concentrated in the transition from small to medium facilities but absent at large scale, then linear specifications may misrepresent the underlying relationships. To explore this, the pooled OLS specification is estimated separately for facilities in the bottom tercile and the top tercile of the capacity distribution (Robustness Specifications R5 and R6). Comparing these endpoint estimates is sufficient to detect meaningful nonlinearity in the scale effect; the middle tercile is omitted because its coefficients fall by construction between the two endpoints and add no additional information for this purpose.
 
