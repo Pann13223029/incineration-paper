@@ -50,60 +50,13 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 
 ## Data Pipeline
 
-```mermaid
-flowchart TD
-    subgraph Download["Stage 1: Data Collection (DONE)"]
-        A["MOE General Waste<br/>Treatment Survey<br/>(20 annual Excel files)"]
-        A --> B["01: Download all<br/>20 years (FY2005-2024)"]
-    end
-
-    subgraph Parse["Stage 2: Panel Construction (DONE)"]
-        B --> C["02: Auto-detect<br/>column positions<br/>(format varies by year)"]
-        C --> D["23,599 facility-year<br/>observations<br/>2,948 unique facilities"]
-    end
-
-    subgraph Enrich["Stage 3: Enrichment (DONE)"]
-        D --> E["03: Regional grid<br/>emission factors<br/>(10 utility areas,<br/>100% match rate)"]
-    end
-
-    subgraph Analyze["Stage 4: Analysis (DONE)"]
-        E --> F["04: Exploratory<br/>analysis + figures"]
-        F --> G["05a: Power-adoption<br/>hazard on coded fleet"]
-        G --> H["05: Panel regression<br/>(4 main specifications:<br/>Pooled OLS, Year FE,<br/>RE, Year FE + RE)"]
-        H --> I["06: Robustness<br/>(8 specifications:<br/>pre/post-Fukushima,<br/>tercile, raw DV)"]
-    end
-
-    style Download fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style Parse fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style Enrich fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style Analyze fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-```
+![Analysis pipeline](docs/figures/readme_pipeline.svg)
 
 ---
 
 ## Key Fleet Trends (FY2005 → FY2024)
 
-```mermaid
-graph TD
-    subgraph T1["Consolidation"]
-        A1["1,318 facilities<br/>(FY2005)"] --> A2["1,014 facilities<br/>(FY2024)"]
-        A2 --> A3["23% decline<br/>~15 closures/year"]
-    end
-
-    subgraph T2["Modernization"]
-        B1["21.6% power-generating<br/>(FY2005)"] --> B2["41.1% power-generating<br/>(FY2024)"]
-        B2 --> B3["Share nearly<br/>doubled"]
-    end
-
-    subgraph T3["Heterogeneity persists"]
-        C1["598 facilities<br/>still generate<br/>no electricity<br/>(59% of fleet)"]
-        C1 --> C3["The fleet is<br/>NOT monolithic"]
-    end
-
-    style A3 fill:#e3f2fd,stroke:#1565c0,color:#1a1a1a
-    style B3 fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style C3 fill:#ffcdd2,stroke:#c62828,color:#1a1a1a
-```
+![Key fleet trends](docs/figures/readme_fleet_trends.svg)
 
 ---
 
