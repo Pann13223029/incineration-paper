@@ -1,0 +1,71 @@
+{
+  "stage": "05a_power_adoption",
+  "timestamp_utc": "2026-04-14T16:03:00.764334+00:00",
+  "git_sha": "319212894734f280c5da71d9c8f7b21291f20ab3",
+  "python": "3.12.12",
+  "platform": "macOS-15.6-arm64-arm-64bit",
+  "analysis_config": {
+    "efficiency_floor_mwh_per_t": 0.01,
+    "efficiency_ceiling_mwh_per_t": 0.8,
+    "capacity_utilization_cap": 1.0,
+    "pre_fukushima_end": 2011,
+    "post_fukushima_start": 2012,
+    "regression_requires_positive_output": true,
+    "regression_requires_official_facility_code": true,
+    "regression_winsorization_method": "clip",
+    "adoption_model": "observed_first_adoption_linear_probability_hazard",
+    "adoption_risk_set_excludes_left_censored_generators": true,
+    "adoption_predictors_lagged_one_year": true
+  },
+  "inputs": [
+    "data/processed/incineration_panel_enriched.csv"
+  ],
+  "outputs": [
+    "output/adoption_results.md"
+  ],
+  "metadata": {
+    "risk_set_obs": 13770,
+    "risk_set_facilities": 2035,
+    "events": 141,
+    "left_censored_generators": 913,
+    "model_obs": 11717,
+    "model_facilities": 1915,
+    "model_events": 140,
+    "lag_drop_first_rows": 2035,
+    "lag_drop_additional_missing_rows": 18,
+    "lag_drop_additional_missing_facilities": 12,
+    "model": {
+      "type": "linear_probability_hazard",
+      "predictors_lagged_one_year": true,
+      "baseline_prior_year_age_band": "0-10 yrs",
+      "coefficients": {
+        "lag_age_10_20": -0.021686895508644798,
+        "lag_age_20_30": -0.019832896928313297,
+        "lag_age_30_plus": -0.015160027876270157,
+        "lag_capacity_100t": 0.014715978257457213
+      },
+      "pvalues": {
+        "lag_age_10_20": 2.1427712691033488e-07,
+        "lag_age_20_30": 5.375155986136635e-05,
+        "lag_age_30_plus": 0.010789482977147847,
+        "lag_capacity_100t": 5.029072254663053e-07
+      },
+      "r_squared": 0.030531367198278203
+    },
+    "logit_robustness": {
+      "type": "discrete_time_logit",
+      "coefficients": {
+        "lag_age_10_20": -1.97974498589681,
+        "lag_age_20_30": -1.4833831856920097,
+        "lag_age_30_plus": -1.0727343042582667,
+        "lag_capacity_100t": 0.45339909954741586
+      },
+      "pvalues": {
+        "lag_age_10_20": 1.4786333496009457e-10,
+        "lag_age_20_30": 7.07775998923538e-07,
+        "lag_age_30_plus": 0.002956018473232832,
+        "lag_capacity_100t": 0.011000906040322382
+      }
+    }
+  }
+}

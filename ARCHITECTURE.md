@@ -11,20 +11,20 @@
 
 ## Executive Summary
 
-Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,948 unique facilities, FY2005–FY2024) to document heterogeneity in energy recovery efficiency and identify what drives it. The canonical analysis pipeline now writes an explicit sample-definition report and stage manifests so the published outputs are tied to one reproducible empirical design. In that canonical regression frame (5,683 facility-years, 1,016 facilities), the pooled within/total variance ratio of log-efficiency is 0.1499, falling from 0.1795 pre-Fukushima to 0.0956 post-Fukushima. This remains strongly consistent with Seto et al.'s (2016) definition of infrastructural lock-in: facility-level performance responds to incentives within a bounded envelope set by the original design. The policy implication is that fleet-wide progress toward net-zero passes through construction and retirement decisions — the points at which design vintage is set — rather than through operational intervention at already-built facilities.
+Japan operates ~1,000 waste incinerators — the most of any country. The literature treats this fleet as monolithic. It is not. This thesis uses a 20-year facility-level panel (23,599 observations, 2,948 unique facilities, FY2005–FY2024) to separate two linked questions: which coded facilities first observed without generation make an observed transition into power generation, and conditional on power generation, which facility characteristics predict energy recovery efficiency. The canonical analysis pipeline now writes an explicit sample-definition report, adoption results, and stage manifests so the published outputs are tied to one reproducible empirical design. In the extensive-margin adoption risk set (13,770 facility-years, 2,035 facilities, 141 observed first-adoption events), the lagged model frame contains 11,717 facility-years across 1,915 facilities and 140 events; facilities older than 10 years in the prior observed year are 1.5–2.2 percentage points less likely to transition into generation, while each additional 100 t/day of prior-year capacity raises transition probability by about 1.47 percentage points. In the canonical generator regression frame (5,683 facility-years, 1,016 facilities), the pooled within/total variance ratio of log-efficiency is 0.1499, falling from 0.1795 pre-Fukushima to 0.0956 post-Fukushima. Together these results are strongly consistent with a sector in which capital-side modernization matters more than operating-side fine-tuning, while the adoption data themselves do not distinguish retrofit from replacement or new build.
 
 ---
 
 ## Research Question
 
-**RQ:** What facility characteristics predict energy recovery efficiency among Japan's power-generating incinerators, and how has this changed as the fleet modernizes?
+**RQ:** What predicts observed transition into power generation among coded facilities first seen without it, and conditional on power generation, what predicts energy recovery efficiency among power-generating incinerators?
 
 **Sub-questions:**
 
-1. How does facility age relate to energy recovery efficiency (MWh/t)?
-2. Does design capacity predict efficiency, controlling for age and utilization?
-3. Does capacity utilization predict efficiency independently of facility characteristics?
-4. How stable are these relationships across the pre- and post-Fukushima subsamples and across model specifications?
+1. Which coded facilities first seen without generation later make an observed transition into power generation within the panel window?
+2. Does design capacity predict both adoption and conditional efficiency?
+3. How does facility age structure the adoption margin and the efficiency margin?
+4. How stable are the conditional efficiency relationships across the pre- and post-Fukushima subsamples and across model specifications?
 
 ---
 
@@ -44,22 +44,25 @@ Japan operates ~1,000 waste incinerators — the most of any country. The litera
 
 ---
 
-## Two Populations
+## Two Linked Samples
 
-The dataset splits into two analytically distinct populations:
+The dataset now uses two linked analytical frames:
 
 | Population | Obs in full panel | % of total | Role in analysis |
 |------------|:-----------------:|:----------:|------------------|
-| **Power-generating facilities** | ~6,950 | 29.4% | Canonical operating sample: 6,660 facility-years with positive throughput and positive output; canonical regression frame: 5,683 facility-years / 1,016 facilities |
-| **Non-power-generating facilities** | ~16,649 | 70.6% | Descriptive comparison; represent the carbon lock-in challenge |
+| **Coded full-fleet frame** | 19,827 | 84.0% | Extensive-margin transition analysis on all facilities with official codes |
+| **Generator operating sample** | 6,660 | 28.2% | Conditional descriptive and regression work for facilities with positive throughput and positive output |
 
-The persistence of the non-power-generating segment is itself a finding: 598 of the 1,014 active FY2024 facilities generate no electricity — the "59% problem" discussed in Chapter 5.
+Within the coded full-fleet frame, the observed first-adoption risk set is built on 13,770 facility-years across 2,035 facilities first observed without power generation. Facilities already generating power in their first observed year (913 facilities) are treated as left-censored for the adoption model. The lagged model frame is smaller, 11,717 facility-years across 1,915 facilities, because the first observed at-risk year for each facility is dropped when prior-year predictors are required. The persistence of the non-power-generating segment remains a key descriptive fact: 598 of the 1,014 active FY2024 facilities generate no electricity.
 
 ---
 
 ## Methodology
 
-**Design:** Panel regression with cluster-robust standard errors, four main specifications plus eight robustness specifications.
+**Design:** Two-part empirical architecture.
+
+1. **Extensive margin:** lagged observed first-adoption linear probability hazard on coded, initially non-generating facilities, with prior-year age-band indicators, prior-year capacity, year fixed effects, prefecture fixed effects, and facility-clustered standard errors.
+2. **Intensive margin:** generator-efficiency panel regression with cluster-robust standard errors, four main specifications plus eight robustness specifications.
 
 **Why not facility fixed effects?** The natural candidate for a panel setting is the two-way facility-and-year fixed-effects estimator, but it is inappropriate here for two reasons:
 
@@ -68,11 +71,14 @@ The persistence of the non-power-generating segment is itself a finding: 598 of 
 
 A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.0001) and is disclosed in §3.5.3, but does not drive the estimator choice: the Hausman test presumes that the FE specification can cleanly recover the parameters of interest, which fails for both reasons above. Pooled OLS and RE are therefore reported as primary; FE is referenced only to document that within-facility variation is negligible.
 
-**Primary estimators:** Pooled OLS (Model 1), Pooled OLS with year fixed effects (Model 2), Random Effects (Model 3), Random Effects with year fixed effects (Model 4). All use facility-clustered standard errors, and the regression sample is built once in `code/scripts/panel_utils.py` so every main and robustness model consumes the same canonical frame.
+**Primary estimators:** Adoption hazard (extensive margin), plus Pooled OLS (Model 1), Pooled OLS with year fixed effects (Model 2), Random Effects (Model 3), and Random Effects with year fixed effects (Model 4) for the generator sample. All use facility-clustered standard errors, and the shared analysis frames are built once in `code/scripts/panel_utils.py`.
 
 **Panel window:** FY2005–FY2024 (20 years, post-dioxin regulatory stabilisation of Japan's fleet).
 
-**Dependent variable:** log(energy recovery efficiency), where efficiency is MWh electricity generated per tonne of waste processed. Log transformation produces a symmetric distribution and coefficients interpretable as proportional effects.
+**Dependent variables:**
+
+- Extensive margin: `adopt_power_this_year`, the observed first adoption of power generation among coded facilities first seen without it
+- Intensive margin: log(energy recovery efficiency), where efficiency is MWh electricity generated per tonne of waste processed among generators
 
 **Key independent variables:**
 
@@ -104,9 +110,9 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 |----|-------|-------------|
 | 1 | Introduction | Incineration paradox, RQ, significance, thesis outline |
 | 2 | Literature Review | Japan's WtE institutional context, lock-in theory (Unruh, Arthur), industrial ecology / material metabolism framing, empirical literature on efficiency determinants |
-| 3 | Methodology | Data source, panel construction, variable definitions, estimation strategy, why pooled OLS + RE over FE, robustness design |
-| 4 | Results | Fleet-evolution descriptives, 4 main regression specifications, avoided emissions calculation, 8 robustness specifications |
-| 5 | Discussion | Design-determination finding, lock-in interpretation, scale and consolidation policy, Fukushima effect, net-zero implications, limitations |
+| 3 | Methodology | Data source, panel construction, two-part variable design, adoption hazard, why pooled OLS + RE over FE for the generator sample, robustness design |
+| 4 | Results | Fleet-evolution descriptives, adoption hazard, 4 main generator-efficiency specifications, avoided emissions calculation, 8 robustness specifications |
+| 5 | Discussion | Extensive-margin modernization, bounded responsiveness in the generator sample, scale and consolidation policy, Fukushima effect, net-zero implications, limitations |
 | 6 | Conclusion | Summary, theoretical contributions, policy recommendations, future research, closing statement |
 
 ---
@@ -115,6 +121,8 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Finding | Magnitude | Significance |
 |---------|-----------|--------------|
+| Adoption hazard, prior-year age bands | Facilities older than 10 years are 1.5–2.2 pp less likely than 0–10-year facilities to record transition in the next observed year | p < 0.05 in every reported age-band coefficient |
+| Adoption hazard, prior-year capacity | +1.47 pp per 100 t/day | p < 0.001 |
 | Facility age effect | −0.019 to −0.035 in the four main specifications; −0.025 to −0.043 across robustness | p < 0.001 in every reported specification |
 | Design capacity effect | +0.041 to +0.103 in the four main specifications | Positive in every main specification |
 | Capacity utilization effect | +0.541 to +0.779 in the four main specifications | Positive in every main specification |
@@ -132,13 +140,13 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Category | Count |
 |----------|:-----:|
-| Python scripts | 9 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05 regression, 06 robustness, 07 rebuild, shared panel utils) |
+| Python scripts | 10 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05a adoption, 05 regression, 06 robustness, 07 rebuild, shared panel utils) |
 | Raw data files | 20 (one per fiscal year) |
 | Processed panel | 23,599 rows × 28 columns |
 | Enriched panel (with grid factors) | 23,599 rows × 28 columns (100% grid-factor match) |
 | Regression sample (canonical frame) | 5,683 rows × 1,016 facilities |
 | Figures | 2 (establishing shot + heterogeneity shot) |
-| Tables in thesis.tex | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, regression results, robustness) |
+| Tables in thesis.tex | 7 (fleet evolution, adoption hazard, efficiency by age, efficiency by capacity, regression results, avoided-emissions calculation, robustness) |
 | Equations in thesis.tex | 4 (log efficiency, baseline regression, avoided CO₂ formula, avoided CO₂ computation) |
 | Bibliography entries | 26 (all DOI/URL-verified, all cited in text, 0 orphans) |
 | Expert panel review rounds | 3 hostile-attack rounds (r1: ~40 items; r2: ~21 items; r3: ~6 items) + 1 holistic grade/direction round + 1 A-push execution round |
@@ -176,6 +184,7 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 02_parse_facility_panel.py       -> incineration_panel.csv (23,599 rows)
 03_grid_emission_factors.py      -> incineration_panel_enriched.csv + grid_emission_factors.csv
 04_eda_facility.py               -> figures + EDA report + pre_regression_decision.md
+05a_power_adoption.py            -> adoption_results.md + extensive-margin manifest
 05_panel_regression.py           -> sample_definition.md + 4 main regression specifications
 06_robustness.py                 -> 8 robustness specifications
 07_rebuild_analysis.py           -> one-command local rebuild from checked-in raw data
@@ -189,4 +198,4 @@ Data is strong (near-census administrative panel, 20 years). RQ is estimable and
 
 ---
 
-*Last updated: 2026-04-13. Reflects thesis.tex state at commit 3c2b6c8.*
+*Last updated: 2026-04-14. Reflects the two-part adoption + generator-efficiency architecture and the current local thesis state.*

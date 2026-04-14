@@ -31,6 +31,8 @@ EFF_CEIL = 0.80
 CAPACITY_UTILIZATION_CAP = 1.0
 PRE_FUKUSHIMA_END = 2011
 POST_FUKUSHIMA_START = 2012
+AGE_BAND_BINS = [0, 10, 20, 30, float("inf")]
+AGE_BAND_LABELS = ["0-10 yrs", "10-20 yrs", "20-30 yrs", "30+ yrs"]
 
 REGRESSION_COLUMNS = [
     "analysis_facility_id",
@@ -50,6 +52,31 @@ REGRESSION_COLUMNS = [
     "energy_efficiency_raw_mwh_per_t",
     "energy_efficiency_mwh_per_t",
     "log_efficiency",
+]
+
+ADOPTION_COLUMNS = [
+    "analysis_facility_id",
+    "facility_code",
+    "fiscal_year",
+    "facility_name",
+    "prefecture",
+    "has_power_gen",
+    "adopt_power_this_year",
+    "facility_age_years",
+    "age_band",
+    "capacity_t_day",
+    "capacity_100t",
+    "throughput_t_year",
+    "throughput_100k_t",
+    "heating_value_mj_kg",
+]
+
+ADOPTION_MODEL_COLUMNS = [
+    *ADOPTION_COLUMNS,
+    "lag_facility_age_years",
+    "lag_age_band",
+    "lag_capacity_t_day",
+    "lag_capacity_100t",
 ]
 
 IDENTIFIER_DTYPES = {
@@ -84,6 +111,9 @@ def analysis_config() -> dict[str, Any]:
         "regression_requires_positive_output": True,
         "regression_requires_official_facility_code": True,
         "regression_winsorization_method": "clip",
+        "adoption_model": "observed_first_adoption_linear_probability_hazard",
+        "adoption_risk_set_excludes_left_censored_generators": True,
+        "adoption_predictors_lagged_one_year": True,
     }
 
 
@@ -91,6 +121,141 @@ def load_panel(filename: str = "incineration_panel_enriched.csv") -> pd.DataFram
     """Load a processed panel file."""
     path = os.path.join(PROCESSED_DIR, filename)
     return pd.read_csv(path, dtype=IDENTIFIER_DTYPES)
+
+
+def normalize_analysis_facility_id(series: pd.Series) -> pd.Series:
+    """Standardize the facility identifier used across analysis stages."""
+    ids = series.astype("string").str.strip()
+    ids = ids.str.replace(".0", "", regex=False)
+    return ids.replace({"": pd.NA, "nan": pd.NA, "None": pd.NA, "<NA>": pd.NA})
+
+
+def age_band_from_years(series: pd.Series) -> pd.Series:
+    """Bucket facility ages into interpretable bands."""
+    return pd.cut(
+        series,
+        bins=AGE_BAND_BINS,
+        labels=AGE_BAND_LABELS,
+        right=False,
+    )
+
+
+def build_full_fleet_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
+    """
+    Build the coded full-fleet frame used for extensive-margin analysis.
+
+    Rules:
+    - requires an official facility identifier so facilities can be tracked over time
+    - preserves both generating and non-generating facilities
+    - adds shared transformations used by the adoption and efficiency stages
+    """
+    if panel is None:
+        panel = load_panel()
+
+    fleet = panel.copy()
+    fleet["analysis_facility_id"] = normalize_analysis_facility_id(fleet["facility_code"])
+    fleet = fleet[fleet["analysis_facility_id"].notna()].copy()
+    fleet["facility_age_years"] = fleet["facility_age"].clip(lower=0)
+    fleet["age_band"] = age_band_from_years(fleet["facility_age_years"])
+    fleet["capacity_100t"] = fleet["capacity_t_day"] / 100.0
+    fleet["throughput_100k_t"] = fleet["throughput_t_year"] / 100000.0
+    fleet["heating_value_mj_kg"] = fleet["heating_value_kj_kg"] / 1000.0
+    fleet["has_power_gen"] = fleet["has_power_gen"].fillna(False).astype(bool)
+    return fleet
+
+
+def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
+    """
+    Build the extensive-margin adoption-risk frame.
+
+    Each facility enters the risk set only if it is first observed without
+    power generation. The frame then keeps yearly observations up to and
+    including the first observed adoption of power generation.
+    """
+    fleet = build_full_fleet_frame(panel)
+
+    rows: list[dict[str, Any]] = []
+    left_censored_generators = 0
+
+    for facility_id, group in fleet.groupby("analysis_facility_id", sort=False):
+        group = group.sort_values("fiscal_year")
+        if bool(group["has_power_gen"].iloc[0]):
+            left_censored_generators += 1
+            continue
+
+        adopted = False
+        for _, row in group.iterrows():
+            if adopted:
+                break
+
+            adopt_now = bool(row["has_power_gen"])
+            rows.append(
+                {
+                    "analysis_facility_id": facility_id,
+                    "facility_code": row["facility_code"],
+                    "fiscal_year": int(row["fiscal_year"]),
+                    "facility_name": row["facility_name"],
+                    "prefecture": row["prefecture"],
+                    "has_power_gen": bool(row["has_power_gen"]),
+                    "adopt_power_this_year": int(adopt_now),
+                    "facility_age_years": row["facility_age_years"],
+                    "age_band": row["age_band"],
+                    "capacity_t_day": row["capacity_t_day"],
+                    "capacity_100t": row["capacity_100t"],
+                    "throughput_t_year": row["throughput_t_year"],
+                    "throughput_100k_t": row["throughput_100k_t"],
+                    "heating_value_mj_kg": row["heating_value_mj_kg"],
+                }
+            )
+
+            if adopt_now:
+                adopted = True
+
+    adoption = pd.DataFrame(rows, columns=ADOPTION_COLUMNS)
+    adoption.attrs["left_censored_generators"] = left_censored_generators
+    return adoption
+
+
+def build_adoption_model_frame(
+    panel: pd.DataFrame | None = None,
+    adoption: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """
+    Build the estimation frame for the adoption model.
+
+    The hazard uses lagged facility characteristics so the reported predictors
+    are measured before the observed adoption year rather than contemporaneously
+    with it.
+    """
+    if adoption is None:
+        adoption = build_adoption_frame(panel)
+
+    model = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
+    group = model.groupby("analysis_facility_id", sort=False)
+    model["lag_facility_age_years"] = group["facility_age_years"].shift(1)
+    model["lag_age_band"] = group["age_band"].shift(1)
+    model["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
+    model["lag_capacity_100t"] = group["capacity_100t"].shift(1)
+
+    first_rows = group.cumcount().eq(0)
+    extra_missing_mask = (
+        model[["lag_age_band", "lag_capacity_100t", "prefecture"]].isna().any(axis=1)
+        & ~first_rows
+    )
+
+    lag_drop_first_rows = int(first_rows.sum())
+    lag_drop_additional_missing_rows = int(extra_missing_mask.sum())
+    lag_drop_additional_missing_facilities = int(
+        model.loc[extra_missing_mask, "analysis_facility_id"].nunique()
+    )
+
+    model = model.dropna(subset=["lag_age_band", "lag_capacity_100t", "prefecture"]).copy()
+    model.attrs["lag_drop_first_rows"] = lag_drop_first_rows
+    model.attrs["lag_drop_additional_missing_rows"] = lag_drop_additional_missing_rows
+    model.attrs["lag_drop_additional_missing_facilities"] = lag_drop_additional_missing_facilities
+    result = model[ADOPTION_MODEL_COLUMNS].copy()
+    result.attrs.update(model.attrs)
+    return result
 
 
 def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
@@ -116,14 +281,9 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
         power["power_generated_mwh"].notna() & (power["power_generated_mwh"] > 0)
     ].copy()
 
-    power["analysis_facility_id"] = power["facility_code"].astype("string").str.strip()
-    power["analysis_facility_id"] = power["analysis_facility_id"].str.replace(
-        ".0", "", regex=False
-    )
-    power["analysis_facility_id"] = power["analysis_facility_id"].replace(
-        {"": pd.NA, "nan": pd.NA, "None": pd.NA, "<NA>": pd.NA}
-    )
+    power["analysis_facility_id"] = normalize_analysis_facility_id(power["facility_code"])
     power["facility_age_years"] = power["facility_age"].clip(lower=0)
+    power["age_band"] = age_band_from_years(power["facility_age_years"])
     power["capacity_utilization_capped"] = power["capacity_utilization"].clip(
         lower=0,
         upper=CAPACITY_UTILIZATION_CAP,
@@ -187,6 +347,9 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
     if panel is None:
         panel = load_panel()
 
+    full_fleet = build_full_fleet_frame(panel)
+    adoption = build_adoption_frame(panel)
+    adoption_model = build_adoption_model_frame(adoption=adoption)
     power_flagged = panel[panel["has_power_gen"] == True].copy()
     operating = build_operating_power_frame(panel)
     regression = build_regression_frame(panel)
@@ -194,6 +357,8 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
     summary = {
         "full_panel_obs": int(len(panel)),
         "full_panel_facilities_with_codes": int(panel["facility_code"].nunique()),
+        "coded_full_fleet_obs": int(len(full_fleet)),
+        "coded_full_fleet_facilities": int(full_fleet["analysis_facility_id"].nunique()),
         "power_generation_flagged_obs": int(len(power_flagged)),
         "operating_power_obs": int(len(operating)),
         "operating_power_facilities_with_codes": int(operating["facility_code"].nunique()),
@@ -208,6 +373,20 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         ),
         "raw_efficiency_above_ceiling": int(
             (operating["energy_efficiency_raw_mwh_per_t"] > EFF_CEIL).sum()
+        ),
+        "left_censored_generators": int(adoption.attrs.get("left_censored_generators", 0)),
+        "adoption_risk_obs": int(len(adoption)),
+        "adoption_risk_facilities": int(adoption["analysis_facility_id"].nunique()),
+        "adoption_events": int(adoption["adopt_power_this_year"].sum()),
+        "adoption_model_obs": int(len(adoption_model)),
+        "adoption_model_facilities": int(adoption_model["analysis_facility_id"].nunique()),
+        "adoption_model_events": int(adoption_model["adopt_power_this_year"].sum()),
+        "adoption_model_drop_first_rows": int(adoption_model.attrs.get("lag_drop_first_rows", 0)),
+        "adoption_model_drop_additional_missing_rows": int(
+            adoption_model.attrs.get("lag_drop_additional_missing_rows", 0)
+        ),
+        "adoption_model_drop_additional_missing_facilities": int(
+            adoption_model.attrs.get("lag_drop_additional_missing_facilities", 0)
         ),
         "regression_obs": int(len(regression)),
         "regression_facilities": int(regression["analysis_facility_id"].nunique()),
@@ -263,6 +442,11 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
         "This report documents the canonical descriptive and regression samples used by the analysis scripts.",
         "",
         f"- Full panel: {summary['full_panel_obs']:,} rows",
+        (
+            f"- Coded full-fleet frame (facility identifier present): "
+            f"{summary['coded_full_fleet_obs']:,} rows "
+            f"({summary['coded_full_fleet_facilities']:,} facilities)"
+        ),
         f"- Power-generation rows flagged by MOE (`has_power_gen == True`): {summary['power_generation_flagged_obs']:,}",
         (
             f"- Operating power-generation sample (positive throughput and positive output): "
@@ -283,6 +467,35 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
         (
             f"- Negative facility-age rows floored to zero: "
             f"{summary['operating_negative_age_rows_floored_to_zero']:,}"
+        ),
+        "",
+        "## Extensive-Margin Adoption Frame",
+        "",
+        (
+            f"- Left-censored facilities already generating power in their first observed year: "
+            f"{summary['left_censored_generators']:,}"
+        ),
+        (
+            f"- Adoption risk-set observations: {summary['adoption_risk_obs']:,} "
+            f"({summary['adoption_risk_facilities']:,} facilities)"
+        ),
+        (
+            f"- Observed first-adoption events in the panel window: "
+            f"{summary['adoption_events']:,}"
+        ),
+        (
+            f"- Lagged adoption-model observations: {summary['adoption_model_obs']:,} "
+            f"({summary['adoption_model_facilities']:,} facilities; "
+            f"{summary['adoption_model_events']:,} events)"
+        ),
+        (
+            f"- First observed at-risk years dropped because lagged predictors are required: "
+            f"{summary['adoption_model_drop_first_rows']:,}"
+        ),
+        (
+            f"- Additional rows dropped for missing lagged age/capacity: "
+            f"{summary['adoption_model_drop_additional_missing_rows']:,} "
+            f"({summary['adoption_model_drop_additional_missing_facilities']:,} facilities)"
         ),
         "",
         "## Regression Frame",

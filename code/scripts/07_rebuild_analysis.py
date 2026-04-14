@@ -16,6 +16,7 @@ STAGES = [
     "02_parse_facility_panel.py",
     "03_grid_emission_factors.py",
     "04_eda_facility.py",
+    "05a_power_adoption.py",
     "05_panel_regression.py",
     "06_robustness.py",
 ]

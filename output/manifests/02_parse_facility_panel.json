@@ -1,8 +1,8 @@
 {
   "stage": "02_parse_facility_panel",
-  "timestamp_utc": "2026-04-14T06:04:09.656740+00:00",
-  "git_sha": "a6398ffa0178a5d58f37e50a7556d230adb4c200",
-  "python": "3.9.6",
+  "timestamp_utc": "2026-04-14T16:02:04.420127+00:00",
+  "git_sha": "319212894734f280c5da71d9c8f7b21291f20ab3",
+  "python": "3.12.12",
   "platform": "macOS-15.6-arm64-arm-64bit",
   "analysis_config": {
     "efficiency_floor_mwh_per_t": 0.01,
@@ -12,7 +12,10 @@
     "post_fukushima_start": 2012,
     "regression_requires_positive_output": true,
     "regression_requires_official_facility_code": true,
-    "regression_winsorization_method": "clip"
+    "regression_winsorization_method": "clip",
+    "adoption_model": "observed_first_adoption_linear_probability_hazard",
+    "adoption_risk_set_excludes_left_censored_generators": true,
+    "adoption_predictors_lagged_one_year": true
   },
   "inputs": [
     "data/raw/facility_annual"
