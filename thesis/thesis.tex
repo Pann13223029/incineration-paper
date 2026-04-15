@@ -32,9 +32,11 @@
 
 \onehalfspacing
 \setlength{\emergencystretch}{2em}
+\setcounter{secnumdepth}{2}
 \titlespacing*{\section}{0pt}{0pt}{0.8\baselineskip}
 \titlespacing*{\subsection}{0pt}{1.25\baselineskip}{0.5\baselineskip}
-\titlespacing*{\subsubsection}{0pt}{1.0\baselineskip}{0.4\baselineskip}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{}{0pt}{}[.]
+\titlespacing*{\subsubsection}{0pt}{0.9\baselineskip}{0.6em}
 
 %% ---------- title information ----------
 \title{%
@@ -303,7 +305,7 @@ The choice of 0.80 MWh/t as the upper winsorizing bound reflects the physical li
 
 \subsubsection{Heating Value Estimation}
 
-Waste heating value is not directly reported in the General Waste Treatment Survey. For some years and facilities, it can be estimated from supplementary survey data on waste composition; for others, it must be inferred from national or regional composition averages. Given the known limitations of this approach, the indirect measurement introduces substantial noise, heating value should be treated as an approximate control variable rather than a precisely measured independent variable. The finding that heating value is statistically insignificant in all model specifications may partly reflect this measurement noise, though the thermodynamic arguments for insignificance (Section 2.4.4) suggest genuine ambiguity.
+Waste heating value is not directly reported in the General Waste Treatment Survey. For some years and facilities, it can be estimated from supplementary survey data on waste composition; for others, it must be inferred from national or regional composition averages. Given the known limitations of this approach, the indirect measurement introduces substantial noise, heating value should be treated as an approximate control variable rather than a precisely measured independent variable. The finding that heating value is statistically insignificant in all model specifications may partly reflect this measurement noise, though the thermodynamic discussion of waste composition and heating value in Section 2.4 suggests genuine ambiguity.
 
 \subsection{Variable Definitions}
 
@@ -354,7 +356,7 @@ The log transformation serves two purposes. First, it addresses the right-skewed
   \end{tabular*}
   \smallskip
   \begin{minipage}{\textwidth}
-    \footnotesize\emph{Note:} The efficiency min (0.010) and max (0.800) coincide with the winsorising bounds described in Section~3.3.2. The heating-value field is retained as a noisy administrative control variable rather than interpreted as a clean engineering measurement.
+    \footnotesize\emph{Note:} The efficiency min (0.010) and max (0.800) coincide with the winsorising bounds described in Section~3.3. The heating-value field is retained as a noisy administrative control variable rather than interpreted as a clean engineering measurement.
   \end{minipage}
 \end{table}
 
@@ -414,7 +416,7 @@ For transparency, a Hausman test applied to Models 3 and 4 does formally reject 
 
 All standard errors are clustered at the facility level to account for the correlation of errors across years within the same facility. Clustering is the appropriate response to the likely autocorrelation of facility-level unobservables across years: a facility with unobserved characteristics that raise efficiency in year $t$ is likely to exhibit the same advantage in year $t+1$, and conventional standard errors that assume independence would understate the true sampling uncertainty.
 
-Statistical significance is assessed at the 1\%, 5\%, and 10\% levels, but given the size of the canonical regression frame (5,683 observations), the practical emphasis is on the magnitude and consistency of estimated coefficients rather than on $p$-values alone. Coefficients that remain directionally stable across the four main specifications (Section 3.5.2) and the eight robustness specifications (Section 3.6) are treated as robust findings; coefficients with unstable signs or magnitudes are highlighted as unreliable even when individually significant.
+Statistical significance is assessed at the 1\%, 5\%, and 10\% levels, but given the size of the canonical regression frame (5,683 observations), the practical emphasis is on the magnitude and consistency of estimated coefficients rather than on $p$-values alone. Coefficients that remain directionally stable across the four main specifications described above and the eight robustness specifications in Section 3.6 are treated as robust findings; coefficients with unstable signs or magnitudes are highlighted as unreliable even when individually significant.
 
 \subsection{Robustness Design}
 
@@ -601,7 +603,7 @@ The economic and engineering interpretation of a coefficient near $-0.03$ is tha
 
 Design capacity exerts a strong positive effect on efficiency. The coefficient per 100 t/day of design capacity ranges from $+0.041$ to $+0.103$ across the four main specifications, all significant at the 0.1\% level. A facility with 300 t/day of design capacity is therefore predicted to have approximately 8--23\% higher efficiency than an otherwise comparable facility with 100 t/day, depending on specification.
 
-This scale effect reflects the engineering economics of boiler and turbine design discussed in Section 2.4.1. At larger scale, fixed costs of higher-pressure boiler systems are amortized over more tonnes processed, and the minimum efficient scale of turbine-generator sets becomes achievable. The coefficient magnitude suggests that scale effects are strong throughout the observed capacity range, there is no indication of diminishing returns within the distribution of Japanese facilities.
+This scale effect reflects the engineering economics of boiler and turbine design discussed in the scale-effects literature review in Section 2.4. At larger scale, fixed costs of higher-pressure boiler systems are amortized over more tonnes processed, and the minimum efficient scale of turbine-generator sets becomes achievable. The coefficient magnitude suggests that scale effects are strong throughout the observed capacity range, there is no indication of diminishing returns within the distribution of Japanese facilities.
 
 \subsubsection{Capacity Utilization}
 
@@ -613,7 +615,7 @@ This finding reflects thermodynamic realities: facilities operating near their d
 
 Heating value is not statistically significant in any of the four main specifications. The point estimates are close to zero (ranging from $+0.001$ to $+0.003$), but with standard errors of comparable magnitude, none approaches conventional significance thresholds. This null result is robust across the main specifications and reinforces the treatment of heating value as a noisy control variable rather than a substantive driver of the argument.
 
-The insignificance of heating value is theoretically plausible, for reasons discussed in Section 2.4.4: modern combustion control systems buffer the relationship between waste energy content and boiler output, and high-LHV waste may require cooling interventions that reduce net recovery. However, measurement noise, because heating value is estimated from composition surveys rather than direct measurement, cannot be ruled out as a contributing factor, so the null should be treated cautiously rather than over-interpreted.
+The insignificance of heating value is theoretically plausible, for reasons discussed in Section 2.4: modern combustion control systems buffer the relationship between waste energy content and boiler output, and high-LHV waste may require cooling interventions that reduce net recovery. However, measurement noise, because heating value is estimated from composition surveys rather than direct measurement, cannot be ruled out as a contributing factor, so the null should be treated cautiously rather than over-interpreted.
 
 \subsubsection{Grid Emission Factor}
 
@@ -674,6 +676,7 @@ This aggregate figure conceals extreme concentration. The top 10\% of FY2024 pow
   \end{minipage}
 \end{table}
 
+\enlargethispage{2\baselineskip}
 The age coefficient remains negative, and the capacity and utilization coefficients remain positive, across all eight robustness specifications. The pre- versus post-Fukushima comparison (R1--R4) shows modest attenuation in the age coefficient magnitude in the post-Fukushima period together with somewhat larger capacity and utilization coefficients. The capacity-tercile splits (R5--R6) preserve the same sign pattern, though the coefficient magnitudes differ across the small- and large-capacity segments. The robustness set therefore leaves the central sign pattern unchanged.
 
 %% ==========================================================
@@ -703,7 +706,7 @@ The practical implication is narrower than a blanket replacement claim but still
 
 This conclusion aligns with the ``stranded asset'' framing from the sustainability transitions literature \citep{Caldecott2016}. Facilities in the 25--35 year range appear constrained less by one failing component than by an inherited design package of boiler, turbine, and waste-handling choices \citep{Niessen2010}. Targeted retrofits remain technically possible, but the 20-year panel does not show them reshaping the efficiency distribution at fleet scale. For the weakest segment, the largest gains therefore still pass mainly through major capital renewal, while operational adjustment remains a secondary lever.
 
-\subsubsection{What ``Design-Determined'' Means in Practice}
+\subsubsection{Practical Meaning of Design Lock-In}
 
 If efficiency is strongly design-conditioned, annual monitoring has more value for fleet planning than for expecting large year-to-year reversals in mature plants. The same reporting system that supports accountability and billing can also function as a vintage register and retirement-planning tool, identifying persistently weak cohorts rather than treating every year as a new opportunity for large standalone reversals.
 
@@ -745,7 +748,7 @@ Within the circular-economy hierarchy, this thesis addresses only the residual-w
 
 The analysis depends on the accuracy and completeness of the General Waste Treatment Survey, which is an administrative dataset subject to the reporting conventions and potential errors of prefectural and municipal administrators. While the survey is near-census in coverage, systematic reporting biases, for example, if municipalities with low-performing facilities are more likely to under-report efficiency metrics, could bias the regression estimates. The analysis can partially address this concern through the robustness checks, but cannot fully rule it out without access to independently verified facility-level data.
 
-Heating value is an estimated rather than measured variable, as described in Section 3.3.3. The null result on heating value may partly reflect measurement error rather than (or in addition to) a genuine absence of effect. More precise waste composition monitoring would allow this question to be revisited.
+Heating value is an estimated rather than measured variable, as described in Section 3.3. The null result on heating value may partly reflect measurement error rather than (or in addition to) a genuine absence of effect. More precise waste composition monitoring would allow this question to be revisited.
 
 \subsubsection{Causal Identification}
 
@@ -796,8 +799,7 @@ The policy recommendations below are inferential implications of the two-part ev
 
 Three extensions would most strengthen this research agenda. First, case-based work on successful and failed regional consolidation would complement the statistical results with institutional detail. Second, retrofit histories and major-upgrade records would allow a cleaner separation of vintage effects from refurbishment effects inside the current ``reset'' and ``continuity'' categories. Third, in longer-horizon follow-on work, adding facility-level heat recovery and future grid-decarbonization scenarios would clarify how the climate value of waste-to-energy changes as Japan's power system becomes cleaner.
 
-\subsection{Closing Statement}
-
+\paragraph*{Closing Statement.}
 Japan built an incineration fleet for an era when burning waste was the best available option; the question its net-zero commitment now poses is not whether to change that fleet, but how quickly the country can replace what it has already locked in.
 
 %% ==========================================================
