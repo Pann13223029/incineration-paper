@@ -407,12 +407,12 @@ def make_claim_registry(metrics: dict) -> list[dict]:
             "targets": [
                 (
                     THESIS_PATH,
-                    "23,599 observations across 2,948 incinerators",
+                    "23,599 facility-year observations across 2,948 incinerators",
                 ),
                 (
                     THESIS_PATH,
                     (
-                        f"{fmt_int(metrics['events'])} observed first-adoption events occur among "
+                        f"{fmt_int(metrics['events'])} observed first-adoption events among "
                         f"{fmt_int(metrics['risk_set_facilities'])} facilities first observed without power generation"
                     ),
                 ),
@@ -426,8 +426,8 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     THESIS_PATH,
                     (
-                        f"{metrics['pathway_reset']} of the {metrics['events']} observed transitions as "
-                        "reset- or rebuild-like, "
+                        f"A conservative pathway audit of the {metrics['events']} observed adoption events classifies "
+                        f"{metrics['pathway_reset']} as reset- or rebuild-like, "
                         f"{metrics['pathway_continuity']} as continuity-type upgrades, "
                         f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
                         f"and {metrics['pathway_unresolved']} as unresolved"
@@ -436,16 +436,15 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     THESIS_PATH,
                     (
-                        f"{fmt_int(metrics['regression_obs'])} observations across "
-                        f"{fmt_int(metrics['regression_facilities'])} clustered facilities"
+                        f"{fmt_int(metrics['regression_obs'])} facility-year observations across "
+                        f"{fmt_int(metrics['regression_facilities'])} facilities"
                     ),
                 ),
                 (
                     THESIS_PATH,
                     (
-                        f"{metrics['within_total_ratio']:.4f} in the canonical generator frame, and the fact that "
-                        f"the ratio remains low across pre-Fukushima ({metrics['pre_ratio']:.4f}) and "
-                        f"post-Fukushima ({metrics['post_ratio']:.4f}) subsamples"
+                        f"{metrics['within_total_ratio']:.4f}, falling to {metrics['post_ratio']:.4f} "
+                        "in the post-Fukushima window"
                     ),
                 ),
             ],
