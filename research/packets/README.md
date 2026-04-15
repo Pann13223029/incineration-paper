@@ -9,15 +9,23 @@ Generated artifacts are written to `research/packets/dist/` and ignored in Git.
 
 ```bash
 npm run packets:build
+npm run supervisor:ready
 ```
 
-This command:
+`npm run packets:build`:
 
 1. reruns the repo-level claim verifier
 2. rebuilds `thesis/thesis.pdf` with `tectonic`
 3. assembles a frozen `supervisor-packet/`
 4. assembles a frozen `submission-packet/`
 5. writes zipped archives for both packets
+
+`npm run supervisor:ready`:
+
+1. reruns the full packet build
+2. creates a flattened supervisor-only handoff at `research/packets/dist/supervisor-handoff/`
+3. writes `research/packets/dist/supervisor-handoff.zip`
+4. refreshes the stable local alias `research/packets/latest-supervisor-handoff`
 
 Use loose PDFs only while drafting. Once the thesis is sendable, review the packet contents and then freeze the milestone with `npm run checkpoint:freeze`.
 
@@ -35,6 +43,21 @@ Optimized for fast review:
 - claim-to-evidence map
 - sample definition and core outputs
 - non-claims calibration note
+
+### Supervisor handoff
+
+Optimized for sending to a supervisor who should not need GitHub or repo context:
+
+- `00_START_HERE.txt`
+- thesis PDF with a plain filename
+- one-page summary
+- change summary since the last send
+- main risks and mitigations
+- key claims and evidence map
+- non-claims note
+- claim-verification report
+
+Use the stable alias `research/packets/latest-supervisor-handoff` when you only want the newest sendable supervisor bundle.
 
 ### Submission packet
 

@@ -207,16 +207,19 @@ npm run slides:bundle
 # 8. Optional: build frozen supervisor and submission packets
 npm run packets:build
 
-# 9. Optional: freeze a sendable checkpoint from the current verified state
+# 9. Optional: build the flattened supervisor-ready bundle with simple filenames
+npm run supervisor:ready
+
+# 10. Optional: freeze a sendable checkpoint from the current verified state
 npm run checkpoint:freeze
 
-# 10. Optional: start a structured supervisor-feedback round
+# 11. Optional: start a structured supervisor-feedback round
 npm run review:round:start
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, the claim-to-evidence bridge to `output/claim_evidence_map.md`, the packet delta note is generated locally at `output/checkpoint_delta.md` during packet builds, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`, the checkpoint freezer writes auditable local milestones under `research/checkpoints/dist/`, and the review-round workflow writes dated supervisor-feedback workspaces under `research/review-rounds/dist/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, the claim-to-evidence bridge to `output/claim_evidence_map.md`, the packet delta note is generated locally at `output/checkpoint_delta.md` during packet builds, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`, the simplified supervisor-ready bundle is written under `research/packets/dist/supervisor-handoff/`, the checkpoint freezer writes auditable local milestones under `research/checkpoints/dist/`, and the review-round workflow writes dated supervisor-feedback workspaces under `research/review-rounds/dist/`.
 
-For any real supervisor or submission checkpoint, the default operating mode is: run `npm run packets:build`, review the frozen packet outputs, and only then freeze a sendable milestone with `npm run checkpoint:freeze`. Loose PDFs are for drafting, not for reference baselines. After a freeze, the newest baseline is always available at the stable local alias `research/checkpoints/latest-sendable/`.
+For any real supervisor checkpoint, the simplest path is: run `npm run supervisor:ready` and send `research/packets/latest-supervisor-handoff` or `research/packets/dist/supervisor-handoff.zip`. For any auditable milestone, then freeze it with `npm run checkpoint:freeze`. Loose PDFs are for drafting, not for reference baselines. After a freeze, the newest baseline is always available at the stable local alias `research/checkpoints/latest-sendable/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

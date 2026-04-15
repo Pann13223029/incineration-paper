@@ -16,6 +16,7 @@ thesis/*.pdf
 thesis/*.toc
 research/slides/dist/
 research/packets/dist/
+research/packets/latest-supervisor-handoff
 research/checkpoints/dist/
 research/checkpoints/latest-sendable
 research/review-rounds/dist/

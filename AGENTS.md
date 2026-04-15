@@ -72,6 +72,8 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 - Slide-export entry points: `npm run slides:export` and `npm run slides:export:pdf`
 - Review-packet guide: `research/packets/README.md`
 - Review-packet entry point: `npm run packets:build`
+- Simplified supervisor handoff entry point: `npm run supervisor:ready`
+- Latest simplified supervisor bundle alias: `research/packets/latest-supervisor-handoff`
 - Checkpoint-freeze guide: `research/checkpoints/README.md`
 - Checkpoint-freeze entry point: `npm run checkpoint:freeze`
 - Latest frozen baseline alias: `research/checkpoints/latest-sendable`
