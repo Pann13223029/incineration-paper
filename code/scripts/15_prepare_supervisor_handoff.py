@@ -53,6 +53,75 @@ def write_text(dest: Path, source: Path) -> None:
     dest.write_text(source.read_text())
 
 
+def markdown_inline_to_text(text: str) -> str:
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+    text = re.sub(r"\*([^*]+)\*", r"\1", text)
+    return text
+
+
+def parse_table_row(line: str) -> list[str]:
+    return [markdown_inline_to_text(cell.strip()) for cell in line.strip().strip("|").split("|")]
+
+
+def is_table_separator(line: str) -> bool:
+    stripped = line.strip()
+    return stripped.startswith("|") and re.fullmatch(r"[|\-: ]+", stripped) is not None
+
+
+def render_markdown_table(headers: list[str], rows: list[list[str]]) -> list[str]:
+    rendered: list[str] = []
+    if len(headers) == 2:
+        for row in rows:
+            if len(row) >= 2:
+                rendered.append(f"- {row[0]}: {row[1]}")
+        return rendered
+
+    for row in rows:
+        if not row:
+            continue
+        rendered.append(f"- {headers[0]}: {row[0]}")
+        for idx in range(1, min(len(headers), len(row))):
+            rendered.append(f"  {headers[idx]}: {row[idx]}")
+        rendered.append("")
+
+    if rendered and rendered[-1] == "":
+        rendered.pop()
+    return rendered
+
+
+def render_markdown_for_handoff(text: str) -> str:
+    lines = text.splitlines()
+    rendered: list[str] = []
+    i = 0
+
+    while i < len(lines):
+        line = lines[i]
+
+        if (
+            line.strip().startswith("|")
+            and i + 1 < len(lines)
+            and is_table_separator(lines[i + 1])
+        ):
+            headers = parse_table_row(line)
+            i += 2
+            rows: list[list[str]] = []
+            while i < len(lines) and lines[i].strip().startswith("|"):
+                rows.append(parse_table_row(lines[i]))
+                i += 1
+            rendered.extend(render_markdown_table(headers, rows))
+            continue
+
+        text_line = markdown_inline_to_text(line)
+        text_line = re.sub(r"^#{1,6}\s*", "", text_line)
+        rendered.append(text_line)
+        i += 1
+
+    output = "\n".join(rendered)
+    output = re.sub(r"\n{3,}", "\n\n", output)
+    return output.strip() + "\n"
+
+
 def extract_backticked_value(text: str, label: str) -> str | None:
     match = re.search(rf"- {re.escape(label)}:\s+`([^`]+)`", text)
     return match.group(1) if match else None
@@ -181,11 +250,11 @@ def build_handoff() -> None:
     generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     shutil.copy2(THESIS_PDF, HANDOFF_ROOT / "01_Thesis.pdf")
-    write_text(HANDOFF_ROOT / "02_One_Page_Summary.txt", SUMMARY)
+    (HANDOFF_ROOT / "02_One_Page_Summary.txt").write_text(render_markdown_for_handoff(SUMMARY.read_text()))
     (HANDOFF_ROOT / "03_What_Changed_Since_Last_Send.txt").write_text(build_change_note())
-    write_text(HANDOFF_ROOT / "04_Key_Claims_And_Evidence.txt", CLAIM_MAP)
-    write_text(HANDOFF_ROOT / "05_Main_Risks_And_Mitigations.txt", RISK_REGISTER)
-    write_text(HANDOFF_ROOT / "06_What_This_Thesis_Does_Not_Claim.txt", NON_CLAIMS)
+    (HANDOFF_ROOT / "04_Key_Claims_And_Evidence.txt").write_text(render_markdown_for_handoff(CLAIM_MAP.read_text()))
+    (HANDOFF_ROOT / "05_Main_Risks_And_Mitigations.txt").write_text(render_markdown_for_handoff(RISK_REGISTER.read_text()))
+    (HANDOFF_ROOT / "06_What_This_Thesis_Does_Not_Claim.txt").write_text(render_markdown_for_handoff(NON_CLAIMS.read_text()))
     (HANDOFF_ROOT / "07_Claim_Verification_Report.txt").write_text(build_claim_verification_note())
 
     (HANDOFF_ROOT / "00_START_HERE.txt").write_text(
