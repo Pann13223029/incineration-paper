@@ -49,6 +49,19 @@ This also writes:
 
 - `research/slides/dist/defense-deck.pdf` when a local Chrome/Edge browser can launch headlessly
 
+### Frozen defense bundle
+
+```bash
+npm run slides:bundle
+```
+
+This writes:
+
+- `research/slides/dist/defense-bundle/`
+- `research/slides/dist/defense-bundle.zip`
+
+The bundle includes the HTML deck, slide source, local assets, rehearsal notes, supervisor brief, and the current claim-verification snapshot.
+
 ### Other options
 
 - Read directly as speaker notes and copy into a conventional slide tool.
