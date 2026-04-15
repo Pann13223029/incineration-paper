@@ -74,6 +74,7 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 - Review-packet entry point: `npm run packets:build`
 - Simplified supervisor handoff entry point: `npm run supervisor:ready`
 - Latest simplified supervisor bundle alias: `research/packets/latest-supervisor-handoff`
+- Advisor writing/style guide: `research/notes/advisor-writing-guidance.md`
 - Checkpoint-freeze guide: `research/checkpoints/README.md`
 - Checkpoint-freeze entry point: `npm run checkpoint:freeze`
 - Latest frozen baseline alias: `research/checkpoints/latest-sendable`
