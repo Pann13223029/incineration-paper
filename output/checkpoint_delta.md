@@ -1,28 +1,28 @@
 # Changes Since Last Frozen Checkpoint
 
-- Generated at: 2026-04-15T11:49:42+00:00
-- Current HEAD: `385cfef`
-- Baseline checkpoint tag: `sendable-now-20260415-da72753`
-- Baseline SHA: `da72753`
+- Current HEAD: `afa6ef0`
+- Baseline checkpoint tag: `sendable-now-20260415-385cfef`
+- Baseline SHA: `385cfef`
 - Commits since baseline: `1`
 
 ## Commit Summary
 
-- `385cfef Add supervisor feedback round workflow`
+- `afa6ef0 Add packet delta summary`
 
 ## Changed Areas
 
+### Supervisor and defense materials
+- `research/packets/README.md`
+
 ### Workflow and repo operations
-- `.gitignore`
-- `AGENTS.md`
 - `README.md`
-- `code/scripts/13_start_review_round.py`
-- `package.json`
-- `research/review-rounds/README.md`
+- `code/scripts/11_package_review_packets.py`
+- `code/scripts/14_generate_checkpoint_delta.py`
+- `output/checkpoint_delta.md`
 
 ## Interpretation
 
-This packet should be read as operational hardening, because the defended thesis stayed stable while workflow or review tooling changed.
+This packet should be read as a support-layer revision, because the defended thesis stayed stable while supervisor or defense materials changed.
 
 ## Reviewer Guidance
 

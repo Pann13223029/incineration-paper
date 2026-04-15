@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import subprocess
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -66,6 +65,8 @@ def files_since(tag: str) -> list[str]:
 
 
 def classify_path(path: str) -> str:
+    if path == "output/checkpoint_delta.md":
+        return "Workflow and repo operations"
     if path.startswith("thesis/") or path.startswith("output/") or path.startswith("code/scripts/05") or path.startswith("code/scripts/06") or path.startswith("code/scripts/07") or path.startswith("code/scripts/08"):
         return "Thesis and empirical core"
     if path.startswith("research/notes/") or path.startswith("research/slides/") or path.startswith("research/packets/"):
@@ -89,7 +90,6 @@ def write_no_delta(tag: str | None) -> None:
     lines = [
         "# Changes Since Last Frozen Checkpoint",
         "",
-        f"- Generated at: {datetime.now(timezone.utc).replace(microsecond=0).isoformat()}",
         f"- Current HEAD: `{head_short()}`",
     ]
     if tag:
@@ -129,7 +129,6 @@ def main() -> int:
     lines = [
         "# Changes Since Last Frozen Checkpoint",
         "",
-        f"- Generated at: {datetime.now(timezone.utc).replace(microsecond=0).isoformat()}",
         f"- Current HEAD: `{head_short()}`",
         f"- Baseline checkpoint tag: `{baseline_tag}`",
         f"- Baseline SHA: `{tag_sha(baseline_tag)[:7]}`",
