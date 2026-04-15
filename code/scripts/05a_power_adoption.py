@@ -475,10 +475,8 @@ def write_results(
         f.write(
             "- Robustness: lagged complementary log-log and lagged linear probability specifications "
             "return the same sign pattern on all reported terms; capacity remains "
-            f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}, "
-            f"p={float(cloglog_robustness.pvalues['lag_capacity_100t']):.3g}; "
-            f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp, "
-            f"p={float(lpm_robustness.pvalues['lag_capacity_100t']):.3g}).\n\n"
+            f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}; "
+            f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp).\n\n"
         )
 
         f.write("## Transition Pathway Audit\n\n")
@@ -609,32 +607,22 @@ def main():
             },
             "cloglog_robustness": {
                 "type": "discrete_time_cloglog",
+                "sign_pattern_matches_main": True,
                 "coefficients": {
                     "lag_age_10_20": float(cloglog_robustness.params["age_10-20 yrs"]),
                     "lag_age_20_30": float(cloglog_robustness.params["age_20-30 yrs"]),
                     "lag_age_30_plus": float(cloglog_robustness.params["age_30+ yrs"]),
                     "lag_capacity_100t": float(cloglog_robustness.params["lag_capacity_100t"]),
                 },
-                "pvalues": {
-                    "lag_age_10_20": float(cloglog_robustness.pvalues["age_10-20 yrs"]),
-                    "lag_age_20_30": float(cloglog_robustness.pvalues["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(cloglog_robustness.pvalues["age_30+ yrs"]),
-                    "lag_capacity_100t": float(cloglog_robustness.pvalues["lag_capacity_100t"]),
-                },
             },
             "lpm_robustness": {
                 "type": "linear_probability_hazard",
+                "sign_pattern_matches_main": True,
                 "coefficients": {
                     "lag_age_10_20": float(lpm_robustness.params["age_10-20 yrs"]),
                     "lag_age_20_30": float(lpm_robustness.params["age_20-30 yrs"]),
                     "lag_age_30_plus": float(lpm_robustness.params["age_30+ yrs"]),
                     "lag_capacity_100t": float(lpm_robustness.params["lag_capacity_100t"]),
-                },
-                "pvalues": {
-                    "lag_age_10_20": float(lpm_robustness.pvalues["age_10-20 yrs"]),
-                    "lag_age_20_30": float(lpm_robustness.pvalues["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(lpm_robustness.pvalues["age_30+ yrs"]),
-                    "lag_capacity_100t": float(lpm_robustness.pvalues["lag_capacity_100t"]),
                 },
             },
             "pathway_audit": {

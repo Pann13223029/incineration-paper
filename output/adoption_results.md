@@ -50,7 +50,7 @@ Main specification: lagged discrete-time logit hazard with prior-year age band a
 - Facilities: 1,915
 - First-adoption events: 140
 - Pseudo-R-squared (deviance-based): 0.1842
-- Robustness: lagged complementary log-log and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.345, p=1.67e-07; LPM coef. 1.47 pp, p=5.03e-07).
+- Robustness: lagged complementary log-log and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.345; LPM coef. 1.47 pp).
 
 ## Transition Pathway Audit
 

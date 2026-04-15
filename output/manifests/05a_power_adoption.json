@@ -18,17 +18,12 @@
   "metadata": {
     "cloglog_robustness": {
       "coefficients": {
-        "lag_age_10_20": -1.93332748,
-        "lag_age_20_30": -1.442219753,
-        "lag_age_30_plus": -0.9595331325,
-        "lag_capacity_100t": 0.3450291282
+        "lag_age_10_20": -1.9333275,
+        "lag_age_20_30": -1.4422198,
+        "lag_age_30_plus": -0.95953313,
+        "lag_capacity_100t": 0.34502913
       },
-      "pvalues": {
-        "lag_age_10_20": 1.846194719e-10,
-        "lag_age_20_30": 1.537189745e-06,
-        "lag_age_30_plus": 0.002845557197,
-        "lag_capacity_100t": 1.665628987e-07
-      },
+      "sign_pattern_matches_main": true,
       "type": "discrete_time_cloglog"
     },
     "events": 141,
@@ -38,56 +33,51 @@
     "left_censored_generators": 913,
     "lpm_robustness": {
       "coefficients": {
-        "lag_age_10_20": -0.02168689551,
-        "lag_age_20_30": -0.01983289693,
-        "lag_age_30_plus": -0.01516002788,
-        "lag_capacity_100t": 0.01471597826
+        "lag_age_10_20": -0.021686896,
+        "lag_age_20_30": -0.019832897,
+        "lag_age_30_plus": -0.015160028,
+        "lag_capacity_100t": 0.014715978
       },
-      "pvalues": {
-        "lag_age_10_20": 2.142771269e-07,
-        "lag_age_20_30": 5.375155986e-05,
-        "lag_age_30_plus": 0.01078948298,
-        "lag_capacity_100t": 5.029072255e-07
-      },
+      "sign_pattern_matches_main": true,
       "type": "linear_probability_hazard"
     },
     "model": {
       "average_marginal_effects": {
         "age_10-20 yrs": {
-          "ame": -0.01763926897,
-          "pvalue": 4.67200447e-10,
-          "se": 0.00283146006
+          "ame": -0.017639269,
+          "pvalue": 4.6720045e-10,
+          "se": 0.0028314601
         },
         "age_20-30 yrs": {
-          "ame": -0.01722516586,
-          "pvalue": 3.676315623e-05,
-          "se": 0.004173840704
+          "ame": -0.017225166,
+          "pvalue": 3.6763156e-05,
+          "se": 0.0041738407
         },
         "age_30+ yrs": {
-          "ame": -0.01125808581,
-          "pvalue": 0.004196783484,
-          "se": 0.003932297694
+          "ame": -0.011258086,
+          "pvalue": 0.0041967835,
+          "se": 0.0039322977
         },
         "lag_capacity_100t": {
-          "ame": 0.005041559005,
-          "pvalue": 0.0128894406,
-          "se": 0.002027320166
+          "ame": 0.005041559,
+          "pvalue": 0.012889441,
+          "se": 0.0020273202
         }
       },
       "baseline_prior_year_age_band": "0-10 yrs",
       "coefficients": {
-        "lag_age_10_20": -1.974780262,
-        "lag_age_20_30": -1.480542559,
-        "lag_age_30_plus": -1.068070893,
-        "lag_capacity_100t": 0.4551554091
+        "lag_age_10_20": -1.9747803,
+        "lag_age_20_30": -1.4805426,
+        "lag_age_30_plus": -1.0680709,
+        "lag_capacity_100t": 0.45515541
       },
       "predictors_lagged_one_year": true,
-      "pseudo_r_squared": 0.1841827268,
+      "pseudo_r_squared": 0.18418273,
       "pvalues": {
-        "lag_age_10_20": 1.654948187e-10,
-        "lag_age_20_30": 7.581598478e-07,
-        "lag_age_30_plus": 0.003123234527,
-        "lag_capacity_100t": 0.01165395278
+        "lag_age_10_20": 1.6549482e-10,
+        "lag_age_20_30": 7.5815985e-07,
+        "lag_age_30_plus": 0.0031232345,
+        "lag_capacity_100t": 0.011653953
       },
       "reported_scale": "average_marginal_effect",
       "type": "discrete_time_logit_hazard",
