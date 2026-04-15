@@ -18,10 +18,10 @@
   "metadata": {
     "cloglog_robustness": {
       "coefficients": {
-        "lag_age_10_20": -1.9333275,
-        "lag_age_20_30": -1.4422198,
-        "lag_age_30_plus": -0.95953313,
-        "lag_capacity_100t": 0.34502913
+        "lag_age_10_20": -1.933327,
+        "lag_age_20_30": -1.44222,
+        "lag_age_30_plus": -0.9595331,
+        "lag_capacity_100t": 0.3450291
       },
       "sign_pattern_matches_main": true,
       "type": "discrete_time_cloglog"
@@ -33,10 +33,10 @@
     "left_censored_generators": 913,
     "lpm_robustness": {
       "coefficients": {
-        "lag_age_10_20": -0.021686896,
-        "lag_age_20_30": -0.019832897,
-        "lag_age_30_plus": -0.015160028,
-        "lag_capacity_100t": 0.014715978
+        "lag_age_10_20": -0.0216869,
+        "lag_age_20_30": -0.0198329,
+        "lag_age_30_plus": -0.01516003,
+        "lag_capacity_100t": 0.01471598
       },
       "sign_pattern_matches_main": true,
       "type": "linear_probability_hazard"
@@ -44,40 +44,40 @@
     "model": {
       "average_marginal_effects": {
         "age_10-20 yrs": {
-          "ame": -0.017639269,
-          "pvalue": 4.6720045e-10,
-          "se": 0.0028314601
+          "ame": -0.01763927,
+          "pvalue": 4.672004e-10,
+          "se": 0.00283146
         },
         "age_20-30 yrs": {
-          "ame": -0.017225166,
-          "pvalue": 3.6763156e-05,
-          "se": 0.0041738407
+          "ame": -0.01722517,
+          "pvalue": 3.676316e-05,
+          "se": 0.004173841
         },
         "age_30+ yrs": {
-          "ame": -0.011258086,
-          "pvalue": 0.0041967835,
-          "se": 0.0039322977
+          "ame": -0.01125809,
+          "pvalue": 0.004196783,
+          "se": 0.003932298
         },
         "lag_capacity_100t": {
           "ame": 0.005041559,
-          "pvalue": 0.012889441,
-          "se": 0.0020273202
+          "pvalue": 0.01288944,
+          "se": 0.00202732
         }
       },
       "baseline_prior_year_age_band": "0-10 yrs",
       "coefficients": {
-        "lag_age_10_20": -1.9747803,
-        "lag_age_20_30": -1.4805426,
-        "lag_age_30_plus": -1.0680709,
-        "lag_capacity_100t": 0.45515541
+        "lag_age_10_20": -1.97478,
+        "lag_age_20_30": -1.480543,
+        "lag_age_30_plus": -1.068071,
+        "lag_capacity_100t": 0.4551554
       },
       "predictors_lagged_one_year": true,
-      "pseudo_r_squared": 0.18418273,
+      "pseudo_r_squared": 0.1841827,
       "pvalues": {
-        "lag_age_10_20": 1.6549482e-10,
-        "lag_age_20_30": 7.5815985e-07,
-        "lag_age_30_plus": 0.0031232345,
-        "lag_capacity_100t": 0.011653953
+        "lag_age_10_20": 1.654948e-10,
+        "lag_age_20_30": 7.581598e-07,
+        "lag_age_30_plus": 0.003123235,
+        "lag_capacity_100t": 0.01165395
       },
       "reported_scale": "average_marginal_effect",
       "type": "discrete_time_logit_hazard",

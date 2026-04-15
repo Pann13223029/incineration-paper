@@ -104,7 +104,7 @@ IDENTIFIER_DTYPES = {
 }
 
 
-def stable_float(value: float, sig_digits: int = 8) -> float:
+def stable_float(value: float, sig_digits: int = 7) -> float:
     """Round floats to a stable significant-digit representation."""
     if not np.isfinite(value):
         return value
