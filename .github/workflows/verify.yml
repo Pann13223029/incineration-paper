@@ -31,7 +31,7 @@ jobs:
           cache: npm
 
       - name: Install Tectonic
-        uses: wfriedenberg/setup-tectonic@v4
+        uses: wtfjoke/setup-tectonic@v4
 
       - name: Create virtual environment
         run: python -m venv .venv
