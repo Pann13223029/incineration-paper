@@ -23,6 +23,16 @@ README_PATH = Path(REPO_ROOT) / "README.md"
 ARCHITECTURE_PATH = Path(REPO_ROOT) / "ARCHITECTURE.md"
 THESIS_PATH = Path(REPO_ROOT) / "thesis" / "thesis.tex"
 REPORT_PATH = OUTPUT_DIR / "claim_verification.md"
+CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
+EXEC_SUMMARY_PATH = Path(REPO_ROOT) / "research" / "notes" / "executive-summary-for-supervisor.md"
+DEFENSE_QA_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-q-and-a.md"
+DEFENSE_RAPID_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-rapid-answers.md"
+DEFENSE_ORDER_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-question-order.md"
+DEFENSE_OUTLINE_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-slide-outline.md"
+DEFENSE_DECK_PATH = Path(REPO_ROOT) / "research" / "slides" / "defense-deck.md"
+DEFENSE_ADOPTION_FIG_PATH = (
+    Path(REPO_ROOT) / "research" / "slides" / "figures" / "defense_adoption_hazard.svg"
+)
 
 CORE_MANIFESTS = [
     "02_parse_facility_panel",
@@ -421,6 +431,89 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 ),
             ],
         },
+        {
+            "id": "supervisor_brief_current_numbers",
+            "targets": [
+                (
+                    EXEC_SUMMARY_PATH,
+                    "lagged discrete-time logit hazard",
+                ),
+                (
+                    EXEC_SUMMARY_PATH,
+                    (
+                        f"about {metrics['adoption_age_range_1dp'][0]}-"
+                        f"{metrics['adoption_age_range_1dp'][1]} percentage points less likely"
+                    ),
+                ),
+                (
+                    EXEC_SUMMARY_PATH,
+                    (
+                        f"about {metrics['adoption_capacity_pp_1dp']} percentage points"
+                    ),
+                ),
+                (
+                    EXEC_SUMMARY_PATH,
+                    (
+                        f"{metrics['pathway_reset']} of {metrics['events']} observed transitions as reset/rebuild-like"
+                    ),
+                ),
+            ],
+        },
+        {
+            "id": "defense_notes_current_spec",
+            "targets": [
+                (
+                    DEFENSE_QA_PATH,
+                    "### 3. Why use a logit hazard rather than LPM?",
+                ),
+                (
+                    DEFENSE_QA_PATH,
+                    "The main specification is a lagged logit hazard",
+                ),
+                (
+                    DEFENSE_RAPID_PATH,
+                    "### Why use logit rather than LPM?",
+                ),
+                (
+                    DEFENSE_ORDER_PATH,
+                    "### 9. Why use logit rather than LPM?",
+                ),
+            ],
+        },
+        {
+            "id": "defense_slides_current_numbers",
+            "targets": [
+                (
+                    DEFENSE_OUTLINE_PATH,
+                    (
+                        f"- Prior-year age `10-20`: `{metrics['adoption_age_range_2dp'][0].replace('−', '-')}` pp"
+                    ),
+                ),
+                (
+                    DEFENSE_OUTLINE_PATH,
+                    (
+                        f"- Prior-year capacity: `{metrics['adoption_capacity_pp_2dp'].replace('+', '')}` pp per `100 t/day`"
+                    ),
+                ),
+                (
+                    DEFENSE_DECK_PATH,
+                    (
+                        f"<strong>{metrics['adoption_age_range_1dp'][0]}-"
+                        f"{metrics['adoption_age_range_1dp'][1]} pp less likely</strong>"
+                    ),
+                ),
+                (
+                    DEFENSE_DECK_PATH,
+                    (
+                        f"<strong>{metrics['adoption_capacity_pp_1dp']} pp</strong>"
+                    ),
+                ),
+                (
+                    DEFENSE_ADOPTION_FIG_PATH,
+                    f">{metrics['adoption_capacity_pp_2dp']} pp<",
+                ),
+            ],
+        },
     ]
 
 
@@ -456,6 +549,60 @@ def make_forbidden_patterns() -> list[dict]:
             "pattern": "+1.47 pp per 100 t/day",
             "reason": "Pre-hardening adoption capacity effect wording should not persist in the architecture doc.",
         },
+        {
+            "id": "stale_supervisor_cloglog_method",
+            "path": EXEC_SUMMARY_PATH,
+            "pattern": "lagged complementary log-log discrete-time hazard",
+            "reason": "Supervisor brief must reflect the current logit main specification.",
+        },
+        {
+            "id": "stale_supervisor_old_age_range",
+            "path": EXEC_SUMMARY_PATH,
+            "pattern": "2.3-3.2 percentage points less likely",
+            "reason": "Supervisor brief should not retain pre-logit adoption effects.",
+        },
+        {
+            "id": "stale_supervisor_old_capacity_effect",
+            "path": EXEC_SUMMARY_PATH,
+            "pattern": "0.39 percentage points",
+            "reason": "Supervisor brief should not retain pre-logit capacity effects.",
+        },
+        {
+            "id": "stale_defense_q_and_a_heading",
+            "path": DEFENSE_QA_PATH,
+            "pattern": "Why use a complementary log-log hazard?",
+            "reason": "Defense Q&A must present logit as the main adoption specification.",
+        },
+        {
+            "id": "stale_defense_rapid_heading",
+            "path": DEFENSE_RAPID_PATH,
+            "pattern": "Why use cloglog rather than LPM?",
+            "reason": "Rapid answers must present logit as the main adoption specification.",
+        },
+        {
+            "id": "stale_defense_order_heading",
+            "path": DEFENSE_ORDER_PATH,
+            "pattern": "Why use cloglog rather than LPM?",
+            "reason": "Question order must present logit as the main adoption specification.",
+        },
+        {
+            "id": "stale_defense_outline_old_age_range",
+            "path": DEFENSE_OUTLINE_PATH,
+            "pattern": "- Prior-year age `10-20`: `-3.19` pp",
+            "reason": "Defense outline should not retain pre-logit adoption effects.",
+        },
+        {
+            "id": "stale_defense_deck_old_capacity_effect",
+            "path": DEFENSE_DECK_PATH,
+            "pattern": "0.39 pp",
+            "reason": "Defense deck should not retain pre-logit capacity effects.",
+        },
+        {
+            "id": "stale_defense_figure_cloglog",
+            "path": DEFENSE_ADOPTION_FIG_PATH,
+            "pattern": "lagged cloglog hazard",
+            "reason": "Adoption slide figure must reflect the current logit main specification.",
+        },
     ]
 
 
@@ -465,6 +612,13 @@ def run_checks() -> tuple[list[dict], list[dict], dict]:
         README_PATH: README_PATH.read_text(encoding="utf-8"),
         ARCHITECTURE_PATH: ARCHITECTURE_PATH.read_text(encoding="utf-8"),
         THESIS_PATH: THESIS_PATH.read_text(encoding="utf-8"),
+        EXEC_SUMMARY_PATH: EXEC_SUMMARY_PATH.read_text(encoding="utf-8"),
+        DEFENSE_QA_PATH: DEFENSE_QA_PATH.read_text(encoding="utf-8"),
+        DEFENSE_RAPID_PATH: DEFENSE_RAPID_PATH.read_text(encoding="utf-8"),
+        DEFENSE_ORDER_PATH: DEFENSE_ORDER_PATH.read_text(encoding="utf-8"),
+        DEFENSE_OUTLINE_PATH: DEFENSE_OUTLINE_PATH.read_text(encoding="utf-8"),
+        DEFENSE_DECK_PATH: DEFENSE_DECK_PATH.read_text(encoding="utf-8"),
+        DEFENSE_ADOPTION_FIG_PATH: DEFENSE_ADOPTION_FIG_PATH.read_text(encoding="utf-8"),
     }
 
     passes = []
@@ -594,9 +748,74 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
     REPORT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def write_claim_map(metrics: dict) -> None:
+    lines = [
+        "# Claim-to-Evidence Map",
+        "",
+        "Curated bridge between the defended thesis claims and the canonical generated outputs.",
+        "",
+        "Use this alongside `output/claim_verification.md`: the verifier confirms wording is synchronized, while this map explains which artifact supports which defended claim.",
+        "",
+        "## Claim 1: The thesis is empirically two-part",
+        "",
+        "Defended claim: the fleet transition question must be split into an extensive-margin adoption layer and an intensive-margin generator-efficiency layer.",
+        "",
+        "Evidence spine:",
+        f"- `output/adoption_results.md`: observed first-adoption risk set of {fmt_int(metrics['risk_set_obs'])} facility-years across {fmt_int(metrics['risk_set_facilities'])} facilities, with {fmt_int(metrics['events'])} observed transition events.",
+        f"- `output/regression_results.md`: canonical generator frame of {fmt_int(metrics['regression_obs'])} facility-years across {fmt_int(metrics['regression_facilities'])} facilities.",
+        "- `thesis/thesis.tex` Chapters 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
+        "",
+        "## Claim 2: Observed transition into generation is selective rather than diffuse",
+        "",
+        "Defended claim: among coded facilities first observed without generation, younger and larger facilities are more likely to record observed transition into generation.",
+        "",
+        "Evidence spine:",
+        f"- `output/adoption_results.md`: lagged logit hazard on {fmt_int(metrics['model_obs'])} facility-years across {fmt_int(metrics['model_facilities'])} facilities and {fmt_int(metrics['model_events'])} retained events.",
+        f"- `output/adoption_results.md`: prior-year age effects range from {metrics['adoption_age_range_2dp'][0]} to {metrics['adoption_age_range_2dp'][1]} percentage points relative to age 0-10.",
+        f"- `output/adoption_results.md`: prior-year capacity effect is {metrics['adoption_capacity_pp_2dp']} percentage points per 100 t/day.",
+        "- `output/adoption_results.md` event-rate tables: event rates collapse after age 10 and rise sharply across capacity quartiles.",
+        "",
+        "## Claim 3: Capital-reset-like modernization is empirically prominent, but not uniquely identified",
+        "",
+        "Defended claim: the pathway audit supports a calibrated mechanism claim, not a proof that replacement is the only pathway.",
+        "",
+        "Evidence spine:",
+        f"- `output/adoption_results.md`: pathway audit counts {metrics['pathway_reset']} reset/rebuild-like, {metrics['pathway_continuity']} continuity/in-place-upgrade-like, {metrics['pathway_placeholder']} forward-dated/placeholder, {metrics['pathway_unresolved']} unresolved.",
+        "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, and unresolved placeholder cases.",
+        "- `research/notes/what-this-thesis-does-not-claim.md`: the non-claims note keeps the mechanism language calibrated.",
+        "",
+        "## Claim 4: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement",
+        "",
+        "Defended claim: within the generator sample, age, scale, and utilization matter strongly, while within-facility responsiveness remains bounded.",
+        "",
+        "Evidence spine:",
+        "- `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.",
+        f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['pre_ratio']:.4f} pre-Fukushima and {metrics['post_ratio']:.4f} post-Fukushima.",
+        "- `output/robustness_results.md`: sign pattern remains stable across the defended robustness set.",
+        "",
+        "## Claim 5: The thesis supports a policy hierarchy, not an exclusive mechanism claim",
+        "",
+        "Defended claim: capital-side modernization and consolidation likely matter more for the weakest segment than operating-side fine-tuning alone, while operations still matter within the design envelope.",
+        "",
+        "Evidence spine:",
+        "- `output/adoption_results.md`: old and small facilities rarely record observed transition into generation.",
+        "- `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.",
+        "- `research/notes/what-this-thesis-does-not-claim.md`: the thesis explicitly avoids claiming causal proof, exclusive replacement, full lifecycle accounting, or heat-recovery evaluation.",
+        "",
+        "## Reviewer Use",
+        "",
+        "1. Start with `research/notes/executive-summary-for-supervisor.md` for the one-page narrative.",
+        "2. Use `output/claim_verification.md` to confirm the current wording matches the generated artifacts.",
+        "3. Use this file to see which exact output anchors each defended claim.",
+        "4. Use `research/notes/what-this-thesis-does-not-claim.md` to keep the scope disciplined during review or viva prep.",
+    ]
+    CLAIM_MAP_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     passes, failures, metrics = run_checks()
     write_report(passes, failures, metrics)
+    write_claim_map(metrics)
 
     manifest_path = write_stage_manifest(
         "08_verify_claims",
@@ -610,8 +829,15 @@ def main() -> None:
             "README.md",
             "ARCHITECTURE.md",
             "thesis/thesis.tex",
+            "research/notes/executive-summary-for-supervisor.md",
+            "research/notes/defense-q-and-a.md",
+            "research/notes/defense-rapid-answers.md",
+            "research/notes/defense-question-order.md",
+            "research/notes/defense-slide-outline.md",
+            "research/slides/defense-deck.md",
+            "research/slides/figures/defense_adoption_hazard.svg",
         ],
-        outputs=["output/claim_verification.md"],
+        outputs=["output/claim_verification.md", "output/claim_evidence_map.md"],
         metadata={
             "passed_checks": len(passes),
             "failed_checks": len(failures),
@@ -620,6 +846,7 @@ def main() -> None:
     )
 
     print(f"Claim verification report: {REPORT_PATH}")
+    print(f"Claim-to-evidence map: {CLAIM_MAP_PATH}")
     print(f"Manifest: {manifest_path}")
 
     if failures:

@@ -66,10 +66,10 @@ Use this as a speaking outline, not as a content dump. Each slide should have on
 
 **Keep on slide**
 
-- Prior-year age `10-20`: `-3.19` pp
-- Prior-year age `20-30`: `-2.82` pp
-- Prior-year age `30+`: `-2.26` pp
-- Prior-year capacity: `+0.39` pp per `100 t/day`
+- Prior-year age `10-20`: `-1.76` pp
+- Prior-year age `20-30`: `-1.72` pp
+- Prior-year age `30+`: `-1.13` pp
+- Prior-year capacity: `0.50` pp per `100 t/day`
 - `109` of `141` observed adoption events occur in FY2013-FY2019
 
 **Visual**

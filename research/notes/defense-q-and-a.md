@@ -14,9 +14,9 @@ Because the strongest criticism of the earlier version was scope leakage. A gene
 
 No. It solves the biggest part of it by separating entry into generation from conditional efficiency, but it still identifies observed first adoption only within the coded, initially non-generating subset. That is why the thesis now speaks in terms of the coded panel and observed transitions, not an omniscient fleet history.
 
-### 3. Why use a complementary log-log hazard?
+### 3. Why use a logit hazard rather than LPM?
 
-Because the event is rare and discrete-time. A cloglog hazard is a stronger main specification than the earlier linear probability framing, while still yielding interpretable average marginal effects in percentage points. The sign pattern also survives lagged logit and lagged LPM robustness checks.
+Because the event is rare and discrete-time, but the main practical need is a stable and interpretable extensive-margin model. The main specification is a lagged logit hazard with average marginal effects in percentage points, while lagged complementary log-log and lagged LPM variants are retained as robustness checks and return the same sign pattern.
 
 ### 4. Why are the adoption predictors lagged?
 

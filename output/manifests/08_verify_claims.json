@@ -21,17 +21,25 @@
     "output/manifests/06_robustness.json",
     "README.md",
     "ARCHITECTURE.md",
-    "thesis/thesis.tex"
+    "thesis/thesis.tex",
+    "research/notes/executive-summary-for-supervisor.md",
+    "research/notes/defense-q-and-a.md",
+    "research/notes/defense-rapid-answers.md",
+    "research/notes/defense-question-order.md",
+    "research/notes/defense-slide-outline.md",
+    "research/slides/defense-deck.md",
+    "research/slides/figures/defense_adoption_hazard.svg"
   ],
   "metadata": {
     "failed_checks": 0,
-    "passed_checks": 11,
+    "passed_checks": 23,
     "source_manifest_python": [
       "3.12.12"
     ]
   },
   "outputs": [
-    "output/claim_verification.md"
+    "output/claim_verification.md",
+    "output/claim_evidence_map.md"
   ],
   "python": "3.12.12",
   "stage": "08_verify_claims"

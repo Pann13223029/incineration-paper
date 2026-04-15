@@ -23,7 +23,7 @@
 
 **Method:** Two-part empirical design.
 
-1. Extensive margin: lagged complementary log-log discrete-time hazard for observed first transition into power generation, with prior-year age bands, prior-year capacity, year fixed effects, prefecture fixed effects, and facility-clustered standard errors.
+1. Extensive margin: lagged discrete-time logit hazard for observed first transition into power generation, with prior-year age bands, prior-year capacity, year fixed effects, prefecture fixed effects, and facility-clustered standard errors.
 2. Intensive margin: four main generator-efficiency specifications (Pooled OLS, Year FE, RE, Year FE + RE) plus eight robustness specifications.
 
 **Why not facility fixed effects as the primary model?** Two reasons.
@@ -37,8 +37,8 @@
 
 ### 1. Transition into power generation is selective, not diffuse
 
-- Facilities older than 10 years in the prior observed year are about 2.3-3.2 percentage points less likely to record transition into power generation than 0-10 year facilities.
-- Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.39 percentage points.
+- Facilities older than 10 years in the prior observed year are about 1.1-1.8 percentage points less likely to record transition into power generation than 0-10 year facilities.
+- Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.5 percentage points.
 - The coded panel therefore does not show widespread late conversion among old small plants.
 
 ### 2. The observed modernization pathway is usually capital-reset-like, but not exclusively so

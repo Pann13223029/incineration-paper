@@ -30,6 +30,7 @@ Optimized for fast review:
 - one-page supervisor brief
 - thesis PDF
 - claim-verification report
+- claim-to-evidence map
 - sample definition and core outputs
 - non-claims calibration note
 
@@ -41,5 +42,6 @@ Optimized for a cleaner archival handoff:
 - thesis figures
 - core defended analysis scripts
 - claim-verification report and outputs
+- claim-to-evidence map
 - stage manifests
 - reproduction and architecture docs

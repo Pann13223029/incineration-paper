@@ -48,9 +48,9 @@ Yes. The audit contains 38 continuity-type events consistent with in-place upgra
 
 No. Utilization is strongly positive. The point is that operational changes help, but they do not appear large enough to erase the bigger cross-facility gaps on their own.
 
-### Why use cloglog rather than LPM?
+### Why use logit rather than LPM?
 
-Because the event is rare and discrete-time. Cloglog is a stronger main specification, and the same sign pattern survives lagged logit and lagged LPM robustness checks.
+Because the event is rare and discrete-time, but the main specification is a lagged logit hazard with average marginal effects in percentage points. The same sign pattern survives lagged cloglog and lagged LPM robustness checks.
 
 ### What is the weakest part of the data?
 

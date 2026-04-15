@@ -116,8 +116,8 @@ If you need a 15-second version: same dataset, two different estimands, two diff
     <div class="note-card">
       <p class="eyebrow">Main hazard result</p>
       <ul>
-        <li><strong>Age penalty:</strong> facilities older than 10 years are about <strong>2.3-3.2 pp less likely</strong> to record observed transition.</li>
-        <li><strong>Scale premium:</strong> each additional <strong>100 t/day</strong> raises annual transition probability by about <strong>0.39 pp</strong>.</li>
+        <li><strong>Age penalty:</strong> facilities older than 10 years are about <strong>1.1-1.8 pp less likely</strong> to record observed transition.</li>
+        <li><strong>Scale premium:</strong> each additional <strong>100 t/day</strong> raises annual transition probability by about <strong>0.5 pp</strong>.</li>
       </ul>
     </div>
     <div class="note-card">
@@ -133,7 +133,7 @@ If you need a 15-second version: same dataset, two different estimands, two diff
 <!--
 Fast oral version:
 The extensive-margin result is simple: observed first transition into generation is selective, not diffuse.
-The older-than-10 age penalty is negative, capacity is positive, and the sign pattern survives lagged logit and lagged LPM robustness.
+The older-than-10 age penalty is negative, capacity is positive, and the sign pattern survives lagged cloglog and lagged LPM robustness.
 -->
 
 ---

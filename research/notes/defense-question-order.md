@@ -52,9 +52,9 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 **Target answer:** No. Utilization is strongly positive and operational reform remains a real lever. The claim is that it appears bounded relative to age-, scale-, and modernization-related gaps.
 
-### 9. Why use cloglog rather than LPM?
+### 9. Why use logit rather than LPM?
 
-**Target answer:** Because the event is rare and discrete-time. Cloglog is a stronger main specification for the hazard, while lagged logit and lagged LPM remain as robustness checks.
+**Target answer:** Because the event is rare and discrete-time, but the main specification is a lagged logit hazard with average marginal effects in percentage points. Lagged complementary log-log and lagged LPM remain as robustness checks.
 
 ### 10. What is the weakest part of the data?
 

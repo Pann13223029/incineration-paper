@@ -21,6 +21,7 @@ SUBMISSION_ROOT = PACKET_ROOT / "submission-packet"
 SUPERVISOR_ZIP = PACKET_ROOT / "supervisor-packet.zip"
 SUBMISSION_ZIP = PACKET_ROOT / "submission-packet.zip"
 CLAIM_REPORT = REPO_ROOT / "output" / "claim_verification.md"
+CLAIM_MAP = REPO_ROOT / "output" / "claim_evidence_map.md"
 VERIFY_MANIFEST = REPO_ROOT / "output" / "manifests" / "08_verify_claims.json"
 THESIS_DIR = REPO_ROOT / "thesis"
 THESIS_PDF = THESIS_DIR / "thesis.pdf"
@@ -30,6 +31,7 @@ SUPERVISOR_FILES: list[tuple[str, str | None]] = [
     ("research/notes/executive-summary-for-supervisor.md", None),
     ("research/notes/what-this-thesis-does-not-claim.md", None),
     ("output/claim_verification.md", None),
+    ("output/claim_evidence_map.md", None),
     ("output/sample_definition.md", None),
     ("output/adoption_results.md", None),
     ("output/regression_results.md", None),
@@ -50,6 +52,7 @@ SUBMISSION_FILES: list[tuple[str, str | None]] = [
     ("code/scripts/07_rebuild_analysis.py", None),
     ("code/scripts/08_verify_claims.py", None),
     ("output/claim_verification.md", None),
+    ("output/claim_evidence_map.md", None),
     ("output/sample_definition.md", None),
     ("output/adoption_results.md", None),
     ("output/regression_results.md", None),
@@ -200,12 +203,14 @@ def build_packets() -> None:
             "1. Read `research/notes/executive-summary-for-supervisor.md` for the one-page brief.",
             "2. Open `thesis/thesis.pdf` for the defended manuscript.",
             "3. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
-            "4. Use `research/notes/what-this-thesis-does-not-claim.md` to keep scope calibration explicit.",
+            "4. Use `output/claim_evidence_map.md` to see which artifact supports each defended claim.",
+            "5. Use `research/notes/what-this-thesis-does-not-claim.md` to keep scope calibration explicit.",
         ],
         [
             "- One-page supervisor brief",
             "- Current thesis PDF",
             "- Claim-verification report",
+            "- Claim-to-evidence map",
             "- Sample definition and core empirical outputs",
             "- Non-claims calibration note",
         ],
@@ -218,13 +223,14 @@ def build_packets() -> None:
             "1. Open `thesis/thesis.pdf` for the submission manuscript.",
             "2. Use `README.md` and `ARCHITECTURE.md` for repo-level orientation.",
             "3. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
-            "4. Use `thesis/thesis.tex` plus `thesis/figures/` as the authoritative source bundle.",
+            "4. Use `output/claim_evidence_map.md` for a compact claim-to-evidence bridge.",
+            "5. Use `thesis/thesis.tex` plus `thesis/figures/` as the authoritative source bundle.",
         ],
         [
             "- Current thesis PDF and authoritative LaTeX source",
             "- Thesis figures used by the manuscript",
             "- Core analysis scripts for the defended empirical design",
-            "- Claim-verification report and key empirical outputs",
+            "- Claim-verification report, claim-to-evidence map, and key empirical outputs",
             "- Stage manifests and repo-level reproduction docs",
         ],
     )
