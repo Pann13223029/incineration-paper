@@ -26,6 +26,8 @@ CHECKPOINT_DELTA = REPO_ROOT / "output" / "checkpoint_delta.md"
 VERIFY_MANIFEST = REPO_ROOT / "output" / "manifests" / "08_verify_claims.json"
 THESIS_DIR = REPO_ROOT / "thesis"
 THESIS_PDF = THESIS_DIR / "thesis.pdf"
+THESIS_TEX = THESIS_DIR / "thesis.tex"
+THESIS_FIGURES_DIR = THESIS_DIR / "figures"
 
 SUPERVISOR_FILES: list[tuple[str, str | None]] = [
     ("thesis/thesis.pdf", None),
@@ -87,10 +89,32 @@ def resolve_tectonic() -> str:
     raise FileNotFoundError("tectonic not found")
 
 
+def thesis_sources() -> list[Path]:
+    sources = [THESIS_TEX]
+    if THESIS_FIGURES_DIR.exists():
+        sources.extend(path for path in THESIS_FIGURES_DIR.rglob("*") if path.is_file())
+    return sources
+
+
+def thesis_pdf_is_current() -> bool:
+    if not THESIS_PDF.exists():
+        return False
+    pdf_mtime = THESIS_PDF.stat().st_mtime
+    return all(source.stat().st_mtime <= pdf_mtime for source in thesis_sources())
+
+
 def ensure_current_state() -> None:
     run([sys.executable, "code/scripts/08_verify_claims.py"])
     run([sys.executable, "code/scripts/14_generate_checkpoint_delta.py"])
-    tectonic = resolve_tectonic()
+    try:
+        tectonic = resolve_tectonic()
+    except FileNotFoundError as exc:
+        if thesis_pdf_is_current():
+            print("tectonic not found; reusing existing current thesis/thesis.pdf")
+            return
+        raise FileNotFoundError(
+            "tectonic not found and thesis/thesis.pdf is missing or stale relative to thesis sources"
+        ) from exc
     run([tectonic, "-p", "--keep-logs", "--keep-intermediates", "thesis.tex"], cwd=THESIS_DIR)
 
 

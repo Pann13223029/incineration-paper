@@ -15,7 +15,7 @@ npm run supervisor:ready
 `npm run packets:build`:
 
 1. reruns the repo-level claim verifier
-2. rebuilds `thesis/thesis.pdf` with `tectonic`
+2. rebuilds `thesis/thesis.pdf` with `tectonic`, or reuses an already-current local `thesis/thesis.pdf` if `tectonic` is unavailable
 3. assembles a frozen `supervisor-packet/`
 4. assembles a frozen `submission-packet/`
 5. writes zipped archives for both packets
@@ -27,7 +27,7 @@ npm run supervisor:ready
 3. writes `research/packets/dist/supervisor-handoff.zip`
 4. refreshes the stable local alias `research/packets/latest-supervisor-handoff`
 
-The packet and handoff commands work from the current thesis source plus the generated manifests and output artifacts already in the repo. They are packaging and verification commands, not full analysis rebuild commands.
+The packet and handoff commands work from the current thesis source plus the generated manifests and output artifacts already in the repo. They are packaging and verification commands, not full analysis rebuild commands. If `tectonic` is missing, they can still proceed when `thesis/thesis.pdf` already exists and is current relative to `thesis.tex` and the figure files.
 
 Use loose PDFs only while drafting. Once the thesis is sendable, review the packet contents and then freeze the milestone with `npm run checkpoint:freeze`.
 
