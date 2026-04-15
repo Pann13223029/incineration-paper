@@ -124,7 +124,8 @@ incineration-thesis/
 |   |   |-- 05a_power_adoption.py           # Observed first-adoption hazard on coded fleet
 |   |   |-- 05_panel_regression.py           # Generator-efficiency frame + 4 main models
 |   |   |-- 06_robustness.py                 # 8 robustness specifications
-|   |   |-- 07_rebuild_analysis.py           # One-command local rebuild from checked-in raw data
+|   |   |-- 07_rebuild_analysis.py           # One-command rebuild + repo-level claim verification
+|   |   |-- 08_verify_claims.py              # Checks thesis-facing claims against canonical outputs
 |   |   +-- panel_utils.py                   # Shared sample-construction and manifest helpers
 |   +-- notebooks/                           # Jupyter exploration
 |
@@ -175,9 +176,12 @@ python3 -m venv .venv
 
 # 3. Rebuild all thesis-facing analysis artifacts from the checked-in raw files
 .venv/bin/python code/scripts/07_rebuild_analysis.py
+
+# 4. Optional: rerun only the repo-level claim/evidence verifier
+.venv/bin/python code/scripts/08_verify_claims.py
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, and each stage writes a JSON provenance record under `output/manifests/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, and each stage writes a JSON provenance record under `output/manifests/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

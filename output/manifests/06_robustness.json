@@ -1,7 +1,7 @@
 {
   "stage": "06_robustness",
-  "timestamp_utc": "2026-04-15T07:59:20.040770+00:00",
-  "git_sha": "a64cef49fc5ee7d99b00a1d4db05c8809b96c4f2",
+  "timestamp_utc": "2026-04-15T08:30:02.380802+00:00",
+  "git_sha": "62b0844b20192b2edce080a5b0bad6391022b0d8",
   "python": "3.12.12",
   "platform": "macOS-15.6-arm64-arm-64bit",
   "analysis_config": {

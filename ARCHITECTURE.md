@@ -121,9 +121,9 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Finding | Magnitude | Significance |
 |---------|-----------|--------------|
-| Adoption hazard, prior-year age bands | Facilities older than 10 years are 1.5–2.2 pp less likely than 0–10-year facilities to record transition in the next observed year | p < 0.05 in every reported age-band coefficient |
-| Adoption hazard, prior-year capacity | +1.47 pp per 100 t/day | p < 0.001 |
-| Facility age effect | −0.019 to −0.035 in the four main specifications; −0.025 to −0.043 across robustness | p < 0.001 in every reported specification |
+| Adoption hazard, prior-year age bands | Facilities older than 10 years are 2.3–3.2 pp less likely than 0–10-year facilities to record transition in the next observed year | p < 0.05 in every reported age-band coefficient |
+| Adoption hazard, prior-year capacity | +0.39 pp per 100 t/day | p < 0.05 |
+| Facility age effect | −0.019 to −0.035 in the four main specifications | p < 0.001 in every reported main specification |
 | Design capacity effect | +0.041 to +0.103 in the four main specifications | Positive in every main specification |
 | Capacity utilization effect | +0.541 to +0.779 in the four main specifications | Positive in every main specification |
 | Heating value effect | Approximately zero in the canonical main models | Not significant in any of the four main specifications |
@@ -140,7 +140,7 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Category | Count |
 |----------|:-----:|
-| Python scripts | 10 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05a adoption, 05 regression, 06 robustness, 07 rebuild, shared panel utils) |
+| Python scripts | 11 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05a adoption, 05 regression, 06 robustness, 07 rebuild, 08 verify, shared panel utils) |
 | Raw data files | 20 (one per fiscal year) |
 | Processed panel | 23,599 rows × 28 columns |
 | Enriched panel (with grid factors) | 23,599 rows × 28 columns (100% grid-factor match) |
@@ -187,7 +187,8 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 05a_power_adoption.py            -> adoption_results.md + extensive-margin manifest
 05_panel_regression.py           -> sample_definition.md + 4 main regression specifications
 06_robustness.py                 -> 8 robustness specifications
-07_rebuild_analysis.py           -> one-command local rebuild from checked-in raw data
+07_rebuild_analysis.py           -> one-command local rebuild + claim verification
+08_verify_claims.py              -> claim_verification.md + verification manifest
 ```
 
 ---
@@ -198,4 +199,4 @@ Data is strong (near-census administrative panel, 20 years). RQ is estimable and
 
 ---
 
-*Last updated: 2026-04-14. Reflects the two-part adoption + generator-efficiency architecture and the current local thesis state.*
+*Last updated: 2026-04-15. Reflects the two-part adoption + generator-efficiency architecture, pathway-audit hardening, and repo-level claim verification.*

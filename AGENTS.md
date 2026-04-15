@@ -16,7 +16,7 @@ the canonical artifacts listed below.
 | Thesis prose | `thesis/thesis.tex` | Edit this directly for thesis-facing prose unless a task explicitly asks for a draft artifact. |
 | Legacy chapter drafts | `thesis/0*-*.md` | Read-only legacy drafts. Do not regenerate `thesis/thesis.tex` from them. |
 | Analysis frame and estimation logic | `code/scripts/panel_utils.py` | Check this before changing any empirical claim, sample definition, or model description. |
-| Generated sample and model facts | `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md`, `output/robustness_results.md` | Use these for current published numbers. |
+| Generated sample and model facts | `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md`, `output/robustness_results.md`, `output/claim_verification.md` | Use these for current published numbers and repo-level sync status. |
 | Provenance | `output/manifests/` | Use this when tracing how an output was generated. |
 | Repo-level technical framing | `ARCHITECTURE.md` | Update when the analytical design, artifact flow, or defended methodological framing materially changes. |
 | Repo summary for readers | `README.md` | Update when a change materially affects the top-line repo story, workflow, or reproducibility instructions. |
@@ -66,8 +66,10 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 ## Build And Verification
 
 - Analysis rebuild entry point: `.venv/bin/python code/scripts/07_rebuild_analysis.py`
+- Claim/evidence verifier entry point: `.venv/bin/python code/scripts/08_verify_claims.py`
 - Thesis build: compile from `thesis/`
 - Prefer `tectonic` if available; otherwise use the local LaTeX workflow required by the repo
+- Treat `output/claim_verification.md` as the repo-level gate for thesis-facing number drift and banned overclaim language.
 - After a thesis build, review warnings that could affect defendability or formatting, especially table overflow, broken references, and citation issues
 
 ## Panel Workflow

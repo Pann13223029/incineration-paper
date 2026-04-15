@@ -38,6 +38,13 @@ MODEL_VARS = [
     "grid_ef_kgco2_kwh",
 ]
 
+MAIN_MODEL_LABELS = [
+    "Model 1 (Pooled OLS)",
+    "Model 2 (Year FE)",
+    "Model 3 (RE)",
+    "Model 4 (Year FE + RE)",
+]
+
 
 def load_regression_frame():
     """Load the enriched panel and build the shared regression frame."""
@@ -253,12 +260,6 @@ def comparison_table(models, regression, sample_report_path):
     print("MODEL COMPARISON")
     print("=" * 60)
 
-    labels = [
-        "Model 1 (Pooled OLS)",
-        "Model 2 (Year FE)",
-        "Model 3 (RE)",
-        "Model 4 (Year FE + RE)",
-    ]
     path = os.path.join(OUTPUT_DIR, "regression_results.md")
 
     with open(path, "w", encoding="utf-8") as f:
@@ -269,7 +270,7 @@ def comparison_table(models, regression, sample_report_path):
             f"{regression['analysis_facility_id'].nunique():,} facilities.\n\n"
         )
         f.write(f"Sample definition: `{os.path.basename(sample_report_path)}`\n\n")
-        f.write("| Variable | " + " | ".join(labels) + " |\n")
+        f.write("| Variable | " + " | ".join(MAIN_MODEL_LABELS) + " |\n")
         f.write("|:---------|" + "|".join([":--------------------:"] * 4) + "|\n")
 
         for var in MODEL_VARS:
@@ -306,6 +307,52 @@ def comparison_table(models, regression, sample_report_path):
     return path
 
 
+def serialize_main_models(models):
+    """Return structured coefficient metadata for the four main models."""
+    payload = {
+        "labels": MAIN_MODEL_LABELS,
+        "coefficients": {},
+        "std_errors": {},
+        "pvalues": {},
+        "rsquared": [float(model.rsquared) for model in models],
+        "observations": [int(model.nobs) for model in models],
+    }
+
+    for var in MODEL_VARS:
+        payload["coefficients"][var] = [float(model.params[var]) for model in models]
+        payload["std_errors"][var] = [float(model_std_errors(model)[var]) for model in models]
+        payload["pvalues"][var] = [float(model_pvalues(model)[var]) for model in models]
+
+    return payload
+
+
+def serialize_age_group_summary(path):
+    """Read the age-group markdown table into structured metadata."""
+    lines = [line.strip() for line in open(path, "r", encoding="utf-8")]
+    data_lines = [
+        line
+        for line in lines
+        if line.startswith("|")
+        and not set(line.replace("|", "").replace(":", "").replace("-", "").strip()) == set()
+    ]
+
+    rows = {}
+    for line in data_lines[1:]:
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        if len(cells) < 7:
+            continue
+        key = cells[0]
+        rows[key] = {
+            "n_obs": int(cells[1]),
+            "mean_eff": float(cells[2]),
+            "median_eff": float(cells[3]),
+            "mean_capacity": float(cells[4]),
+            "mean_avoided": float(cells[5]),
+            "pct_of_total_avoided": float(cells[6]),
+        }
+    return rows
+
+
 def main():
     panel, regression, summary = load_regression_frame()
 
@@ -319,7 +366,8 @@ def main():
     m2 = run_ols_with_year_fe(regression)
     m3 = run_random_effects(regression)
     m4 = run_random_effects_with_year_fe(regression)
-    results_path = comparison_table([m1, m2, m3, m4], regression, sample_report_path)
+    models = [m1, m2, m3, m4]
+    results_path = comparison_table(models, regression, sample_report_path)
 
     manifest_path = write_stage_manifest(
         "05_panel_regression",
@@ -336,6 +384,8 @@ def main():
             "within_total_ratio": summary["regression_within_total_ratio"],
             "pre_fukushima_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
             "post_fukushima_within_total_ratio": summary["post_fukushima_within_total_ratio"],
+            "main_models": serialize_main_models(models),
+            "age_group_summary": serialize_age_group_summary(age_table_path),
             "outputs": {
                 "sample_report": os.path.basename(sample_report_path),
                 "summary_stats": os.path.basename(summary_stats_path),

@@ -19,12 +19,13 @@ STAGES = [
     "05a_power_adoption.py",
     "05_panel_regression.py",
     "06_robustness.py",
+    "08_verify_claims.py",
 ]
 
 
 def main():
     print("=" * 60)
-    print("Rebuilding analysis artifacts from raw data")
+    print("Rebuilding analysis artifacts and verifying thesis-facing claims")
     print("=" * 60)
 
     for script_name in STAGES:
