@@ -88,8 +88,8 @@ def resolve_tectonic() -> str:
 
 
 def ensure_current_state() -> None:
-    run([".venv/bin/python", "code/scripts/08_verify_claims.py"])
-    run(["python3", "code/scripts/14_generate_checkpoint_delta.py"])
+    run([sys.executable, "code/scripts/08_verify_claims.py"])
+    run([sys.executable, "code/scripts/14_generate_checkpoint_delta.py"])
     tectonic = resolve_tectonic()
     run([tectonic, "-p", "--keep-logs", "--keep-intermediates", "thesis.tex"], cwd=THESIS_DIR)
 

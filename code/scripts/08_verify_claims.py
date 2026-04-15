@@ -12,27 +12,46 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
-from panel_utils import REPO_ROOT, write_stage_manifest
-
-OUTPUT_DIR = Path(REPO_ROOT) / "output"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+OUTPUT_DIR = REPO_ROOT / "output"
 MANIFEST_DIR = OUTPUT_DIR / "manifests"
-README_PATH = Path(REPO_ROOT) / "README.md"
-ARCHITECTURE_PATH = Path(REPO_ROOT) / "ARCHITECTURE.md"
-THESIS_PATH = Path(REPO_ROOT) / "thesis" / "thesis.tex"
+
+
+def write_stage_manifest(
+    stage_name: str,
+    inputs: list[str],
+    outputs: list[str],
+    metadata: dict,
+) -> Path:
+    """Write a lightweight manifest without importing the full analysis stack."""
+    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+    path = MANIFEST_DIR / f"{stage_name}.json"
+    manifest = {
+        "stage": stage_name,
+        "python": sys.version.split()[0],
+        "inputs": inputs,
+        "outputs": outputs,
+        "metadata": metadata,
+    }
+    path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+README_PATH = REPO_ROOT / "README.md"
+ARCHITECTURE_PATH = REPO_ROOT / "ARCHITECTURE.md"
+THESIS_PATH = REPO_ROOT / "thesis" / "thesis.tex"
 REPORT_PATH = OUTPUT_DIR / "claim_verification.md"
 CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
-EXEC_SUMMARY_PATH = Path(REPO_ROOT) / "research" / "notes" / "executive-summary-for-supervisor.md"
-DEFENSE_QA_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-q-and-a.md"
-DEFENSE_RAPID_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-rapid-answers.md"
-DEFENSE_ORDER_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-question-order.md"
-DEFENSE_OUTLINE_PATH = Path(REPO_ROOT) / "research" / "notes" / "defense-slide-outline.md"
-DEFENSE_DECK_PATH = Path(REPO_ROOT) / "research" / "slides" / "defense-deck.md"
-DEFENSE_ADOPTION_FIG_PATH = (
-    Path(REPO_ROOT) / "research" / "slides" / "figures" / "defense_adoption_hazard.svg"
-)
+EXEC_SUMMARY_PATH = REPO_ROOT / "research" / "notes" / "executive-summary-for-supervisor.md"
+DEFENSE_QA_PATH = REPO_ROOT / "research" / "notes" / "defense-q-and-a.md"
+DEFENSE_RAPID_PATH = REPO_ROOT / "research" / "notes" / "defense-rapid-answers.md"
+DEFENSE_ORDER_PATH = REPO_ROOT / "research" / "notes" / "defense-question-order.md"
+DEFENSE_OUTLINE_PATH = REPO_ROOT / "research" / "notes" / "defense-slide-outline.md"
+DEFENSE_DECK_PATH = REPO_ROOT / "research" / "slides" / "defense-deck.md"
+DEFENSE_ADOPTION_FIG_PATH = REPO_ROOT / "research" / "slides" / "figures" / "defense_adoption_hazard.svg"
 
 CORE_MANIFESTS = [
     "02_parse_facility_panel",

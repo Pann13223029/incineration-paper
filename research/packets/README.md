@@ -27,6 +27,8 @@ npm run supervisor:ready
 3. writes `research/packets/dist/supervisor-handoff.zip`
 4. refreshes the stable local alias `research/packets/latest-supervisor-handoff`
 
+The packet and handoff commands work from the current thesis source plus the generated manifests and output artifacts already in the repo. They are packaging and verification commands, not full analysis rebuild commands.
+
 Use loose PDFs only while drafting. Once the thesis is sendable, review the packet contents and then freeze the milestone with `npm run checkpoint:freeze`.
 
 ## Packet types

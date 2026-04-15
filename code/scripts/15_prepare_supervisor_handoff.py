@@ -76,7 +76,7 @@ def zip_dir(src: Path, dest_zip: Path) -> None:
 
 
 def build_handoff() -> None:
-    run(["python3", "code/scripts/11_package_review_packets.py"])
+    run([sys.executable, "code/scripts/11_package_review_packets.py"])
 
     reset_dir(HANDOFF_ROOT)
     metadata = json.loads(PACKET_METADATA.read_text())
