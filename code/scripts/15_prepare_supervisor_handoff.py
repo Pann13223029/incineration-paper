@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -52,6 +53,103 @@ def write_text(dest: Path, source: Path) -> None:
     dest.write_text(source.read_text())
 
 
+def extract_backticked_value(text: str, label: str) -> str | None:
+    match = re.search(rf"- {re.escape(label)}:\s+`([^`]+)`", text)
+    return match.group(1) if match else None
+
+
+def extract_plain_value(text: str, label: str) -> str | None:
+    match = re.search(rf"- {re.escape(label)}:\s+([^\n]+)", text)
+    return match.group(1).strip() if match else None
+
+
+def build_change_note() -> str:
+    delta_text = DELTA.read_text()
+    current_head = extract_backticked_value(delta_text, "Current HEAD") or "unknown"
+    baseline_tag = extract_backticked_value(delta_text, "Baseline checkpoint tag") or "unknown"
+    commits_since = extract_backticked_value(delta_text, "Commits since baseline") or "unknown"
+    interpretation = re.search(r"## Interpretation\n\n(.+)", delta_text, re.DOTALL)
+    interpretation_text = interpretation.group(1).strip().splitlines()[0] if interpretation else ""
+
+    sections: dict[str, list[str]] = {}
+    current_section: str | None = None
+    for line in delta_text.splitlines():
+        if line.startswith("### "):
+            current_section = line[4:].strip()
+            sections[current_section] = []
+        elif current_section and line.startswith("- "):
+            sections[current_section].append(line[2:].strip())
+
+    thesis_core = sections.get("Thesis and empirical core", [])
+    support = sections.get("Supervisor and defense materials", [])
+    workflow = sections.get("Workflow and repo operations", [])
+
+    changed_layers: list[str] = []
+    if thesis_core:
+        changed_layers.append("the thesis manuscript and thesis-facing verifier logic")
+    if support:
+        changed_layers.append("the supervisor-facing support material")
+    if workflow:
+        changed_layers.append("the packaging workflow")
+
+    change_summary = ", ".join(changed_layers) if changed_layers else "the thesis package"
+
+    return f"""What changed since the last send
+
+Read this only after the thesis PDF and one-page summary.
+
+Short answer:
+- This is a substantive thesis revision, not just an operational refresh.
+- The main changes affect {change_summary}.
+- The empirical spine remains aligned and verified after the update.
+
+Version details:
+- Current sendable commit: {current_head}
+- Previous frozen baseline: {baseline_tag}
+- Commits since that baseline: {commits_since}
+
+How to read this revision:
+- Prioritize the revised manuscript itself.
+- Use the one-page summary to see the defended argument quickly.
+- Ignore the underlying commit history unless you specifically want repo-level detail.
+
+Reviewer note:
+- {interpretation_text}
+"""
+
+
+def build_claim_verification_note() -> str:
+    report = CLAIM_REPORT.read_text()
+    status = re.search(r"## Result: (\w+)", report)
+    passed = re.search(r"- Passed checks: (\d+)", report)
+    failed = re.search(r"- Failed checks: (\d+)", report)
+    python_version = extract_plain_value(report, "Core manifest Python") or "unknown"
+
+    return f"""Technical verification note
+
+This is a packet-synchronization check, not a substitute for academic judgment.
+
+Current status:
+- Result: {status.group(1) if status else "UNKNOWN"}
+- Passed checks: {passed.group(1) if passed else "unknown"}
+- Failed checks: {failed.group(1) if failed else "unknown"}
+- Manifest Python: {python_version}
+
+What this check is for:
+- confirm that thesis-facing numbers match the canonical generated outputs
+- confirm that the supervisor brief and support notes use the current defended wording
+- confirm that stale overclaim language has not re-entered the packet
+
+What this check does not prove:
+- that the argument is correct
+- that the methods are optimal
+- that the thesis is immune to criticism
+
+Supervisor guidance:
+- You can usually ignore this file unless you want assurance that the packet is internally synchronized.
+"""
+
+
 def refresh_latest_alias() -> None:
     if LATEST_ALIAS.is_symlink() or LATEST_ALIAS.is_file():
         LATEST_ALIAS.unlink()
@@ -84,11 +182,11 @@ def build_handoff() -> None:
 
     shutil.copy2(THESIS_PDF, HANDOFF_ROOT / "01_Thesis.pdf")
     write_text(HANDOFF_ROOT / "02_One_Page_Summary.txt", SUMMARY)
-    write_text(HANDOFF_ROOT / "03_What_Changed_Since_Last_Send.txt", DELTA)
+    (HANDOFF_ROOT / "03_What_Changed_Since_Last_Send.txt").write_text(build_change_note())
     write_text(HANDOFF_ROOT / "04_Key_Claims_And_Evidence.txt", CLAIM_MAP)
     write_text(HANDOFF_ROOT / "05_Main_Risks_And_Mitigations.txt", RISK_REGISTER)
     write_text(HANDOFF_ROOT / "06_What_This_Thesis_Does_Not_Claim.txt", NON_CLAIMS)
-    write_text(HANDOFF_ROOT / "07_Claim_Verification_Report.txt", CLAIM_REPORT)
+    (HANDOFF_ROOT / "07_Claim_Verification_Report.txt").write_text(build_claim_verification_note())
 
     (HANDOFF_ROOT / "00_START_HERE.txt").write_text(
         f"""Supervisor Review Bundle
@@ -98,9 +196,10 @@ This folder is the simplified review handoff. No GitHub or repo navigation is re
 Recommended reading order:
 1. Open `01_Thesis.pdf`
 2. Read `02_One_Page_Summary.txt`
-3. Read `03_What_Changed_Since_Last_Send.txt`
-4. If useful, scan `05_Main_Risks_And_Mitigations.txt`
-5. Use `04_Key_Claims_And_Evidence.txt` only if you want a compact map from headline claims to supporting outputs
+3. Stop there for a first-pass review
+4. Read `03_What_Changed_Since_Last_Send.txt` only if you want a quick summary of what changed
+5. Use `05_Main_Risks_And_Mitigations.txt` and `06_What_This_Thesis_Does_Not_Claim.txt` only if you want scope calibration
+6. Use `04_Key_Claims_And_Evidence.txt` and `07_Claim_Verification_Report.txt` only as optional technical backup
 
 Bundle details:
 - Generated at: {generated_at}
