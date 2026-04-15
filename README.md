@@ -131,6 +131,7 @@ incineration-thesis/
 |   |   |-- 11_package_review_packets.py     # Frozen supervisor/submission packets
 |   |   |-- 12_freeze_checkpoint.py          # Freeze a sendable milestone with packet hashes
 |   |   |-- 13_start_review_round.py         # Start a dated supervisor-feedback intake workspace
+|   |   |-- 14_generate_checkpoint_delta.py  # Summarize changes since the last frozen checkpoint
 |   |   +-- panel_utils.py                   # Shared sample-construction and manifest helpers
 |   +-- notebooks/                           # Jupyter exploration
 |
@@ -213,7 +214,7 @@ npm run checkpoint:freeze
 npm run review:round:start
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, the claim-to-evidence bridge to `output/claim_evidence_map.md`, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`, the checkpoint freezer writes auditable local milestones under `research/checkpoints/dist/`, and the review-round workflow writes dated supervisor-feedback workspaces under `research/review-rounds/dist/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, the claim-to-evidence bridge to `output/claim_evidence_map.md`, the packet delta note to `output/checkpoint_delta.md`, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`, the checkpoint freezer writes auditable local milestones under `research/checkpoints/dist/`, and the review-round workflow writes dated supervisor-feedback workspaces under `research/review-rounds/dist/`.
 
 For any real supervisor or submission checkpoint, the default operating mode is: run `npm run packets:build`, review the frozen packet outputs, and only then freeze a sendable milestone with `npm run checkpoint:freeze`. Loose PDFs are for drafting, not for reference baselines.
 

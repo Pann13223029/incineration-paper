@@ -28,6 +28,7 @@ Use loose PDFs only while drafting. Once the thesis is sendable, review the pack
 Optimized for fast review:
 
 - one-page supervisor brief
+- change summary since the last frozen checkpoint
 - examiner risk register
 - thesis PDF
 - claim-verification report
@@ -40,6 +41,7 @@ Optimized for fast review:
 Optimized for a cleaner archival handoff:
 
 - thesis PDF and `thesis.tex`
+- change summary since the last frozen checkpoint
 - examiner risk register
 - thesis figures
 - core defended analysis scripts

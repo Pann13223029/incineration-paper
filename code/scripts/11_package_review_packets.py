@@ -22,6 +22,7 @@ SUPERVISOR_ZIP = PACKET_ROOT / "supervisor-packet.zip"
 SUBMISSION_ZIP = PACKET_ROOT / "submission-packet.zip"
 CLAIM_REPORT = REPO_ROOT / "output" / "claim_verification.md"
 CLAIM_MAP = REPO_ROOT / "output" / "claim_evidence_map.md"
+CHECKPOINT_DELTA = REPO_ROOT / "output" / "checkpoint_delta.md"
 VERIFY_MANIFEST = REPO_ROOT / "output" / "manifests" / "08_verify_claims.json"
 THESIS_DIR = REPO_ROOT / "thesis"
 THESIS_PDF = THESIS_DIR / "thesis.pdf"
@@ -31,6 +32,7 @@ SUPERVISOR_FILES: list[tuple[str, str | None]] = [
     ("research/notes/executive-summary-for-supervisor.md", None),
     ("research/notes/examiner-risk-register.md", None),
     ("research/notes/what-this-thesis-does-not-claim.md", None),
+    ("output/checkpoint_delta.md", None),
     ("output/claim_verification.md", None),
     ("output/claim_evidence_map.md", None),
     ("output/sample_definition.md", None),
@@ -53,6 +55,8 @@ SUBMISSION_FILES: list[tuple[str, str | None]] = [
     ("code/scripts/06_robustness.py", None),
     ("code/scripts/07_rebuild_analysis.py", None),
     ("code/scripts/08_verify_claims.py", None),
+    ("code/scripts/14_generate_checkpoint_delta.py", None),
+    ("output/checkpoint_delta.md", None),
     ("output/claim_verification.md", None),
     ("output/claim_evidence_map.md", None),
     ("output/sample_definition.md", None),
@@ -85,6 +89,7 @@ def resolve_tectonic() -> str:
 
 def ensure_current_state() -> None:
     run([".venv/bin/python", "code/scripts/08_verify_claims.py"])
+    run(["python3", "code/scripts/14_generate_checkpoint_delta.py"])
     tectonic = resolve_tectonic()
     run([tectonic, "-p", "--keep-logs", "--keep-intermediates", "thesis.tex"], cwd=THESIS_DIR)
 
@@ -203,14 +208,16 @@ def build_packets() -> None:
         metadata,
         [
             "1. Read `research/notes/executive-summary-for-supervisor.md` for the one-page brief.",
-            "2. Read `research/notes/examiner-risk-register.md` for the strongest remaining attack points and mitigations.",
-            "3. Open `thesis/thesis.pdf` for the defended manuscript.",
-            "4. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
-            "5. Use `output/claim_evidence_map.md` to see which artifact supports each defended claim.",
-            "6. Use `research/notes/what-this-thesis-does-not-claim.md` to keep scope calibration explicit.",
+            "2. Read `output/checkpoint_delta.md` for the change summary since the last frozen checkpoint.",
+            "3. Read `research/notes/examiner-risk-register.md` for the strongest remaining attack points and mitigations.",
+            "4. Open `thesis/thesis.pdf` for the defended manuscript.",
+            "5. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
+            "6. Use `output/claim_evidence_map.md` to see which artifact supports each defended claim.",
+            "7. Use `research/notes/what-this-thesis-does-not-claim.md` to keep scope calibration explicit.",
         ],
         [
             "- One-page supervisor brief",
+            "- Change summary since the last frozen checkpoint",
             "- Examiner risk register",
             "- Current thesis PDF",
             "- Claim-verification report",
@@ -226,13 +233,15 @@ def build_packets() -> None:
         [
             "1. Open `thesis/thesis.pdf` for the submission manuscript.",
             "2. Use `README.md` and `ARCHITECTURE.md` for repo-level orientation.",
-            "3. Read `research/notes/examiner-risk-register.md` for the calibrated weakness map.",
-            "4. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
-            "5. Use `output/claim_evidence_map.md` for a compact claim-to-evidence bridge.",
-            "6. Use `thesis/thesis.tex` plus `thesis/figures/` as the authoritative source bundle.",
+            "3. Read `output/checkpoint_delta.md` for the change summary since the last frozen checkpoint.",
+            "4. Read `research/notes/examiner-risk-register.md` for the calibrated weakness map.",
+            "5. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.",
+            "6. Use `output/claim_evidence_map.md` for a compact claim-to-evidence bridge.",
+            "7. Use `thesis/thesis.tex` plus `thesis/figures/` as the authoritative source bundle.",
         ],
         [
             "- Current thesis PDF and authoritative LaTeX source",
+            "- Change summary since the last frozen checkpoint",
             "- Examiner risk register",
             "- Thesis figures used by the manuscript",
             "- Core analysis scripts for the defended empirical design",
