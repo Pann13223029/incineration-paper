@@ -206,11 +206,11 @@ def main():
 
     # 3. Save
     grid_path = os.path.join(PROCESSED_DIR, 'grid_emission_factors.csv')
-    grid_df.to_csv(grid_path, index=False, encoding='utf-8-sig')
+    grid_df.to_csv(grid_path, index=False, encoding='utf-8-sig', float_format='%.15g')
     print(f"Saved: {grid_path}")
 
     crosswalk_path = os.path.join(PROCESSED_DIR, 'prefecture_utility_crosswalk.csv')
-    crosswalk.to_csv(crosswalk_path, index=False, encoding='utf-8-sig')
+    crosswalk.to_csv(crosswalk_path, index=False, encoding='utf-8-sig', float_format='%.15g')
     print(f"Saved: {crosswalk_path}")
 
     # 4. Merge into the main panel
@@ -246,7 +246,7 @@ def main():
 
         # Save enriched panel
         enriched_path = os.path.join(PROCESSED_DIR, 'incineration_panel_enriched.csv')
-        panel.to_csv(enriched_path, index=False, encoding='utf-8-sig')
+        panel.to_csv(enriched_path, index=False, encoding='utf-8-sig', float_format='%.15g')
         print(f"\nSaved enriched panel: {enriched_path}")
         print(f"New columns: utility_area, grid_ef_tco2_kwh, grid_ef_kgco2_kwh, avoided_co2_t")
 

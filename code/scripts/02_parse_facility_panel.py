@@ -305,7 +305,7 @@ def main():
     # Save
     out_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
     summary_path = os.path.join(OUTPUT_DIR, 'panel_summary.md')
-    panel.to_csv(out_path, index=False, encoding='utf-8-sig')
+    panel.to_csv(out_path, index=False, encoding='utf-8-sig', float_format='%.15g')
     write_panel_summary_report(panel, summary_path)
 
     # --- Summary ---

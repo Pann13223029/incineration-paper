@@ -9,10 +9,8 @@ from __future__ import annotations
 
 import json
 import os
-import platform
 import subprocess
 import sys
-from datetime import datetime, timezone
 from typing import Any
 
 import numpy as np
@@ -106,19 +104,30 @@ IDENTIFIER_DTYPES = {
 }
 
 
-def get_git_sha() -> str:
-    """Return the current git SHA when available."""
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            check=True,
-            capture_output=True,
-            text=True,
-            cwd=REPO_ROOT,
-        )
-        return result.stdout.strip()
-    except Exception:
-        return "unknown"
+def stable_float(value: float, sig_digits: int = 15) -> float:
+    """Round floats to a stable significant-digit representation."""
+    if not np.isfinite(value):
+        return value
+    return float(f"{value:.{sig_digits}g}")
+
+
+def normalize_manifest_value(value: Any) -> Any:
+    """Recursively coerce manifest payloads into deterministic JSON values."""
+    if isinstance(value, dict):
+        return {str(k): normalize_manifest_value(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [normalize_manifest_value(v) for v in value]
+    if isinstance(value, tuple):
+        return [normalize_manifest_value(v) for v in value]
+    if isinstance(value, np.floating):
+        return stable_float(float(value))
+    if isinstance(value, float):
+        return stable_float(value)
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.bool_):
+        return bool(value)
+    return value
 
 
 def analysis_config() -> dict[str, Any]:
@@ -507,18 +516,16 @@ def write_stage_manifest(
     """Write a JSON manifest for a stage and return the manifest path."""
     manifest = {
         "stage": stage_name,
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "git_sha": get_git_sha(),
-        "python": platform.python_version(),
-        "platform": platform.platform(),
+        "python": sys.version.split()[0],
         "analysis_config": analysis_config(),
         "inputs": inputs,
         "outputs": outputs,
-        "metadata": metadata,
+        "metadata": normalize_manifest_value(metadata),
     }
     path = os.path.join(MANIFEST_DIR, f"{stage_name}.json")
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2, ensure_ascii=False)
+        json.dump(manifest, f, indent=2, ensure_ascii=False, sort_keys=True)
+        f.write("\n")
     return path
 
 

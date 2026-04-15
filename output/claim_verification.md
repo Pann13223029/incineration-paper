@@ -2,7 +2,6 @@
 
 Repo-level check that thesis-facing claims stay synchronized with canonical outputs.
 
-- Core manifest git SHA: 62b0844b20192b2edce080a5b0bad6391022b0d8
 - Core manifest Python: 3.12.12
 - Full panel: 23,599 observations across 2,948 facilities
 - Adoption frame: risk set 13,770 / 2,035; model 11,717 / 1,915 / 140 events
@@ -12,12 +11,11 @@ Repo-level check that thesis-facing claims stay synchronized with canonical outp
 
 ## Result: PASS
 
-- Passed checks: 12
+- Passed checks: 11
 - Failed checks: 0
 
 ## Passed Checks
 
-- `manifest_consistency` `source_manifest_git_sha`: Core stage manifests share one git SHA: 62b0844b20192b2edce080a5b0bad6391022b0d8
 - `manifest_consistency` `source_manifest_python`: Core stage manifests share Python 3.12.12
 - `claim` `readme_topline_paragraph`: All snippets present across 11 target checks.
 - `claim` `readme_headline_table`: All snippets present across 4 target checks.

@@ -91,9 +91,6 @@ def build_canonical_metrics() -> dict:
     ]
 
     return {
-        "source_manifest_git_shas": sorted(
-            {load_manifest(stage)["git_sha"] for stage in CORE_MANIFESTS}
-        ),
         "source_manifest_python": sorted(
             {load_manifest(stage)["python"] for stage in CORE_MANIFESTS}
         ),
@@ -472,26 +469,6 @@ def run_checks() -> tuple[list[dict], list[dict], dict]:
     passes = []
     failures = []
 
-    if len(metrics["source_manifest_git_shas"]) != 1:
-        failures.append(
-            {
-                "type": "manifest_consistency",
-                "id": "source_manifest_git_sha",
-                "detail": (
-                    "Core stage manifests do not share one git SHA: "
-                    + ", ".join(metrics["source_manifest_git_shas"])
-                ),
-            }
-        )
-    else:
-        passes.append(
-            {
-                "type": "manifest_consistency",
-                "id": "source_manifest_git_sha",
-                "detail": f"Core stage manifests share one git SHA: {metrics['source_manifest_git_shas'][0]}",
-            }
-        )
-
     if len(metrics["source_manifest_python"]) != 1:
         failures.append(
             {
@@ -558,7 +535,6 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
         "",
         "Repo-level check that thesis-facing claims stay synchronized with canonical outputs.",
         "",
-        f"- Core manifest git SHA: {metrics['source_manifest_git_shas'][0] if len(metrics['source_manifest_git_shas']) == 1 else ', '.join(metrics['source_manifest_git_shas'])}",
         f"- Core manifest Python: {metrics['source_manifest_python'][0] if len(metrics['source_manifest_python']) == 1 else ', '.join(metrics['source_manifest_python'])}",
         f"- Full panel: {fmt_int(metrics['full_panel_obs'])} observations across {fmt_int(metrics['full_panel_facilities'])} facilities",
         (
@@ -638,7 +614,6 @@ def main() -> None:
         metadata={
             "passed_checks": len(passes),
             "failed_checks": len(failures),
-            "source_manifest_git_shas": metrics["source_manifest_git_shas"],
             "source_manifest_python": metrics["source_manifest_python"],
         },
     )
