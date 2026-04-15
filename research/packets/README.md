@@ -1,6 +1,7 @@
 # Review Packets
 
 This directory documents the curated packet workflows for supervisor review and eventual submission.
+For any real checkpoint, this packet workflow is the default operating mode.
 
 Generated artifacts are written to `research/packets/dist/` and ignored in Git.
 
@@ -17,6 +18,8 @@ This command:
 3. assembles a frozen `supervisor-packet/`
 4. assembles a frozen `submission-packet/`
 5. writes zipped archives for both packets
+
+Use loose PDFs only while drafting. Once the thesis is sendable, review the packet contents and then freeze the milestone with `npm run checkpoint:freeze`.
 
 ## Packet types
 

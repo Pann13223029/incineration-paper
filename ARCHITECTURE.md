@@ -140,7 +140,7 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 
 | Category | Count |
 |----------|:-----:|
-| Python scripts | 11 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05a adoption, 05 regression, 06 robustness, 07 rebuild, 08 verify, shared panel utils) |
+| Python scripts | 15 (00 probe, 01 download, 02 parse, 03 grid, 04 eda, 05a adoption, 05 regression, 06 robustness, 07 rebuild, 08 verify, 09 slides export, 10 defense bundle, 11 review packets, 12 checkpoint freeze, shared panel utils) |
 | Raw data files | 20 (one per fiscal year) |
 | Processed panel | 23,599 rows × 28 columns |
 | Enriched panel (with grid factors) | 23,599 rows × 28 columns (100% grid-factor match) |
@@ -189,7 +189,20 @@ A Hausman test formally rejects the RE null in favour of FE (χ²≈173, p<0.000
 06_robustness.py                 -> 8 robustness specifications
 07_rebuild_analysis.py           -> one-command local rebuild + claim verification
 08_verify_claims.py              -> claim_verification.md + verification manifest
+09_export_defense_slides.py      -> defense-deck.html / defense-deck.pdf
+10_package_defense_bundle.py     -> frozen local defense bundle
+11_package_review_packets.py     -> frozen supervisor/submission packets
+12_freeze_checkpoint.py          -> dated sendable checkpoint + packet hashes
 ```
+
+---
+
+## Operations Layer
+
+- GitHub Actions backstop: `.github/workflows/verify.yml`
+- Review-packet workflow: `npm run packets:build`
+- Checkpoint freezer: `npm run checkpoint:freeze`
+- Pinned Node runtime for deck tooling: `.node-version`
 
 ---
 
@@ -199,4 +212,4 @@ Data is strong (near-census administrative panel, 20 years). RQ is estimable and
 
 ---
 
-*Last updated: 2026-04-15. Reflects the two-part adoption + generator-efficiency architecture, pathway-audit hardening, and repo-level claim verification.*
+*Last updated: 2026-04-15. Reflects the two-part adoption + generator-efficiency architecture, pathway-audit hardening, repo-level claim verification, CI backstop, and frozen checkpoint workflow.*

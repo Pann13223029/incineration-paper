@@ -1,0 +1,70 @@
+name: Verify Thesis Repo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Tectonic
+        uses: wfriedenberg/setup-tectonic@v4
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Install Python dependencies
+        run: .venv/bin/pip install -r requirements.txt
+
+      - name: Install slide tooling
+        run: npm ci
+
+      - name: Rebuild analysis and verify thesis-facing claims
+        run: .venv/bin/python code/scripts/07_rebuild_analysis.py
+
+      - name: Export defense deck HTML
+        run: npm run slides:export
+
+      - name: Build frozen review packets
+        run: npm run packets:build
+
+      - name: Ensure tracked outputs are up to date
+        run: git diff --exit-code
+
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: thesis-verify-artifacts
+          path: |
+            output/claim_verification.md
+            output/adoption_results.md
+            output/regression_results.md
+            output/robustness_results.md
+            thesis/thesis.pdf
+            research/slides/dist/defense-deck.html
+            research/packets/dist/supervisor-packet.zip
+            research/packets/dist/submission-packet.zip

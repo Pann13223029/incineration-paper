@@ -49,6 +49,8 @@ This also writes:
 
 - `research/slides/dist/defense-deck.pdf` when a local Chrome/Edge browser can launch headlessly
 
+If PDF export fails with a `TargetCloseError`, rerun the same command in a normal local shell. Sandboxed terminals can block headless Chrome even when the browser works normally on the machine.
+
 ### Frozen defense bundle
 
 ```bash

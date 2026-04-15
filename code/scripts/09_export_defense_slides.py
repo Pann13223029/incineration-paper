@@ -83,28 +83,44 @@ def export_html(npx_cmd: str) -> None:
 def export_pdf(npx_cmd: str, browser: str | None) -> bool:
     if browser is None:
         return False
-    subprocess.run(
-        [
-            npx_cmd,
-            "--no-install",
-            "marp",
-            str(SOURCE),
-            "--theme-set",
-            str(THEME),
-            "--allow-local-files",
-            "--pdf",
-            "--browser-path",
-            browser,
-            "--output",
-            str(PDF_OUT),
-        ],
+    command = [
+        npx_cmd,
+        "--no-install",
+        "marp",
+        str(SOURCE),
+        "--theme-set",
+        str(THEME),
+        "--allow-local-files",
+        "--pdf",
+        "--browser-path",
+        browser,
+        "--output",
+        str(PDF_OUT),
+    ]
+    completed = subprocess.run(
+        command,
         cwd=REPO_ROOT,
-        check=True,
+        check=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
     )
-    return True
+    if completed.returncode == 0:
+        return True
+
+    output = completed.stdout or ""
+    if "TargetCloseError" in output or "Target closed" in output:
+        print(
+            "PDF export failed even though a browser was found. "
+            "This commonly happens in sandboxed terminals where headless Chrome "
+            "cannot launch. Rerun the same command in a normal local shell.",
+            file=sys.stderr,
+        )
+        return False
+
+    print("PDF export failed. Marp output:", file=sys.stderr)
+    print(output, file=sys.stderr)
+    return False
 
 
 def parse_args() -> argparse.Namespace:
@@ -152,14 +168,7 @@ def main() -> int:
         print("PDF export requested, but no local Chrome/Edge browser was found.", file=sys.stderr)
         return 1
 
-    try:
-        export_pdf(npx_cmd, browser)
-    except subprocess.CalledProcessError:
-        print(
-            "PDF export failed even though a browser was found. "
-            "This usually means the local browser cannot launch headlessly in the current environment.",
-            file=sys.stderr,
-        )
+    if not export_pdf(npx_cmd, browser):
         return 1
 
     if PDF_OUT.exists():

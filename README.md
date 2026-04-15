@@ -126,6 +126,10 @@ incineration-thesis/
 |   |   |-- 06_robustness.py                 # 8 robustness specifications
 |   |   |-- 07_rebuild_analysis.py           # One-command rebuild + repo-level claim verification
 |   |   |-- 08_verify_claims.py              # Checks thesis-facing claims against canonical outputs
+|   |   |-- 09_export_defense_slides.py      # Reproducible HTML/PDF defense-deck export
+|   |   |-- 10_package_defense_bundle.py     # Frozen local defense bundle
+|   |   |-- 11_package_review_packets.py     # Frozen supervisor/submission packets
+|   |   |-- 12_freeze_checkpoint.py          # Freeze a sendable milestone with packet hashes
 |   |   +-- panel_utils.py                   # Shared sample-construction and manifest helpers
 |   +-- notebooks/                           # Jupyter exploration
 |
@@ -148,14 +152,19 @@ incineration-thesis/
 |   +-- 06-conclusion.md                     # (SUPERSEDED - draft)
 |
 |-- output/                                  # Generated figures, tables, sample report, manifests
+|-- .github/
+|   +-- workflows/
+|       +-- verify.yml                       # CI backstop for rebuild, verification, and packet smoke checks
 |-- research/
 |   |-- literature/                          # Paper summaries
 |   |-- notes/                               # Panel protocol, supervisor brief, defense notes, verification reports
-|   +-- packets/                             # Curated supervisor/submission packet workflow
+|   |-- packets/                             # Curated supervisor/submission packet workflow
+|   +-- checkpoints/                         # Local sendable-milestone freezing workflow
 |
 |-- ARCHITECTURE.md                          # Technical blueprint
 |-- AGENTS.md                                # Assistant-agnostic repo workflow
 |-- CLAUDE.md                                # Thin compatibility wrapper
+|-- .node-version                            # Pinned Node runtime for slide/deck tooling
 |-- package.json                             # Local slide-export tooling (Marp CLI)
 +-- requirements.txt                         # Python dependencies
 ```
@@ -194,9 +203,14 @@ npm run slides:bundle
 
 # 8. Optional: build frozen supervisor and submission packets
 npm run packets:build
+
+# 9. Optional: freeze a sendable checkpoint from the current verified state
+npm run checkpoint:freeze
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, and the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`, and the checkpoint freezer writes auditable local milestones under `research/checkpoints/dist/`.
+
+For any real supervisor or submission checkpoint, the default operating mode is: run `npm run packets:build`, review the frozen packet outputs, and only then freeze a sendable milestone with `npm run checkpoint:freeze`. Loose PDFs are for drafting, not for reference baselines.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

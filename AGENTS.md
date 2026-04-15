@@ -72,10 +72,14 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 - Slide-export entry points: `npm run slides:export` and `npm run slides:export:pdf`
 - Review-packet guide: `research/packets/README.md`
 - Review-packet entry point: `npm run packets:build`
+- Checkpoint-freeze guide: `research/checkpoints/README.md`
+- Checkpoint-freeze entry point: `npm run checkpoint:freeze`
+- Prefer frozen packets over loose files for any supervisor-facing or submission-facing checkpoint
 - Thesis build: compile from `thesis/`
 - Prefer `tectonic` if available; otherwise use the local LaTeX workflow required by the repo
 - Treat `output/claim_verification.md` as the repo-level gate for thesis-facing number drift and banned overclaim language.
 - After a thesis build, review warnings that could affect defendability or formatting, especially table overflow, broken references, and citation issues
+- CI backstop: `.github/workflows/verify.yml` mirrors the canonical local rebuild, HTML slide export, and packet smoke build on GitHub Actions
 
 ## Panel Workflow
 
