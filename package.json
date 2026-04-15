@@ -1,0 +1,12 @@
+{
+  "name": "incineration-thesis",
+  "private": true,
+  "description": "Support tooling for the incineration thesis repo",
+  "scripts": {
+    "slides:export": "python3 code/scripts/09_export_defense_slides.py",
+    "slides:export:pdf": "python3 code/scripts/09_export_defense_slides.py --pdf"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "4.2.3"
+  }
+}

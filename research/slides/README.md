@@ -7,6 +7,7 @@ This directory contains the editable oral-defense deck for the thesis.
 - `defense-deck.md`: primary slide deck in Markdown, structured for `5-7` core slides plus short appendix slides
 - `themes/defense-apu.css`: custom Marp theme for the polished defense deck
 - `figures/`: local SVG assets used by the deck
+- `dist/`: generated local presentation artifacts, produced by the export script and ignored in Git
 
 ## Why Markdown
 
@@ -27,6 +28,29 @@ The repo keeps the deck in Markdown so it is:
 
 ## Export options
 
+### Reproducible local export
+
+```bash
+npm install
+npm run slides:export
+```
+
+This writes:
+
+- `research/slides/dist/defense-deck.html`
+
+Optional PDF export:
+
+```bash
+npm run slides:export:pdf
+```
+
+This also writes:
+
+- `research/slides/dist/defense-deck.pdf` when a local Chrome/Edge browser can launch headlessly
+
+### Other options
+
 - Read directly as speaker notes and copy into a conventional slide tool.
-- Use a Markdown slide tool such as Marp with `themes/defense-apu.css` if you want local export automation.
+- Use the generated HTML deck directly in a browser if you want a lightweight presentation mode.
 - Copy the deck into a conventional slide tool later only if you need institution-specific branding or presenter view features.

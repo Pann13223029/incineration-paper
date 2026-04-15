@@ -155,6 +155,7 @@ incineration-thesis/
 |-- ARCHITECTURE.md                          # Technical blueprint
 |-- AGENTS.md                                # Assistant-agnostic repo workflow
 |-- CLAUDE.md                                # Thin compatibility wrapper
+|-- package.json                             # Local slide-export tooling (Marp CLI)
 +-- requirements.txt                         # Python dependencies
 ```
 
@@ -170,6 +171,7 @@ git clone https://github.com/Pann13223029/incineration-thesis.git
 cd incineration-thesis
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
+npm install
 
 # 2. Optional: download raw data (requires internet)
 .venv/bin/python code/scripts/01_download_facility_data.py
@@ -179,9 +181,15 @@ python3 -m venv .venv
 
 # 4. Optional: rerun only the repo-level claim/evidence verifier
 .venv/bin/python code/scripts/08_verify_claims.py
+
+# 5. Optional: export the defense deck to local presentation artifacts
+npm run slides:export
+
+# 6. Optional: also export a PDF deck if Chrome/Edge is available locally
+npm run slides:export:pdf
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, and each stage writes a JSON provenance record under `output/manifests/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, each stage writes a JSON provenance record under `output/manifests/`, and the defense deck exporter writes local artifacts under `research/slides/dist/` (HTML by default, PDF optionally).
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

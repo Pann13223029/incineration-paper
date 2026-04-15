@@ -67,6 +67,9 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 
 - Analysis rebuild entry point: `.venv/bin/python code/scripts/07_rebuild_analysis.py`
 - Claim/evidence verifier entry point: `.venv/bin/python code/scripts/08_verify_claims.py`
+- Defense slide source: `research/slides/defense-deck.md`
+- Slide-export install: `npm install`
+- Slide-export entry points: `npm run slides:export` and `npm run slides:export:pdf`
 - Thesis build: compile from `thesis/`
 - Prefer `tectonic` if available; otherwise use the local LaTeX workflow required by the repo
 - Treat `output/claim_verification.md` as the repo-level gate for thesis-facing number drift and banned overclaim language.

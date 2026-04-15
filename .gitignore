@@ -5,6 +5,8 @@ __pycache__/
 .DS_Store
 *.xlsx.tmp
 .venv/
+node_modules/
+npm-debug.log*
 
 # Thesis build artifacts
 thesis/*.aux
@@ -12,6 +14,7 @@ thesis/*.log
 thesis/*.out
 thesis/*.pdf
 thesis/*.toc
+research/slides/dist/
 
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.
