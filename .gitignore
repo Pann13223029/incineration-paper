@@ -17,6 +17,7 @@ thesis/*.toc
 research/slides/dist/
 research/packets/dist/
 research/checkpoints/dist/
+research/review-rounds/dist/
 output/fig01_establishing_shot.png
 output/fig02_heterogeneity_shot.png
 

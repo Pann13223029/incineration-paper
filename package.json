@@ -7,7 +7,8 @@
     "slides:export:pdf": "python3 code/scripts/09_export_defense_slides.py --pdf",
     "slides:bundle": "python3 code/scripts/10_package_defense_bundle.py",
     "packets:build": "python3 code/scripts/11_package_review_packets.py",
-    "checkpoint:freeze": "python3 code/scripts/12_freeze_checkpoint.py"
+    "checkpoint:freeze": "python3 code/scripts/12_freeze_checkpoint.py",
+    "review:round:start": "python3 code/scripts/13_start_review_round.py"
   },
   "engines": {
     "node": "22.x"
