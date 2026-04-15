@@ -10,13 +10,13 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 **Why first:** This is the architectural hinge. If this answer is weak, everything else looks patched rather than improved.
 
-**Target answer:** The earlier design overgeneralized from the generator sample. The redesign separates observed entry into generation from conditional generator efficiency, so the thesis no longer asks one selected frame to carry two different claims.
+**Target answer:** The earlier design overgeneralized from the generator sample. The redesign separates entry into generation from performance within generation, so each claim is now matched to the right sample.
 
 ### 2. Why not two-way fixed effects?
 
 **Why first:** This is the most predictable methods challenge from a quantitatively literate examiner.
 
-**Target answer:** Facility age rises mechanically with year, so age is poorly identified in a two-way FE setup. Also, the within-to-total variance ratio is only 0.1499, so FE would lean on the smaller part of the signal while discarding the cross-facility variation the thesis is actually trying to interpret.
+**Target answer:** Age rises mechanically with year, so the main regressor is poorly identified in two-way FE. And only 14.99% of the signal is within-facility, so FE would lean on the smaller part of the data.
 
 ### 3. Does the thesis make a causal claim?
 
@@ -28,13 +28,13 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 **Why first:** This is the core extensive-margin claim.
 
-**Target answer:** In the coded, initially non-generating subset, observed first transition into generation is concentrated among younger and larger facilities. Old and small facilities rarely record transition into power generation in the coded panel.
+**Target answer:** Among coded facilities first observed without generation, transition into generation is concentrated among younger and larger plants. Old small plants rarely make that transition in the panel.
 
 ### 5. What exactly does the within/total ratio show?
 
 **Why first:** This is the core intensive-margin claim.
 
-**Target answer:** It shows that within the canonical generator frame, efficiency varies much more across facilities than within the same facility over time. Together with the stable age/scale relationships and bounded Fukushima response, that is strongly consistent with bounded infrastructural responsiveness.
+**Target answer:** It shows that efficiency moves much more across plants than within the same plant over time. Together with the stable age and scale relationships, that is strongly consistent with bounded responsiveness.
 
 ---
 
@@ -50,7 +50,7 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 ### 8. Are you saying operations do not matter?
 
-**Target answer:** No. Utilization is strongly positive, and routing/utilization reform remains a real lever. The claim is that these levers appear bounded relative to age-, scale-, and modernization-related gaps.
+**Target answer:** No. Utilization is strongly positive and operational reform remains a real lever. The claim is that it appears bounded relative to age-, scale-, and modernization-related gaps.
 
 ### 9. Why use cloglog rather than LPM?
 
@@ -66,7 +66,7 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 ### 11. Is the policy section too broad for the evidence?
 
-**Target answer:** It would be if it claimed replacement alone was identified or generalized from the generator sample to the whole fleet without an adoption layer. The revised version avoids both and calibrates the policy claim to the two-part architecture.
+**Target answer:** Not in the revised version. The policy section is tied to the two-part architecture and framed as a hierarchy, not as one uniquely identified mechanism.
 
 ### 12. Why not focus on waste reduction and recycling instead of WtE efficiency?
 
@@ -82,7 +82,7 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 ### 15. What is the single biggest remaining limitation?
 
-**Target answer:** The thesis still cannot directly distinguish replacement, new build, and major refurbishment inside the reset/rebuild-like bucket because the panel was not designed as a capital-history dataset.
+**Target answer:** The thesis still cannot directly distinguish replacement, new build, and major refurbishment inside the reset/rebuild-like bucket because the panel is not a capital-history dataset.
 
 ---
 

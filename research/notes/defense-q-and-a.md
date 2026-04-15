@@ -8,7 +8,7 @@ Short hostile questions and disciplined answers for oral defense, revision, or a
 
 ### 1. Why is this thesis no longer just a generator-efficiency panel?
 
-Because the strongest criticism of the earlier version was scope leakage. A generator-only model can say something about efficiency conditional on generation, but it cannot carry the whole fleet-level transition story. The redesign splits the question into two parts: observed transition into generation on the coded full-fleet frame, and conditional efficiency among generators.
+Because the strongest criticism of the earlier version was scope leakage. A generator-only model can say something about efficiency conditional on generation, but it cannot carry the whole fleet-level transition story. The redesign therefore splits the question into two parts: observed transition into generation on the coded full-fleet frame, and conditional efficiency among generators.
 
 ### 2. Does the new adoption model solve the external-validity problem completely?
 
@@ -32,7 +32,7 @@ No. It is an observational panel study with strong descriptive and associational
 
 ### 6. Why not two-way fixed effects?
 
-Because facility age, the central variable of interest, rises mechanically with year, so age is poorly identified once year effects are added. Also, the within-to-total variation ratio of log-efficiency is only 0.1499 in the canonical frame, so FE would lean on the smaller part of the signal while discarding the cross-facility variation the thesis is actually trying to interpret.
+Because facility age, the central variable of interest, rises mechanically with year, so age is poorly identified once year effects are added. Also, only 14.99% of the log-efficiency signal is within-facility in the canonical frame, so FE would lean on the smaller part of the data while discarding the cross-facility variation the thesis is trying to interpret.
 
 ### 7. Doesn't the Hausman rejection force you into FE?
 
@@ -40,7 +40,7 @@ No. A Hausman rejection says FE and RE differ under that comparison; it does not
 
 ### 8. Does the 0.1499 ratio prove lock-in?
 
-No. By itself it is descriptive. What the thesis argues is that the low within-to-total ratio, its persistence across pre/post-Fukushima windows, and the stable age/scale relationships together are strongly consistent with bounded infrastructural responsiveness. That is a much narrower and stronger claim than "lock-in proven."
+No. By itself it is descriptive. What the thesis argues is that the low within-to-total ratio, its persistence across pre/post-Fukushima windows, and the stable age/scale relationships are strongly consistent with bounded infrastructural responsiveness. That is a much narrower and stronger claim than "lock-in proven."
 
 ---
 
@@ -64,7 +64,7 @@ Yes. The thesis explicitly leaves room for selective retrofit and in-place upgra
 
 ### 12. Are you saying operations do not matter?
 
-No. Capacity utilization is strongly positive across the main and robustness models, and the thesis preserves routing, utilization, and selective retrofit as real levers. The claim is that these levers appear bounded relative to the larger gaps associated with age, scale, and the extensive-margin modernization problem.
+No. Capacity utilization is strongly positive across the main and robustness models, and the thesis preserves routing, utilization, and selective retrofit as real levers. The claim is that these levers help, but appear bounded relative to the larger gaps associated with age, scale, and the extensive-margin modernization problem.
 
 ### 13. Why not recommend pure operational optimization first?
 
@@ -72,7 +72,7 @@ Because the evidence suggests it cannot carry the whole burden. Old and small fa
 
 ### 14. Isn't the policy section too broad for the evidence?
 
-It would be, if it claimed replacement alone was identified or if it generalized from the generator sample to the whole fleet without an extensive-margin layer. The revised thesis avoids both. The policy section is now tied to a two-part architecture and carefully distinguishes what the panel shows from what it does not show.
+It would be, if it claimed replacement alone was identified or if it generalized from the generator sample to the whole fleet without an extensive-margin layer. The revised thesis avoids both. The policy section is tied to the two-part architecture and presented as a hierarchy, not as one uniquely identified mechanism.
 
 ### 15. Are you endorsing waste-to-energy as a circular-economy ideal?
 

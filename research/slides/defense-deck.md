@@ -1,277 +1,356 @@
 ---
 marp: true
 paginate: true
-theme: default
+theme: defense-apu
 size: 16:9
 ---
 
-# Carbon Lock-in or Circular Transition?
+<!-- _class: hero -->
 
-## Heterogeneity in Japan's Waste Incineration Fleet and Net-Zero Compatibility
+# Selective Modernization, Bounded Responsiveness
 
-Pann Phetra  
-Bachelor's Thesis Defense  
-Ritsumeikan Asia Pacific University, 2026
+## Japan's Waste Incineration Fleet and Net-Zero Compatibility
 
-**Core contribution:** Japan's incineration transition is empirically two-part:
+<div class="pill-row">
+  <span class="pill">23,599 facility-years</span>
+  <span class="pill">2-part empirical design</span>
+  <span class="pill">Verified claim spine</span>
+</div>
 
-- observed entry into power generation is an extensive-margin modernization problem
-- conditional generator efficiency is an intensive-margin performance problem
+<div class="meta-block">
+  <strong>Pann Phetra</strong><br/>
+  Bachelor's Thesis Defense<br/>
+  Ritsumeikan Asia Pacific University, 2026
+</div>
 
 <!--
-Open with the architecture shift, not with policy.
-If time is very short, use this slide to state the research question and jump straight to Slide 3.
+Open with the architecture, not with the policy debate.
+Fast opening: This thesis asks two different questions with two different frames:
+who actually transitions into generation, and conditional on generation, what predicts performance?
 -->
 
 ---
 
-# 1. Research Question and Motivation
+<!-- _class: split -->
 
-**Question**
+# 1. Thesis in One Sentence
 
-What predicts observed transition into power generation among coded facilities first seen without generation, and conditional on power generation, what predicts energy recovery efficiency among power-generating incinerators?
-
-**Why this matters**
-
-- Japan still incinerates most municipal waste
-- 59% of active FY2024 incinerators generate no electricity
-- the literature often treats the fleet as one system, even though it is highly heterogeneous
-
-![width:900px](../../docs/figures/readme_fleet_split.svg)
+<div class="two-col">
+  <div>
+    <div class="statement-card">
+      <p class="eyebrow">Core claim</p>
+      <p class="big-statement">Japan's incineration transition is empirically two-part: observed entry into generation is selective on the extensive margin, while conditional generator performance is shaped by age, scale, and bounded within-facility responsiveness on the intensive margin.</p>
+    </div>
+    <div class="note-card">
+      <p class="eyebrow">Why the redesign matters</p>
+      <ul>
+        <li>A generator-only sample cannot carry the whole fleet-transition story.</li>
+        <li>The revised thesis separates modernization entry from generator efficiency.</li>
+        <li>That makes the scope narrower, cleaner, and harder to attack.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="figure-card">
+    <img src="../../docs/figures/readme_fleet_split.svg" alt="Fleet split overview" />
+  </div>
+</div>
 
 <!--
-Say explicitly that the thesis is not about whether incineration is normatively ideal in the full waste hierarchy.
-It is about heterogeneity inside the residual-waste tier that Japan still incinerates.
+Fast answer if pressed early: the earlier version over-asked a selected generator frame to explain the whole fleet.
+The redesign fixes that by splitting extensive and intensive margins.
 -->
 
 ---
+
+<!-- _class: split -->
 
 # 2. One Dataset, Two Analytical Frames
 
-**Administrative panel**
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <p class="eyebrow">Administrative panel</p>
+    <p class="kpi">23,599</p>
+    <p class="kpi-sub">facility-year observations</p>
+    <p class="kpi-note">2,948 facilities, FY2005-FY2024</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Extensive margin</p>
+    <p class="kpi">13,770</p>
+    <p class="kpi-sub">risk-set rows</p>
+    <p class="kpi-note">2,035 facilities, 141 observed first-adoption events</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Lagged hazard frame</p>
+    <p class="kpi">11,717</p>
+    <p class="kpi-sub">model rows</p>
+    <p class="kpi-note">1,915 facilities, 140 retained events</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Intensive margin</p>
+    <p class="kpi">5,683</p>
+    <p class="kpi-sub">generator rows</p>
+    <p class="kpi-note">1,016 facilities in the canonical efficiency frame</p>
+  </div>
+</div>
 
-- `23,599` facility-year observations
-- `2,948` facilities
-- FY2005-FY2024
-
-**Frame A: extensive margin**
-
-- coded full-fleet frame: `19,827` observations
-- adoption risk set: `13,770` facility-years, `2,035` facilities, `141` observed first-adoption events
-- lagged model frame: `11,717` facility-years, `1,915` facilities, `140` retained events
-
-**Frame B: intensive margin**
-
-- canonical generator-efficiency frame: `5,683` facility-years, `1,016` facilities
-
-**Why split the design**
-
-- the adoption question is not the same as the conditional-efficiency question
-- a generator-only sample cannot carry the whole fleet transition story
+<div class="statement-card compact">
+  <p class="eyebrow">Design logic</p>
+  <p class="big-statement">The extensive margin asks who gets into generation. The intensive margin asks what drives performance once they are already there.</p>
+</div>
 
 <!--
-This is the key architecture slide.
-If challenged on redesign, say the earlier version over-asked a selected sample to explain the whole fleet.
+If you need a 15-second version: same dataset, two different estimands, two different frames.
 -->
 
 ---
 
-# 3. Extensive-Margin Result: Transition Is Selective
+<!-- _class: split -->
 
-**Main adoption hazard**
+# 3. Observed Transition Into Generation Is Selective
 
-| Variable | Effect |
-|:--|--:|
-| Prior-year age `10-20` vs `0-10` | `-3.19` pp |
-| Prior-year age `20-30` vs `0-10` | `-2.82` pp |
-| Prior-year age `30+` vs `0-10` | `-2.26` pp |
-| Prior-year capacity per `100 t/day` | `+0.39` pp |
-
-**Other facts**
-
-- `109` of `141` observed adoption events occur in FY2013-FY2019
-- the coded panel does **not** show widespread late conversion among old small plants
-- observed transition into generation is concentrated among facilities already younger and larger before the event year
-
-**Interpretation**
-
-Observed entry into generation is selective rather than diffuse.
+<div class="two-col">
+  <div class="figure-card">
+    <img src="./figures/defense_adoption_hazard.svg" alt="Adoption hazard summary" />
+  </div>
+  <div>
+    <div class="note-card">
+      <p class="eyebrow">Main hazard result</p>
+      <ul>
+        <li><strong>Age penalty:</strong> facilities older than 10 years are about <strong>2.3-3.2 pp less likely</strong> to record observed transition.</li>
+        <li><strong>Scale premium:</strong> each additional <strong>100 t/day</strong> raises annual transition probability by about <strong>0.39 pp</strong>.</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <p class="eyebrow">What that means</p>
+      <ul>
+        <li>Observed transition is concentrated among facilities already younger and larger before the event year.</li>
+        <li>No broad late-life conversion wave appears in the coded panel.</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <!--
-If pressed on why cloglog: rare discrete-time event, stronger than the earlier LPM, same sign pattern as lagged logit and lagged LPM robustness.
+Fast oral version:
+The extensive-margin result is simple: observed first transition into generation is selective, not diffuse.
+The older-than-10 age penalty is negative, capacity is positive, and the sign pattern survives lagged logit and lagged LPM robustness.
 -->
 
 ---
 
-# 4. Pathway Audit: Capital-Side Modernization Is Prominent
+<!-- _class: split -->
 
-**Event-level audit of `141` observed transitions**
+# 4. The Pathway Audit Sharpens the Mechanism Claim
 
-| Category | Events | Share |
-|:--|--:|--:|
-| Reset / rebuild-like | `82` | `58.2%` |
-| Continuity / in-place upgrade | `38` | `27.0%` |
-| Forward-dated / placeholder | `20` | `14.2%` |
-| Unresolved | `1` | `0.7%` |
-
-**Rule basis**
-
-- reset/rebuild-like requires observed `year_started` reset or mature-to-new age reset
-- continuity-type transitions do not show that reset
-- placeholder/forward-dated rows are left unresolved rather than forced into a stronger mechanism story
-
-**Interpretation**
-
-The largest observed pathway bucket is capital-reset-like, but the thesis does **not** claim that replacement is uniquely identified or that retrofit never happens.
+<div class="two-col">
+  <div class="figure-card">
+    <img src="./figures/defense_pathway_audit.svg" alt="Pathway audit summary" />
+  </div>
+  <div>
+    <div class="note-card">
+      <p class="eyebrow">Rule basis</p>
+      <ul>
+        <li><strong>Reset / rebuild-like</strong>: observed <code>year_started</code> reset or mature-to-new age reset.</li>
+        <li><strong>Continuity / upgrade-like</strong>: no such reset on the event row.</li>
+        <li><strong>Placeholder / forward-dated</strong>: left unresolved rather than forced into a stronger story.</li>
+      </ul>
+    </div>
+    <div class="statement-card compact">
+      <p class="eyebrow">Calibrated interpretation</p>
+      <p class="big-statement">Reset/rebuild-like events are the largest observed bucket in this panel, but replacement is not uniquely identified and retrofit still remains in the story.</p>
+    </div>
+  </div>
+</div>
 
 <!--
-This slide is the policy-calibration shield.
-Use it whenever you sense the discussion drifting toward "so you proved replacement."
+Fast oral version:
+The audit does not prove one mechanism.
+It prevents the policy section from outrunning the data by showing that reset/rebuild-like transitions are the largest observed bucket, while continuity-type upgrades still exist.
 -->
 
 ---
 
-# 5. Intensive-Margin Result: Bounded Responsiveness
+<!-- _class: split -->
 
-**Main generator-efficiency relationships**
+# 5. Conditional Efficiency Looks Structured, Not Easily Reversed
 
-| Variable | Main-model range |
-|:--|:--|
-| Facility age | `-0.019` to `-0.035` |
-| Design capacity | `+0.040` to `+0.103` |
-| Capacity utilization | `+0.541` to `+0.779` |
-
-**Deepest finding**
-
-- within/total variance ratio: `0.1499`
-- pre-Fukushima: `0.1795`
-- post-Fukushima: `0.0956`
-
-**Meaning**
-
-- efficiency differs much more across facilities than within the same facility over time
-- operating-side changes matter, but they appear too small to erase design- and vintage-based gaps once a facility is already in the generating regime
+<div class="two-col">
+  <div class="figure-card">
+    <img src="./figures/defense_efficiency_structure.svg" alt="Generator efficiency structure summary" />
+  </div>
+  <div>
+    <div class="note-card">
+      <p class="eyebrow">Main relationships</p>
+      <ul>
+        <li><strong>Age:</strong> older facilities are less efficient.</li>
+        <li><strong>Capacity:</strong> larger facilities are more efficient.</li>
+        <li><strong>Utilization:</strong> better-loaded facilities perform better.</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <p class="eyebrow">Deepest finding</p>
+      <ul>
+        <li>Within/total variance ratio is only <strong>0.1499</strong>.</li>
+        <li>It falls further to <strong>0.0956</strong> post-Fukushima.</li>
+        <li>Operations matter, but cross-facility gaps remain much larger than within-facility movement.</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <!--
-If asked whether this "proves lock-in," say no: it is descriptive evidence that is strongly consistent with bounded infrastructural responsiveness.
+Fast oral version:
+The intensive-margin story is not that operations are irrelevant.
+It is that the biggest differences remain across facilities, not within the same facility over time.
 -->
 
 ---
 
-# 6. Why Not Two-Way Fixed Effects?
+<!-- _class: split -->
 
-**Reason 1: identification**
+# 6. Why This Design, and Why Not Two-Way FE?
 
-- facility age rises mechanically with year
-- once year effects are included, age is poorly identified in a two-way FE design
-
-**Reason 2: variance structure**
-
-- within/total variation ratio of log-efficiency is only `0.1499`
-- post-Fukushima it falls further to `0.0956`
-- FE would lean on the smaller part of the signal while discarding the between-facility variation the thesis is trying to interpret
-
-**Position**
-
-- the thesis is observational, not a strict quasi-experimental identification design
-- estimator choice follows the substantive question, not a ritual preference for FE
+<div class="kpi-grid">
+  <div class="note-card">
+    <p class="eyebrow">Substantive fit</p>
+    <p>The question is about structured heterogeneity, not removing all between-facility information by design.</p>
+  </div>
+  <div class="note-card">
+    <p class="eyebrow">Age-year problem</p>
+    <p>Facility age rises mechanically with year, so the main regressor is poorly identified in two-way FE.</p>
+  </div>
+  <div class="note-card">
+    <p class="eyebrow">Variance structure</p>
+    <p>With a within/total ratio of only <strong>0.1499</strong>, FE would lean on the smaller part of the signal.</p>
+  </div>
+  <div class="statement-card compact">
+    <p class="eyebrow">Position</p>
+    <p class="big-statement">Estimator choice follows the question, not a ritual preference for FE.</p>
+  </div>
+</div>
 
 <!--
-This slide is here because a quantitatively literate examiner is likely to ask this.
-If time is short, keep it in appendix but be ready to jump to it immediately.
+Use this slide to answer the hardest methods question in under 30 seconds:
+age-year collinearity, low within variation, and estimator choice matched to the substantive question.
 -->
 
 ---
+
+<!-- _class: split -->
 
 # 7. What the Thesis Claims, and Does Not Claim
 
-## Does claim
+<div class="two-col">
+  <div class="claim-box do">
+    <p class="eyebrow">Does claim</p>
+    <ul>
+      <li>The fleet transition is empirically two-part.</li>
+      <li>Observed entry into generation is selective.</li>
+      <li>Generator performance is shaped by age, scale, and bounded responsiveness.</li>
+      <li>Capital-side modernization likely matters more than operations alone for the weakest segment.</li>
+    </ul>
+  </div>
+  <div class="claim-box dont">
+    <p class="eyebrow">Does not claim</p>
+    <ul>
+      <li>strict causal proof</li>
+      <li>replacement as the only modernization pathway</li>
+      <li>full net climate accounting</li>
+      <li>heat-recovery or district-heating evaluation</li>
+    </ul>
+  </div>
+</div>
 
-- Japan's incineration transition is empirically two-part
-- observed transition into generation is selective
-- conditional generator performance is strongly shaped by age, scale, and bounded within-facility responsiveness
-- capital-side modernization likely matters more than operations alone for the weakest segment
-
-## Does not claim
-
-- strict causal proof
-- replacement as the only modernization pathway
-- full net climate accounting
-- heat-recovery or district-heating evaluation
-
-**Bottom line**
-
-The revised thesis is stronger because it is narrower and better matched to the evidence.
+<div class="statement-card compact">
+  <p class="eyebrow">Defense posture</p>
+  <p class="big-statement">The revised thesis is stronger because its scope now matches its evidence.</p>
+</div>
 
 <!--
-This is the overclaim-defense slide.
-Use it if challenged on causality, mechanism, or policy scope.
+This is the overclaim shield.
+If pressed hard, say: the thesis is narrow on purpose because precision is a strength, not a weakness.
 -->
 
 ---
 
-# 8. Policy Takeaway and Closing
+<!-- _class: hero close -->
 
-**What follows from the evidence**
+# 8. Bottom Line
 
-- old and small facilities rarely record observed transition into generation
-- among generators, vintage and scale gaps remain large
-- reset/rebuild-like events are the largest observed pathway bucket
+<div class="closing-grid">
+  <div class="closing-card">
+    <p class="eyebrow">Extensive margin</p>
+    <p class="closing-text">Old and small facilities rarely record observed transition into generation.</p>
+  </div>
+  <div class="closing-card">
+    <p class="eyebrow">Intensive margin</p>
+    <p class="closing-text">Among generators, vintage and scale gaps remain large even when utilization improves.</p>
+  </div>
+  <div class="closing-card">
+    <p class="eyebrow">Implication</p>
+    <p class="closing-text">Operations matter, but capital-side modernization and regional consolidation appear more consequential for the weakest segment.</p>
+  </div>
+</div>
 
-**Policy hierarchy**
-
-1. capital-side modernization
-2. retirement / major refurbishment
-3. regional consolidation
-4. routing and utilization as secondary levers
-
-**Closing sentence**
-
-Japan's incineration transition is happening, but it is selective and slower than a net-zero-compatible fleet transformation would require.
+<div class="statement-card compact close-line">
+  <p class="big-statement">Japan's incineration transition is happening, but it is selective and slower than a net-zero-compatible fleet transition would require.</p>
+</div>
 
 <!--
-End on hierarchy, not absolutism.
-The cleanest close is: operations matter, but they do not appear large enough to carry the whole transition by themselves.
+Clean close:
+The contribution is not that I prove one causal mechanism.
+It is that I show, with a reproducible two-part design, where transition is actually occurring and where bounded responsiveness still constrains performance.
 -->
 
 ---
 
-# Appendix A. Short Answer to the Hardest Methods Question
+<!-- _class: appendix -->
 
-**Q: Why not two-way fixed effects?**
+# Appendix A. Fast Answer: Why Not Two-Way FE?
 
-**A:**
+<div class="statement-card">
+  <p class="big-statement">Because age is mechanically linked to year, the main regressor is poorly identified in two-way FE, and the within signal is only 14.99% of the total.</p>
+</div>
 
-- age is mechanically linked to year, so the main regressor is poorly identified in a two-way FE setup
-- the within-to-total ratio is only `0.1499`, so FE would lean on the smaller part of the signal
-- the thesis question is about how age, scale, and utilization structure heterogeneity, not about purging all between-facility information from the design
-
----
-
-# Appendix B. Short Answer to the Hardest Scope Question
-
-**Q: Did you prove that replacement is the dominant mechanism?**
-
-**A:**
-
-- no
-- the pathway audit shows that reset/rebuild-like events are the largest observed bucket in this panel
-- it does not cleanly distinguish replacement, new build, and major refurbishment inside that bucket
-- the defended claim is therefore comparative and calibrated, not absolute
+<div class="note-card">
+  <ul>
+    <li>FE would lean on the smaller part of the variance.</li>
+    <li>The thesis question is about structured heterogeneity, not purging all between-facility information.</li>
+  </ul>
+</div>
 
 ---
 
-# Appendix C. Short Answer to the Hardest Theory Question
+<!-- _class: appendix -->
 
-**Q: Did you prove lock-in?**
+# Appendix B. Fast Answer: Did You Prove Replacement?
 
-**A:**
+<div class="statement-card">
+  <p class="big-statement">No. The pathway audit shows reset/rebuild-like events are the largest observed bucket in this panel, but it does not cleanly distinguish replacement, new build, and major refurbishment within that bucket.</p>
+</div>
 
-- no, not causally
-- the thesis shows that low within-facility variation, stable age/scale relationships, and bounded Fukushima response are strongly consistent with bounded infrastructural responsiveness
-- that is the defended contribution
+<div class="note-card">
+  <ul>
+    <li>Reset/rebuild-like: `82`</li>
+    <li>Continuity/in-place upgrade: `38`</li>
+    <li>Forward-dated/placeholder: `20`</li>
+  </ul>
+</div>
 
-<!--
-If you later want a polished visual deck, this markdown file is the source script.
-The fastest path is to import it into Marp or copy slide-by-slide into your preferred presentation tool.
--->
+---
+
+<!-- _class: appendix -->
+
+# Appendix C. Fast Answer: Did You Prove Lock-In?
+
+<div class="statement-card">
+  <p class="big-statement">Not causally. The thesis shows that low within-facility movement, stable age/scale relationships, and bounded Fukushima response are strongly consistent with bounded infrastructural responsiveness.</p>
+</div>
+
+<div class="note-card">
+  <ul>
+    <li>Within/total ratio: `0.1499`</li>
+    <li>Pre-Fukushima: `0.1795`</li>
+    <li>Post-Fukushima: `0.0956`</li>
+  </ul>
+</div>

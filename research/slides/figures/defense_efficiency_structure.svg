@@ -1,0 +1,43 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="32" fill="#FBF8F1"/>
+  <rect x="58" y="58" width="700" height="784" rx="30" fill="white" stroke="#E6DDD1"/>
+  <rect x="800" y="58" width="742" height="784" rx="30" fill="white" stroke="#E6DDD1"/>
+
+  <text x="98" y="118" fill="#C8643B" font-family="Avenir Next, Segoe UI, sans-serif" font-size="26" font-weight="800" letter-spacing="2">GENERATOR-EFFICIENCY RELATIONSHIPS</text>
+  <text x="98" y="164" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="38" font-weight="800">Performance gaps remain strongly structured by age, scale, and utilization</text>
+
+  <text x="118" y="266" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="32" font-weight="700">Facility age</text>
+  <rect x="118" y="292" width="352" height="56" rx="16" fill="#C8643B"/>
+  <text x="488" y="329" fill="#C8643B" font-family="Avenir Next, Segoe UI, sans-serif" font-size="30" font-weight="800">-0.019 to -0.035</text>
+
+  <text x="118" y="432" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="32" font-weight="700">Design capacity</text>
+  <rect x="118" y="458" width="250" height="56" rx="16" fill="#1E6A6D"/>
+  <text x="388" y="495" fill="#1E6A6D" font-family="Avenir Next, Segoe UI, sans-serif" font-size="30" font-weight="800">+0.040 to +0.103</text>
+
+  <text x="118" y="598" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="32" font-weight="700">Capacity utilization</text>
+  <rect x="118" y="624" width="510" height="56" rx="16" fill="#D8A54D"/>
+  <text x="648" y="661" fill="#9C7627" font-family="Avenir Next, Segoe UI, sans-serif" font-size="30" font-weight="800">+0.541 to +0.779</text>
+
+  <text x="118" y="754" fill="#50626A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="24">Main-model coefficient ranges from the canonical intensive-margin frame.</text>
+
+  <text x="840" y="118" fill="#C8643B" font-family="Avenir Next, Segoe UI, sans-serif" font-size="26" font-weight="800" letter-spacing="2">VARIANCE STRUCTURE</text>
+  <text x="840" y="164" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="38" font-weight="800">Most of the movement is across facilities, not within the same facility over time</text>
+
+  <rect x="840" y="228" width="662" height="168" rx="26" fill="#F2EEE6"/>
+  <text x="874" y="274" fill="#50626A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="22" font-weight="700">Within / total variance ratio</text>
+  <text x="874" y="356" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="108" font-weight="900">0.1499</text>
+
+  <text x="840" y="474" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="30" font-weight="700">Pre- and post-Fukushima split</text>
+  <rect x="840" y="520" width="662" height="210" rx="26" fill="#F7FBFB" stroke="#D4E5E3"/>
+
+  <text x="882" y="590" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="700">Pre-Fukushima</text>
+  <rect x="1100" y="554" width="260" height="52" rx="16" fill="#1E6A6D"/>
+  <text x="1380" y="590" fill="#1E6A6D" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="800">0.1795</text>
+
+  <text x="882" y="672" fill="#12303A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="700">Post-Fukushima</text>
+  <rect x="1100" y="636" width="138" height="52" rx="16" fill="#C8643B"/>
+  <text x="1258" y="672" fill="#C8643B" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="800">0.0956</text>
+
+  <rect x="840" y="756" width="662" height="52" rx="16" fill="#0F474F"/>
+  <text x="874" y="790" fill="white" font-family="Avenir Next, Segoe UI, sans-serif" font-size="24" font-weight="700">Interpretation: utilization matters, but bounded within-facility movement does not erase age- and scale-linked gaps.</text>
+</svg>
