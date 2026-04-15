@@ -2,8 +2,8 @@
 
 **To:** Prof. Han Ji
 **From:** Pann Phetra (Student ID: 13223029)
-**Date:** 2026-04-13
-**Re:** Bachelor's thesis — draft ready for review
+**Date:** 2026-04-15
+**Re:** Bachelor's thesis — current defended draft
 
 ---
 
@@ -11,80 +11,117 @@
 
 **Title:** *Carbon Lock-in or Circular Transition? Heterogeneity in Japan's Waste Incineration Fleet and Net-Zero Compatibility*
 
-**Research question:** What facility characteristics predict energy recovery efficiency among Japan's power-generating incinerators, and how has this changed as the fleet modernizes?
+**Research question:** What predicts observed transition into power generation among coded facilities first seen without generation, and conditional on power generation, what predicts energy recovery efficiency among Japan's power-generating incinerators?
 
-**Data:** 20-year facility-level panel from MOE's General Waste Treatment Survey — 23,599 observations across 2,949 unique facilities (FY2005–FY2024). The regression sample after restricting to power-generating facilities and winsorising efficiency at [0.01, 0.80] MWh/t is 6,575 facility-years across 947 facilities.
+**Data:** 20-year facility-level panel from MOE's General Waste Treatment Survey, FY2005-FY2024.
 
-**Method:** Panel regression with four main specifications (Pooled OLS, Year FE, Random Effects, Year FE + RE) plus eight robustness specifications (pre/post-Fukushima splits, capacity tercile endpoints, raw-DV replications). All specifications use cluster-robust standard errors clustered at the facility level. Following Wooldridge (2010); Niessen (2010) for the engineering background.
+- Full panel: 23,599 facility-year observations across 2,948 facilities
+- Coded full-fleet frame: 19,827 observations across 2,948 facilities
+- Extensive-margin adoption risk set: 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events
+- Lagged adoption model frame: 11,717 facility-years across 1,915 facilities and 140 retained events
+- Canonical generator-efficiency frame: 5,683 facility-years across 1,016 facilities
 
-**Why not facility fixed effects?** Two substantive reasons. First, facility age increases deterministically by one unit per year, making it nearly collinear with year fixed effects in a two-way FE specification. Second, the within-to-total variance ratio of log-efficiency is only ~0.13, so facility FE would discard 87% of the variation in the dependent variable and yield imprecise estimates. The low variance ratio is itself the central empirical finding of the thesis.
+**Method:** Two-part empirical design.
+
+1. Extensive margin: lagged complementary log-log discrete-time hazard for observed first transition into power generation, with prior-year age bands, prior-year capacity, year fixed effects, prefecture fixed effects, and facility-clustered standard errors.
+2. Intensive margin: four main generator-efficiency specifications (Pooled OLS, Year FE, RE, Year FE + RE) plus eight robustness specifications.
+
+**Why not facility fixed effects as the primary model?** Two reasons.
+
+1. Facility age rises mechanically with year, so age is poorly identified in a two-way FE setup once year effects are included.
+2. The within-to-total variance ratio of log-efficiency in the canonical generator frame is only 0.1499, falling to 0.0956 post-Fukushima, so FE would lean on the smaller part of the signal while also weakening identification of the main variable of interest.
 
 ---
 
-## Findings (robust across all 12 specifications)
+## Main findings
 
-| Determinant | Coefficient | Interpretation |
-|:------------|:------------|:---------------|
-| Facility age | −0.028 to −0.043 per year (p < 0.001) | Each additional year ≈ 2.8–4.3% lower efficiency, holding other factors constant |
-| Design capacity | +0.08 to +0.10 log-units per 100 t/day (p < 0.001) | Engineering economics of boiler and turbine systems at scale |
-| Capacity utilization | +0.58 to +0.62 (p < 0.001) | Thermodynamic gains from operating near design conditions |
-| **Within/total variance ratio** | **0.13 pooled, 0.10 pre-Fuku, 0.07 post-Fuku** | **The signature finding: 87% of variation is between facilities, not within them over time. Stability of the ratio across the pre- and post-Fukushima subsamples is the empirical signature of bounded-responsiveness lock-in as defined by Seto et al. (2016).** |
+### 1. Transition into power generation is selective, not diffuse
 
-**Null results:** Heating value is not significant in any specification. Grid emission factor is sign-unstable across specifications and is not interpretable as a causal effect.
+- Facilities older than 10 years in the prior observed year are about 2.3-3.2 percentage points less likely to record transition into power generation than 0-10 year facilities.
+- Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.39 percentage points.
+- The coded panel therefore does not show widespread late conversion among old small plants.
 
-**Headline fleet numbers:** Facility count fell from 1,318 (FY2005) to 1,014 (FY2024), a 23% decline. Power-generating share nearly doubled from 21.6% to 41.1%. But 598 facilities (59% of the active fleet) still generate no electricity. Gross avoided CO₂ emissions from waste-to-energy were approximately 4.6 Mt-CO₂ in FY2024 — an upper bound, since process emissions from combustion are not deducted.
+### 2. The observed modernization pathway is usually capital-reset-like, but not exclusively so
+
+- A conservative event-level audit classifies 82 of 141 observed transitions as reset/rebuild-like.
+- 38 transitions preserve continuity consistent with in-place upgrading.
+- 20 entries are forward-dated or placeholder cases and are left unresolved rather than forced into a stronger mechanism claim.
+
+This supports a calibrated claim: capital-side modernization is empirically prominent in the observed transition wave, but the thesis does **not** claim that replacement is the only pathway or that retrofit never occurs.
+
+### 3. Conditional on generation, efficiency is strongly structured by age, scale, and utilization
+
+| Determinant | Main-model range | Interpretation |
+|:------------|:-----------------|:---------------|
+| Facility age | -0.019 to -0.035 log-units/year | Older generators are consistently less efficient |
+| Design capacity | +0.040 to +0.103 log-units per 100 t/day | Larger facilities capture engineering scale advantages |
+| Capacity utilization | +0.541 to +0.779 | Operating closer to design load improves performance |
+
+Heating value is not significant in the main models. Grid emission factor is sign-unstable and not interpreted causally.
+
+### 4. The deepest finding is bounded responsiveness within the generator sample
+
+- Within/total variation ratio of log-efficiency: 0.1499
+- Pre-Fukushima ratio: 0.1795
+- Post-Fukushima ratio: 0.0956
+
+This pattern is strongly consistent with bounded infrastructural responsiveness: operational changes matter, but they appear too small to erase design- and vintage-based differences once a facility is already in the generating regime.
 
 ---
 
 ## Theoretical contribution
 
-The thesis positions itself as answering Seto et al.'s (2016) explicit call for facility-level empirical operationalisation of infrastructural lock-in, rather than applying Unruh's (2000) hypothesis as unexamined theory. Seto et al. define infrastructural lock-in as facility-level performance remaining stable in the face of changing external incentives; the pre/post-Fukushima stability of the within/total ratio, over a period in which the value of grid electricity, the FiT structure, and the policy environment all changed dramatically, is therefore a direct test rather than an illustration. The Fukushima subsample does show a small (0.005 log-unit) attenuation of the age coefficient — this is reported as bounded responsiveness within a lock-in envelope rather than waved away as sampling noise. The thesis also acknowledges two alternative interpretations of the 0.13 ratio (correlated measurement error in the efficiency numerator and denominator; retrofits technically possible but not pursued at scale) and argues that the pre/post-Fukushima stability pushes against both to some degree, without claiming to fully adjudicate. Convergent external evidence comes from Cui et al. (2026) on the Chinese incinerator fleet; the facility-level estimates feed into Yamada et al. (2023)'s Japan net-zero scenario model. Other cited theory includes Arthur (1989), Geels (2004), and Caldecott et al. (2016). Waste-sector context draws on Sakai (2008, 2011), Sun et al. (2018), and Tabata & Tsai (2016).
+The thesis now makes two linked contributions rather than one overextended one.
+
+1. It shows that Japan's incineration transition is empirically two-part: observed entry into power generation is an extensive-margin modernization problem, while efficiency differences among generators are an intensive-margin performance problem.
+2. It provides facility-level evidence strongly consistent with bounded infrastructural lock-in within the generating segment, in the narrower and more defensible sense emphasized by Seto et al. (2016): performance responds to incentives, but within an envelope shaped by prior capital design.
+
+The claim is therefore not "lock-in proven causally," but "multiple pieces of evidence line up with a bounded-responsiveness lock-in interpretation."
 
 ---
 
 ## Policy implication
 
-Because within-facility efficiency responds to incentives only within a narrow envelope set by the original design, fleet-wide improvement cannot meaningfully come from operational intervention at already-built facilities. Four recommendations, developed in Chapter 6:
+The defended policy implication is now narrower and cleaner than the earlier draft:
 
-1. **Accelerate targeted retirement** of the ~277 pre-1995 non-power-generating facilities still operating in FY2024.
-2. **Scale regional consolidation planning** from the municipal to the prefectural level, backed by national coordination grants.
-3. **Redesign monitoring** to serve fleet planning (vintage register, retirement calendar) rather than facility-level efficiency auditing, since within-facility efficiency is effectively fixed.
-4. **Concentrate WtE capital incentives** on new-build and major-refurbishment decisions (the points at which design vintage is actually set) rather than operating-side subsidies for already-built facilities.
+- old and small facilities rarely record observed transition into generation in the coded panel
+- among generators, operating-side improvements appear bounded relative to vintage and scale gaps
+- the observed modernization wave contains more reset/rebuild-like events than continuity-type upgrades
 
----
-
-## What I would like feedback on
-
-- **Methodological framing in Chapter 3.** The pivot away from two-way FE to pooled OLS + RE is justified on two grounds (collinearity + variance-ratio), but I want to confirm this framing is legible to an industrial-ecology audience and does not read as avoiding the "default" panel estimator.
-- **Chapter 5 discussion of the 59% non-power-generating problem.** Following panel review, the framing has been softened from "cannot be converted in place" to "unlikely to be converted under foreseeable economics — at fleet scale, replacement rather than retrofit is the dominant feasible pathway," combining architectural and economic barriers explicitly rather than claiming physical impossibility. I would welcome your view on whether this weaker-but-better-defended claim matches what you see in the Japanese WtE policy literature.
-- **The "modernizing vanguard vs ageing majority" framing in §5.5.** The thesis uses this split to organise the policy discussion. The vanguard count (137 facilities: built after 2000, capacity > 200 t/day) and the pre-1995 power-gen count (54) are drawn directly from the FY2024 cross-section of the dataset. Please let me know if the framing reads as too binary.
-- **The null result on heating value** is argued in Section 2.4.4 to be consistent with combustion-control technology buffering the input–output relationship, though measurement noise cannot be ruled out since heating value is estimated rather than directly measured. I would value your view on whether the Chapter 5 discussion gives this null result appropriate weight.
+So the thesis argues that Japan's largest fleet-wide gains are more likely to come from capital-side modernization, retirement, replacement, major refurbishment, and regional consolidation than from operating-side fine-tuning alone. It does **not** argue that operations are irrelevant, or that replacement has been uniquely identified as the sole mechanism.
 
 ---
 
-## State of the manuscript
+## What I would most like feedback on
+
+- Whether the two-part architecture reads as a genuine strengthening of the thesis rather than a narrowing retreat.
+- Whether the lock-in framing in Chapters 5 and 6 is now appropriately calibrated: strong, but no longer overstated.
+- Whether the policy section now strikes the right balance between actionable interpretation and overreach.
+- Whether the thesis reads more like a disciplined quantitative paper and less like a broad undergraduate survey.
+
+---
+
+## State of the manuscript and repo
 
 | Item | Status |
 |:-----|:-------|
-| Thesis body word count | ~13,600 words (body + tables + equations + bibliography) |
-| Chapters drafted | 7 of 7 (Abstract + Ch 1–6) |
-| Authoritative source file | `thesis/thesis.tex` — Overleaf-compileable |
-| Bibliography | 26 entries, all DOI/URL-verified, 0 orphans, 0 fabricated |
-| Tables | 6 (summary stats, fleet evolution, efficiency by age, efficiency by capacity, main regression, robustness) |
-| Figures | 2 (establishing shot + heterogeneity shot, in `thesis/figures/`) |
-| Expert panel review | 3 attack rounds + 1 holistic grade + 1 A-push execution round; all items addressed |
-| Ready for supervisor read | **Yes** |
+| Authoritative thesis source | `thesis/thesis.tex` |
+| Canonical analysis rebuild | `.venv/bin/python code/scripts/07_rebuild_analysis.py` |
+| Repo-level claim/evidence verifier | `.venv/bin/python code/scripts/08_verify_claims.py` |
+| Claim verification report | `output/claim_verification.md` |
+| Bibliography | 26 entries, DOI/URL-verified |
+| Expert-panel hardening | completed through redesign, adoption hardening, wording calibration, and verifier gate |
+| Current repo state | analysis rebuild and claim verifier pass |
 
 ---
 
-## How to access
+## Supporting files
 
-- **Overleaf-ready LaTeX:** `thesis/thesis.tex` + `thesis/figures/` in the repository at <https://github.com/Pann13223029/incineration-thesis>
-- **Full supporting documentation:** `README.md` (research journey with diagrams), `ARCHITECTURE.md` (technical blueprint)
-- **Code pipeline:** `code/scripts/` — seven numbered Python scripts that reproduce the full analysis from the raw MOE downloads through the regression tables
+- Thesis source: `thesis/thesis.tex`
+- Technical blueprint: `ARCHITECTURE.md`
+- Repo summary and reproduction guide: `README.md`
+- Claim verification report: `output/claim_verification.md`
+- Extensive-margin output: `output/adoption_results.md`
+- Intensive-margin output: `output/regression_results.md`
 
-I am happy to provide a printed copy of the PDF or a specific chapter if that would help the review.
-
----
-
-**Contact:** Pann Phetra (Student ID: 13223029)
+This brief now reflects the current two-part architecture and verified thesis-facing numbers, rather than the earlier generator-only draft.

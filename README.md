@@ -150,7 +150,7 @@ incineration-thesis/
 |-- output/                                  # Generated figures, tables, sample report, manifests
 |-- research/
 |   |-- literature/                          # Paper summaries
-|   +-- notes/                               # Expert panel transcripts, verification reports
+|   +-- notes/                               # Panel protocol, supervisor brief, defense notes, verification reports
 |
 |-- ARCHITECTURE.md                          # Technical blueprint
 |-- AGENTS.md                                # Assistant-agnostic repo workflow
