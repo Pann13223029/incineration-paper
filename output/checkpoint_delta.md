@@ -1,12 +1,14 @@
 # Changes Since Last Frozen Checkpoint
 
-- Current HEAD: `afa6ef0`
+- Current HEAD: `5a1d2ab`
 - Baseline checkpoint tag: `sendable-now-20260415-385cfef`
 - Baseline SHA: `385cfef`
-- Commits since baseline: `1`
+- Commits since baseline: `3`
 
 ## Commit Summary
 
+- `5a1d2ab Fetch tags in CI verification`
+- `eafebc6 Refine packet delta classification`
 - `afa6ef0 Add packet delta summary`
 
 ## Changed Areas
@@ -15,6 +17,7 @@
 - `research/packets/README.md`
 
 ### Workflow and repo operations
+- `.github/workflows/verify.yml`
 - `README.md`
 - `code/scripts/11_package_review_packets.py`
 - `code/scripts/14_generate_checkpoint_delta.py`
