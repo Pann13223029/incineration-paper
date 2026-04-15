@@ -5,7 +5,7 @@ Repo-level check that thesis-facing claims stay synchronized with canonical outp
 - Core manifest Python: 3.12.12
 - Full panel: 23,599 observations across 2,948 facilities
 - Adoption frame: risk set 13,770 / 2,035; model 11,717 / 1,915 / 140 events
-- Adoption effects: age 2.3–3.2 pp less likely; capacity +0.39 pp per 100 t/day
+- Adoption effects: age 1.1–1.8 pp less likely; capacity +0.50 pp per 100 t/day
 - Pathway audit: 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved
 - Regression frame: 5,683 observations across 1,016 facilities; within/total ratio 0.1499 (0.1795 pre-Fuku, 0.0956 post-Fuku)
 

@@ -76,6 +76,7 @@ def build_canonical_metrics() -> dict:
         age_ames["age_30+ yrs"]["ame"],
     ]
     age_effects_sorted = sorted(age_effects, key=abs)
+    age_effects_signed = sorted(age_effects)
 
     main_coeffs = regression_manifest["metadata"]["main_models"]["coefficients"]
     main_age = main_coeffs["facility_age_years"]
@@ -117,8 +118,8 @@ def build_canonical_metrics() -> dict:
             fmt_pp_abs(age_effects_sorted[-1], 1),
         ),
         "adoption_age_range_2dp": (
-            fmt_signed_pp(age_effects_sorted[0], 2),
-            fmt_signed_pp(age_effects_sorted[-1], 2),
+            fmt_signed_pp(age_effects_signed[0], 2),
+            fmt_signed_pp(age_effects_signed[-1], 2),
         ),
         "adoption_capacity_pp_1dp": fmt_pp_abs(
             adoption_manifest["metadata"]["model"]["average_marginal_effects"][

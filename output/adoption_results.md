@@ -37,20 +37,20 @@ This stage models the observed first transition into power generation among code
 
 ## Adoption Hazard Model
 
-Main specification: lagged complementary log-log discrete-time hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
+Main specification: lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
 
 | Variable                            | AME (pp)   | SE (pp)   |
 |:------------------------------------|:-----------|:----------|
-| Prior-year age 10-20 yrs (vs 0-10)  | -3.19*     | (1.53)    |
-| Prior-year age 20-30 yrs (vs 0-10)  | -2.82*     | (1.38)    |
-| Prior-year age 30+ yrs (vs 0-10)    | -2.26      | (1.45)    |
-| Prior-year capacity (per 100 t/day) | 0.39*      | (0.19)    |
+| Prior-year age 10-20 yrs (vs 0-10)  | -1.76***   | (0.28)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -1.72***   | (0.42)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -1.13**    | (0.39)    |
+| Prior-year capacity (per 100 t/day) | 0.50*      | (0.20)    |
 
 - Observations: 11,717
 - Facilities: 1,915
 - First-adoption events: 140
-- Pseudo-R-squared (deviance-based): 0.1802
-- Robustness: lagged logit and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (logit coef. 0.453, p=0.011; LPM coef. 1.47 pp, p=5.03e-07).
+- Pseudo-R-squared (deviance-based): 0.1842
+- Robustness: lagged complementary log-log and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.345, p=1.67e-07; LPM coef. 1.47 pp, p=5.03e-07).
 
 ## Transition Pathway Audit
 

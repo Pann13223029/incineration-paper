@@ -104,7 +104,7 @@ IDENTIFIER_DTYPES = {
 }
 
 
-def stable_float(value: float, sig_digits: int = 15) -> float:
+def stable_float(value: float, sig_digits: int = 10) -> float:
     """Round floats to a stable significant-digit representation."""
     if not np.isfinite(value):
         return value
@@ -141,7 +141,7 @@ def analysis_config() -> dict[str, Any]:
         "regression_requires_positive_output": True,
         "regression_requires_official_facility_code": True,
         "regression_winsorization_method": "clip",
-        "adoption_model": "observed_first_adoption_cloglog_hazard",
+        "adoption_model": "observed_first_adoption_logit_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
         "adoption_predictors_lagged_one_year": True,
     }

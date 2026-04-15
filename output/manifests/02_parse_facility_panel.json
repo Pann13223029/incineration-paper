@@ -1,6 +1,6 @@
 {
   "analysis_config": {
-    "adoption_model": "observed_first_adoption_cloglog_hazard",
+    "adoption_model": "observed_first_adoption_logit_hazard",
     "adoption_predictors_lagged_one_year": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
     "capacity_utilization_cap": 1.0,

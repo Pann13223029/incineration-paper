@@ -17,6 +17,8 @@ thesis/*.toc
 research/slides/dist/
 research/packets/dist/
 research/checkpoints/dist/
+output/fig01_establishing_shot.png
+output/fig02_heterogeneity_shot.png
 
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.

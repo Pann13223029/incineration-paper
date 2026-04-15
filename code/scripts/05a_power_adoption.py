@@ -11,10 +11,12 @@ from __future__ import annotations
 
 import math
 import os
+import warnings
 
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from statsmodels.discrete.discrete_model import Logit
 
 from panel_utils import (
     AGE_BAND_LABELS,
@@ -44,7 +46,6 @@ PATHWAY_ORDER = [
     "Forward-dated / placeholder entry",
     "Unresolved / insufficient continuity",
 ]
-
 
 def load_adoption_data():
     """Load the full panel and construct the adoption-risk and model frames."""
@@ -191,60 +192,12 @@ def average_marginal_effect(
     )
 
 
-def average_marginal_effect_gradient(
-    beta: np.ndarray,
-    X_values: np.ndarray,
-    link_name: str,
-    variable: str,
-    age_designs: dict[str, np.ndarray],
-    base_age_design: np.ndarray,
-    column_index: dict[str, int],
-) -> np.ndarray:
-    """Approximate the AME gradient with central finite differences."""
-    beta = np.asarray(beta, dtype=float)
-    gradient = np.zeros_like(beta)
-
-    for i in range(len(beta)):
-        step = 1e-6 * max(1.0, abs(beta[i]))
-        beta_hi = beta.copy()
-        beta_lo = beta.copy()
-        beta_hi[i] += step
-        beta_lo[i] -= step
-        gradient[i] = (
-            average_marginal_effect(
-                beta_hi,
-                X_values,
-                link_name,
-                variable,
-                age_designs,
-                base_age_design,
-                column_index,
-            )
-            - average_marginal_effect(
-                beta_lo,
-                X_values,
-                link_name,
-                variable,
-                age_designs,
-                base_age_design,
-                column_index,
-            )
-        ) / (2.0 * step)
-
-    return gradient
-
-
-def compute_average_marginal_effects(
-    model,
+def marginal_effect_designs(
     X: pd.DataFrame,
-    link_name: str,
-) -> pd.DataFrame:
-    """Compute AMEs and delta-method SEs for the reported adoption terms."""
+) -> tuple[np.ndarray, dict[str, np.ndarray], np.ndarray, dict[str, int]]:
+    """Prepare reusable design arrays for AME calculations."""
     X_values = X.to_numpy(dtype=float)
-    params = model.params.to_numpy(dtype=float)
-    covariance = model.cov_params().to_numpy(dtype=float)
     column_index = {name: i for i, name in enumerate(X.columns)}
-
     base_age_design = X.copy()
     for var in AGE_VARIABLES:
         base_age_design[var] = 0.0
@@ -257,44 +210,15 @@ def compute_average_marginal_effects(
             age_design[age_var] = 1.0 if age_var == variable else 0.0
         age_designs[variable] = age_design.to_numpy(dtype=float)
 
-    rows = []
-    for variable in REPORTED_VARIABLES:
-        ame = average_marginal_effect(
-            params,
-            X_values,
-            link_name,
-            variable,
-            age_designs,
-            base_age_design_values,
-            column_index,
-        )
-        gradient = average_marginal_effect_gradient(
-            params,
-            X_values,
-            link_name,
-            variable,
-            age_designs,
-            base_age_design_values,
-            column_index,
-        )
-        with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
-            variance = float(gradient @ covariance @ gradient)
-        se = math.sqrt(max(variance, 0.0))
-        z_value = ame / se if se > 0 else float("inf")
-        p_value = math.erfc(abs(z_value) / math.sqrt(2.0)) if se > 0 else 0.0
-        rows.append(
-            {
-                "variable": variable,
-                "ame": ame,
-                "se": se,
-                "pvalue": p_value,
-            }
-        )
-
-    return pd.DataFrame(rows)
+    return X_values, age_designs, base_age_design_values, column_index
 
 
-def fit_glm_hazard(X: pd.DataFrame, y: pd.Series, link_name: str, groups: pd.Series):
+def fit_glm_hazard(
+    X: pd.DataFrame,
+    y: pd.Series,
+    link_name: str,
+    groups: pd.Series | None,
+):
     """Fit a lagged discrete-time hazard with the requested link."""
     if link_name == "cloglog":
         link = sm.families.links.CLogLog()
@@ -303,10 +227,45 @@ def fit_glm_hazard(X: pd.DataFrame, y: pd.Series, link_name: str, groups: pd.Ser
     else:
         raise ValueError(f"Unsupported link: {link_name}")
 
-    return sm.GLM(y, X, family=sm.families.Binomial(link=link)).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": groups},
-    )
+    fit_kwargs = {}
+    if groups is not None:
+        fit_kwargs = {
+            "cov_type": "cluster",
+            "cov_kwds": {"groups": groups},
+        }
+
+    return sm.GLM(y, X, family=sm.families.Binomial(link=link)).fit(**fit_kwargs)
+
+
+def fit_logit_hazard(X: pd.DataFrame, y: pd.Series, groups: pd.Series):
+    """Fit the main lagged logit hazard with facility-clustered covariance."""
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=RuntimeWarning)
+        return Logit(y, X).fit(
+            method="lbfgs",
+            maxiter=500,
+            disp=False,
+            cov_type="cluster",
+            cov_kwds={"groups": groups},
+            warn_convergence=False,
+        )
+
+
+def compute_logit_average_marginal_effects(model) -> pd.DataFrame:
+    """Return built-in clustered AMEs for the reported adoption terms."""
+    frame = model.get_margeff(at="overall", method="dydx", dummy=True).summary_frame()
+    rows = []
+    for variable in REPORTED_VARIABLES:
+        row = frame.loc[variable]
+        rows.append(
+            {
+                "variable": variable,
+                "ame": float(row["dy/dx"]),
+                "se": float(row["Std. Err."]),
+                "pvalue": float(row["Pr(>|z|)"]),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def fit_lpm_hazard(X: pd.DataFrame, y: pd.Series, groups: pd.Series):
@@ -319,6 +278,8 @@ def fit_lpm_hazard(X: pd.DataFrame, y: pd.Series, groups: pd.Series):
 
 def model_pseudo_r2(model) -> float:
     """Return a deviance-based pseudo-R^2 for GLM hazards."""
+    if hasattr(model, "prsquared"):
+        return float(model.prsquared)
     if getattr(model, "null_deviance", 0) == 0:
         return float("nan")
     return float(1.0 - (model.deviance / model.null_deviance))
@@ -346,17 +307,15 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     """
     Estimate a discrete-time first-adoption hazard with lagged predictors.
 
-    The main specification uses a complementary log-log link, which is more
-    natural for rare annual transition events than the legacy linear
-    probability model. Results are reported as average marginal effects in
-    percentage points for comparability with the prior write-up.
+    The main specification uses a clustered discrete-time logit with built-in
+    marginal effects. A cloglog version is retained as a robustness check.
     """
     reg = adoption_model.copy()
     X, y = build_design_matrix(reg)
     groups = reg["analysis_facility_id"]
 
-    model = fit_glm_hazard(X, y, link_name="cloglog", groups=groups)
-    marginal_effects = compute_average_marginal_effects(model, X, link_name="cloglog")
+    model = fit_logit_hazard(X, y, groups=groups)
+    marginal_effects = compute_logit_average_marginal_effects(model)
     pseudo_r2 = model_pseudo_r2(model)
 
     print("\n" + "=" * 60)
@@ -386,7 +345,7 @@ def write_results(
     model,
     marginal_effects: pd.DataFrame,
     pseudo_r2: float,
-    logit_robustness,
+    cloglog_robustness,
     lpm_robustness,
     reg: pd.DataFrame,
 ) -> None:
@@ -499,7 +458,7 @@ def write_results(
 
         f.write("## Adoption Hazard Model\n\n")
         f.write(
-            "Main specification: lagged complementary log-log discrete-time hazard "
+            "Main specification: lagged discrete-time logit hazard "
             "with prior-year age band and prior-year design capacity, plus year "
             "fixed effects, prefecture fixed effects, and facility-clustered "
             "standard errors. Reported effects are average marginal effects in "
@@ -514,10 +473,10 @@ def write_results(
             f"- Pseudo-R-squared (deviance-based): {pseudo_r2:.4f}\n"
         )
         f.write(
-            "- Robustness: lagged logit and lagged linear probability specifications "
+            "- Robustness: lagged complementary log-log and lagged linear probability specifications "
             "return the same sign pattern on all reported terms; capacity remains "
-            f"positive in both (logit coef. {logit_robustness.params['lag_capacity_100t']:.3f}, "
-            f"p={float(logit_robustness.pvalues['lag_capacity_100t']):.3g}; "
+            f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}, "
+            f"p={float(cloglog_robustness.pvalues['lag_capacity_100t']):.3g}; "
             f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp, "
             f"p={float(lpm_robustness.pvalues['lag_capacity_100t']):.3g}).\n\n"
         )
@@ -568,7 +527,7 @@ def main():
     model, reg, X, marginal_effects, pseudo_r2 = run_adoption_hazard(adoption_model)
     groups = reg["analysis_facility_id"]
     y = reg["adopt_power_this_year"].astype(float)
-    logit_robustness = fit_glm_hazard(X, y, link_name="logit", groups=groups)
+    cloglog_robustness = fit_glm_hazard(X, y, link_name="cloglog", groups=groups)
     lpm_robustness = fit_lpm_hazard(X, y, groups=groups)
     pathway_summary = pathway_summary_table(pathway_audit)
 
@@ -585,7 +544,7 @@ def main():
         model,
         marginal_effects,
         pseudo_r2,
-        logit_robustness,
+        cloglog_robustness,
         lpm_robustness,
         reg,
     )
@@ -628,8 +587,9 @@ def main():
                 summary["adoption_model_drop_additional_missing_facilities"]
             ),
             "model": {
-                "type": "discrete_time_cloglog_hazard",
+                "type": "discrete_time_logit_hazard",
                 "reported_scale": "average_marginal_effect",
+                "uncertainty_method": "cluster_robust_marginal_effect",
                 "predictors_lagged_one_year": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
@@ -647,19 +607,19 @@ def main():
                 "average_marginal_effects": marginal_effect_meta,
                 "pseudo_r_squared": pseudo_r2,
             },
-            "logit_robustness": {
-                "type": "discrete_time_logit",
+            "cloglog_robustness": {
+                "type": "discrete_time_cloglog",
                 "coefficients": {
-                    "lag_age_10_20": float(logit_robustness.params["age_10-20 yrs"]),
-                    "lag_age_20_30": float(logit_robustness.params["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(logit_robustness.params["age_30+ yrs"]),
-                    "lag_capacity_100t": float(logit_robustness.params["lag_capacity_100t"]),
+                    "lag_age_10_20": float(cloglog_robustness.params["age_10-20 yrs"]),
+                    "lag_age_20_30": float(cloglog_robustness.params["age_20-30 yrs"]),
+                    "lag_age_30_plus": float(cloglog_robustness.params["age_30+ yrs"]),
+                    "lag_capacity_100t": float(cloglog_robustness.params["lag_capacity_100t"]),
                 },
                 "pvalues": {
-                    "lag_age_10_20": float(logit_robustness.pvalues["age_10-20 yrs"]),
-                    "lag_age_20_30": float(logit_robustness.pvalues["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(logit_robustness.pvalues["age_30+ yrs"]),
-                    "lag_capacity_100t": float(logit_robustness.pvalues["lag_capacity_100t"]),
+                    "lag_age_10_20": float(cloglog_robustness.pvalues["age_10-20 yrs"]),
+                    "lag_age_20_30": float(cloglog_robustness.pvalues["age_20-30 yrs"]),
+                    "lag_age_30_plus": float(cloglog_robustness.pvalues["age_30+ yrs"]),
+                    "lag_capacity_100t": float(cloglog_robustness.pvalues["lag_capacity_100t"]),
                 },
             },
             "lpm_robustness": {
