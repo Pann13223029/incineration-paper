@@ -1,12 +1,13 @@
 # Changes Since Last Frozen Checkpoint
 
-- Current HEAD: `5a1d2ab`
+- Current HEAD: `2a5523c`
 - Baseline checkpoint tag: `sendable-now-20260415-385cfef`
 - Baseline SHA: `385cfef`
-- Commits since baseline: `3`
+- Commits since baseline: `4`
 
 ## Commit Summary
 
+- `2a5523c Refresh packet delta output`
 - `5a1d2ab Fetch tags in CI verification`
 - `eafebc6 Refine packet delta classification`
 - `afa6ef0 Add packet delta summary`
