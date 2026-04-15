@@ -14,7 +14,9 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+CHECKPOINTS_ROOT = REPO_ROOT / "research" / "checkpoints"
 DIST_ROOT = REPO_ROOT / "research" / "checkpoints" / "dist"
+LATEST_ALIAS = CHECKPOINTS_ROOT / "latest-sendable"
 PACKET_ROOT = REPO_ROOT / "research" / "packets" / "dist"
 SUPERVISOR_ZIP = PACKET_ROOT / "supervisor-packet.zip"
 SUBMISSION_ZIP = PACKET_ROOT / "submission-packet.zip"
@@ -59,6 +61,29 @@ def ensure_packets() -> None:
 def safe_slug(value: str) -> str:
     slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in value).strip("-")
     return "-".join(part for part in slug.split("-") if part)
+
+
+def refresh_latest_alias(checkpoint_root: Path) -> None:
+    if LATEST_ALIAS.is_symlink() or LATEST_ALIAS.is_file():
+        LATEST_ALIAS.unlink()
+    elif LATEST_ALIAS.exists():
+        shutil.rmtree(LATEST_ALIAS)
+
+    relative_target = Path("dist") / checkpoint_root.name
+    try:
+        LATEST_ALIAS.symlink_to(relative_target, target_is_directory=True)
+    except OSError:
+        LATEST_ALIAS.mkdir(parents=True, exist_ok=True)
+        (LATEST_ALIAS / "README.md").write_text(
+            f"""# Latest Sendable Checkpoint
+
+This directory is the stable local alias for the most recent frozen sendable checkpoint.
+
+- Canonical checkpoint: `{relative_target.as_posix()}`
+
+Open that dated directory for the full frozen packet set and metadata.
+"""
+        )
 
 
 def parse_args() -> argparse.Namespace:
@@ -148,6 +173,7 @@ def main() -> int:
 3. Keep this checkpoint as the reference baseline for the next supervisor or submission milestone.
 """
     )
+    refresh_latest_alias(checkpoint_root)
 
     if args.create_tag:
         subprocess.run(
@@ -165,6 +191,7 @@ def main() -> int:
         print(f"Created local git tag: {suggested_tag}")
 
     print(f"Frozen checkpoint: {checkpoint_root.relative_to(REPO_ROOT)}")
+    print(f"Latest alias:      {LATEST_ALIAS.relative_to(REPO_ROOT)}")
     print(f"Suggested tag:    {suggested_tag}")
     return 0
 

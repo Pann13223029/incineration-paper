@@ -74,6 +74,7 @@ If only one layer is changed, leave a clear reason why the others do not need sy
 - Review-packet entry point: `npm run packets:build`
 - Checkpoint-freeze guide: `research/checkpoints/README.md`
 - Checkpoint-freeze entry point: `npm run checkpoint:freeze`
+- Latest frozen baseline alias: `research/checkpoints/latest-sendable`
 - Review-round intake guide: `research/review-rounds/README.md`
 - Review-round entry point: `npm run review:round:start`
 - Prefer frozen packets over loose files for any supervisor-facing or submission-facing checkpoint
