@@ -150,7 +150,8 @@ incineration-thesis/
 |-- output/                                  # Generated figures, tables, sample report, manifests
 |-- research/
 |   |-- literature/                          # Paper summaries
-|   +-- notes/                               # Panel protocol, supervisor brief, defense notes, verification reports
+|   |-- notes/                               # Panel protocol, supervisor brief, defense notes, verification reports
+|   +-- packets/                             # Curated supervisor/submission packet workflow
 |
 |-- ARCHITECTURE.md                          # Technical blueprint
 |-- AGENTS.md                                # Assistant-agnostic repo workflow
@@ -190,9 +191,12 @@ npm run slides:export:pdf
 
 # 7. Optional: package a frozen local defense bundle
 npm run slides:bundle
+
+# 8. Optional: build frozen supervisor and submission packets
+npm run packets:build
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, each stage writes a JSON provenance record under `output/manifests/`, and the defense deck tooling writes local artifacts under `research/slides/dist/` (HTML by default, PDF optionally, plus a frozen defense bundle).
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, the repo-level sync report to `output/claim_verification.md`, each stage writes a JSON provenance record under `output/manifests/`, the defense deck tooling writes local artifacts under `research/slides/dist/`, and the review-packet workflow writes frozen supervisor/submission packets under `research/packets/dist/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

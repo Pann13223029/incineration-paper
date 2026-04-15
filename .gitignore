@@ -15,6 +15,7 @@ thesis/*.out
 thesis/*.pdf
 thesis/*.toc
 research/slides/dist/
+research/packets/dist/
 
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.

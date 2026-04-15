@@ -5,7 +5,8 @@
   "scripts": {
     "slides:export": "python3 code/scripts/09_export_defense_slides.py",
     "slides:export:pdf": "python3 code/scripts/09_export_defense_slides.py --pdf",
-    "slides:bundle": "python3 code/scripts/10_package_defense_bundle.py"
+    "slides:bundle": "python3 code/scripts/10_package_defense_bundle.py",
+    "packets:build": "python3 code/scripts/11_package_review_packets.py"
   },
   "devDependencies": {
     "@marp-team/marp-cli": "4.2.3"
