@@ -120,6 +120,7 @@ So the thesis argues that Japan's largest fleet-wide gains are more likely to co
 - Thesis source: `thesis/thesis.tex`
 - Technical blueprint: `ARCHITECTURE.md`
 - Repo summary and reproduction guide: `README.md`
+- Examiner risk register: `research/notes/examiner-risk-register.md`
 - Claim verification report: `output/claim_verification.md`
 - Extensive-margin output: `output/adoption_results.md`
 - Intensive-margin output: `output/regression_results.md`
