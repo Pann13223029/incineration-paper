@@ -23,6 +23,7 @@
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{array}
+\usepackage{titlesec}
 
 % Right-aligned and centered tabularx column types
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
@@ -31,6 +32,9 @@
 
 \onehalfspacing
 \setlength{\emergencystretch}{2em}
+\titlespacing*{\section}{0pt}{0pt}{0.8\baselineskip}
+\titlespacing*{\subsection}{0pt}{1.25\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{1.0\baselineskip}{0.4\baselineskip}
 
 %% ---------- title information ----------
 \title{%
@@ -43,7 +47,37 @@
 
 %% ==========================================================
 \begin{document}
-\maketitle
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1.5cm}
+{\Large Ritsumeikan Asia Pacific University\par}
+
+\vfill
+
+{\LARGE\bfseries Carbon Lock-in or Circular Transition?\par}
+\vspace{0.5cm}
+{\Large Heterogeneity in Japan's Waste Incineration Fleet\par}
+\vspace{0.2cm}
+{\Large and Net-Zero Compatibility\par}
+
+\vfill
+
+{\large Pann Phetra\par}
+\vspace{0.5cm}
+{\large Student ID: 13223029\par}
+\vspace{0.5cm}
+{\large Supervisor: Prof. Han Ji\par}
+
+\vfill
+
+{\large 2026\par}
+\end{center}
+\end{titlepage}
+\clearpage
+\pagenumbering{arabic}
 
 %% ==========================================================
 %% ABSTRACT
@@ -60,9 +94,9 @@ At the fleet level, facility count fell from 1,318 to 1,014 between 2005 and 202
 
 \noindent\textbf{Keywords:} waste-to-energy, energy recovery efficiency, carbon lock-in, industrial ecology, Japan, fleet heterogeneity, infrastructure transition
 
-\newpage
+\clearpage
 \tableofcontents
-\newpage
+\clearpage
 
 %% ==========================================================
 %% CHAPTER 1: INTRODUCTION
@@ -129,6 +163,7 @@ Throughout, facilities with no power-generation capability are not treated as nu
 %% CHAPTER 2: LITERATURE REVIEW
 %% ==========================================================
 
+\clearpage
 \section{Literature Review}
 
 \subsection{Overview}
@@ -223,6 +258,7 @@ This thesis addresses all three gaps. It contributes a panel dataset of 23,599 f
 %% CHAPTER 3: METHODOLOGY
 %% ==========================================================
 
+\clearpage
 \section{Methodology}
 
 \subsection{Overview}
@@ -396,6 +432,7 @@ The eight robustness specifications collectively constitute a systematic assessm
 %% CHAPTER 4: RESULTS
 %% ==========================================================
 
+\clearpage
 \section{Results}
 
 \subsection{Overview}
@@ -643,6 +680,7 @@ The age coefficient remains negative, and the capacity and utilization coefficie
 %% CHAPTER 5: DISCUSSION
 %% ==========================================================
 
+\clearpage
 \section{Discussion}
 
 \subsection{Overview}
@@ -725,6 +763,7 @@ Within Japan, the findings are based on fiscal years 2005--2024 and reflect the 
 %% CHAPTER 6: CONCLUSION
 %% ==========================================================
 
+\clearpage
 \section{Conclusion}
 
 \subsection{Summary of Findings}
@@ -764,6 +803,8 @@ Japan built an incineration fleet for an era when burning waste was the best ava
 %% ==========================================================
 %% BIBLIOGRAPHY
 %% ==========================================================
+
+\clearpage
 
 \begin{thebibliography}{99}
 
