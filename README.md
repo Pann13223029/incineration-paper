@@ -4,13 +4,13 @@
 
 **Author:** Pann Phetra | **Supervisor:** Prof. Han Ji | **Institution:** Ritsumeikan Asia Pacific University | **Degree:** Bachelor's Thesis, Sustainability | **Year:** 2026
 
-> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis separates two questions: which coded facilities first observed without generation make an observed transition into power generation, and conditional on power generation, which characteristics predict energy recovery efficiency; the evidence points to capital-side modernization pressure on the extensive margin and bounded responsiveness within the generator sample on the intensive margin.
+> **One-sentence summary:** Japan operates ~1,000 waste incinerators — the most of any country — but 59% generate no electricity at all. This thesis separates two questions: which coded facilities first observed without generation make an observed transition into power generation, and conditional on power generation, which characteristics predict energy recovery efficiency; the evidence points to selective capital-side modernization on the extensive margin and bounded responsiveness within the generator sample on the intensive margin.
 
 ---
 
 ## The Finding in One Paragraph
 
-Using a 20-year facility-level panel (23,599 observations across 2,948 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this repo now estimates a two-part empirical design. On the extensive margin, the coded full-fleet panel yields an observed-transition risk set of 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events; the lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events, and shows that facilities older than 10 years in the prior observed year are 1.5–2.2 percentage points less likely to transition into power generation while each additional 100 t/day of prior-year capacity raises transition probability by about 1.47 percentage points. On the intensive margin, the canonical generator-efficiency frame contains 5,683 facility-years across 1,016 facilities; across the four main specifications, facility age is consistently negative (−0.019 to −0.035 log-units/year), design capacity is positive (+0.041 to +0.103 log-units per 100 t/day), and capacity utilization is strongly positive (+0.541 to +0.779, all p < 0.001). Within-facility efficiency changes much less than efficiency differs across generators: the pooled within/total variance ratio in the canonical frame is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024. Taken together, the results imply that sectoral progress depends heavily on capital-side modernization decisions, while operating-side gains remain meaningful but bounded within the already-generating segment.
+Using a 20-year facility-level panel (23,599 observations across 2,948 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this repo now estimates a two-part empirical design. On the extensive margin, the coded full-fleet panel yields an observed-transition risk set of 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events; the lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events, and the main complementary log-log hazard shows that facilities older than 10 years in the prior observed year are 2.3–3.2 percentage points less likely to transition into power generation while each additional 100 t/day of prior-year capacity raises transition probability by about 0.39 percentage points. A conservative pathway audit of the 141 observed transitions classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. On the intensive margin, the canonical generator-efficiency frame contains 5,683 facility-years across 1,016 facilities; across the four main specifications, facility age is consistently negative (−0.019 to −0.035 log-units/year), design capacity is positive (+0.041 to +0.103 log-units per 100 t/day), and capacity utilization is strongly positive (+0.541 to +0.779, all p < 0.001). Within-facility efficiency changes much less than efficiency differs across generators: the pooled within/total variance ratio in the canonical frame is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024. Taken together, the results imply that sectoral progress depends heavily on capital-side modernization decisions, while operating-side gains remain meaningful but bounded within the already-generating segment.
 
 ---
 
@@ -18,25 +18,7 @@ Using a 20-year facility-level panel (23,599 observations across 2,948 facilitie
 
 Japan incinerates roughly 80% of its municipal waste. The government calls energy recovery from burning waste "thermal recycling." But Japan's ~1,000 incinerators are not all the same:
 
-```mermaid
-graph LR
-    subgraph Fleet["Japan's Incinerator Fleet (1,014 facilities, FY2024)"]
-        A["Non-power-generating<br/>598 facilities<br/>(59% of fleet)"]
-        B["Power-generating<br/>416 facilities<br/>(41% of fleet)"]
-    end
-
-    A --> C["Pure waste<br/>disposal<br/>(carbon cost only)"]
-    B --> D["Waste-to-energy<br/>(~4.6 Mt-CO2<br/>gross avoided)"]
-
-    C --> Q{"Net carbon<br/>impact?"}
-    D --> Q
-
-    style A fill:#ffcdd2,stroke:#c62828,color:#1a1a1a
-    style B fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style C fill:#ffcdd2,stroke:#c62828,color:#1a1a1a
-    style D fill:#c8e6c9,stroke:#2e7d32,color:#1a1a1a
-    style Q fill:#fff9c4,stroke:#f9a825,color:#1a1a1a
-```
+![FY2024 fleet split](docs/figures/readme_fleet_split.svg)
 
 Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to-energy plants generating electricity that displaces fossil fuels on the grid. **The existing literature treats them as one system. This thesis disaggregates.**
 
@@ -70,7 +52,7 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 | **Generator regression sample** | 5,683 facility-years (1,016 facilities) | Canonical frame: power-generation rows with positive throughput and positive output, official facility code present, complete model covariates, utilization capped at 1.0, and efficiency winsorized to [0.01, 0.80] MWh/t. |
 | **Extensive-margin DV** | `adopt_power_this_year` | Observed first transition into power generation in the coded, initially non-generating risk set. |
 | **Intensive-margin DV** | `log(energy_efficiency_mwh_per_t)` | Log transformation produces symmetric distribution and coefficients interpretable as proportional effects among generators. |
-| **Main regressors** | Adoption: prior-year age bands + prior-year capacity + year FE + prefecture FE. Efficiency: facility age, design capacity, capacity utilization, heating value, grid emission factor | The extensive-margin model uses lagged predictors to avoid same-year redesign timing. |
+| **Main regressors** | Adoption: prior-year age bands + prior-year capacity + year FE + prefecture FE. Efficiency: facility age, design capacity, capacity utilization, heating value, grid emission factor | The extensive-margin model uses lagged predictors to avoid same-year redesign timing and reports average marginal effects from a discrete-time hazard. |
 | **Robustness** | 8 generator-efficiency specifications: pre/post-Fukushima split (R1–R4), capacity tercile endpoints (R5–R6), raw DV pooled/year-FE replications (R7–R8) | Tests stability across sample splits, distributional assumptions, and variable transformations. |
 | **Standard errors** | Cluster-robust, clustered at facility | Accounts for within-facility autocorrelation of errors across years. |
 
@@ -86,7 +68,9 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 | Adoption risk set | 13,770 facility-years (2,035 facilities) |
 | Adoption model frame | 11,717 facility-years (1,915 facilities) |
 | Observed first-adoption events | 141 |
-| Adoption capacity effect | +1.47 percentage points per 100 t/day of prior-year capacity |
+| Adoption age effect | −2.26 to −3.19 percentage points vs prior-year age 0–10 |
+| Adoption capacity effect | +0.39 percentage points per 100 t/day of prior-year capacity |
+| Pathway audit of adoption events | 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved |
 | Generator regression sample | 5,683 facility-years (1,016 facilities) |
 | Time coverage | FY2005 – FY2024 (20 years) |
 | Facility age coefficient | −0.019 to −0.035 per year in the four main specifications |
@@ -193,7 +177,7 @@ python3 -m venv .venv
 .venv/bin/python code/scripts/07_rebuild_analysis.py
 ```
 
-The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, and each stage writes a JSON provenance record under `output/manifests/`.
+The canonical sample definition is written to `output/sample_definition.md`, the extensive-margin results to `output/adoption_results.md`, the event-level pathway audit to `output/adoption_pathway_audit.csv`, and each stage writes a JSON provenance record under `output/manifests/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
 

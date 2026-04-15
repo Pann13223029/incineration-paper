@@ -37,20 +37,35 @@ This stage models the observed first transition into power generation among code
 
 ## Adoption Hazard Model
 
-Main specification: lagged linear probability hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Baseline age band: 0-10 years.
+Main specification: lagged complementary log-log discrete-time hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
 
-| Variable                            | Coef. (pp)   | SE (pp)   |
-|:------------------------------------|:-------------|:----------|
-| Prior-year age 10-20 yrs (vs 0-10)  | -2.17***     | (0.42)    |
-| Prior-year age 20-30 yrs (vs 0-10)  | -1.98***     | (0.49)    |
-| Prior-year age 30+ yrs (vs 0-10)    | -1.52*       | (0.59)    |
-| Prior-year capacity (per 100 t/day) | 1.47***      | (0.29)    |
+| Variable                            | AME (pp)   | SE (pp)   |
+|:------------------------------------|:-----------|:----------|
+| Prior-year age 10-20 yrs (vs 0-10)  | -3.19*     | (1.53)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -2.82*     | (1.38)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -2.26      | (1.45)    |
+| Prior-year capacity (per 100 t/day) | 0.39*      | (0.19)    |
 
 - Observations: 11,717
 - Facilities: 1,915
 - First-adoption events: 140
-- R-squared: 0.0305
-- Discrete-time logit robustness: same sign pattern for all reported terms; capacity remains positive (coef. 0.453, p=0.011).
+- Pseudo-R-squared (deviance-based): 0.1802
+- Robustness: lagged logit and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (logit coef. 0.453, p=0.011; LPM coef. 1.47 pp, p=5.03e-07).
+
+## Transition Pathway Audit
+
+A conservative event-level audit classifies each observed adoption using continuity in `year_started`, facility age, design capacity, and naming. The goal is not to prove the mechanism of modernization, but to bound what the panel can and cannot support.
+
+Rule set: `reset / rebuild-like` requires an observed `year_started` reset or a mature-to-new age reset; `continuity / in-place upgrade` requires no such reset on the observed event row; forward-dated or placeholder entries remain unresolved rather than forced into a stronger mechanism claim.
+
+| Category                                 |   Events |   Share (%) |
+|:-----------------------------------------|---------:|------------:|
+| Reset / rebuild-like transition          |       82 |        58.2 |
+| In-place upgrade / continuity transition |       38 |        27   |
+| Forward-dated / placeholder entry        |       20 |        14.2 |
+| Unresolved / insufficient continuity     |        1 |         0.7 |
+
+*Interpretation: the largest observed pathway bucket is reset- or rebuild-like, a meaningful minority retain continuity consistent with in-place upgrades, and a nontrivial set are forward-dated or placeholder entries that should not be forced into a stronger mechanism claim than the data support.*
 
 ### Event Year Distribution
 
@@ -72,4 +87,4 @@ Main specification: lagged linear probability hazard with prior-year age band an
 |          2023 |                 2 |
 |          2024 |                 3 |
 
-*Interpretation: observed transition into power generation is more common among facilities that were younger and larger in the prior year. This pattern is consistent with modernization occurring mainly at the capital or investment margin rather than through diffuse late conversion of old small facilities, but the data do not distinguish retrofit from replacement or new build at the same site.*
+*Interpretation: observed transition into power generation is more common among facilities that were younger and larger in the prior year. Under the stronger hazard specification, the age penalty remains negative and the capacity effect remains positive, while the pathway audit suggests that capital-side modernization is empirically present but not reducible to one identified mechanism such as replacement alone.*

@@ -1,7 +1,7 @@
 {
   "stage": "03_grid_emission_factors",
-  "timestamp_utc": "2026-04-14T16:02:04.817568+00:00",
-  "git_sha": "319212894734f280c5da71d9c8f7b21291f20ab3",
+  "timestamp_utc": "2026-04-15T07:59:12.994572+00:00",
+  "git_sha": "a64cef49fc5ee7d99b00a1d4db05c8809b96c4f2",
   "python": "3.12.12",
   "platform": "macOS-15.6-arm64-arm-64bit",
   "analysis_config": {
@@ -13,7 +13,7 @@
     "regression_requires_positive_output": true,
     "regression_requires_official_facility_code": true,
     "regression_winsorization_method": "clip",
-    "adoption_model": "observed_first_adoption_linear_probability_hazard",
+    "adoption_model": "observed_first_adoption_cloglog_hazard",
     "adoption_risk_set_excludes_left_censored_generators": true,
     "adoption_predictors_lagged_one_year": true
   },

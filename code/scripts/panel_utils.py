@@ -60,6 +60,7 @@ ADOPTION_COLUMNS = [
     "fiscal_year",
     "facility_name",
     "prefecture",
+    "year_started",
     "has_power_gen",
     "adopt_power_this_year",
     "facility_age_years",
@@ -77,6 +78,26 @@ ADOPTION_MODEL_COLUMNS = [
     "lag_age_band",
     "lag_capacity_t_day",
     "lag_capacity_100t",
+]
+
+ADOPTION_PATHWAY_AUDIT_COLUMNS = [
+    "analysis_facility_id",
+    "facility_code",
+    "fiscal_year",
+    "prefecture",
+    "facility_name",
+    "year_started",
+    "lag_year_started",
+    "facility_age_years",
+    "lag_facility_age_years",
+    "capacity_t_day",
+    "lag_capacity_t_day",
+    "name_changed",
+    "year_started_forward",
+    "year_reset",
+    "age_reset",
+    "pathway_category",
+    "pathway_basis",
 ]
 
 IDENTIFIER_DTYPES = {
@@ -111,7 +132,7 @@ def analysis_config() -> dict[str, Any]:
         "regression_requires_positive_output": True,
         "regression_requires_official_facility_code": True,
         "regression_winsorization_method": "clip",
-        "adoption_model": "observed_first_adoption_linear_probability_hazard",
+        "adoption_model": "observed_first_adoption_cloglog_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
         "adoption_predictors_lagged_one_year": True,
     }
@@ -196,6 +217,7 @@ def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
                     "fiscal_year": int(row["fiscal_year"]),
                     "facility_name": row["facility_name"],
                     "prefecture": row["prefecture"],
+                    "year_started": row["year_started"],
                     "has_power_gen": bool(row["has_power_gen"]),
                     "adopt_power_this_year": int(adopt_now),
                     "facility_age_years": row["facility_age_years"],
@@ -256,6 +278,72 @@ def build_adoption_model_frame(
     result = model[ADOPTION_MODEL_COLUMNS].copy()
     result.attrs.update(model.attrs)
     return result
+
+
+def build_adoption_pathway_audit(
+    panel: pd.DataFrame | None = None,
+    adoption: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """
+    Audit observed first-adoption events by likely transition pathway.
+
+    The audit is intentionally conservative. It classifies event rows using only
+    continuity information already present in the administrative panel:
+    - forward-dated or placeholder rows stay unresolved as planning/coding entries
+    - year-start resets or age resets are treated as reset/rebuild-like events
+    - continuity rows with no reset are treated as in-place upgrade-like events
+    """
+    if adoption is None:
+        adoption = build_adoption_frame(panel)
+
+    adoption_aug = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
+
+    group = adoption_aug.groupby("analysis_facility_id", sort=False)
+    adoption_aug["lag_year_started"] = group["year_started"].shift(1)
+    adoption_aug["lag_facility_age_years"] = group["facility_age_years"].shift(1)
+    adoption_aug["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
+    adoption_aug["lag_facility_name"] = group["facility_name"].shift(1)
+
+    events = adoption_aug[adoption_aug["adopt_power_this_year"] == 1].copy()
+    placeholder_mask = events["facility_name"].fillna("").str.contains(
+        "仮称|新設|建設中|名称未定",
+        regex=True,
+    )
+    events["name_changed"] = events["facility_name"] != events["lag_facility_name"]
+    events["year_started_forward"] = events["year_started"] > events["fiscal_year"]
+    events["year_reset"] = events["year_started"] > events["lag_year_started"]
+    events["age_reset"] = (
+        (events["lag_facility_age_years"] >= 10)
+        & (events["facility_age_years"] <= 2)
+    )
+
+    events["pathway_category"] = "Unresolved / insufficient continuity"
+    events["pathway_basis"] = "No prior observed at-risk row with usable continuity fields"
+
+    forward_mask = events["year_started_forward"] | placeholder_mask
+    reset_mask = ~forward_mask & (events["year_reset"] | events["age_reset"])
+    continuity_mask = (
+        ~forward_mask
+        & ~reset_mask
+        & events["lag_year_started"].notna()
+    )
+
+    events.loc[forward_mask, "pathway_category"] = "Forward-dated / placeholder entry"
+    events.loc[forward_mask, "pathway_basis"] = (
+        "Forward-dated `year_started` or placeholder/new-build naming at event row"
+    )
+    events.loc[reset_mask, "pathway_category"] = "Reset / rebuild-like transition"
+    events.loc[reset_mask, "pathway_basis"] = (
+        "Observed reset in `year_started` or mature-to-new age reset before adoption"
+    )
+    events.loc[continuity_mask, "pathway_category"] = (
+        "In-place upgrade / continuity transition"
+    )
+    events.loc[continuity_mask, "pathway_basis"] = (
+        "No observed start-year reset; continuity row remains in service at adoption"
+    )
+
+    return events[ADOPTION_PATHWAY_AUDIT_COLUMNS].copy()
 
 
 def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:

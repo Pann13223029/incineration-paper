@@ -9,8 +9,10 @@ estimating an observed first-adoption hazard on the full coded fleet.
 
 from __future__ import annotations
 
+import math
 import os
 
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
@@ -19,6 +21,7 @@ from panel_utils import (
     OUTPUT_DIR,
     build_adoption_frame,
     build_adoption_model_frame,
+    build_adoption_pathway_audit,
     load_panel,
     sample_summary,
     significance_stars,
@@ -27,11 +30,20 @@ from panel_utils import (
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+AGE_VARIABLES = ["age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs"]
+REPORTED_VARIABLES = [*AGE_VARIABLES, "lag_capacity_100t"]
 AGE_LABEL_MAP = {
-    "10-20 yrs": "Prior-year age 10-20 yrs (vs 0-10)",
-    "20-30 yrs": "Prior-year age 20-30 yrs (vs 0-10)",
-    "30+ yrs": "Prior-year age 30+ yrs (vs 0-10)",
+    "age_10-20 yrs": "Prior-year age 10-20 yrs (vs 0-10)",
+    "age_20-30 yrs": "Prior-year age 20-30 yrs (vs 0-10)",
+    "age_30+ yrs": "Prior-year age 30+ yrs (vs 0-10)",
+    "lag_capacity_100t": "Prior-year capacity (per 100 t/day)",
 }
+PATHWAY_ORDER = [
+    "Reset / rebuild-like transition",
+    "In-place upgrade / continuity transition",
+    "Forward-dated / placeholder entry",
+    "Unresolved / insufficient continuity",
+]
 
 
 def load_adoption_data():
@@ -39,6 +51,7 @@ def load_adoption_data():
     panel = load_panel()
     adoption = build_adoption_frame(panel)
     adoption_model = build_adoption_model_frame(adoption=adoption)
+    pathway_audit = build_adoption_pathway_audit(panel, adoption=adoption)
     summary = sample_summary(panel)
 
     print(f"Adoption risk set: {len(adoption):,} obs")
@@ -47,12 +60,13 @@ def load_adoption_data():
     print(f"Adoption model frame (lagged predictors): {len(adoption_model):,} obs")
     print(f"  Facilities in model frame: {adoption_model['analysis_facility_id'].nunique():,}")
     print(f"  Events in model frame: {int(adoption_model['adopt_power_this_year'].sum()):,}")
+    print(f"Pathway audit rows: {len(pathway_audit):,}")
     print(
         "  Left-censored facilities already generating in first observed year: "
         f"{summary['left_censored_generators']:,}"
     )
 
-    return panel, adoption, adoption_model, summary
+    return panel, adoption, adoption_model, pathway_audit, summary
 
 
 def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -116,29 +130,234 @@ def build_design_matrix(reg: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
 
     X = sm.add_constant(
         pd.concat([age_dummies, reg[["lag_capacity_100t"]], year_dummies, pref_dummies], axis=1)
-    )
-    y = reg["adopt_power_this_year"]
+    ).astype(float)
+    y = reg["adopt_power_this_year"].astype(float)
     return X, y
+
+
+def predict_probability(eta: np.ndarray, link_name: str) -> np.ndarray:
+    """Convert linear predictors into probabilities for the selected link."""
+    with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
+        eta = np.clip(eta, -40, 20)
+        if link_name == "cloglog":
+            return 1.0 - np.exp(-np.exp(eta))
+        if link_name == "logit":
+            return 1.0 / (1.0 + np.exp(-eta))
+    raise ValueError(f"Unsupported link: {link_name}")
+
+
+def derivative_wrt_eta(eta: np.ndarray, link_name: str) -> np.ndarray:
+    """Return dP/deta for the selected link."""
+    with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
+        eta = np.clip(eta, -40, 20)
+        if link_name == "cloglog":
+            return np.exp(eta - np.exp(eta))
+        if link_name == "logit":
+            p = 1.0 / (1.0 + np.exp(-eta))
+            return p * (1.0 - p)
+    raise ValueError(f"Unsupported link: {link_name}")
+
+
+def linear_predictor(design: np.ndarray, beta: np.ndarray) -> np.ndarray:
+    """Compute a linear predictor while suppressing benign numeric warnings."""
+    with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
+        return design @ beta
+
+
+def average_marginal_effect(
+    beta: np.ndarray,
+    X_values: np.ndarray,
+    link_name: str,
+    variable: str,
+    age_designs: dict[str, np.ndarray],
+    base_age_design: np.ndarray,
+    column_index: dict[str, int],
+) -> float:
+    """Compute the average marginal effect for one reported variable."""
+    beta = np.asarray(beta, dtype=float)
+    if variable in AGE_VARIABLES:
+        alt_eta = linear_predictor(age_designs[variable], beta)
+        base_eta = linear_predictor(base_age_design, beta)
+        return float(
+            np.mean(
+                predict_probability(alt_eta, link_name)
+                - predict_probability(base_eta, link_name)
+            )
+        )
+
+    eta = linear_predictor(X_values, beta)
+    return float(
+        np.mean(derivative_wrt_eta(eta, link_name) * beta[column_index[variable]])
+    )
+
+
+def average_marginal_effect_gradient(
+    beta: np.ndarray,
+    X_values: np.ndarray,
+    link_name: str,
+    variable: str,
+    age_designs: dict[str, np.ndarray],
+    base_age_design: np.ndarray,
+    column_index: dict[str, int],
+) -> np.ndarray:
+    """Approximate the AME gradient with central finite differences."""
+    beta = np.asarray(beta, dtype=float)
+    gradient = np.zeros_like(beta)
+
+    for i in range(len(beta)):
+        step = 1e-6 * max(1.0, abs(beta[i]))
+        beta_hi = beta.copy()
+        beta_lo = beta.copy()
+        beta_hi[i] += step
+        beta_lo[i] -= step
+        gradient[i] = (
+            average_marginal_effect(
+                beta_hi,
+                X_values,
+                link_name,
+                variable,
+                age_designs,
+                base_age_design,
+                column_index,
+            )
+            - average_marginal_effect(
+                beta_lo,
+                X_values,
+                link_name,
+                variable,
+                age_designs,
+                base_age_design,
+                column_index,
+            )
+        ) / (2.0 * step)
+
+    return gradient
+
+
+def compute_average_marginal_effects(
+    model,
+    X: pd.DataFrame,
+    link_name: str,
+) -> pd.DataFrame:
+    """Compute AMEs and delta-method SEs for the reported adoption terms."""
+    X_values = X.to_numpy(dtype=float)
+    params = model.params.to_numpy(dtype=float)
+    covariance = model.cov_params().to_numpy(dtype=float)
+    column_index = {name: i for i, name in enumerate(X.columns)}
+
+    base_age_design = X.copy()
+    for var in AGE_VARIABLES:
+        base_age_design[var] = 0.0
+    base_age_design_values = base_age_design.to_numpy(dtype=float)
+
+    age_designs = {}
+    for variable in AGE_VARIABLES:
+        age_design = X.copy()
+        for age_var in AGE_VARIABLES:
+            age_design[age_var] = 1.0 if age_var == variable else 0.0
+        age_designs[variable] = age_design.to_numpy(dtype=float)
+
+    rows = []
+    for variable in REPORTED_VARIABLES:
+        ame = average_marginal_effect(
+            params,
+            X_values,
+            link_name,
+            variable,
+            age_designs,
+            base_age_design_values,
+            column_index,
+        )
+        gradient = average_marginal_effect_gradient(
+            params,
+            X_values,
+            link_name,
+            variable,
+            age_designs,
+            base_age_design_values,
+            column_index,
+        )
+        with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
+            variance = float(gradient @ covariance @ gradient)
+        se = math.sqrt(max(variance, 0.0))
+        z_value = ame / se if se > 0 else float("inf")
+        p_value = math.erfc(abs(z_value) / math.sqrt(2.0)) if se > 0 else 0.0
+        rows.append(
+            {
+                "variable": variable,
+                "ame": ame,
+                "se": se,
+                "pvalue": p_value,
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def fit_glm_hazard(X: pd.DataFrame, y: pd.Series, link_name: str, groups: pd.Series):
+    """Fit a lagged discrete-time hazard with the requested link."""
+    if link_name == "cloglog":
+        link = sm.families.links.CLogLog()
+    elif link_name == "logit":
+        link = sm.families.links.Logit()
+    else:
+        raise ValueError(f"Unsupported link: {link_name}")
+
+    return sm.GLM(y, X, family=sm.families.Binomial(link=link)).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": groups},
+    )
+
+
+def fit_lpm_hazard(X: pd.DataFrame, y: pd.Series, groups: pd.Series):
+    """Fit the legacy lagged linear probability specification as a robustness check."""
+    return sm.OLS(y, X).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": groups},
+    )
+
+
+def model_pseudo_r2(model) -> float:
+    """Return a deviance-based pseudo-R^2 for GLM hazards."""
+    if getattr(model, "null_deviance", 0) == 0:
+        return float("nan")
+    return float(1.0 - (model.deviance / model.null_deviance))
+
+
+def pathway_summary_table(pathway_audit: pd.DataFrame) -> pd.DataFrame:
+    """Summarize transition pathways for the observed adoption events."""
+    summary = (
+        pathway_audit["pathway_category"]
+        .value_counts()
+        .rename_axis("Category")
+        .reset_index(name="Events")
+    )
+    summary["Share (%)"] = summary["Events"] / len(pathway_audit) * 100.0
+    summary["Category"] = pd.Categorical(
+        summary["Category"],
+        categories=PATHWAY_ORDER,
+        ordered=True,
+    )
+    summary = summary.sort_values("Category").reset_index(drop=True)
+    return summary
 
 
 def run_adoption_hazard(adoption_model: pd.DataFrame):
     """
-    Estimate a simple discrete-time first-adoption hazard.
+    Estimate a discrete-time first-adoption hazard with lagged predictors.
 
-    The outcome is whether a facility is first observed adopting power
-    generation in the current fiscal year. Predictors are lagged one observed
-    year so the model captures pre-adoption facility characteristics rather
-    than same-year redesign. The main specification is a linear probability
-    model for percentage-point interpretation, with year and prefecture fixed
-    effects and facility-clustered standard errors.
+    The main specification uses a complementary log-log link, which is more
+    natural for rare annual transition events than the legacy linear
+    probability model. Results are reported as average marginal effects in
+    percentage points for comparability with the prior write-up.
     """
     reg = adoption_model.copy()
     X, y = build_design_matrix(reg)
+    groups = reg["analysis_facility_id"]
 
-    model = sm.OLS(y, X).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": reg["analysis_facility_id"]},
-    )
+    model = fit_glm_hazard(X, y, link_name="cloglog", groups=groups)
+    marginal_effects = compute_average_marginal_effects(model, X, link_name="cloglog")
+    pseudo_r2 = model_pseudo_r2(model)
 
     print("\n" + "=" * 60)
     print("ADOPTION HAZARD MODEL")
@@ -146,23 +365,15 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     print(f"  N: {int(model.nobs):,}")
     print(f"  Facilities: {reg['analysis_facility_id'].nunique():,}")
     print(f"  Events: {int(reg['adopt_power_this_year'].sum()):,}")
-    print(f"  R-squared: {model.rsquared:.4f}")
-    for var in ["age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs", "lag_capacity_100t"]:
-        coef = model.params[var]
-        se = model.bse[var]
-        p = model.pvalues[var]
-        print(f"  {var:<20} {coef:>8.4f}  SE={se:>7.4f}  p={p:>7.4g}")
+    print(f"  Pseudo-R-squared: {pseudo_r2:.4f}")
+    for variable in REPORTED_VARIABLES:
+        row = marginal_effects.loc[marginal_effects["variable"] == variable].iloc[0]
+        print(
+            f"  {variable:<20} {row['ame'] * 100:>8.3f} pp"
+            f"  SE={row['se'] * 100:>7.3f}  p={row['pvalue']:>7.4g}"
+        )
 
-    return model, reg
-
-
-def run_logit_robustness(reg: pd.DataFrame):
-    """Run a lagged discrete-time logit as a robustness check."""
-    X, y = build_design_matrix(reg)
-    return sm.GLM(y, X, family=sm.families.Binomial()).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": reg["analysis_facility_id"]},
-    )
+    return model, reg, X, marginal_effects, pseudo_r2
 
 
 def write_results(
@@ -171,8 +382,12 @@ def write_results(
     adoption: pd.DataFrame,
     age_table: pd.DataFrame,
     cap_table: pd.DataFrame,
+    pathway_summary: pd.DataFrame,
     model,
+    marginal_effects: pd.DataFrame,
+    pseudo_r2: float,
     logit_robustness,
+    lpm_robustness,
     reg: pd.DataFrame,
 ) -> None:
     """Write a markdown report for the adoption stage."""
@@ -190,20 +405,15 @@ def write_results(
     )
 
     model_rows = []
-    for var in ["age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs", "lag_capacity_100t"]:
-        label = AGE_LABEL_MAP.get(var.replace("age_", ""), "Capacity (per 100 t/day)")
-        if var == "lag_capacity_100t":
-            label = "Prior-year capacity (per 100 t/day)"
-        coef_pp = model.params[var] * 100
-        se_pp = model.bse[var] * 100
+    for variable in REPORTED_VARIABLES:
+        row = marginal_effects.loc[marginal_effects["variable"] == variable].iloc[0]
         model_rows.append(
             {
-                "Variable": label,
-                "Coef. (pp)": f"{coef_pp:.2f}{significance_stars(float(model.pvalues[var]))}",
-                "SE (pp)": f"({se_pp:.2f})",
+                "Variable": AGE_LABEL_MAP[variable],
+                "AME (pp)": f"{row['ame'] * 100:.2f}{significance_stars(float(row['pvalue']))}",
+                "SE (pp)": f"({row['se'] * 100:.2f})",
             }
         )
-
     model_table = pd.DataFrame(model_rows)
 
     with open(path, "w", encoding="utf-8") as f:
@@ -289,10 +499,11 @@ def write_results(
 
         f.write("## Adoption Hazard Model\n\n")
         f.write(
-            "Main specification: lagged linear probability hazard with prior-year "
-            "age band and prior-year design capacity, plus year fixed effects, "
-            "prefecture fixed effects, and facility-clustered standard errors. "
-            "Baseline age band: 0-10 years.\n\n"
+            "Main specification: lagged complementary log-log discrete-time hazard "
+            "with prior-year age band and prior-year design capacity, plus year "
+            "fixed effects, prefecture fixed effects, and facility-clustered "
+            "standard errors. Reported effects are average marginal effects in "
+            "percentage points. Baseline prior-year age band: 0-10 years.\n\n"
         )
         f.write(model_table.to_markdown(index=False))
         f.write(
@@ -300,40 +511,107 @@ def write_results(
             f"- Observations: {int(model.nobs):,}\n"
             f"- Facilities: {reg['analysis_facility_id'].nunique():,}\n"
             f"- First-adoption events: {int(reg['adopt_power_this_year'].sum()):,}\n"
-            f"- R-squared: {model.rsquared:.4f}\n"
+            f"- Pseudo-R-squared (deviance-based): {pseudo_r2:.4f}\n"
         )
         f.write(
-            "- Discrete-time logit robustness: same sign pattern for all reported terms; "
-            f"capacity remains positive (coef. {logit_robustness.params['lag_capacity_100t']:.3f}, "
-            f"p={float(logit_robustness.pvalues['lag_capacity_100t']):.3g}).\n"
+            "- Robustness: lagged logit and lagged linear probability specifications "
+            "return the same sign pattern on all reported terms; capacity remains "
+            f"positive in both (logit coef. {logit_robustness.params['lag_capacity_100t']:.3f}, "
+            f"p={float(logit_robustness.pvalues['lag_capacity_100t']):.3g}; "
+            f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp, "
+            f"p={float(lpm_robustness.pvalues['lag_capacity_100t']):.3g}).\n\n"
         )
+
+        f.write("## Transition Pathway Audit\n\n")
+        f.write(
+            "A conservative event-level audit classifies each observed adoption "
+            "using continuity in `year_started`, facility age, design capacity, "
+            "and naming. The goal is not to prove the mechanism of modernization, "
+            "but to bound what the panel can and cannot support.\n\n"
+        )
+        f.write(
+            "Rule set: `reset / rebuild-like` requires an observed `year_started` "
+            "reset or a mature-to-new age reset; `continuity / in-place upgrade` "
+            "requires no such reset on the observed event row; forward-dated or "
+            "placeholder entries remain unresolved rather than forced into a "
+            "stronger mechanism claim.\n\n"
+        )
+        f.write(
+            pathway_summary.assign(
+                **{"Share (%)": lambda df: df["Share (%)"].map(lambda x: f"{x:.1f}")}
+            ).to_markdown(index=False)
+        )
+        f.write(
+            "\n\n"
+            "*Interpretation: the largest observed pathway bucket is reset- or rebuild-like, "
+            "a meaningful minority retain continuity consistent with in-place upgrades, "
+            "and a nontrivial set are forward-dated or placeholder entries that should "
+            "not be forced into a stronger mechanism claim than the data support.*\n"
+        )
+
         f.write("\n### Event Year Distribution\n\n")
         f.write(event_years.rename("First adoptions").to_markdown())
         f.write(
             "\n\n"
             "*Interpretation: observed transition into power generation is more common "
-            "among facilities that were younger and larger in the prior year. This "
-            "pattern is consistent with modernization occurring mainly at the capital "
-            "or investment margin rather than through diffuse late conversion of old "
-            "small facilities, but the data do not distinguish retrofit from "
-            "replacement or new build at the same site.*\n"
+            "among facilities that were younger and larger in the prior year. Under "
+            "the stronger hazard specification, the age penalty remains negative and "
+            "the capacity effect remains positive, while the pathway audit suggests "
+            "that capital-side modernization is empirically present but not reducible "
+            "to one identified mechanism such as replacement alone.*\n"
         )
 
 
 def main():
-    _, adoption, adoption_model, summary = load_adoption_data()
+    _, adoption, adoption_model, pathway_audit, summary = load_adoption_data()
     age_table, cap_table = event_tables(adoption)
-    model, reg = run_adoption_hazard(adoption_model)
-    logit_robustness = run_logit_robustness(reg)
+    model, reg, X, marginal_effects, pseudo_r2 = run_adoption_hazard(adoption_model)
+    groups = reg["analysis_facility_id"]
+    y = reg["adopt_power_this_year"].astype(float)
+    logit_robustness = fit_glm_hazard(X, y, link_name="logit", groups=groups)
+    lpm_robustness = fit_lpm_hazard(X, y, groups=groups)
+    pathway_summary = pathway_summary_table(pathway_audit)
 
-    path = os.path.join(OUTPUT_DIR, "adoption_results.md")
-    write_results(path, summary, adoption, age_table, cap_table, model, logit_robustness, reg)
-    print(f"\nSaved: {path}")
+    results_path = os.path.join(OUTPUT_DIR, "adoption_results.md")
+    audit_path = os.path.join(OUTPUT_DIR, "adoption_pathway_audit.csv")
+    pathway_audit.to_csv(audit_path, index=False)
+    write_results(
+        results_path,
+        summary,
+        adoption,
+        age_table,
+        cap_table,
+        pathway_summary,
+        model,
+        marginal_effects,
+        pseudo_r2,
+        logit_robustness,
+        lpm_robustness,
+        reg,
+    )
+    print(f"\nSaved: {results_path}")
+    print(f"Saved: {audit_path}")
+
+    marginal_effect_meta = {
+        row["variable"]: {
+            "ame": float(row["ame"]),
+            "se": float(row["se"]),
+            "pvalue": float(row["pvalue"]),
+        }
+        for _, row in marginal_effects.iterrows()
+    }
+    pathway_counts = {
+        category: int(count)
+        for category, count in pathway_audit["pathway_category"].value_counts().items()
+    }
 
     manifest_path = write_stage_manifest(
         "05a_power_adoption",
         inputs=["data/processed/incineration_panel_enriched.csv"],
-        outputs=["output/adoption_results.md"],
+        outputs=[
+            "output/adoption_results.md",
+            "output/adoption_pathway_audit.csv",
+        ],
         metadata={
             "risk_set_obs": int(len(adoption)),
             "risk_set_facilities": int(adoption["analysis_facility_id"].nunique()),
@@ -350,7 +628,8 @@ def main():
                 summary["adoption_model_drop_additional_missing_facilities"]
             ),
             "model": {
-                "type": "linear_probability_hazard",
+                "type": "discrete_time_cloglog_hazard",
+                "reported_scale": "average_marginal_effect",
                 "predictors_lagged_one_year": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
@@ -365,7 +644,8 @@ def main():
                     "lag_age_30_plus": float(model.pvalues["age_30+ yrs"]),
                     "lag_capacity_100t": float(model.pvalues["lag_capacity_100t"]),
                 },
-                "r_squared": float(model.rsquared),
+                "average_marginal_effects": marginal_effect_meta,
+                "pseudo_r_squared": pseudo_r2,
             },
             "logit_robustness": {
                 "type": "discrete_time_logit",
@@ -381,6 +661,25 @@ def main():
                     "lag_age_30_plus": float(logit_robustness.pvalues["age_30+ yrs"]),
                     "lag_capacity_100t": float(logit_robustness.pvalues["lag_capacity_100t"]),
                 },
+            },
+            "lpm_robustness": {
+                "type": "linear_probability_hazard",
+                "coefficients": {
+                    "lag_age_10_20": float(lpm_robustness.params["age_10-20 yrs"]),
+                    "lag_age_20_30": float(lpm_robustness.params["age_20-30 yrs"]),
+                    "lag_age_30_plus": float(lpm_robustness.params["age_30+ yrs"]),
+                    "lag_capacity_100t": float(lpm_robustness.params["lag_capacity_100t"]),
+                },
+                "pvalues": {
+                    "lag_age_10_20": float(lpm_robustness.pvalues["age_10-20 yrs"]),
+                    "lag_age_20_30": float(lpm_robustness.pvalues["age_20-30 yrs"]),
+                    "lag_age_30_plus": float(lpm_robustness.pvalues["age_30+ yrs"]),
+                    "lag_capacity_100t": float(lpm_robustness.pvalues["lag_capacity_100t"]),
+                },
+            },
+            "pathway_audit": {
+                "events": int(len(pathway_audit)),
+                "counts": pathway_counts,
             },
         },
     )

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="430" viewBox="0 0 1080 430" role="img" aria-labelledby="title desc">
+  <title id="title">Japan's FY2024 incinerator fleet split</title>
+  <desc id="desc">A flow diagram showing Japan's FY2024 incinerator fleet split between non-power-generating and power-generating facilities, and the resulting carbon question.</desc>
+  <defs>
+    <style>
+      .title { font: 700 24px Helvetica, Arial, sans-serif; fill: #163a1d; }
+      .subtitle { font: 400 15px Helvetica, Arial, sans-serif; fill: #355e3b; }
+      .box-title { font: 700 18px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
+      .box-text { font: 400 15px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
+      .red-box { fill: #ffcdd2; stroke: #c62828; stroke-width: 2.2; rx: 16; }
+      .green-box { fill: #c8e6c9; stroke: #2e7d32; stroke-width: 2.2; rx: 16; }
+      .yellow-box { fill: #fff9c4; stroke: #f9a825; stroke-width: 2.2; rx: 16; }
+      .arrow { stroke: #355e3b; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#355e3b" />
+    </marker>
+  </defs>
+
+  <text x="40" y="42" class="title">Japan's Incinerator Fleet (FY2024)</text>
+  <text x="40" y="68" class="subtitle">1,014 active facilities split between pure disposal plants and power-generating waste-to-energy plants.</text>
+
+  <rect x="60" y="110" width="240" height="120" class="red-box" />
+  <text x="180" y="150" text-anchor="middle" class="box-title">Non-power-generating</text>
+  <text x="180" y="176" text-anchor="middle" class="box-title">598 facilities</text>
+  <text x="180" y="202" text-anchor="middle" class="box-text">(59% of fleet)</text>
+
+  <rect x="60" y="280" width="240" height="110" class="red-box" />
+  <text x="180" y="318" text-anchor="middle" class="box-title">Pure waste disposal</text>
+  <text x="180" y="344" text-anchor="middle" class="box-text">Carbon cost only</text>
+
+  <rect x="380" y="110" width="240" height="120" class="green-box" />
+  <text x="500" y="150" text-anchor="middle" class="box-title">Power-generating</text>
+  <text x="500" y="176" text-anchor="middle" class="box-title">416 facilities</text>
+  <text x="500" y="202" text-anchor="middle" class="box-text">(41% of fleet)</text>
+
+  <rect x="380" y="280" width="240" height="110" class="green-box" />
+  <text x="500" y="316" text-anchor="middle" class="box-title">Waste-to-energy</text>
+  <text x="500" y="342" text-anchor="middle" class="box-text">~4.6 Mt-CO2 gross avoided</text>
+
+  <rect x="740" y="180" width="280" height="140" class="yellow-box" />
+  <text x="880" y="225" text-anchor="middle" class="box-title">Net carbon impact?</text>
+  <text x="880" y="255" text-anchor="middle" class="box-text">Depends on which facilities</text>
+  <text x="880" y="279" text-anchor="middle" class="box-text">actually recover energy</text>
+
+  <path d="M180 230 L180 280" class="arrow" />
+  <path d="M500 230 L500 280" class="arrow" />
+  <path d="M300 170 L380 170" class="arrow" />
+  <path d="M300 335 C420 335, 620 335, 740 260" class="arrow" />
+  <path d="M620 335 C700 335, 730 315, 740 280" class="arrow" />
+</svg>
