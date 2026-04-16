@@ -10,7 +10,7 @@
 
 ## If You Only Read Two Things
 
-1. Read the thesis itself: [thesis/thesis.pdf](thesis/thesis.pdf)
+1. Read this README through the plain-English finding and the verified result summary below. The manuscript source is [thesis/thesis.tex](thesis/thesis.tex), and the compiled PDF is kept locally at `thesis/thesis.pdf`.
 2. If you want the repo in one picture, read the two diagrams below:
    - how the thesis works
    - how the repository is organized
@@ -147,8 +147,8 @@ If you are just curious and want the shortest route:
 
 | If you want... | Start here |
 |:---------------|:-----------|
-| The finished thesis | [thesis/thesis.pdf](thesis/thesis.pdf) |
 | The thesis in source form | [thesis/thesis.tex](thesis/thesis.tex) |
+| The compiled thesis PDF | Local artifact at `thesis/thesis.pdf` |
 | The clearest explanation of the repo outputs | [output/claim_evidence_map.md](output/claim_evidence_map.md) |
 | A machine-checked repo sync report | [output/claim_verification.md](output/claim_verification.md) |
 | The latest simplified supervisor-facing bundle | [research/packets/latest-supervisor-handoff](research/packets/latest-supervisor-handoff) |
