@@ -22,6 +22,7 @@ FILES_TO_COPY: list[tuple[str, str | None]] = [
     ("research/slides/defense-deck.md", None),
     ("research/slides/dist/defense-deck.html", "research/slides/defense-deck.html"),
     ("research/slides/themes/defense-apu.css", None),
+    ("research/notes/final-viva-cheat-sheet.md", None),
     ("research/notes/defense-rapid-answers.md", None),
     ("research/notes/defense-run-sheet.md", None),
     ("research/notes/defense-question-order.md", None),
@@ -111,10 +112,11 @@ Frozen local defense packet assembled from the current repo state.
 ## Start here
 
 1. Open `research/slides/defense-deck.html` in a browser for the presentation view.
-2. Use `research/notes/defense-run-sheet.md` for timed delivery.
-3. Use `research/notes/defense-rapid-answers.md` for short-answer rehearsal.
-4. Use `research/notes/defense-q-and-a.md` for hostile follow-up practice.
-5. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.
+2. Use `research/notes/final-viva-cheat-sheet.md` as the main oral-defense rehearsal sheet.
+3. Use `research/notes/defense-run-sheet.md` for timed delivery.
+4. Use `research/notes/defense-rapid-answers.md` for short-answer rehearsal.
+5. Use `research/notes/defense-q-and-a.md` for hostile follow-up practice.
+6. Use `output/claim_verification.md` to confirm the thesis-facing evidence spine.
 
 ## Included artifacts
 
@@ -122,6 +124,7 @@ Frozen local defense packet assembled from the current repo state.
 - Slide source: `research/slides/defense-deck.md`
 - Slide figures and theme: `research/slides/figures/`, `research/slides/themes/`
 - Rehearsal notes: `research/notes/`
+- Main viva cheat sheet: `research/notes/final-viva-cheat-sheet.md`
 - Verification and core results: `output/claim_verification.md`, `output/adoption_results.md`, `output/regression_results.md`
 """
     (BUNDLE_ROOT / "README.md").write_text(content)

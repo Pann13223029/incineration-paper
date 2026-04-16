@@ -20,11 +20,12 @@ The repo keeps the deck in Markdown so it is:
 ## Suggested use
 
 1. Revise `defense-deck.md` as the thesis changes.
-2. Rehearse using `research/notes/defense-question-order.md`.
-3. Use `research/notes/defense-rapid-answers.md` for fast-answer rehearsal.
-4. Use `research/notes/defense-q-and-a.md` for hostile follow-up preparation.
-5. Use `research/notes/defense-run-sheet.md` for timed delivery.
-6. Keep slide claims aligned with `output/claim_verification.md`.
+2. Start with `research/notes/final-viva-cheat-sheet.md` for the one-file viva spine.
+3. Rehearse using `research/notes/defense-question-order.md`.
+4. Use `research/notes/defense-rapid-answers.md` for fast-answer rehearsal.
+5. Use `research/notes/defense-q-and-a.md` for hostile follow-up preparation.
+6. Use `research/notes/defense-run-sheet.md` for timed delivery.
+7. Keep slide claims aligned with `output/claim_verification.md`.
 
 ## Export options
 
@@ -62,7 +63,7 @@ This writes:
 - `research/slides/dist/defense-bundle/`
 - `research/slides/dist/defense-bundle.zip`
 
-The bundle includes the HTML deck, slide source, local assets, rehearsal notes, supervisor brief, and the current claim-verification snapshot.
+The bundle includes the HTML deck, slide source, local assets, the final viva cheat sheet, rehearsal notes, supervisor brief, and the current claim-verification snapshot.
 
 ### Other options
 
