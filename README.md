@@ -8,41 +8,175 @@
 
 ---
 
-## The Finding in One Paragraph
+## If You Only Read Two Things
 
-Using a 20-year facility-level panel (23,599 observations across 2,948 facilities, FY2005–FY2024) from Japan's Ministry of the Environment General Waste Treatment Survey, this repo now estimates a two-part empirical design. On the extensive margin, the coded full-fleet panel yields an observed-transition risk set of 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events; the lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events, and the main lagged logit hazard shows that facilities older than 10 years in the prior observed year are 1.1–1.8 percentage points less likely to transition into power generation while each additional 100 t/day of prior-year capacity raises transition probability by about 0.50 percentage points. A conservative pathway audit of the 141 observed transitions classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. On the intensive margin, the canonical generator-efficiency frame contains 5,683 facility-years across 1,016 facilities; across the four main specifications, facility age is consistently negative (−0.019 to −0.035 log-units/year), design capacity is positive (+0.041 to +0.103 log-units per 100 t/day), and capacity utilization is strongly positive (+0.541 to +0.779, all p < 0.001). Within-facility efficiency changes much less than efficiency differs across generators: the pooled within/total variance ratio in the canonical frame is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024. Taken together, the results imply that sectoral progress depends heavily on capital-side modernization decisions, while operating-side gains remain meaningful but bounded within the already-generating segment.
+1. Read the thesis itself: [thesis/thesis.pdf](thesis/thesis.pdf)
+2. If you want the repo in one picture, read the two diagrams below:
+   - how the thesis works
+   - how the repository is organized
+
+This README is written to be understandable to people who are not already inside the project.
 
 ---
 
-## What This Thesis Is About
+## What This Project Actually Is
 
-Japan incinerates roughly 80% of its municipal waste. The government calls energy recovery from burning waste "thermal recycling." But Japan's ~1,000 incinerators are not all the same:
+This repository is a bachelor's thesis plus everything needed to support it.
+
+In simple terms, it contains:
+
+- the written thesis
+- the code and outputs behind the thesis
+- checks that keep the public-facing claims aligned with the evidence
+- review and defense materials used during supervision and viva preparation
+
+![How to read this repository](docs/figures/readme_repo_layers.svg)
+
+If you want the shortest mental model:
+
+`data -> scripts -> outputs -> thesis -> verification -> review packet -> frozen checkpoint -> defense materials`
+
+---
+
+## Why This Thesis Exists
+
+Japan burns most of its municipal waste, and it does so through the world's most incineration-dependent waste system. But "Japan's incineration fleet" is not one uniform object.
+
+Some facilities are older furnaces that simply burn waste. Others are waste-to-energy plants that generate electricity and displace some grid emissions. That means the real question is not just "is incineration good or bad?" It is:
+
+- which facilities are actually moving into electricity generation?
+- among the facilities that already generate, which ones perform better?
+
+That distinction matters because it separates **modernization** from **performance**.
 
 ![FY2024 fleet split](docs/figures/readme_fleet_split.svg)
 
-Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to-energy plants generating electricity that displaces fossil fuels on the grid. **The existing literature treats them as one system. This thesis disaggregates.**
+---
+
+## How The Thesis Works
+
+The thesis answers one transition question through two linked empirical margins.
+
+- The **extensive margin** asks who records an observed transition into power generation.
+- The **intensive margin** asks what predicts efficiency among facilities that already generate power.
+
+That is the central design choice of the thesis. Instead of asking one selected sample to explain the whole fleet, it uses the right sample for each part of the question.
+
+![How the thesis works](docs/figures/readme_thesis_logic.svg)
 
 ---
 
-## The Research Question
+## The Finding In Plain English
 
-**What predicts observed transition into power generation among coded facilities first seen without it, and conditional on power generation, what predicts energy recovery efficiency among power-generating incinerators?**
+Japan's waste-incineration transition is real, but uneven.
+
+- Some facilities are clearly modernizing into power generation.
+- Many others are not.
+- Among the facilities that already generate electricity, performance still differs much more **between** facilities than **within** the same facility over time.
+
+So the thesis argues for a calibrated conclusion:
+
+- **entry into generation is selective**
+- **performance inside the generating segment is bounded by age, scale, and utilization**
+
+That means the biggest fleet-wide gains are most consistent with **capital-side modernization** of the weakest segment, while operational improvements remain real but more limited.
 
 ---
 
-## Data Pipeline
+## The Verified Result In Four Points
+
+This is the simplest machine-aligned summary of the thesis results.
+
+- The project uses a 20-year facility-level panel with **23,599 observations across 2,948 facilities**.
+- On the adoption side, the coded transition panel contains **13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events**; the lagged adoption model uses **11,717 facility-years across 1,915 facilities and 140 events**.
+- In that adoption model, older facilities are **1.1–1.8 percentage points less likely** to transition into generation, while each additional 100 t/day of prior-year capacity adds **+0.50 percentage points**.
+- The pathway audit classifies **82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved**.
+- On the generator side, the canonical regression frame contains **5,683 facility-years across 1,016 facilities**; the main coefficient ranges are **−0.019 to −0.035** for age, **+0.041 to +0.103** for design capacity, and **+0.541 to +0.779** for capacity utilization.
+- The pooled within/total variance ratio is **0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024**, which is one reason the thesis argues that performance differences are dominated by cross-facility heterogeneity rather than large within-facility reversals.
+
+For readers who want the more technical machine-checked wording, the key evidence artifacts are:
+
+- [output/claim_verification.md](output/claim_verification.md)
+- [output/claim_evidence_map.md](output/claim_evidence_map.md)
+
+---
+
+## Three Useful Visuals
+
+### Fleet split
+
+The core problem is that the fleet still contains a large non-generating segment.
+
+![FY2024 fleet split](docs/figures/readme_fleet_split.svg)
+
+### Long-run trends
+
+The fleet is consolidating and the generating share is rising, but heterogeneity remains large.
+
+![Key fleet trends](docs/figures/readme_fleet_trends.svg)
+
+### Evidence pipeline
+
+The repo is built so the thesis can be traced back through a reproducible pipeline.
 
 ![Analysis pipeline](docs/figures/readme_pipeline.svg)
 
 ---
 
-## Key Fleet Trends (FY2005 → FY2024)
+## Headline Numbers
 
-![Key fleet trends](docs/figures/readme_fleet_trends.svg)
+| Metric | Value |
+|:-------|:------|
+| Panel observations | 23,599 facility-years |
+| Unique facilities | 2,948 |
+| Adoption risk set | 13,770 facility-years (2,035 facilities) |
+| Observed first-adoption events | 141 |
+| Adoption age effect | −1.76 to −1.13 percentage points vs prior-year age 0–10 |
+| Adoption capacity effect | +0.50 percentage points per 100 t/day of prior-year capacity |
+| Pathway audit of adoption events | 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved |
+| Generator regression sample | 5,683 facility-years (1,016 facilities) |
+| Within/total variance ratio | 0.1499 (pooled), 0.1795 (pre-Fuku), 0.0956 (post-Fuku) |
+| FY2024 gross avoided CO₂ | ~4.6 Mt-CO₂ (upper bound, excludes process emissions) |
+| FY2024 share non-power-generating | 59% |
 
 ---
 
-## Methodology at a Glance
+## How To Read The Repo
+
+If you are just curious and want the shortest route:
+
+| If you want... | Start here |
+|:---------------|:-----------|
+| The finished thesis | [thesis/thesis.pdf](thesis/thesis.pdf) |
+| The thesis in source form | [thesis/thesis.tex](thesis/thesis.tex) |
+| The clearest explanation of the repo outputs | [output/claim_evidence_map.md](output/claim_evidence_map.md) |
+| A machine-checked repo sync report | [output/claim_verification.md](output/claim_verification.md) |
+| The latest simplified supervisor-facing bundle | [research/packets/latest-supervisor-handoff](research/packets/latest-supervisor-handoff) |
+| The latest frozen sendable milestone | [research/checkpoints/latest-sendable](research/checkpoints/latest-sendable) |
+| Oral-defense prep | [research/notes/final-viva-cheat-sheet.md](research/notes/final-viva-cheat-sheet.md) |
+
+---
+
+## What The Thesis Is And Is Not Claiming
+
+### It is claiming
+
+- Japan's transition into power generation is selective rather than diffuse.
+- Efficiency among generators is strongly associated with age, scale, and utilization.
+- Cross-facility differences dominate within-facility movement in the generator sample.
+- The evidence is most consistent with capital-side modernization mattering most for the weakest segment.
+
+### It is not claiming
+
+- one clean causal effect of age, capacity, or utilization
+- proof that replacement is the unique dominant mechanism
+- a complete capital-history reconstruction of the whole fleet
+- a full life-cycle climate accounting
+- automatic generalization from Japan to every other country
+
+---
+
+## Methodology At A Glance
 
 | Choice | What | Why |
 |:-------|:-----|:----|
@@ -55,30 +189,6 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 | **Main regressors** | Adoption: prior-year age bands + prior-year capacity + year FE + prefecture FE. Efficiency: facility age, design capacity, capacity utilization, heating value, grid emission factor | The extensive-margin model uses lagged predictors to avoid same-year redesign timing and reports average marginal effects from a discrete-time hazard. |
 | **Robustness** | 8 generator-efficiency specifications: pre/post-Fukushima split (R1–R4), capacity tercile endpoints (R5–R6), raw DV pooled/year-FE replications (R7–R8) | Tests stability across sample splits, distributional assumptions, and variable transformations. |
 | **Standard errors** | Cluster-robust, clustered at facility | Accounts for within-facility autocorrelation of errors across years. |
-
----
-
-## Headline Numbers
-
-| Metric | Value |
-|:-------|:------|
-| Panel observations | 23,599 facility-years |
-| Unique facilities | 2,948 |
-| Coded full-fleet frame | 19,827 facility-years (2,948 facilities) |
-| Adoption risk set | 13,770 facility-years (2,035 facilities) |
-| Adoption model frame | 11,717 facility-years (1,915 facilities) |
-| Observed first-adoption events | 141 |
-| Adoption age effect | −1.76 to −1.13 percentage points vs prior-year age 0–10 |
-| Adoption capacity effect | +0.50 percentage points per 100 t/day of prior-year capacity |
-| Pathway audit of adoption events | 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved |
-| Generator regression sample | 5,683 facility-years (1,016 facilities) |
-| Time coverage | FY2005 – FY2024 (20 years) |
-| Facility age coefficient | −0.019 to −0.035 per year in the four main specifications |
-| Design capacity coefficient | +0.041 to +0.103 log-units per 100 t/day in the four main specifications |
-| Capacity utilization coefficient | +0.541 to +0.779 in the four main specifications |
-| Within/total variance ratio | 0.1499 (pooled), 0.1795 (pre-Fuku), 0.0956 (post-Fuku) |
-| FY2024 gross avoided CO₂ | ~4.6 Mt-CO₂ (upper bound, excludes process emissions) |
-| FY2024 share non-power-generating | 59% |
 
 ---
 
@@ -95,7 +205,6 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 | **Grid emission factor** | How much CO₂ is produced per kWh of electricity on the regional grid. If the grid is dirty (coal-heavy), displacing grid electricity with waste-to-energy saves more carbon. |
 | **Capacity utilization** | What fraction of a facility's design capacity it actually uses. A 300 t/day plant processing 200 t/day has 67% utilization. |
 | **Fleet heterogeneity** | The fact that Japan's incinerators are not all the same — they vary in age, size, technology, and energy recovery capability. |
-| **Material metabolism** | An industrial ecology concept: how materials flow through a system (city, industry, country). Waste infrastructure is part of a city's "metabolism." |
 | **Infrastructure lock-in** | Once you build a 30-year incinerator, you're committed to burning waste for 30 years, regardless of whether better options emerge. |
 
 ---
@@ -111,72 +220,45 @@ Some are 40-year-old furnaces that simply burn waste. Others are modern waste-to
 
 ## Repository Structure
 
-```
+This is the high-level structure. The important point is that the repo separates manuscript, evidence pipeline, verification, and review workflows.
+
+```text
 incineration-thesis/
 |
 |-- code/
-|   |-- scripts/
-|   |   |-- 00_probe_estat_facility_data.py  # Initial data availability test
-|   |   |-- 01_download_facility_data.py     # Download 20 years of Excel files
-|   |   |-- 02_parse_facility_panel.py       # Auto-detect parser -> panel CSV
-|   |   |-- 03_grid_emission_factors.py      # Regional grid factors + crosswalk
-|   |   |-- 04_eda_facility.py               # Exploratory analysis + figures
-|   |   |-- 05a_power_adoption.py           # Observed first-adoption hazard on coded fleet
-|   |   |-- 05_panel_regression.py           # Generator-efficiency frame + 4 main models
-|   |   |-- 06_robustness.py                 # 8 robustness specifications
-|   |   |-- 07_rebuild_analysis.py           # One-command rebuild + repo-level claim verification
-|   |   |-- 08_verify_claims.py              # Checks thesis-facing claims against canonical outputs
-|   |   |-- 09_export_defense_slides.py      # Reproducible HTML/PDF defense-deck export
-|   |   |-- 10_package_defense_bundle.py     # Frozen local defense bundle
-|   |   |-- 11_package_review_packets.py     # Frozen supervisor/submission packets
-|   |   |-- 12_freeze_checkpoint.py          # Freeze a sendable milestone with packet hashes
-|   |   |-- 13_start_review_round.py         # Start a dated supervisor-feedback intake workspace
-|   |   |-- 14_generate_checkpoint_delta.py  # Summarize changes since the last frozen checkpoint
-|   |   +-- panel_utils.py                   # Shared sample-construction and manifest helpers
-|   +-- notebooks/                           # Jupyter exploration
+|   |-- scripts/                         # analysis, packaging, verification, defense tooling
+|   +-- notebooks/                      # exploration
 |
 |-- data/
-|   |-- README.md                            # Provenance, licensing, schema
-|   |-- raw/
-|   |   +-- facility_annual/                 # 20 MOE Excel files (FY2005-FY2024, published)
-|   +-- processed/
-|       |-- incineration_panel.csv           # Base panel (published, 23,599 rows)
-|       |-- incineration_panel_enriched.csv  # With grid factors (published)
-|       |-- grid_emission_factors.csv        # Regional factors by year
-|       +-- prefecture_utility_crosswalk.csv # Prefecture -> utility mapping
+|   |-- raw/                            # source files
+|   +-- processed/                      # parsed and enriched panel data
 |
 |-- thesis/
-|   |-- thesis.tex                           # Authoritative LaTeX source
-|   |-- figures/                             # EDA figures used in thesis
-|   |-- 00-abstract.md                       # (SUPERSEDED - draft)
-|   |-- 01-introduction.md                   # (SUPERSEDED - draft)
-|   |-- ...                                  # (SUPERSEDED - drafts)
-|   +-- 06-conclusion.md                     # (SUPERSEDED - draft)
+|   |-- thesis.tex                      # authoritative manuscript source
+|   |-- thesis.pdf                      # compiled thesis
+|   +-- figures/                        # thesis figures
 |
-|-- output/                                  # Generated figures, tables, sample report, manifests
-|-- .github/
-|   +-- workflows/
-|       +-- verify.yml                       # CI backstop for rebuild, verification, and packet smoke checks
+|-- output/                             # generated tables, reports, manifests
+|-- docs/figures/                       # README-facing explanatory diagrams
 |-- research/
-|   |-- literature/                          # Paper summaries
-|   |-- notes/                               # Panel protocol, supervisor brief, defense notes, verification reports
-|   |-- packets/                             # Curated supervisor/submission packet workflow
-|   |-- review-rounds/                       # Local feedback-intake workspaces for supervisor/reviewer rounds
-|   +-- checkpoints/                         # Local sendable-milestone freezing workflow
+|   |-- notes/                          # defense notes, supervisor brief, risk register
+|   |-- packets/                        # supervisor/submission packet workflow
+|   |-- review-rounds/                  # structured feedback intake
+|   |-- checkpoints/                    # frozen milestones
+|   +-- slides/                         # defense deck and bundle
 |
-|-- ARCHITECTURE.md                          # Technical blueprint
-|-- AGENTS.md                                # Assistant-agnostic repo workflow
-|-- CLAUDE.md                                # Thin compatibility wrapper
-|-- .node-version                            # Pinned Node runtime for slide/deck tooling
-|-- package.json                             # Local slide-export tooling (Marp CLI)
-+-- requirements.txt                         # Python dependencies
+|-- README.md
+|-- ARCHITECTURE.md
+|-- AGENTS.md
+|-- package.json
++-- requirements.txt
 ```
-
-**Note on the markdown chapter files:** These were the original authoring drafts. The authoritative version of every chapter now lives in `thesis/thesis.tex`, which has been through two rounds of expert-panel review and factual correction since the Markdown files were last touched. The Markdown files carry a `SUPERSEDED` header comment at the top.
 
 ---
 
-## How to Reproduce
+## How To Reproduce
+
+### Quick start
 
 ```bash
 # 1. Clone and install
@@ -188,32 +270,40 @@ npm install
 
 # 2. Optional: download raw data (requires internet)
 .venv/bin/python code/scripts/01_download_facility_data.py
+```
 
-# 3. Rebuild all thesis-facing analysis artifacts from the checked-in raw files
+### Rebuild thesis-facing analysis
+
+```bash
+# Rebuild all thesis-facing analysis artifacts from the checked-in raw files
 .venv/bin/python code/scripts/07_rebuild_analysis.py
 
-# 4. Optional: rerun only the repo-level claim/evidence verifier
+# Optional: rerun only the repo-level claim/evidence verifier
 python3 code/scripts/08_verify_claims.py
+```
 
-# 5. Optional: export the defense deck to local presentation artifacts
+### Defense and packaging workflows
+
+```bash
+# Export the defense deck to local presentation artifacts
 npm run slides:export
 
-# 6. Optional: also export a PDF deck if Chrome/Edge is available locally
+# Optional: also export a PDF deck if Chrome/Edge is available locally
 npm run slides:export:pdf
 
-# 7. Optional: package a frozen local defense bundle
+# Package a frozen local defense bundle
 npm run slides:bundle
 
-# 8. Optional: build frozen supervisor and submission packets
+# Build frozen supervisor and submission packets
 npm run packets:build
 
-# 9. Optional: build the flattened supervisor-ready bundle with simple filenames
+# Build the flattened supervisor-ready bundle with simple filenames
 npm run supervisor:ready
 
-# 10. Optional: freeze a sendable checkpoint from the current verified state
+# Freeze a sendable checkpoint from the current verified state
 npm run checkpoint:freeze
 
-# 11. Optional: start a structured supervisor-feedback round
+# Start a structured supervisor-feedback round
 npm run review:round:start
 ```
 
@@ -222,26 +312,6 @@ The canonical sample definition is written to `output/sample_definition.md`, the
 For any real supervisor checkpoint, the simplest path is: run `npm run supervisor:ready` and send `research/packets/latest-supervisor-handoff` or `research/packets/dist/supervisor-handoff.zip`. This path uses the current thesis source plus generated manifests and outputs; it does not rerun the full scientific pipeline. If `tectonic` is not installed, it can still package successfully when `thesis/thesis.pdf` is already present and current. For any auditable milestone, then freeze it with `npm run checkpoint:freeze`. Loose PDFs are for drafting, not for reference baselines. After a freeze, the newest baseline is always available at the stable local alias `research/checkpoints/latest-sendable/`.
 
 To compile the thesis PDF: upload `thesis/thesis.tex` and the `thesis/figures/` directory to Overleaf (or run `pdflatex thesis.tex` locally with natbib, booktabs, tabularx, and graphicx installed).
-
----
-
-## Current Status
-
-| Phase | Status |
-|:------|:------:|
-| Data investigation | Done |
-| Data download (20 years) | Done |
-| Panel construction | Done |
-| Grid emission factors | Done |
-| Exploratory analysis | Done |
-| Power-adoption model | Done |
-| Panel regression | Done |
-| Robustness checks | Done |
-| All 7 chapters drafted | Done |
-| LaTeX conversion | Done |
-| Reference verification (26 refs, 0 fabricated) | Done |
-| Expert panel review (3 attack rounds + holistic grade + A-push) | Done |
-| Ready for supervisor review | **Yes** |
 
 ---
 
@@ -261,4 +331,4 @@ Prof. Han Ji (supervisor), Ritsumeikan Asia Pacific University, College of Susta
 
 ---
 
-*Built with [Claude Code](https://claude.ai/code)*
+*Built with AI-assisted coding and review workflows in the local repo environment.*

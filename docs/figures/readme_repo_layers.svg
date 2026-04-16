@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="540" viewBox="0 0 1120 540" role="img" aria-labelledby="title desc">
+  <title id="title">How to read the repository</title>
+  <desc id="desc">Four-layer diagram showing the thesis manuscript, evidence pipeline, verification layer, and review and defense layer.</desc>
+  <defs>
+    <style>
+      .title { font: 700 26px Helvetica, Arial, sans-serif; fill: #163a1d; }
+      .subtitle { font: 400 15px Helvetica, Arial, sans-serif; fill: #355e3b; }
+      .panel { fill: #fbfbfb; stroke: #d0d7de; stroke-width: 1.5; rx: 20; }
+      .card-title { font: 700 18px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
+      .card-text { font: 400 15px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
+      .small { font: 400 13px Helvetica, Arial, sans-serif; fill: #4b5563; }
+      .slate { fill: #eef2ff; stroke: #4f46e5; stroke-width: 2.2; rx: 14; }
+      .green { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2.2; rx: 14; }
+      .amber { fill: #fff8e1; stroke: #f9a825; stroke-width: 2.2; rx: 14; }
+      .rose { fill: #fce4ec; stroke: #c2185b; stroke-width: 2.2; rx: 14; }
+      .arrow { stroke: #355e3b; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .flow-text { font: 700 16px Helvetica, Arial, sans-serif; fill: #355e3b; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#355e3b" />
+    </marker>
+  </defs>
+
+  <text x="40" y="42" class="title">How to Read This Repository</text>
+  <text x="40" y="68" class="subtitle">The repo is organized like a small research production system: manuscript, evidence, verification, then review and defense.</text>
+
+  <rect x="30" y="98" width="250" height="330" class="panel" />
+  <rect x="55" y="132" width="200" height="190" class="slate" />
+  <text x="155" y="168" text-anchor="middle" class="card-title">Layer 1</text>
+  <text x="155" y="194" text-anchor="middle" class="card-title">The thesis itself</text>
+  <text x="155" y="230" text-anchor="middle" class="card-text">The written argument</text>
+  <text x="155" y="252" text-anchor="middle" class="card-text">and final PDF</text>
+  <text x="155" y="286" text-anchor="middle" class="small">`thesis/thesis.tex`</text>
+  <text x="155" y="306" text-anchor="middle" class="small">`thesis/thesis.pdf`</text>
+
+  <rect x="305" y="98" width="250" height="330" class="panel" />
+  <rect x="330" y="132" width="200" height="190" class="green" />
+  <text x="430" y="168" text-anchor="middle" class="card-title">Layer 2</text>
+  <text x="430" y="194" text-anchor="middle" class="card-title">Evidence pipeline</text>
+  <text x="430" y="230" text-anchor="middle" class="card-text">Code that turns raw</text>
+  <text x="430" y="252" text-anchor="middle" class="card-text">data into results</text>
+  <text x="430" y="286" text-anchor="middle" class="small">`code/scripts/`</text>
+  <text x="430" y="306" text-anchor="middle" class="small">`output/`</text>
+
+  <rect x="580" y="98" width="250" height="330" class="panel" />
+  <rect x="605" y="132" width="200" height="190" class="amber" />
+  <text x="705" y="168" text-anchor="middle" class="card-title">Layer 3</text>
+  <text x="705" y="194" text-anchor="middle" class="card-title">Verification layer</text>
+  <text x="705" y="230" text-anchor="middle" class="card-text">Checks that README,</text>
+  <text x="705" y="252" text-anchor="middle" class="card-text">thesis, and outputs agree</text>
+  <text x="705" y="286" text-anchor="middle" class="small">`output/claim_verification.md`</text>
+  <text x="705" y="306" text-anchor="middle" class="small">`output/claim_evidence_map.md`</text>
+
+  <rect x="855" y="98" width="235" height="330" class="panel" />
+  <rect x="880" y="132" width="185" height="190" class="rose" />
+  <text x="972.5" y="168" text-anchor="middle" class="card-title">Layer 4</text>
+  <text x="972.5" y="194" text-anchor="middle" class="card-title">Review &amp; defense</text>
+  <text x="972.5" y="230" text-anchor="middle" class="card-text">Supervisor packets,</text>
+  <text x="972.5" y="252" text-anchor="middle" class="card-text">checkpoints, slides, viva</text>
+  <text x="972.5" y="286" text-anchor="middle" class="small">`research/packets/`</text>
+  <text x="972.5" y="306" text-anchor="middle" class="small">`research/checkpoints/`</text>
+
+  <path d="M255 360 L330 360" class="arrow" />
+  <path d="M530 360 L605 360" class="arrow" />
+  <path d="M805 360 L880 360" class="arrow" />
+
+  <text x="215" y="390" class="flow-text">write</text>
+  <text x="495" y="390" class="flow-text">verify</text>
+  <text x="765" y="390" class="flow-text">package</text>
+
+  <text x="40" y="492" class="card-title">Simple outsider mental model</text>
+  <text x="40" y="520" class="card-text">This is not just a thesis folder. It is a thesis plus the code, outputs, checks, and review artifacts needed to show where every claim came from.</text>
+</svg>
