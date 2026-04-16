@@ -3,6 +3,7 @@
   <desc id="desc">Four-stage pipeline from MOE survey download through parsing, enrichment, and analysis outputs.</desc>
   <defs>
     <style>
+      .bg { fill: #fcfcfb; stroke: #d0d7de; stroke-width: 1.5; rx: 28; }
       .title { font: 700 24px Helvetica, Arial, sans-serif; fill: #163a1d; }
       .group-title { font: 700 18px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
       .box-title { font: 700 15px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
@@ -15,6 +16,8 @@
       <polygon points="0 0, 10 3, 0 6" fill="#355e3b" />
     </marker>
   </defs>
+
+  <rect x="8" y="8" width="1084" height="504" class="bg" />
 
   <text x="40" y="40" class="title">Data Pipeline</text>
 

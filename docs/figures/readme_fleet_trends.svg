@@ -3,6 +3,7 @@
   <desc id="desc">Three panels: consolidation, modernization, and persistent heterogeneity in Japan's incineration fleet.</desc>
   <defs>
     <style>
+      .bg { fill: #fcfcfb; stroke: #d0d7de; stroke-width: 1.5; rx: 28; }
       .title { font: 700 24px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
       .panel-title { font: 700 18px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
       .box-title { font: 700 16px Helvetica, Arial, sans-serif; fill: #1a1a1a; }
@@ -17,6 +18,8 @@
       <polygon points="0 0, 10 3, 0 6" fill="#4b5563" />
     </marker>
   </defs>
+
+  <rect x="8" y="8" width="1084" height="404" class="bg" />
 
   <text x="40" y="40" class="title">Key Fleet Trends (FY2005 to FY2024)</text>
 
