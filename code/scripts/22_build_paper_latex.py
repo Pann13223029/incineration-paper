@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -26,6 +27,7 @@ LATEX_SOURCE = MANUSCRIPT_DIR / "paper.tex"
 LATEX_PDF = MANUSCRIPT_DIR / "paper.pdf"
 SUBMISSION_DIR = REPO_ROOT / "paper" / "submission"
 OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript-latex.pdf"
+FIGURE1_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure1_two_part_framework.py"
 
 
 @dataclass(frozen=True)
@@ -37,7 +39,6 @@ class FigureSpec:
 
 
 FIGURES = (
-    FigureSpec("figure1_two_part_framework.svg", "figure1_two_part_framework.png", 1200, 690),
     FigureSpec("figure2_selective_transition.svg", "figure2_selective_transition.png", 1200, 760),
     FigureSpec("figure3_efficiency_structure.svg", "figure3_efficiency_structure.png", 1200, 720),
 )
@@ -90,6 +91,12 @@ def render_figure(chrome: str, spec: FigureSpec) -> Path:
     return output
 
 
+def build_figure1() -> None:
+    if not FIGURE1_SCRIPT.exists():
+        raise SystemExit(f"Figure 1 build script not found: {FIGURE1_SCRIPT}")
+    subprocess.run([sys.executable, str(FIGURE1_SCRIPT)], check=True)
+
+
 def compile_latex(tectonic: str) -> None:
     command = [
         tectonic,
@@ -118,8 +125,10 @@ def main() -> int:
     SUBMISSION_DIR.mkdir(parents=True, exist_ok=True)
     BUILD_FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    chrome = chrome_binary()
+    build_figure1()
+
     if not args.skip_rasterize:
+        chrome = chrome_binary()
         for spec in FIGURES:
             render_figure(chrome, spec)
 

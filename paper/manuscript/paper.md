@@ -76,7 +76,7 @@ Section 5 interprets the combined finding, explains what the data still cannot
 identify, and states a short set of evidence-consistent implications. Section 6
 concludes.
 
-![Figure 1. Two-part empirical architecture linking the adoption frame, generator frame, and the paper's synthesis claim.](../figures/figure1_two_part_framework.svg)
+![Figure 1. Two-part empirical architecture linking the adoption frame, generator frame, and the paper's synthesis claim.](../figures/figure1_two_part_framework.png)
 
 Figure 1 makes the paper's core move explicit. The adoption layer uses the
 coded at-risk frame to model observed entry into generation, while the
