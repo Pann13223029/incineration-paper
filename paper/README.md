@@ -13,7 +13,10 @@ Start here:
 7. [`notes/paper-structure-checklist.md`](notes/paper-structure-checklist.md)
 8. [`notes/abstract-introduction-checklist.md`](notes/abstract-introduction-checklist.md)
 9. [`journals/target-journals.md`](journals/target-journals.md)
-10. [`evidence/`](evidence/)
+10. [`references/selected-references.md`](references/selected-references.md)
+11. [`references/citation-plan.md`](references/citation-plan.md)
+12. [`supplement/supplement.md`](supplement/supplement.md)
+13. [`evidence/`](evidence/)
 
 ## Rule
 

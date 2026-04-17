@@ -27,9 +27,10 @@ than treated as one average process.
 
 Japan operates one of the world's most incineration-dependent municipal waste
 systems, yet a large share of the fleet still burns waste without generating
-electricity from the heat it produces. The transition problem is therefore not
-whether incineration exists, but which facilities move into useful energy
-recovery and what performance looks like once they do.
+electricity from the heat it produces (Ministry of the Environment Japan, 2022;
+Tabata & Tsai, 2016). The transition problem is therefore not whether
+incineration exists, but which facilities move into useful energy recovery and
+what performance looks like once they do.
 
 That pattern is easy to flatten into one average fleet story. But the relevant
 questions are not the same. One is extensive: which facilities record observed
@@ -87,28 +88,29 @@ explicit split between adoption into generation and conditional performance
 within generation.
 
 Work on waste-to-energy systems often documents national trajectories,
-technology choices, or lifecycle implications of thermal treatment. That work is
-important for sectoral context, but it often treats the incineration fleet as a
-category. It can show whether energy recovery is growing, yet it is less well
-suited to distinguishing facilities that enter generation from those that do
-not.
+technology choices, or lifecycle implications of thermal treatment (Astrup et
+al., 2015; Sun et al., 2018). That work is important for sectoral context, but
+it often treats the incineration fleet as a category. It can show whether
+energy recovery is growing, yet it is less well suited to distinguishing
+facilities that enter generation from those that do not.
 
 Facility-level efficiency studies are closer to the present paper, but they
 typically begin with plants that already generate or focus on technical
-performance conditional on operation. They are informative about output within
-the operating segment, especially age, scale, and utilization, but they do not
-directly address the modernization margin between non-generating and generating
-facilities. In that sense, they answer the intensive-margin question while
-leaving the extensive-margin question open.
+performance conditional on operation. Recent Chinese plant-level work, for
+example, is highly informative about performance differentials within the
+generating segment (Cui et al., 2026), but it does not directly address the
+modernization margin between non-generating and generating facilities. In that
+sense, such studies answer the intensive-margin question while leaving the
+extensive-margin question open.
 
 The lock-in literature adds a different expectation: infrastructure performance
 may be shaped by durable design choices, inherited scale, and institutional
-arrangements rather than by frequent large reversals at mature facilities. The
-useful implication here is empirical rather than grand-theoretical. If design-
-conditioned heterogeneity dominates, cross-facility differences should matter
-more than large within-facility reversals over time. That expectation is only
-partially visible if entry into generation and performance within generation are
-never separated.
+arrangements rather than by frequent large reversals at mature facilities
+(Unruh, 2000; Seto et al., 2016). The useful implication here is empirical
+rather than grand-theoretical. If design-conditioned heterogeneity dominates,
+cross-facility differences should matter more than large within-facility
+reversals over time. That expectation is only partially visible if entry into
+generation and performance within generation are never separated.
 
 The paper therefore contributes by bringing those strands together in one
 facility-level design. It asks first who records observed transition into
@@ -119,7 +121,8 @@ mechanism, is the paper's main originality claim.
 ## 3. Data and Design
 
 The analysis uses the Ministry of the Environment's General Waste Treatment
-Survey for FY2005-FY2024. The full panel contains 23,599 facility-year rows.
+Survey for FY2005-FY2024 (Ministry of the Environment Japan, 2022). The full
+panel contains 23,599 facility-year rows.
 Within that, the coded full-fleet frame contains 19,827 observations across
 2,948 facilities with usable identifiers. This paper uses two linked samples
 because one sample cannot answer both parts of the transition problem.
@@ -328,13 +331,6 @@ selective upgrading remain real levers, but they appear more likely to preserve
 or modestly improve performance within the existing envelope than to eliminate
 large inherited gaps.
 
-The broader lesson should also remain limited. This paper does not claim that
-all infrastructure transitions follow the same split pattern. It shows more
-narrowly that, for a large municipal incineration fleet, modeling adoption into
-generation separately from conditional performance within generation changes the
-story the data tell. That lesson may travel to similar fleet-transition studies,
-but it does not need a stronger universal formulation than that.
-
 ## 6. Conclusion
 
 Japan's incineration transition is not one smooth modernization process. It is
@@ -352,3 +348,48 @@ set. It does show, however, that the weakest segment of the fleet looks more
 like a capital-renewal problem, while the generating segment looks more like a
 bounded-performance problem. For similar fleet-transition studies, that
 analytical separation may be more informative than another fleet average.
+
+Supplementary material is available in
+[paper/supplement/supplement.md](../supplement/supplement.md).
+
+## References
+
+Arthur, W. B. (1989). Competing technologies, increasing returns, and lock-in
+by historical events. *The Economic Journal*, *99*(394), 116-131.
+https://doi.org/10.2307/2234208
+
+Astrup, T. F., Tonini, D., Turconi, R., & Boldrin, A. (2015). Life cycle
+assessment of thermal waste-to-energy technologies: Review and recommendations.
+*Waste Management*, *37*, 104-115.
+https://doi.org/10.1016/j.wasman.2014.06.011
+
+Cui, J., Cui, Y., Li, J., Gao, X., Wei, W., Chen, Y., Ma, W., Zhu, N., Geng,
+Y., Zhao, Y., & Lou, Z. (2026). Efficiency hierarchy and optimization of waste
+incineration in China to balance disposal and energy supply. *Nature
+Communications*, *17*(1), Article 3069.
+https://doi.org/10.1038/s41467-026-69897-w
+
+Ministry of the Environment Japan. (2022). *General waste treatment survey:
+Summary report FY2021*. Environmental Management Bureau, Ministry of the
+Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html
+
+Seto, K. C., Davis, S. J., Mitchell, R. B., Stokes, E. C., Unruh, G., &
+Urge-Vorsatz, D. (2016). Carbon lock-in: Types, causes, and policy
+implications. *Annual Review of Environment and Resources*, *41*(1), 425-452.
+https://doi.org/10.1146/annurev-environ-110615-085934
+
+Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving waste
+to energy rate by promoting an integrated municipal solid-waste management
+system. *Resources, Conservation and Recycling*, *136*, 289-296.
+https://doi.org/10.1016/j.resconrec.2018.05.005
+
+Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste
+incineration plants in Japan: Current situation and future challenges. *Waste
+Management & Research*, *34*(4), 345-351.
+https://doi.org/10.1177/0734242X15617009
+
+Unruh, G. C. (2000). Understanding carbon lock-in. *Energy Policy*, *28*(12),
+817-830. https://doi.org/10.1016/S0301-4215(00)00070-7
+
+Wooldridge, J. M. (2010). *Econometric analysis of cross section and panel
+data* (2nd ed.). MIT Press.
