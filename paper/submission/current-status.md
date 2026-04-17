@@ -1,15 +1,20 @@
 # Current Paper Status
 
-This paper workspace is intentionally local-only for now.
+This paper workspace now has a private GitHub remote, but it is still being
+kept dormant as a side project.
 
 Reason:
 - the thesis remains the primary deliverable
 - the paper is a side project derived from a frozen thesis evidence base
-- keeping the repo local reduces distraction and avoids turning the paper into a
-  second live research track too early
+- keeping the repo private and lightly maintained reduces distraction and avoids
+  turning the paper into a second live research track too early
 
 ## Current State
 
+- private GitHub repo:
+  - `https://github.com/Pann13223029/incineration-paper`
+- frozen baseline tag:
+  - `wm-near-submission-20260418-9af5603`
 - target journal: `Waste Management`
 - manuscript status: near-submission draft
 - figures in place: `3`
@@ -22,11 +27,10 @@ Reason:
 
 - resuming paper work later without rebuilding the structure
 - showing a clean article version of the thesis contribution
-- converting into a real submission track after the thesis is fully settled
+- preserving a stable private paper track after the thesis is fully settled
 
 ## What Is Still Deferred
 
-- creating a real remote
 - journal-system metadata beyond the local title page
 - any new empirical analysis not needed for the thesis
 
@@ -44,3 +48,10 @@ Then rerun:
 ```bash
 npm run paper:export
 ```
+
+If the paper becomes active again, the next real decisions are editorial rather
+than structural:
+
+1. whether to revise the AI disclosure statement for actual submission
+2. whether to expand the supplement further
+3. whether to begin a true journal-submission workflow from this frozen baseline

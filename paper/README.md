@@ -2,6 +2,11 @@
 
 This directory is the active article layer.
 
+Current repo state:
+
+- private remote: `https://github.com/Pann13223029/incineration-paper`
+- frozen milestone tag: `wm-near-submission-20260418-9af5603`
+
 Start here:
 
 1. [`manuscript/paper.md`](manuscript/paper.md)
