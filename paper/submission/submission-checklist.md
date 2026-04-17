@@ -22,6 +22,8 @@ Official source used for this checklist:
 - working references layer exists:
   - [selected-references.md](../references/selected-references.md)
   - [citation-plan.md](../references/citation-plan.md)
+- manuscript export command exists:
+  - `npm run paper:export`
 
 ## Journal-Fit Checks
 
@@ -43,7 +45,7 @@ Official source used for this checklist:
 - fill corresponding-author email in [title-page.md](title-page.md)
 - do a final reference-style pass for journal consistency
 - decide whether to keep or revise the AI disclosure statement
-- convert the Markdown manuscript into the final submission file format
+- rerun `npm run paper:export` after any manuscript change
 - confirm author metadata exactly as it should appear in submission
 
 ## Nice-To-Have Before Submission

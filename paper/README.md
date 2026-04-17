@@ -32,3 +32,15 @@ Refresh paper-facing evidence copies with:
 ```bash
 npm run paper:sync
 ```
+
+Export submission-facing manuscript artifacts with:
+
+```bash
+npm run paper:export
+```
+
+This writes local-only generated files under `paper/submission/`:
+
+- `waste-management-manuscript.md`
+- `waste-management-manuscript.html`
+- `waste-management-manuscript.docx`
