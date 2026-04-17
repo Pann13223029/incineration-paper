@@ -111,7 +111,67 @@ about structured cross-facility differences inside the generating segment. The
 coefficients are therefore interpreted as structured conditional associations,
 not as strict structural parameters.
 
-## S6. Additional Descriptive Material
+## S6. Appendix Tables
+
+### S6.1 Table S1. Summary statistics for the canonical generator frame
+
+This table gives the main scale and dispersion of the variables used in the
+intensive-margin regressions.
+
+| Variable                       |    N |    Mean |   Median |      SD |    Min |      Max |
+|:-------------------------------|-----:|--------:|---------:|--------:|-------:|---------:|
+| Efficiency (MWh/t, winsorized) | 5683 |   0.330 |    0.332 |   0.149 |  0.010 |    0.800 |
+| log(Efficiency)                | 5683 |  -1.265 |   -1.102 |   0.675 | -4.605 |   -0.223 |
+| Facility age (years)           | 5683 |  14.955 |   15.000 |   9.626 |  0.000 |   47.000 |
+| Capacity (t/day)               | 5683 | 330.882 |  280.000 | 226.213 | 20.000 | 1800.000 |
+| Capacity utilization           | 5683 |   0.600 |    0.610 |   0.135 |  0.013 |    1.000 |
+| Heating value (MJ/kg)          | 5683 |   7.936 |    8.295 |   4.304 |  0.000 |  158.942 |
+| Grid EF (kg-CO2/kWh)           | 5683 |   0.458 |    0.453 |   0.088 |  0.282 |    0.860 |
+
+*Note: heating value is a noisy administrative estimate derived from the source
+files and is retained as a control variable rather than interpreted as a clean
+engineering measurement.*
+
+### S6.2 Table S2. Adoption pathway-audit detail
+
+This appendix table makes the adoption-pathway evidence more explicit than the
+short main-text summary.
+
+**Panel A. Pathway categories**
+
+| Category                                 | Events | Share (%) |
+|:-----------------------------------------|------:|----------:|
+| Reset / rebuild-like transition          |    82 |      58.2 |
+| In-place upgrade / continuity transition |    38 |      27.0 |
+| Forward-dated / placeholder entry        |    20 |      14.2 |
+| Unresolved / insufficient continuity     |     1 |       0.7 |
+
+**Panel B. Event-year distribution**
+
+| Fiscal year | First adoptions |
+|------------:|----------------:|
+|        2006 |               5 |
+|        2007 |               4 |
+|        2008 |               2 |
+|        2009 |               2 |
+|        2013 |              30 |
+|        2014 |               3 |
+|        2015 |              21 |
+|        2016 |              17 |
+|        2017 |              12 |
+|        2018 |              10 |
+|        2019 |              16 |
+|        2021 |               6 |
+|        2022 |               8 |
+|        2023 |               2 |
+|        2024 |               3 |
+
+Interpretation: the pathway audit supports a selective modernization reading,
+but the panel still does not uniquely identify replacement, major
+refurbishment, or new build as the singular pathway behind the observed
+transition events.
+
+## S7. Additional Descriptive Material
 
 Useful descriptive tables already synchronized into the paper workspace include:
 
