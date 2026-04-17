@@ -227,7 +227,7 @@ uniquely identify replacement, major refurbishment, or new build as the single
 pathway. In the main text, the audit therefore functions as a credibility guard
 rather than as a coequal source of originality.
 
-![Figure 2. Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.](../figures/figure2_selective_transition.svg)
+![Figure 2. Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.](../figures/figure2_selective_transition.png)
 
 **Table 2. Main lagged hazard results for observed transition into generation**
 
@@ -269,7 +269,7 @@ irreversibility, but it is hard to reconcile with a world in which mature
 generators frequently undergo large late-life reversals that reshape the fleet
 distribution.
 
-![Figure 3. Mean efficiency declines across generator age groups, while the within-to-total variance ratio stays low in the full sample and in pre/post-Fukushima splits.](../figures/figure3_efficiency_structure.svg)
+![Figure 3. Mean efficiency declines across generator age groups, while the within-to-total variance ratio stays low in the full sample and in pre/post-Fukushima splits.](../figures/figure3_efficiency_structure.png)
 
 The efficiency margin therefore looks bounded rather than static. Facilities do
 respond within a design envelope, especially through utilization and operational
