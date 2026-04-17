@@ -15,13 +15,13 @@ Waste Management
 ## Author
 
 **Pann Phetra**  
-College of Sustainability and Tourism, Ritsumeikan Asia Pacific University,
-Beppu, Oita, Japan
+College of Sustainability and Tourism, Ritsumeikan Asia Pacific University, 1-1
+Jumonjibaru, Beppu, Oita 874-8577, Japan
 
 ## Corresponding Author
 
 **Pann Phetra**  
-Email: `pann.phetra@gmail.com`
+Email: `ph23p2dl@apu.ac.jp`
 
 ## Keywords
 
@@ -30,14 +30,15 @@ transition
 
 ## Current Draft Metrics
 
-- abstract word count: approximately 219 words
-- main text before references: approximately 3,323 words
+- abstract word count: approximately 229 words
+- main text before references: approximately 3,430 words
 - main-text figures: 3
 - main-text tables: 3
 
 ## Notes
 
-- The APU email `ph23p2dl@apu.ac.jp` can still be used as a secondary contact if needed in the submission system.
+- Secondary contact email if needed in the submission system:
+  - `pann.phetra@gmail.com`
 - If the submission keeps AI-assisted drafting in the workflow, use
   [ai-disclosure-template.md](ai-disclosure-template.md) to finalize the journal
   disclosure statement.

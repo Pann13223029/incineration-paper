@@ -28,7 +28,7 @@ Official source used for this checklist:
 ## Journal-Fit Checks
 
 - abstract at or below 250 words:
-  - current draft is about 219 words
+  - current draft is about 229 words
 - keywords present:
   - current manuscript has 6 keywords
 - numbered main sections present:
@@ -38,12 +38,14 @@ Official source used for this checklist:
 - combined main-text figure/table count within 8:
   - current count is 6
 - full-length article word count within 6,500 words:
-  - current main text is about 3,323 words before references
+  - current main text is about 3,430 words before references
 
 ## Still Required Before Real Submission
 
 - rerun the reference-style check if the manuscript citations change
-- decide whether to keep or revise the AI disclosure statement
+- confirm conflict-of-interest and funding statements in the submission system
+- decide whether to keep or revise the AI disclosure statement and whether the
+  journal requires it as a separate upload
 - rerun `npm run paper:export` after any manuscript change
 - confirm author metadata exactly as it should appear in submission
 
