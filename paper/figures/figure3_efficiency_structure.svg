@@ -4,15 +4,15 @@
   <rect width="1200" height="720" fill="#fbfcfe"/>
   <rect x="12" y="12" width="1176" height="696" rx="20" fill="#ffffff" stroke="#d7dde8" stroke-width="2"/>
 
-  <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#122033">
+  <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#122033">
     Figure 3. Efficiency is structured by age and bounded within facilities
   </text>
-  <text x="60" y="104" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#42526b">
+  <text x="60" y="102" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#42526b">
     Mean efficiency declines across generator age groups, while within-facility movement remains small relative to cross-facility structure.
   </text>
 
   <rect x="54" y="150" width="548" height="514" rx="18" fill="#f4f9ff" stroke="#c8d9f4" stroke-width="2"/>
-  <text x="84" y="190" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1b4c8c">
+  <text x="84" y="190" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" fill="#1b4c8c">
     Panel A. Mean efficiency by generator age group
   </text>
   <text x="84" y="220" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#53657d">
@@ -40,7 +40,7 @@
   <text x="494" y="626" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#24384d">30+</text>
 
   <rect x="630" y="150" width="516" height="514" rx="18" fill="#f6f5ff" stroke="#d5cff4" stroke-width="2"/>
-  <text x="660" y="190" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4a3c88">
+  <text x="660" y="190" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" fill="#4a3c88">
     Panel B. Within-to-total variance ratio of log efficiency
   </text>
   <text x="660" y="220" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#53657d">

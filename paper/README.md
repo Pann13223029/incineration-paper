@@ -10,23 +10,24 @@ Current repo state:
 Start here:
 
 1. [`manuscript/paper.md`](manuscript/paper.md)
-2. [`submission/current-status.md`](submission/current-status.md)
-3. [`notes/claim-stack.md`](notes/claim-stack.md)
-4. [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md)
-5. [`notes/paper-claim-evidence-map.md`](notes/paper-claim-evidence-map.md)
-6. [`notes/paper-budget.md`](notes/paper-budget.md)
-7. [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md)
-8. [`notes/paper-structure-checklist.md`](notes/paper-structure-checklist.md)
-9. [`notes/abstract-introduction-checklist.md`](notes/abstract-introduction-checklist.md)
-10. [`journals/target-journals.md`](journals/target-journals.md)
-11. [`references/selected-references.md`](references/selected-references.md)
-12. [`references/citation-plan.md`](references/citation-plan.md)
-13. [`supplement/supplement.md`](supplement/supplement.md)
-14. [`submission/title-page.md`](submission/title-page.md)
-15. [`submission/highlights.md`](submission/highlights.md)
-16. [`submission/cover-letter.md`](submission/cover-letter.md)
-17. [`submission/submission-checklist.md`](submission/submission-checklist.md)
-18. [`evidence/`](evidence/)
+2. [`manuscript/paper.tex`](manuscript/paper.tex)
+3. [`submission/current-status.md`](submission/current-status.md)
+4. [`notes/claim-stack.md`](notes/claim-stack.md)
+5. [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md)
+6. [`notes/paper-claim-evidence-map.md`](notes/paper-claim-evidence-map.md)
+7. [`notes/paper-budget.md`](notes/paper-budget.md)
+8. [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md)
+9. [`notes/paper-structure-checklist.md`](notes/paper-structure-checklist.md)
+10. [`notes/abstract-introduction-checklist.md`](notes/abstract-introduction-checklist.md)
+11. [`journals/target-journals.md`](journals/target-journals.md)
+12. [`references/selected-references.md`](references/selected-references.md)
+13. [`references/citation-plan.md`](references/citation-plan.md)
+14. [`supplement/supplement.md`](supplement/supplement.md)
+15. [`submission/title-page.md`](submission/title-page.md)
+16. [`submission/highlights.md`](submission/highlights.md)
+17. [`submission/cover-letter.md`](submission/cover-letter.md)
+18. [`submission/submission-checklist.md`](submission/submission-checklist.md)
+19. [`evidence/`](evidence/)
 
 ## Rule
 
@@ -50,3 +51,14 @@ This writes local-only generated files under `paper/submission/`:
 - `waste-management-manuscript.md`
 - `waste-management-manuscript.html`
 - `waste-management-manuscript.docx`
+- `waste-management-manuscript.pdf`
+
+Build a cleaner LaTeX reading PDF with:
+
+```bash
+npm run paper:build:latex
+```
+
+This writes a local-only manuscript PDF at:
+
+- `paper/submission/waste-management-manuscript-latex.pdf`

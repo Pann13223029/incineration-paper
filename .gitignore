@@ -25,7 +25,14 @@ output/fig02_heterogeneity_shot.png
 output/checkpoint_delta.md
 paper/submission/waste-management-manuscript.docx
 paper/submission/waste-management-manuscript.html
+paper/submission/waste-management-manuscript-latex.pdf
 paper/submission/waste-management-manuscript.md
+paper/submission/waste-management-manuscript.pdf
+paper/manuscript/*.aux
+paper/manuscript/*.log
+paper/manuscript/*.out
+paper/manuscript/*.pdf
+paper/manuscript/build/
 
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.

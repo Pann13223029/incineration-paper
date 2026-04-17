@@ -22,6 +22,7 @@ Reason:
 - supplement: present
 - title page, highlights, and cover letter: present
 - export workflow: working via `npm run paper:export`
+- LaTeX reading-PDF workflow: working via `npm run paper:build:latex`
 
 ## What This Baseline Is Good For
 
@@ -47,6 +48,7 @@ Then rerun:
 
 ```bash
 npm run paper:export
+npm run paper:build:latex
 ```
 
 If the paper becomes active again, the next real decisions are editorial rather

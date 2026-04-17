@@ -6,6 +6,7 @@
     "paper:check": "python3 code/scripts/20_sync_paper_assets.py --check",
     "paper:sync": "python3 code/scripts/20_sync_paper_assets.py",
     "paper:export": "python3 code/scripts/21_export_paper_submission.py",
+    "paper:build:latex": "python3 code/scripts/22_build_paper_latex.py",
     "legacy:slides:export": "python3 code/scripts/09_export_defense_slides.py",
     "legacy:slides:export:pdf": "python3 code/scripts/09_export_defense_slides.py --pdf",
     "legacy:slides:bundle": "python3 code/scripts/10_package_defense_bundle.py",

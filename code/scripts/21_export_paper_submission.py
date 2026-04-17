@@ -7,6 +7,7 @@ generates:
 - paper/submission/waste-management-manuscript.md
 - paper/submission/waste-management-manuscript.html
 - paper/submission/waste-management-manuscript.docx
+- paper/submission/waste-management-manuscript.pdf
 
 The HTML is intentionally simple and self-contained enough for `textutil` to
 convert it into a practical DOCX export on macOS without requiring Pandoc.
@@ -30,6 +31,7 @@ SUBMISSION_DIR = REPO_ROOT / "paper" / "submission"
 OUT_MD = SUBMISSION_DIR / "waste-management-manuscript.md"
 OUT_HTML = SUBMISSION_DIR / "waste-management-manuscript.html"
 OUT_DOCX = SUBMISSION_DIR / "waste-management-manuscript.docx"
+OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript.pdf"
 
 
 TITLE = (
@@ -211,12 +213,45 @@ def export_docx() -> None:
         )
 
 
+def export_pdf() -> None:
+    chrome = shutil.which("google-chrome")
+    if not chrome:
+        chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        if not Path(chrome).exists():
+            raise SystemExit(
+                "Google Chrome not found; cannot export PDF on this machine. "
+                "Use --no-pdf to generate Markdown, HTML, and DOCX only."
+            )
+
+    html_url = OUT_HTML.resolve().as_uri()
+    command = [
+        chrome,
+        "--headless",
+        "--disable-gpu",
+        "--allow-file-access-from-files",
+        "--no-pdf-header-footer",
+        f"--print-to-pdf={OUT_PDF}",
+        html_url,
+    ]
+    subprocess.run(command, check=True)
+    if not OUT_PDF.exists():
+        raise SystemExit(
+            "PDF export did not produce an output file on this machine. "
+            "Use --no-pdf to generate Markdown, HTML, and DOCX only."
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--no-docx",
         action="store_true",
         help="Generate Markdown and HTML only.",
+    )
+    parser.add_argument(
+        "--no-pdf",
+        action="store_true",
+        help="Generate Markdown, HTML, and DOCX only.",
     )
     args = parser.parse_args()
 
@@ -232,11 +267,15 @@ def main() -> int:
 
     if not args.no_docx:
         export_docx()
+    if not args.no_pdf:
+        export_pdf()
 
     print(f"Submission manuscript source: {OUT_MD}")
     print(f"Submission manuscript HTML: {OUT_HTML}")
     if not args.no_docx:
         print(f"Submission manuscript DOCX: {OUT_DOCX}")
+    if not args.no_pdf:
+        print(f"Submission manuscript PDF: {OUT_PDF}")
 
     return 0
 

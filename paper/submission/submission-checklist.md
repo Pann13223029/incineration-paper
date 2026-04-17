@@ -24,6 +24,12 @@ Official source used for this checklist:
   - [citation-plan.md](../references/citation-plan.md)
 - manuscript export command exists:
   - `npm run paper:export`
+- LaTeX reading-PDF command exists:
+  - `npm run paper:build:latex`
+- clean manuscript PDF export exists:
+  - `paper/submission/waste-management-manuscript.pdf`
+- clean LaTeX reading PDF export exists when built:
+  - `paper/submission/waste-management-manuscript-latex.pdf`
 
 ## Journal-Fit Checks
 
@@ -47,6 +53,7 @@ Official source used for this checklist:
 - decide whether to keep or revise the AI disclosure statement and whether the
   journal requires it as a separate upload
 - rerun `npm run paper:export` after any manuscript change
+- rerun `npm run paper:build:latex` after any figure or layout change
 - confirm author metadata exactly as it should appear in submission
 
 ## Nice-To-Have Before Submission
