@@ -150,7 +150,8 @@ winsorized log electricity generated per tonne processed. Main predictors are
 facility age, design capacity, capacity utilization, waste heating value, and a
 grid-emission control. The main specifications are pooled OLS, year fixed
 effects, random effects, and year fixed effects plus random effects, all used as
-structured descriptive models rather than clean structural estimates.
+structured descriptive models rather than clean structural estimates
+(Wooldridge, 2010).
 
 The two layers belong in one paper because they answer sequential parts of the
 same modernization problem. The adoption layer identifies which facilities
@@ -392,10 +393,6 @@ needed and takes full responsibility for the content of the manuscript.
 
 ## References
 
-Arthur, W. B. (1989). Competing technologies, increasing returns, and lock-in
-by historical events. *The Economic Journal*, *99*(394), 116-131.
-https://doi.org/10.2307/2234208
-
 Astrup, T. F., Tonini, D., Turconi, R., & Boldrin, A. (2015). Life cycle
 assessment of thermal waste-to-energy technologies: Review and recommendations.
 *Waste Management*, *37*, 104-115.
@@ -410,6 +407,7 @@ https://doi.org/10.1038/s41467-026-69897-w
 Ministry of the Environment Japan. (2022). *General waste treatment survey:
 Summary report FY2021*. Environmental Management Bureau, Ministry of the
 Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html
+(accessed 18 April 2026).
 
 Seto, K. C., Davis, S. J., Mitchell, R. B., Stokes, E. C., Unruh, G., &
 Urge-Vorsatz, D. (2016). Carbon lock-in: Types, causes, and policy

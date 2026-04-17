@@ -9,8 +9,6 @@ This note keeps the article's citation layer disciplined.
 - Use one Japan-sector source for context:
   - `MOEJ2022`
   - `TabataTsai2016`
-- Use one broader transition/system source only if needed:
-  - `Yamada2023`
 
 ### Literature Positioning
 
@@ -27,7 +25,7 @@ This note keeps the article's citation layer disciplined.
 
 - MOE survey source:
   - `MOEJ2022`
-- Econometric framing only where it clarifies the estimator family:
+- Econometric framing where it clarifies the estimator family:
   - `Wooldridge2010`
 
 ### Discussion
@@ -44,3 +42,4 @@ This note keeps the article's citation layer disciplined.
 - Do not add references that only support broad thesis background.
 - Do not let the literature review become a survey.
 - Prefer a short, high-signal reference list over a bloated one.
+- Remove uncited references from the manuscript reference list before export.

@@ -43,7 +43,7 @@ Official source used for this checklist:
 ## Still Required Before Real Submission
 
 - fill corresponding-author email in [title-page.md](title-page.md)
-- do a final reference-style pass for journal consistency
+- rerun the reference-style check if the manuscript citations change
 - decide whether to keep or revise the AI disclosure statement
 - rerun `npm run paper:export` after any manuscript change
 - confirm author metadata exactly as it should appear in submission
