@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Paper conversion flow</title>
+  <desc id="desc">Diagram showing how the paper repo turns the thesis evidence core into an article manuscript and supplement.</desc>
+  <rect x="0" y="0" width="1200" height="520" fill="#fbfaf7"/>
+  <rect x="20" y="20" width="1160" height="480" rx="20" fill="#ffffff" stroke="#d7d1c7" stroke-width="2"/>
+  <text x="60" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#1f2937">From Thesis Evidence To Paper</text>
+  <text x="60" y="108" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">Keep the empirical core stable, narrow the claim, and move overflow into supplement instead of the main text.</text>
+
+  <rect x="60" y="160" width="240" height="180" rx="18" fill="#f4efe7" stroke="#b38f5a" stroke-width="2"/>
+  <text x="90" y="205" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#7c4a17">1. Evidence Core</text>
+  <text x="90" y="245" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Data</text>
+  <text x="90" y="273" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Scripts</text>
+  <text x="90" y="301" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Canonical outputs</text>
+
+  <rect x="340" y="160" width="240" height="180" rx="18" fill="#eef4f1" stroke="#4d7c6a" stroke-width="2"/>
+  <text x="370" y="205" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#1f5c4d">2. Article Claim</text>
+  <text x="370" y="245" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Selective modernization</text>
+  <text x="370" y="273" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Bounded responsiveness</text>
+  <text x="370" y="301" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">One dominant headline</text>
+
+  <rect x="620" y="160" width="240" height="180" rx="18" fill="#eef2f9" stroke="#5373a6" stroke-width="2"/>
+  <text x="650" y="205" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#284c7a">3. Paper Draft</text>
+  <text x="650" y="245" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Shorter introduction</text>
+  <text x="650" y="273" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Compressed methods</text>
+  <text x="650" y="301" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Stronger result synthesis</text>
+
+  <rect x="900" y="120" width="240" height="100" rx="18" fill="#f8f0f5" stroke="#a45f88" stroke-width="2"/>
+  <text x="930" y="165" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#7d315c">4a. Supplement</text>
+  <text x="930" y="195" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Robustness, audit rules,</text>
+  <text x="930" y="218" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">technical overflow</text>
+
+  <rect x="900" y="240" width="240" height="100" rx="18" fill="#f1f6ea" stroke="#7c9950" stroke-width="2"/>
+  <text x="930" y="285" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#587134">4b. Journal Fit</text>
+  <text x="930" y="315" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Target venue, scope,</text>
+  <text x="930" y="338" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">and framing discipline</text>
+
+  <path d="M300 250 L340 250" stroke="#6b7280" stroke-width="3" fill="none"/>
+  <polygon points="340,250 326,243 326,257" fill="#6b7280"/>
+  <path d="M580 250 L620 250" stroke="#6b7280" stroke-width="3" fill="none"/>
+  <polygon points="620,250 606,243 606,257" fill="#6b7280"/>
+  <path d="M860 205 L900 170" stroke="#6b7280" stroke-width="3" fill="none"/>
+  <polygon points="900,170 886,171 894,182" fill="#6b7280"/>
+  <path d="M860 295 L900 290" stroke="#6b7280" stroke-width="3" fill="none"/>
+  <polygon points="900,290 886,283 887,297" fill="#6b7280"/>
+
+  <text x="60" y="410" font-family="'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937">Rule of the repo</text>
+  <text x="60" y="445" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#374151">Do not make the paper a second source of empirical truth. Narrow and reorganize the thesis evidence instead.</text>
+</svg>

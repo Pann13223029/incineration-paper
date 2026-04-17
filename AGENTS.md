@@ -4,96 +4,80 @@ Repository-wide guidance for coding and writing assistants.
 
 ## Purpose
 
-This file defines the stable operating rules for work in this thesis repo.
-Do not use it as a source for volatile thesis facts such as sample sizes,
-word counts, readiness claims, or current result values. Verify those from
-the canonical artifacts listed below.
+This is a **paper-first derivative repo** seeded from the defended thesis workspace.
+
+The thesis repo answered the bachelor's-thesis question and carries the full
+supervision / defense machinery. This repo exists to extract a journal-style
+paper from that base without destabilizing the original thesis workflow.
+
+Do not treat this repo as a generic clone of the thesis project. Treat it as a
+paper lab built on top of the same empirical core.
 
 ## Canonical Artifacts
 
 | Area | Canonical artifact(s) | Rule |
 | --- | --- | --- |
-| Thesis prose | `thesis/thesis.tex` | Edit this directly for thesis-facing prose unless a task explicitly asks for a draft artifact. |
-| Legacy chapter drafts | `thesis/0*-*.md` | Read-only legacy drafts. Do not regenerate `thesis/thesis.tex` from them. |
+| Active paper prose | `paper/manuscript/paper.md` | Edit this directly for article-facing prose unless a task explicitly asks to work on the thesis record. |
+| Thesis baseline | `thesis/thesis.tex` | Reference-only baseline for defended thesis claims and wording. Do not use it as the active paper draft. |
+| Paper framing | `paper/notes/claim-stack.md`, `paper/notes/thesis-to-paper-map.md`, `paper/journals/target-journals.md` | Use these to keep the paper narrow, article-shaped, and journal-aware. |
 | Analysis frame and estimation logic | `code/scripts/panel_utils.py` | Check this before changing any empirical claim, sample definition, or model description. |
-| Generated sample and model facts | `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md`, `output/robustness_results.md`, `output/claim_verification.md` | Use these for current published numbers and repo-level sync status. |
-| Provenance | `output/manifests/` | Use this when tracing how an output was generated. |
-| Repo-level technical framing | `ARCHITECTURE.md` | Update when the analytical design, artifact flow, or defended methodological framing materially changes. |
-| Repo summary for readers | `README.md` | Update when a change materially affects the top-line repo story, workflow, or reproducibility instructions. |
+| Generated sample and model facts | `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md`, `output/robustness_results.md`, `output/claim_verification.md` | Use these for current result values and repo-level sync status. |
+| Paper-facing evidence snapshot | `paper/evidence/current/` | Refresh this with `npm run paper:sync` after any substantive result change. |
+| Repo technical framing | `ARCHITECTURE.md` | Update when the active paper workflow, artifact flow, or source-of-truth structure materially changes. |
+| Repo summary for readers | `README.md` | Update when a change materially affects the repo story, paper workflow, or active/reference boundary. |
 
 ## Core Rules
 
-1. Verify current facts from canonical artifacts before repeating them.
-2. Never fabricate citations or empirical claims. If support is missing, flag it explicitly.
-3. Keep thesis-facing claims synchronized with the generated outputs they depend on.
-4. State limitations, uncertainty, or competing interpretations before strong policy conclusions.
-5. Preserve scope discipline for the main thesis design, but adjacent methods may be proposed when clearly labeled as robustness checks, limitations, or future work.
-6. Treat durable repo policy and current thesis choices as different things. Stable workflow rules belong here; mutable analytical choices belong in the thesis and architecture artifacts.
+1. Keep the empirical core intact; the paper should narrow claims, not invent new evidence.
+2. Treat `paper/manuscript/paper.md` as the active writing target.
+3. Treat `thesis/thesis.tex` and `research/` as reference assets unless a task explicitly targets the thesis record.
+4. Verify current facts from canonical outputs before repeating them.
+5. Keep article claims narrower than thesis claims when in doubt.
+6. Move technical overflow into paper notes or supplement planning instead of bloating the main paper draft.
 
 ## Working Defaults
 
-- Audience: bachelor's-thesis level in sustainability / industrial ecology.
-- Framing: material metabolism, infrastructure lock-in, and policy implications.
-- Source hierarchy: if `thesis/thesis.tex`, generated outputs, and legacy drafts disagree, trust `thesis/thesis.tex` plus the generated outputs, then repair the stale layer.
-- Writing target: lead with the finding, but do not compress out caveats needed for defendability.
+- Audience: journal readers in waste management, industrial ecology, or environmental policy.
+- Writing target: article-shaped, one dominant headline, lighter main text, stronger supplement.
+- Source hierarchy: current `output/*` artifacts first, then `paper/*`, then `thesis/*` as baseline reference.
+- Framing default: selective modernization on the adoption margin plus bounded responsiveness on the efficiency margin.
 
 ## Workflow
 
-### Prose changes
+### Paper changes
 
-- Edit `thesis/thesis.tex` directly.
-- Read the local section plus adjacent context before making substantive argument changes.
-- Do not edit `thesis/0*-*.md` unless the task explicitly asks for draft back-porting or archival sync.
+- Edit `paper/manuscript/paper.md` directly.
+- Before changing the article claim, check `paper/notes/claim-stack.md`.
+- Before expanding scope, check `paper/notes/thesis-to-paper-map.md`.
 
 ### Analysis changes
 
 - Inspect `code/scripts/panel_utils.py` first.
-- Rebuild analysis outputs when a change affects the sample, specification, coefficients, or reported numbers.
-- Before changing thesis-facing empirical language, confirm the relevant current values in `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md`, and any relevant manifest.
+- Rebuild or refresh outputs before changing paper-facing empirical language.
+- After substantive result changes, run `npm run paper:sync`.
 
 ### Sync rules
 
-When a change materially affects thesis-facing claims, decide explicitly whether each of these also needs an update:
+When a change materially affects paper-facing claims, decide explicitly whether each of these also needs an update:
 
-- `thesis/thesis.tex`
+- `paper/manuscript/paper.md`
+- `paper/notes/claim-stack.md`
+- `paper/notes/thesis-to-paper-map.md`
+- `paper/journals/target-journals.md`
+- `paper/evidence/current/*`
 - `README.md`
 - `ARCHITECTURE.md`
-- `output/*` generated artifacts
-- `output/manifests/*`
 
 If only one layer is changed, leave a clear reason why the others do not need sync.
 
 ## Build And Verification
 
-- Analysis rebuild entry point: `.venv/bin/python code/scripts/07_rebuild_analysis.py`
-- Claim/evidence verifier entry point: `.venv/bin/python code/scripts/08_verify_claims.py`
-- Defense slide source: `research/slides/defense-deck.md`
-- Slide-export install: `npm install`
-- Slide-export entry points: `npm run slides:export` and `npm run slides:export:pdf`
-- Review-packet guide: `research/packets/README.md`
-- Review-packet entry point: `npm run packets:build`
-- Simplified supervisor handoff entry point: `npm run supervisor:ready`
-- Latest simplified supervisor bundle alias: `research/packets/latest-supervisor-handoff`
-- Advisor writing/style guide: `research/notes/advisor-writing-guidance.md`
-- Checkpoint-freeze guide: `research/checkpoints/README.md`
-- Checkpoint-freeze entry point: `npm run checkpoint:freeze`
-- Latest frozen baseline alias: `research/checkpoints/latest-sendable`
-- Review-round intake guide: `research/review-rounds/README.md`
-- Review-round entry point: `npm run review:round:start`
-- Prefer frozen packets over loose files for any supervisor-facing or submission-facing checkpoint
-- Thesis build: compile from `thesis/`
-- Prefer `tectonic` if available; otherwise use the local LaTeX workflow required by the repo
-- Treat `output/claim_verification.md` as the repo-level gate for thesis-facing number drift and banned overclaim language.
-- After a thesis build, review warnings that could affect defendability or formatting, especially table overflow, broken references, and citation issues
-- CI backstop: `.github/workflows/verify.yml` mirrors the canonical local rebuild, HTML slide export, and packet smoke build on GitHub Actions
-
-## Panel Workflow
-
-- Use `research/notes/PANEL-PROTOCOL.md` for substantive analytic or argumentative changes, red-team review, or high-stakes prioritization.
-- Do not invoke the panel workflow for trivial copyedits, formatting fixes, or single-paragraph cleanups unless the user explicitly asks for it.
+- Paper evidence sync: `python3 code/scripts/20_sync_paper_assets.py`
+- Paper package scripts: `npm run paper:check` and `npm run paper:sync`
+- Legacy thesis build and delivery commands remain available under the `legacy:*` namespace in `package.json`
 
 ## Maintenance
 
-- Keep this file free of volatile status claims.
-- When the repo workflow or source-of-truth structure changes, update this file in the same task.
-- If assistant-specific files exist, they should be thin adapters that point back here rather than duplicating project facts.
+- Keep this file free of volatile claims and current result values.
+- If the paper workflow or active/reference boundary changes, update this file in the same task.
+- If assistant-specific files exist, they should stay thin and point back here.
