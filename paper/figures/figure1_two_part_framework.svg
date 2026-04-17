@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Two-part empirical framework for the paper</title>
+  <desc id="desc">Diagram showing the full facility panel splitting into an adoption frame and a generator frame, with a synthesis claim that one-average-fleet models miss the distinction between entry into generation and conditional performance within generation.</desc>
+  <rect width="1200" height="660" fill="#fbfcfe"/>
+  <rect x="12" y="12" width="1176" height="636" rx="20" fill="#ffffff" stroke="#d7dde8" stroke-width="2"/>
+
+  <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#122033">
+    Figure 1. Two-part empirical architecture
+  </text>
+  <text x="60" y="104" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#42526b">
+    The paper treats transition into generation and performance within generation as linked but different estimands.
+  </text>
+
+  <rect x="360" y="138" width="480" height="86" rx="16" fill="#edf4ff" stroke="#7ca7e6" stroke-width="2"/>
+  <text x="600" y="172" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#153b73">
+    MOE facility panel, FY2005-FY2024
+  </text>
+  <text x="600" y="203" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#27486f">
+    23,599 facility-year rows before the paper's two analytical frames are separated
+  </text>
+
+  <line x1="600" y1="224" x2="600" y2="274" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="310" y1="274" x2="890" y2="274" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="310" y1="274" x2="310" y2="312" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="890" y1="274" x2="890" y2="312" stroke="#8b98ad" stroke-width="4"/>
+
+  <rect x="84" y="312" width="452" height="212" rx="20" fill="#fff3ea" stroke="#e3a16a" stroke-width="2"/>
+  <text x="116" y="352" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#7a3e10">
+    Extensive margin: adoption frame
+  </text>
+  <text x="116" y="382" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#5c4a38">
+    Coded at-risk facilities first observed without power generation
+  </text>
+  <text x="116" y="417" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#5a2e0d">
+    13,770 facility-years | 2,035 facilities | 141 observed first-adoption events
+  </text>
+  <text x="116" y="456" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#4b3f33">
+    Main question:
+  </text>
+  <text x="238" y="456" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#253750">
+    Who records observed transition into generation?
+  </text>
+  <text x="116" y="491" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#4b3f33">
+    Main predictors:
+  </text>
+  <text x="241" y="491" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#253750">
+    prior-year age band, prior-year design capacity
+  </text>
+  <text x="116" y="523" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#7a3e10">
+    Headline:
+  </text>
+  <text x="200" y="523" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#253750">
+    selective modernization on the way into generation
+  </text>
+
+  <rect x="664" y="312" width="452" height="212" rx="20" fill="#ebfaf2" stroke="#79c19b" stroke-width="2"/>
+  <text x="696" y="352" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#0f5a3d">
+    Intensive margin: generator frame
+  </text>
+  <text x="696" y="382" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#36544a">
+    Operating generators with positive throughput and positive electricity output
+  </text>
+  <text x="696" y="417" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#114d35">
+    5,683 observations | 1,016 facilities
+  </text>
+  <text x="696" y="456" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#36544a">
+    Main question:
+  </text>
+  <text x="812" y="456" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#253750">
+    How do generators perform once inside generation?
+  </text>
+  <text x="696" y="491" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#36544a">
+    Main predictors:
+  </text>
+  <text x="821" y="491" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#253750">
+    age, scale, utilization, controls
+  </text>
+  <text x="696" y="523" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#0f5a3d">
+    Headline:
+  </text>
+  <text x="780" y="523" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#253750">
+    bounded responsiveness within generation
+  </text>
+
+  <line x1="310" y1="524" x2="310" y2="566" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="890" y1="524" x2="890" y2="566" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="310" y1="566" x2="890" y2="566" stroke="#8b98ad" stroke-width="4"/>
+  <line x1="600" y1="566" x2="600" y2="586" stroke="#8b98ad" stroke-width="4"/>
+
+  <rect x="225" y="586" width="750" height="44" rx="14" fill="#f3f6fb" stroke="#c8d2e3" stroke-width="2"/>
+  <text x="600" y="614" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1b2c40">
+    Synthesis: one-average-fleet models miss that entry into generation and conditional performance tell different stories.
+  </text>
+</svg>

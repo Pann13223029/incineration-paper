@@ -1,83 +1,354 @@
-# Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet
+# Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study
 
-## Dominant Claim
+## Abstract
 
-Japan's waste-incineration transition is split across two linked margins:
+Japan relies heavily on municipal waste incineration, yet a large share of its
+incineration fleet still does not convert waste heat into electricity. A
+one-average-fleet view therefore risks conflating two different questions: who
+records observed transition into generation at all, and how plants perform once
+they already generate. This paper separates those margins in a national
+facility-level panel built from Ministry of the Environment data for FY2005-
+FY2024. It first models observed transition into generation among coded
+facilities first seen without it, then models energy recovery efficiency among
+operating generators. Transition is selective rather than diffuse: in the main
+lagged hazard model, facilities older than 10 years are about 1-2 percentage
+points less likely than 0-10 year facilities to record transition in the next
+observed year, while each additional 100 t/day of design capacity raises annual
+transition probability by about 0.5 percentage points. Within the generating
+segment, efficiency is lower at older plants and higher at larger, more fully
+utilized ones, and the within-to-total variance ratio of log-efficiency is
+about 0.15. The evidence is most consistent with selective modernization at the
+weak end of the fleet and bounded responsiveness within the generating segment.
+For similar fleet-transition studies, the broader lesson is methodological:
+adoption and conditional performance may need to be modeled separately rather
+than treated as one average process.
 
-- **selective modernization** on the adoption margin
-- **bounded responsiveness** on the efficiency margin
+## 1. Introduction
 
-That is the paper's central promise. Everything in the manuscript should serve that claim.
+Japan operates one of the world's most incineration-dependent municipal waste
+systems, yet a large share of the fleet still burns waste without generating
+electricity from the heat it produces. The transition problem is therefore not
+whether incineration exists, but which facilities move into useful energy
+recovery and what performance looks like once they do.
 
-## One-Sentence Contribution
+That pattern is easy to flatten into one average fleet story. But the relevant
+questions are not the same. One is extensive: which facilities record observed
+transition into power generation at all? The other is intensive: among plants
+that already generate, which facilities achieve high energy recovery efficiency?
+Treating the fleet as a single class obscures the difference between entering
+generation and performing within generation.
 
-This paper contributes a national facility-level design that separates transition into power generation from conditional performance within the generating segment, showing that infrastructure transition can split into an adoption problem and a conditional-performance problem rather than behaving like one uniform process.
+This paper separates transition into generation from conditional performance
+within the generating segment in a national facility-level panel. Its main
+contribution is empirical design: once those margins are distinguished, the
+modernization story changes.
+On the adoption margin, observed transition is selective rather than diffuse:
+younger and larger facilities are more likely to record transition, while old
+and small plants rarely do. On the intensive margin, efficiency among
+generators is strongly structured by age, scale, and utilization, and within-
+facility movement is small relative to between-facility heterogeneity. Read
+together, those results imply a split transition rather than one average
+modernization process.
 
-## Draft Abstract
+The gap addressed here is therefore narrower than a generic claim that Japan has
+been understudied. Much relevant waste-to-energy work either averages across
+fleets, studies generators only, or tells transition stories that blur entry
+into generation with performance among facilities already inside it. Japan makes
+that problem visible because the fleet remains large, municipally embedded, and
+technologically heterogeneous, with a substantial non-generating segment still
+active alongside a smaller modern generating segment. The broader claim remains
+narrow: in similar fleet-transition settings, separate models of adoption and
+conditional performance may reveal patterns that a single average-fleet view
+misses.
 
-Japan operates one of the world's largest waste-incineration fleets, yet many facilities still generate no electricity from waste heat. Existing discussion often treats this fleet as a single category, obscuring the difference between transition into power generation and performance among facilities that already generate. This paper separates those margins using a 20-year facility-level panel. On the adoption margin, observed first transition into power generation is selective: younger and larger facilities are more likely to record transition, while old and small plants rarely do. On the efficiency margin, conditional on generation, performance is strongly structured by age, scale, and utilization, and within-facility movement is small relative to cross-facility heterogeneity. The evidence is therefore most consistent with a transition shaped by selective capital renewal at the weak end of the fleet and bounded responsiveness within the already-generating segment. More broadly, the paper shows why infrastructure transitions may need to be modeled separately as adoption and conditional-performance problems rather than as one average process.
+The rest of the paper proceeds as follows. Section 2 positions the paper against
+the literature most relevant to the analytical split. Section 3 introduces the
+two linked analytical frames and the main estimation choices. Section 4 reports
+the adoption and efficiency results in sequence, then ties them together.
+Section 5 interprets the combined finding, explains what the data still cannot
+identify, and states a short set of evidence-consistent implications. Section 6
+concludes.
 
-## Article Shape
+![Figure 1. Two-part empirical architecture linking the adoption frame, generator frame, and the paper's synthesis claim.](../figures/figure1_two_part_framework.svg)
 
-### 1. Introduction
+Figure 1 makes the paper's core move explicit. The adoption layer uses the
+coded at-risk frame to model observed entry into generation, while the
+efficiency layer uses the canonical generator frame to model conditional
+performance once generation already exists. The point is not to stack two
+separate studies in one article, but to show that a one-average-fleet view
+would otherwise mix entry and performance into the same modernization story.
 
-- open with Japan as a split fleet, not a monolith
-- state the gap early: adoption and conditional performance are usually conflated
-- state the contribution early
-- promise one named frame:
-  - selective modernization
-  - bounded responsiveness
+## 2. Literature Positioning
 
-### 2. Literature Positioning
+This paper speaks to three literatures: waste-to-energy systems, facility-level
+efficiency analysis, and infrastructure lock-in. The point of the review is not
+to survey them exhaustively, but to show why the present question requires an
+explicit split between adoption into generation and conditional performance
+within generation.
 
-- keep this short
-- focus on what existing work does not separate
-- use Japan as the empirical case, but make the contribution methodological as well
+Work on waste-to-energy systems often documents national trajectories,
+technology choices, or lifecycle implications of thermal treatment. That work is
+important for sectoral context, but it often treats the incineration fleet as a
+category. It can show whether energy recovery is growing, yet it is less well
+suited to distinguishing facilities that enter generation from those that do
+not.
 
-### 3. Data and Design
+Facility-level efficiency studies are closer to the present paper, but they
+typically begin with plants that already generate or focus on technical
+performance conditional on operation. They are informative about output within
+the operating segment, especially age, scale, and utilization, but they do not
+directly address the modernization margin between non-generating and generating
+facilities. In that sense, they answer the intensive-margin question while
+leaving the extensive-margin question open.
 
-- explain the two linked analytical frames
-- adoption frame: coded facilities first observed without generation
-- efficiency frame: canonical generator sample
-- keep estimator caveats visible but compact
+The lock-in literature adds a different expectation: infrastructure performance
+may be shaped by durable design choices, inherited scale, and institutional
+arrangements rather than by frequent large reversals at mature facilities. The
+useful implication here is empirical rather than grand-theoretical. If design-
+conditioned heterogeneity dominates, cross-facility differences should matter
+more than large within-facility reversals over time. That expectation is only
+partially visible if entry into generation and performance within generation are
+never separated.
 
-### 4. Results
+The paper therefore contributes by bringing those strands together in one
+facility-level design. It asks first who records observed transition into
+generation and then asks how the generating segment performs once generation
+already exists. Separating those margins, rather than identifying any single
+mechanism, is the paper's main originality claim.
 
-- adoption result first
-- efficiency result second
-- one synthesis paragraph tying them together
+## 3. Data and Design
 
-### 5. Discussion
+The analysis uses the Ministry of the Environment's General Waste Treatment
+Survey for FY2005-FY2024. The full panel contains 23,599 facility-year rows.
+Within that, the coded full-fleet frame contains 19,827 observations across
+2,948 facilities with usable identifiers. This paper uses two linked samples
+because one sample cannot answer both parts of the transition problem.
 
-- what the two-part result changes
-- why the weakest segment looks like a capital-renewal problem
-- why the generating segment looks like a bounded-performance problem
-- what the evidence still cannot uniquely identify
+The first analytical frame is the coded adoption frame. It includes facilities
+first observed without power generation and follows them until they either
+record observed transition into generation or remain non-generating in the panel
+window. After excluding left-censored facilities already generating in their
+first observed year, the adoption risk set contains 13,770 facility-years across
+2,035 facilities, with 141 observed first-adoption events. The main adoption
+model is a lagged discrete-time logit hazard estimated on 11,717 observations
+across 1,915 facilities and 140 retained events. Predictors are prior-year age
+band and prior-year design capacity, with year fixed effects, prefecture fixed
+effects, and facility-clustered standard errors. This is an observed-transition
+model, not a complete structural model of all possible modernization pathways.
 
-### 6. Conclusion
+The second analytical frame is the canonical generator frame. It contains
+operating facilities with positive throughput and positive power output, after
+standard cleaning and a bounded efficiency measure. The regression frame
+contains 5,683 observations across 1,016 facilities. The dependent variable is
+winsorized log electricity generated per tonne processed. Main predictors are
+facility age, design capacity, capacity utilization, waste heating value, and a
+grid-emission control. The main specifications are pooled OLS, year fixed
+effects, random effects, and year fixed effects plus random effects, all used as
+structured descriptive models rather than clean structural estimates.
 
-- one short claim stack
-- one portable lesson beyond Japan
+The two layers belong in one paper because they answer sequential parts of the
+same modernization problem. The adoption layer identifies which facilities
+appear to enter the generating regime at all. The efficiency layer identifies
+whether large gains remain available once facilities are already inside that
+regime. Without the first layer, the paper would reduce transition to generator
+performance alone. Without the second, it would say who enters generation but
+not whether large efficiency gaps remain inside the generating segment.
 
-## What To Cut Relative To The Thesis
+The main identification limits are explicit. In the adoption layer, the paper
+models observed transition within the coded risk set, not unrestricted fleet-
+wide modernization. In the efficiency layer, age is closely tied to time and
+within-facility movement is limited, so the defended interpretation is one of
+structured conditional association rather than strict causal identification. The
+paper therefore aims for disciplined inference rather than maximal causal reach.
+All reported effects should be read as conditional associations within the
+specified samples, not as estimates of structural causality or policy effects.
 
-- most thesis-style scene-setting
-- long methodology self-defense in the main text
-- repeated caveat language
-- broad policy exposition
-- most supervisor / viva / packet logic
+Table 1 summarizes the four analytical frames that matter for the paper's
+argument.
 
-## What To Preserve
+| Analytical frame | Observations | Facilities | Events | Role in paper |
+|:--|--:|--:|--:|:--|
+| Coded full-fleet frame | 19,827 | 2,948 | - | Starting point after facility identifiers are resolved |
+| Adoption risk set | 13,770 | 2,035 | 141 | Facilities first observed without power generation |
+| Lagged adoption model frame | 11,717 | 1,915 | 140 | Main hazard model with lagged age and capacity predictors |
+| Canonical generator frame | 5,683 | 1,016 | - | Operating generators used for conditional efficiency models |
 
-- the two-part architecture
-- sample transparency
-- bounded-responsiveness logic
-- pathway-audit caution
-- calibration of claims
+## 4. Results
 
-## Immediate TODOs
+### 4.1 Adoption into generation is selective rather than diffuse
 
-- rewrite the introduction into article length
-- compress the methods section to article scale
-- convert thesis tables into article-ready table list
-- choose the target journal before changing style too far
+The adoption results show a strongly selective transition pattern. In the risk
+set, annual event rates collapse after age 10 and rise sharply across capacity
+quartiles. Facilities aged 0-10 years account for 102 first-adoption events,
+while the three older age bands together account for only 39. By capacity, the
+largest quartile accounts for 99 first-adoption events, whereas the smallest
+quartile records only 1.
+
+The discrete-time logit hazard compresses that pattern into a clear main result.
+Relative to 0-10 year facilities, plants aged 10-20 years are about 1.76
+percentage points less likely to record transition in the next observed year,
+plants aged 20-30 years are about 1.72 percentage points less likely, and plants
+aged 30 years or more are about 1.13 percentage points less likely. Each
+additional 100 t/day of prior-year design capacity raises annual transition
+probability by about 0.50 percentage points. The sign pattern is stable in the
+complementary log-log and linear probability robustness variants.
+
+This is not the pattern one would expect from diffuse late-life conversion of
+the old small-plant segment. Observed transition is concentrated among
+facilities that were already younger and larger before the event year. The
+extensive margin therefore looks like selective modernization rather than broad
+catch-up across the whole fleet.
+
+The pathway audit supports that interpretation without turning it into a stronger
+mechanism claim than the data earn. Among the 141 observed adoption events, 82
+are classified as reset- or rebuild-like, 38 as continuity-type upgrades, 20 as
+forward-dated or placeholder entries, and 1 as unresolved. This is descriptive
+pathway evidence, not mechanism identification. That distribution shows that
+capital-side selectivity is empirically present, but it does not
+uniquely identify replacement, major refurbishment, or new build as the single
+pathway. In the main text, the audit therefore functions as a credibility guard
+rather than as a coequal source of originality.
+
+![Figure 2. Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.](../figures/figure2_selective_transition.svg)
+
+Table 2 reports the main hazard specification only.
+
+| Variable | AME (pp) | SE (pp) |
+|:--|--:|--:|
+| Prior-year age 10-20 yrs (vs 0-10) | -1.76 | 0.28 |
+| Prior-year age 20-30 yrs (vs 0-10) | -1.72 | 0.42 |
+| Prior-year age 30+ yrs (vs 0-10) | -1.13 | 0.39 |
+| Prior-year capacity (per 100 t/day) | 0.50 | 0.20 |
+
+| Model summary | Value |
+|:--|--:|
+| Observations | 11,717 |
+| Facilities | 1,915 |
+| First-adoption events | 140 |
+| Pseudo-R-squared | 0.1842 |
+
+### 4.2 Performance within generation is bounded and strongly structured
+
+The generator results tell a different but complementary story. In the canonical
+generator frame, efficiency is consistently lower at older facilities and higher
+at larger and more fully utilized ones. Across the main specifications, the age
+coefficient remains negative, the capacity coefficient remains positive, and the
+utilization coefficient remains positive. The magnitudes differ across models,
+but the sign pattern is stable, and the emphasis stays on structured
+association rather than on any single structural parameter.
+
+The strongest descriptive result is not one coefficient but the variance
+structure. The within-to-total variance ratio of pooled log-efficiency is
+0.1499. In other words, the large majority of variation in the dependent
+variable is between facilities rather than within facilities over time. The
+ratio remains low in both the pre-Fukushima and post-Fukushima windows, falling
+from 0.1795 before 2011 to 0.0956 after 2011. That pattern does not prove
+irreversibility, but it is hard to reconcile with a world in which mature
+generators frequently undergo large late-life reversals that reshape the fleet
+distribution.
+
+![Figure 3. Mean efficiency declines across generator age groups, while the within-to-total variance ratio stays low in the full sample and in pre/post-Fukushima splits.](../figures/figure3_efficiency_structure.svg)
+
+The efficiency margin therefore looks bounded rather than static. Facilities do
+respond within a design envelope, especially through utilization and operational
+discipline, but the cross-sectional hierarchy remains strong. Older facilities
+systematically underperform younger ones; larger plants systematically
+outperform smaller ones; and utilization matters more as a supporting lever
+within the generating segment than as a fleet-wide equalizer.
+
+This is why the intensive margin cannot be inferred from the adoption margin
+alone. A facility can be inside generation without being close to the frontier,
+yet the evidence also suggests that operations alone are unlikely to erase large
+vintage and scale gaps once plants are mature. Conditional performance is
+therefore a bounded-performance problem rather than a simple continuation of the
+entry problem.
+
+Table 3 keeps the generator results to four core specifications.
+
+| Variable | Model 1 Pooled OLS | Model 2 Year FE | Model 3 RE | Model 4 Year FE + RE |
+|:--|--:|--:|--:|--:|
+| Facility age (years) | -0.0279*** | -0.0348*** | -0.0188*** | -0.0332*** |
+|  | (0.0022) | (0.0022) | (0.0025) | (0.0021) |
+| Capacity (100 t/day) | 0.0874*** | 0.1030*** | 0.0405*** | 0.0519*** |
+|  | (0.0083) | (0.0086) | (0.0083) | (0.0096) |
+| Capacity utilization | 0.7468*** | 0.7789*** | 0.6199*** | 0.5411*** |
+|  | (0.1421) | (0.1346) | (0.0997) | (0.0943) |
+| Heating value (MJ/kg) | 0.0010 | 0.0032 | 0.0006 | 0.0012 |
+|  | (0.0023) | (0.0021) | (0.0012) | (0.0010) |
+| Grid EF (kg-CO2/kWh) | 0.3182 | -0.4466 | 1.6333*** | -0.1951 |
+|  | (0.2219) | (0.2714) | (0.1965) | (0.2101) |
+| Observations | 5,683 | 5,683 | 5,683 | 5,683 |
+| Facilities | 1,016 | 1,016 | 1,016 | 1,016 |
+| R-squared | 0.2470 | 0.3721 | 0.1647 | 0.3076 |
+
+### 4.3 Why the two results belong together
+
+Read together, the two margins change the story the fleet appears to tell. The
+adoption results show that entry into generation is already selective before
+conditional efficiency is considered, while the efficiency results show that
+large performance gaps inside the generating segment are not easily erased
+through within-facility movement alone. A single fleet-average model would blur
+those margins into one modernization narrative; the two-part design instead
+shows selective modernization on the way into generation and bounded
+responsiveness once generation already exists.
+
+## 5. Discussion
+
+The paper's first interpretive claim is methodological. Japan's incineration
+transition should not be modeled as one average process because the full-fleet
+transition question and the generator-performance question are linked but not
+the same estimand. The adoption layer identifies who appears to move into
+generation. The efficiency layer identifies how the generating segment performs
+once it exists. That distinction is the paper's main contribution.
+
+The substantive interpretation is correspondingly two-part. On the adoption
+margin, the data do not support a story of broad late conversion among old small
+plants. Observed transition is concentrated among younger and larger facilities,
+and the pathway audit shows more reset- or rebuild-like cases than continuity-
+type upgrades. On the efficiency margin, age, scale, and utilization matter
+strongly, while within-facility movement remains modest relative to the cross-
+sectional hierarchy. The evidence is therefore most consistent with selective
+capital renewal at the weak end of the fleet and bounded responsiveness within
+the generating segment.
+
+That interpretation should remain calibrated. The pathway audit does not prove
+that replacement is the unique pathway of modernization. The regression results
+do not provide strict causal estimates of vintage lock-in. Alternative
+interpretations remain possible, including reporting compression, unobserved
+retrofit histories, and institutional constraints that limit operational
+responses. The defended claim is narrower: the data support a selective
+modernization process and bounded performance envelope, not a uniquely identified
+mechanism or a full causal hierarchy.
+
+These are implications, not estimated policy rankings. For the weakest segment,
+especially older non-generators and small plants, the evidence points more
+toward capital-renewal planning than toward diffuse late-life operational
+improvement. For the already-generating segment, utilization, routing, and
+selective upgrading remain real levers, but they appear more likely to preserve
+or modestly improve performance within the existing envelope than to eliminate
+large inherited gaps.
+
+The broader lesson should also remain limited. This paper does not claim that
+all infrastructure transitions follow the same split pattern. It shows more
+narrowly that, for a large municipal incineration fleet, modeling adoption into
+generation separately from conditional performance within generation changes the
+story the data tell. That lesson may travel to similar fleet-transition studies,
+but it does not need a stronger universal formulation than that.
+
+## 6. Conclusion
+
+Japan's incineration transition is not one smooth modernization process. It is
+split between selective entry into generation and bounded performance among
+facilities already inside the generating regime. Within the coded adoption
+frame, observed transition into generation is selective rather than diffuse.
+Within the canonical generator frame, efficiency is bounded by age, scale, and
+utilization, with cross-facility heterogeneity dominating large within-facility
+reversals.
+
+The paper's main contribution is to show that those are distinct but linked
+questions and that treating them as one average fleet process obscures both.
+That does not prove one unique modernization pathway or one optimal intervention
+set. It does show, however, that the weakest segment of the fleet looks more
+like a capital-renewal problem, while the generating segment looks more like a
+bounded-performance problem. For similar fleet-transition studies, that
+analytical separation may be more informative than another fleet average.
