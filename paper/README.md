@@ -16,7 +16,11 @@ Start here:
 10. [`references/selected-references.md`](references/selected-references.md)
 11. [`references/citation-plan.md`](references/citation-plan.md)
 12. [`supplement/supplement.md`](supplement/supplement.md)
-13. [`evidence/`](evidence/)
+13. [`submission/title-page.md`](submission/title-page.md)
+14. [`submission/highlights.md`](submission/highlights.md)
+15. [`submission/cover-letter.md`](submission/cover-letter.md)
+16. [`submission/submission-checklist.md`](submission/submission-checklist.md)
+17. [`evidence/`](evidence/)
 
 ## Rule
 

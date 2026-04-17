@@ -23,6 +23,9 @@ For similar fleet-transition studies, the broader lesson is methodological:
 adoption and conditional performance may need to be modeled separately rather
 than treated as one average process.
 
+**Keywords:** waste incineration; waste-to-energy; Japan; energy recovery;
+facility panel; transition
+
 ## 1. Introduction
 
 Japan operates one of the world's most incineration-dependent municipal waste
@@ -351,6 +354,42 @@ analytical separation may be more informative than another fleet average.
 
 Supplementary material is available in
 [paper/supplement/supplement.md](../supplement/supplement.md).
+
+## Acknowledgements
+
+The author thanks Prof. Han Ji for supervision and critical feedback during the
+development of the underlying thesis project from which this paper is derived.
+
+## Funding
+
+This research did not receive any specific grant from funding agencies in the
+public, commercial, or not-for-profit sectors.
+
+## CRediT Authorship Contribution Statement
+
+Pann Phetra: Conceptualization, Data curation, Formal analysis, Investigation,
+Methodology, Visualization, Writing - original draft, Writing - review &
+editing.
+
+## Declaration of Competing Interest
+
+The author declares no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in this
+paper.
+
+## Data Availability
+
+The facility-level source data are derived from the Ministry of the Environment
+Japan General Waste Treatment Survey. Processed study outputs, manuscript
+figures, and the associated analysis workspace are organized in the linked
+research repository and can be provided by the author on reasonable request.
+
+## Generative AI And AI-Assisted Technologies Statement
+
+During the preparation of this manuscript, the author used OpenAI Codex and
+Anthropic Claude to support drafting, language revision, and organizational
+planning. After using these tools, the author reviewed and edited the content as
+needed and takes full responsibility for the content of the manuscript.
 
 ## References
 
