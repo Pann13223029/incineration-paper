@@ -1,7 +1,7 @@
 # Highlights
 
-- Japan's incineration transition splits into adoption and performance margins
-- Entry into generation is concentrated among younger, larger facilities
+- Japan's incineration transition differs across adoption and performance margins
+- Generation entry is concentrated in younger, larger facilities
 - Generator efficiency declines with age and rises with scale and utilization
-- Between-facility heterogeneity dominates large within-facility reversals
-- Adoption and conditional performance should be modeled separately
+- Most efficiency variation is between facilities, not within facilities
+- Fleet transition is clearer when adoption and performance are modeled separately

@@ -28,7 +28,7 @@ Official source used for this checklist:
 ## Journal-Fit Checks
 
 - abstract at or below 250 words:
-  - current draft is about 229 words
+  - current draft is about 219 words
 - keywords present:
   - current manuscript has 6 keywords
 - numbered main sections present:
@@ -38,7 +38,7 @@ Official source used for this checklist:
 - combined main-text figure/table count within 8:
   - current count is 6
 - full-length article word count within 6,500 words:
-  - current main text is about 3,256 words before references
+  - current main text is about 3,249 words before references
 
 ## Still Required Before Real Submission
 
@@ -50,7 +50,8 @@ Official source used for this checklist:
 
 ## Nice-To-Have Before Submission
 
-- one final `Waste Management`-specific editorial pass
+- `Waste Management`-specific editorial pass completed on current draft;
+  repeat only after substantive manuscript changes
 - a cleaner caption/figure numbering pass after conversion
 - one or two appendix tables copied directly into the supplement if reviewers
   are likely to ask for them early

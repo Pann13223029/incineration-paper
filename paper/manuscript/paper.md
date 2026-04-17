@@ -19,7 +19,7 @@ segment, efficiency is lower at older plants and higher at larger, more fully
 utilized ones, and the within-to-total variance ratio of log-efficiency is
 about 0.15. The evidence is most consistent with selective modernization at the
 weak end of the fleet and bounded responsiveness within the generating segment.
-For similar fleet-transition studies, the broader lesson is methodological:
+For municipal fleet-transition studies, the broader lesson is methodological:
 adoption and conditional performance may need to be modeled separately rather
 than treated as one average process.
 
@@ -39,8 +39,8 @@ That pattern is easy to flatten into one average fleet story. But the relevant
 questions are not the same. One is extensive: which facilities record observed
 transition into power generation at all? The other is intensive: among plants
 that already generate, which facilities achieve high energy recovery efficiency?
-Treating the fleet as a single class obscures the difference between entering
-generation and performing within generation.
+A single fleet-average view obscures the difference between entering generation
+and performing within generation.
 
 This paper separates transition into generation from conditional performance
 within the generating segment in a national facility-level panel. Its main
@@ -80,7 +80,7 @@ coded at-risk frame to model observed entry into generation, while the
 efficiency layer uses the canonical generator frame to model conditional
 performance once generation already exists. The point is not to stack two
 separate studies in one article, but to show that a one-average-fleet view
-would otherwise mix entry and performance into the same modernization story.
+would otherwise force entry and performance into the same modernization story.
 
 ## 2. Literature Positioning
 
@@ -293,10 +293,11 @@ Read together, the two margins change the story the fleet appears to tell. The
 adoption results show that entry into generation is already selective before
 conditional efficiency is considered, while the efficiency results show that
 large performance gaps inside the generating segment are not easily erased
-through within-facility movement alone. A single fleet-average model would blur
-those margins into one modernization narrative; the two-part design instead
-shows selective modernization on the way into generation and bounded
-responsiveness once generation already exists.
+through within-facility movement alone. A single fleet-average model would ask
+one modernization narrative to explain both who enters generation and how
+mature generators perform. The two-part design instead shows selective
+modernization on the way into generation and bounded responsiveness once
+generation already exists.
 
 ## 5. Discussion
 
@@ -344,16 +345,14 @@ Within the canonical generator frame, efficiency is bounded by age, scale, and
 utilization, with cross-facility heterogeneity dominating large within-facility
 reversals.
 
-The paper's main contribution is to show that those are distinct but linked
+The paper's main contribution is to show that these are distinct but linked
 questions and that treating them as one average fleet process obscures both.
-That does not prove one unique modernization pathway or one optimal intervention
-set. It does show, however, that the weakest segment of the fleet looks more
-like a capital-renewal problem, while the generating segment looks more like a
-bounded-performance problem. For similar fleet-transition studies, that
-analytical separation may be more informative than another fleet average.
-
-Supplementary material is available in
-[paper/supplement/supplement.md](../supplement/supplement.md).
+The evidence does not identify one unique modernization pathway or one optimal
+intervention ranking. It does indicate that the weakest segment of the fleet
+looks more like a capital-renewal problem, whereas the generating segment looks
+more like a bounded-performance problem. For other municipal fleet-transition
+studies, that analytical separation may be more informative than another fleet
+average.
 
 ## Acknowledgements
 
@@ -381,8 +380,8 @@ paper.
 
 The facility-level source data are derived from the Ministry of the Environment
 Japan General Waste Treatment Survey. Processed study outputs, manuscript
-figures, and the associated analysis workspace are organized in the linked
-research repository and can be provided by the author on reasonable request.
+figures, and the associated reproducible analysis workspace can be provided by
+the author on reasonable request.
 
 ## Generative AI And AI-Assisted Technologies Statement
 
