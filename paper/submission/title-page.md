@@ -21,7 +21,7 @@ Beppu, Oita, Japan
 ## Corresponding Author
 
 **Pann Phetra**  
-Email: `[insert corresponding-author email]`
+Email: `pann.phetra@gmail.com`
 
 ## Keywords
 
@@ -37,7 +37,7 @@ transition
 
 ## Notes
 
-- The corresponding-author email should be filled before submission.
+- The APU email `ph23p2dl@apu.ac.jp` can still be used as a secondary contact if needed in the submission system.
 - If the submission keeps AI-assisted drafting in the workflow, use
   [ai-disclosure-template.md](ai-disclosure-template.md) to finalize the journal
   disclosure statement.
