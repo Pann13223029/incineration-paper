@@ -23,6 +23,8 @@ Reason:
 - title page, highlights, and cover letter: present
 - export workflow: working via `npm run paper:export`
 - LaTeX reading-PDF workflow: working via `npm run paper:build:latex`
+- tracked share copy for cross-device reading:
+  - `paper/share/waste-management-manuscript-latex.pdf`
 
 ## What This Baseline Is Good For
 

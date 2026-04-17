@@ -62,3 +62,8 @@ npm run paper:build:latex
 This writes a local-only manuscript PDF at:
 
 - `paper/submission/waste-management-manuscript-latex.pdf`
+
+For opening the current paper from another machine without rebuilding it, use
+the tracked share copy:
+
+- `paper/share/waste-management-manuscript-latex.pdf`
