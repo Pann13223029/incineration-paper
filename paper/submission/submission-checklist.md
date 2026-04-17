@@ -38,7 +38,7 @@ Official source used for this checklist:
 - combined main-text figure/table count within 8:
   - current count is 6
 - full-length article word count within 6,500 words:
-  - current main text is about 3,249 words before references
+  - current main text is about 3,323 words before references
 
 ## Still Required Before Real Submission
 

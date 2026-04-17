@@ -31,7 +31,7 @@ transition
 ## Current Draft Metrics
 
 - abstract word count: approximately 219 words
-- main text before references: approximately 3,249 words
+- main text before references: approximately 3,323 words
 - main-text figures: 3
 - main-text tables: 3
 

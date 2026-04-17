@@ -170,8 +170,7 @@ paper therefore aims for disciplined inference rather than maximal causal reach.
 All reported effects should be read as conditional associations within the
 specified samples, not as estimates of structural causality or policy effects.
 
-Table 1 summarizes the four analytical frames that matter for the paper's
-argument.
+**Table 1. Analytical frames used in the integrated paper design**
 
 | Analytical frame | Observations | Facilities | Events | Role in paper |
 |:--|--:|--:|--:|:--|
@@ -179,6 +178,9 @@ argument.
 | Adoption risk set | 13,770 | 2,035 | 141 | Facilities first observed without power generation |
 | Lagged adoption model frame | 11,717 | 1,915 | 140 | Main hazard model with lagged age and capacity predictors |
 | Canonical generator frame | 5,683 | 1,016 | - | Operating generators used for conditional efficiency models |
+
+*Note: the adoption and generator frames are linked but not interchangeable; each
+sample is defined to answer a different margin of the transition problem.*
 
 ## 4. Results
 
@@ -218,7 +220,7 @@ rather than as a coequal source of originality.
 
 ![Figure 2. Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.](../figures/figure2_selective_transition.svg)
 
-Table 2 reports the main hazard specification only.
+**Table 2. Main lagged hazard results for observed transition into generation**
 
 | Variable | AME (pp) | SE (pp) |
 |:--|--:|--:|
@@ -233,6 +235,10 @@ Table 2 reports the main hazard specification only.
 | Facilities | 1,915 |
 | First-adoption events | 140 |
 | Pseudo-R-squared | 0.1842 |
+
+*Note: entries are average marginal effects in percentage points from the main
+lagged logit hazard with year and prefecture fixed effects and facility-clustered
+standard errors.*
 
 ### 4.2 Performance within generation is bounded and strongly structured
 
@@ -270,7 +276,7 @@ vintage and scale gaps once plants are mature. Conditional performance is
 therefore a bounded-performance problem rather than a simple continuation of the
 entry problem.
 
-Table 3 keeps the generator results to four core specifications.
+**Table 3. Core conditional-efficiency specifications in the canonical generator frame**
 
 | Variable | Model 1 Pooled OLS | Model 2 Year FE | Model 3 RE | Model 4 Year FE + RE |
 |:--|--:|--:|--:|--:|
@@ -287,6 +293,10 @@ Table 3 keeps the generator results to four core specifications.
 | Observations | 5,683 | 5,683 | 5,683 | 5,683 |
 | Facilities | 1,016 | 1,016 | 1,016 | 1,016 |
 | R-squared | 0.2470 | 0.3721 | 0.1647 | 0.3076 |
+
+*Note: standard errors are in parentheses. `***` p < 0.01. Coefficients are
+reported as structured conditional associations rather than as strict structural
+parameters.*
 
 ### 4.3 Why the two results belong together
 
