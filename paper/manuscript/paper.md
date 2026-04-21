@@ -79,15 +79,6 @@ Section 5 interprets the combined finding, explains what the data still cannot
 identify, and states a short set of evidence-consistent implications. Section 6
 concludes.
 
-![Figure 1. Two-part empirical architecture linking the adoption frame, generator frame, and the paper's synthesis claim.](../figures/figure1_two_part_framework.png)
-
-Figure 1 makes the paper's core move explicit. The adoption layer uses the
-coded at-risk frame to model observed entry into generation, while the
-efficiency layer uses the canonical generator frame to model conditional
-performance once generation already exists. The point is not to stack two
-separate studies in one article, but to show that a one-average-fleet view
-would otherwise force entry and performance into the same modernization story.
-
 ## 2. Literature Positioning
 
 This paper speaks to three literatures: waste-to-energy systems, facility-level
@@ -190,17 +181,17 @@ all fixed-effects concerns; instead, it uses that variance structure to
 motivate why a cross-facility descriptive model remains substantively useful
 for the question at hand.
 
-**Table 1. Analytical frames used in the integrated paper design**
+**Table 1. Linked analytical framework**
 
-| Analytical frame | Observations | Facilities | Events | Role in paper |
-|:--|--:|--:|--:|:--|
-| Coded full-fleet frame | 19,827 | 2,948 | - | Starting point after facility identifiers are resolved |
-| Adoption risk set | 13,770 | 2,035 | 141 | Facilities first observed without power generation |
-| Lagged adoption model frame | 11,717 | 1,915 | 140 | Main hazard model with lagged age and capacity predictors |
-| Canonical generator frame | 5,683 | 1,016 | - | Operating generators used for conditional efficiency models |
+| Margin | Linked sample | Empirical question | Paper role |
+|:--|:--|:--|:--|
+| Adoption margin | Coded at-risk frame: 13,770 facility-years, 2,035 facilities, 141 observed first-adoption events | Which facilities record observed transition into generation? | Shows whether entry into generation is selective rather than diffuse |
+| Efficiency margin | Canonical generator frame: 5,683 observations across 1,016 operating generators | How does performance vary once generation already exists? | Shows whether mature generator performance remains bounded |
+| Synthesis | Two linked but non-identical analytical frames | Would one average-fleet view misstate the modernization bottleneck? | Shows why entry and mature performance should not be read as one average process |
 
-*Note: the adoption and generator frames are linked but not interchangeable; each
-sample is defined to answer a different margin of the transition problem.*
+*Note: the adoption margin is estimated with a lagged discrete-time hazard. The
+efficiency margin is estimated with descriptive pooled, year-FE, and RE panel
+specifications.*
 
 ## 4. Results
 
@@ -238,7 +229,7 @@ uniquely identify replacement, major refurbishment, or new build as the single
 pathway. In the main text, the audit therefore functions as a credibility guard
 rather than as a coequal source of originality.
 
-![Figure 2. Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.](../figures/figure2_selective_transition.png)
+![Figure 2. Observed adoption event rates by age band and capacity quartile in the coded at-risk frame.](../figures/figure2_selective_transition.png)
 
 **Table 2. Main lagged hazard results for observed transition into generation**
 

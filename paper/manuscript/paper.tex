@@ -61,14 +61,6 @@ The gap addressed here is therefore narrower than a generic claim that Japan has
 
 The rest of the paper proceeds as follows. Section 2 positions the paper against the literature most relevant to the analytical split. Section 3 introduces the two linked analytical frames and the main estimation choices. Section 4 reports the adoption and efficiency results in sequence, then ties them together. Section 5 interprets the combined finding, explains what the data still cannot identify, and states a short set of evidence-consistent implications. Section 6 concludes.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{figure1_two_part_framework.pdf}
-\caption{Two-part empirical architecture linking the adoption frame, generator frame, and the paper's synthesis claim.}
-\end{figure}
-
-Figure 1 makes the paper's core move explicit. The adoption layer uses the coded at-risk frame to model observed entry into generation, while the efficiency layer uses the canonical generator frame to model conditional performance once generation already exists. The point is not to stack two separate studies in one article, but to show that a one-average-fleet view would otherwise force entry and performance into the same modernization story.
-
 \section{Literature Positioning}
 
 This paper speaks to three literatures: waste-to-energy systems, facility-level efficiency analysis, and infrastructure lock-in. The point of the review is not to survey them exhaustively, but to show why the present question requires an explicit split between adoption into generation and conditional performance within generation.
@@ -95,21 +87,20 @@ The main identification limits are explicit. In the adoption layer, the paper mo
 
 \begin{table}[t]
 \centering
-\caption{Analytical frames used in the integrated paper design}
+\caption{Linked analytical framework}
 \small
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\textwidth}{L{2.8cm} C{2.35cm} C{1.75cm} C{1.15cm} X}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{L{1.95cm} L{4.0cm} L{3.45cm} X}
 \toprule
-Analytical frame & Observations & Facilities & Events & Role in paper \\
+Margin & Linked sample & Empirical question & Paper role \\
 \midrule
-Coded full-fleet frame & 19,827 & 2,948 & -- & Starting point after facility identifiers are resolved \\
-Adoption risk set & 13,770 & 2,035 & 141 & Facilities first observed without power generation \\
-Lagged adoption model frame & 11,717 & 1,915 & 140 & Main hazard model with lagged age and capacity predictors \\
-Canonical generator frame & 5,683 & 1,016 & -- & Operating generators used for conditional efficiency models \\
+Adoption margin & Coded at-risk frame: 13,770 facility-years, 2,035 facilities, 141 observed first-adoption events & Which facilities record observed transition into generation? & Shows whether entry into generation is selective rather than diffuse \\
+Efficiency margin & Canonical generator frame: 5,683 observations across 1,016 operating generators & How does performance vary once generation already exists? & Shows whether mature generator performance remains bounded \\
+Synthesis & Two linked but non-identical analytical frames & Would one average-fleet view misstate the modernization bottleneck? & Shows why entry and mature performance should not be read as one average process \\
 \bottomrule
 \end{tabularx}
 \normalsize
-\caption*{\footnotesize Note: the adoption and generator frames are linked but not interchangeable; each sample is defined to answer a different margin of the transition problem.}
+\caption*{\footnotesize Note: the adoption margin is estimated with a lagged discrete-time hazard. The efficiency margin is estimated with descriptive pooled, year-FE, and RE panel specifications.}
 \end{table}
 
 \section{Results}
@@ -126,8 +117,8 @@ The pathway audit supports that interpretation without turning it into a stronge
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.985\textwidth]{figure2_selective_transition.pdf}
-\caption{Adoption event rates by age band and capacity quartile, paired with the main hazard-model effects.}
+\includegraphics[width=0.90\textwidth]{figure2_selective_transition.pdf}
+\caption{Observed adoption event rates by age band and capacity quartile in the coded at-risk frame.}
 \end{figure}
 
 \begin{table}[t]
