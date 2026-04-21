@@ -25,6 +25,7 @@ Reason:
 - LaTeX reading-PDF workflow: working via `npm run paper:build:latex`
 - tracked share copy for cross-device reading:
   - `paper/share/waste-management-manuscript-latex.pdf`
+- `paper:build:latex` now refreshes that tracked share copy automatically
 - latest freeze includes:
   - tightened article framing
   - stronger Japan-specific and generator-only comparator citations

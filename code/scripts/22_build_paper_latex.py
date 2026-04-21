@@ -7,6 +7,7 @@ adding a higher-quality reading PDF:
 - regenerates the paper figures from their source scripts
 - compiles `paper/manuscript/paper.tex` with Tectonic
 - copies the resulting PDF into `paper/submission/`
+- refreshes the tracked `paper/share/` copy used for GitHub and cross-device reading
 """
 
 from __future__ import annotations
@@ -24,6 +25,8 @@ LATEX_SOURCE = MANUSCRIPT_DIR / "paper.tex"
 LATEX_PDF = MANUSCRIPT_DIR / "paper.pdf"
 SUBMISSION_DIR = REPO_ROOT / "paper" / "submission"
 OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript-latex.pdf"
+SHARE_DIR = REPO_ROOT / "paper" / "share"
+SHARE_PDF = SHARE_DIR / "waste-management-manuscript-latex.pdf"
 FIGURE1_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure1_two_part_framework.py"
 FIGURE2_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure2_selective_transition.py"
 FIGURE3_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure3_efficiency_structure.py"
@@ -68,15 +71,18 @@ def main() -> int:
         raise SystemExit(f"LaTeX manuscript not found: {LATEX_SOURCE}")
 
     SUBMISSION_DIR.mkdir(parents=True, exist_ok=True)
+    SHARE_DIR.mkdir(parents=True, exist_ok=True)
     build_figures()
 
     tectonic = tectonic_binary()
     compile_latex(tectonic)
     shutil.copy2(LATEX_PDF, OUT_PDF)
+    shutil.copy2(LATEX_PDF, SHARE_PDF)
 
     print(f"LaTeX manuscript source: {LATEX_SOURCE}")
     print("Rendered figure assets: paper/figures/")
     print(f"LaTeX manuscript PDF: {OUT_PDF}")
+    print(f"Tracked share PDF: {SHARE_PDF}")
     return 0
 
 

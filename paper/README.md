@@ -59,9 +59,10 @@ Build a cleaner LaTeX reading PDF with:
 npm run paper:build:latex
 ```
 
-This writes a local-only manuscript PDF at:
+This refreshes both the local submission PDF and the tracked GitHub/share copy:
 
 - `paper/submission/waste-management-manuscript-latex.pdf`
+- `paper/share/waste-management-manuscript-latex.pdf`
 
 For opening the current paper from another machine without rebuilding it, use
 the tracked share copy:
