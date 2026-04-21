@@ -9,11 +9,15 @@ paper's framing, methods, and interpretation.
 - Astrup, T. F., Tonini, D., Turconi, R., & Boldrin, A. (2015). Life cycle assessment of thermal waste-to-energy technologies: Review and recommendations. *Waste Management*, *37*, 104-115. https://doi.org/10.1016/j.wasman.2014.06.011
 - Ministry of the Environment Japan. (2022). *General waste treatment survey: Summary report FY2021*. Environmental Management Bureau, Ministry of the Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html (accessed 18 April 2026).
 - Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste incineration plants in Japan: Current situation and future challenges. *Waste Management & Research*, *34*(4), 345-351. https://doi.org/10.1177/0734242X15617009
+- Uno, S. (2015). Trends in Waste-to-Energy Technologies for High Efficiency Power Generation. *Material Cycles and Waste Management Research*, *26*(2), 114-119. https://doi.org/10.3985/mcwmr.26.114
+- Yamada, K., Ii, R., Yamamoto, M., Ueda, H., & Sakai, S. (2023). Japan's greenhouse gas reduction scenarios toward net zero by 2050 in the material cycles and waste management sector. *Journal of Material Cycles and Waste Management*, *25*(4), 1807-1823. https://doi.org/10.1007/s10163-023-01650-7
 
 ## Comparative And Empirical Benchmarks
 
+- Chen, P.-C., Chang, C.-C., Yu, M.-M., & Hsu, S.-H. (2012). Performance measurement for incineration plants using multi-activity network data envelopment analysis: The case of Taiwan. *Journal of Environmental Management*, *93*(1), 95-103. https://doi.org/10.1016/j.jenvman.2011.08.011
 - Cui, J., Cui, Y., Li, J., Gao, X., Wei, W., Chen, Y., Ma, W., Zhu, N., Geng, Y., Zhao, Y., & Lou, Z. (2026). Efficiency hierarchy and optimization of waste incineration in China to balance disposal and energy supply. *Nature Communications*, *17*(1), Article 3069. https://doi.org/10.1038/s41467-026-69897-w
 - Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving waste to energy rate by promoting an integrated municipal solid-waste management system. *Resources, Conservation and Recycling*, *136*, 289-296. https://doi.org/10.1016/j.resconrec.2018.05.005
+- Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies of Taiwan's municipal solid waste incineration plants using data envelopment analysis. *Waste Management*, *107*, 28-35. https://doi.org/10.1016/j.wasman.2020.03.040
 
 ## Lock-In And Interpretation
 

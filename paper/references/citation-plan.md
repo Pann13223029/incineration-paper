@@ -8,14 +8,22 @@ This note keeps the article's citation layer disciplined.
 
 - Use one Japan-sector source for context:
   - `MOEJ2022`
+  - `Uno2015`
   - `TabataTsai2016`
+  - `Yamada2023` only where the decarbonization stake needs one sentence
 
 ### Literature Positioning
 
 - Waste-to-energy systems:
   - `Astrup2015`
   - `Sun2018`
+- Japan-specific comparator layer:
+  - `Uno2015`
+  - `TabataTsai2016`
+  - `Yamada2023`
 - Generator-only / performance-side comparator:
+  - `Chen2012`
+  - `Yeh2020`
   - `Cui2026`
 - Lock-in interpretation:
   - `Unruh2000`

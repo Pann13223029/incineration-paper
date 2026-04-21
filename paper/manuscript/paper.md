@@ -32,9 +32,11 @@ facility panel; transition
 Japan operates one of the world's most incineration-dependent municipal waste
 systems, yet a large share of the fleet still burns waste without generating
 electricity from the heat it produces (Ministry of the Environment Japan, 2022;
-Tabata & Tsai, 2016). The transition problem is therefore not whether
-incineration exists, but which facilities move into useful energy recovery and
-what performance looks like once they do.
+Uno, 2015; Tabata & Tsai, 2016). Sectoral planning increasingly treats that
+gap as part of the waste sector's decarbonization challenge rather than as a
+narrow engineering issue (Yamada et al., 2023). The transition problem is
+therefore not whether incineration exists, but which facilities move into
+useful energy recovery and what performance looks like once they do.
 
 That pattern is easy to flatten into one average fleet story. But the relevant
 questions are not the same. One is extensive: which facilities record observed
@@ -95,19 +97,25 @@ within generation.
 
 Work on waste-to-energy systems often documents national trajectories,
 technology choices, or lifecycle implications of thermal treatment (Astrup et
-al., 2015; Sun et al., 2018). That work is important for sectoral context, but
-it often treats the incineration fleet as a category. It can show whether
-energy recovery is growing, yet it is less well suited to distinguishing
-facilities that enter generation from those that do not.
+al., 2015; Sun et al., 2018). Japan-specific work has mostly emphasized
+technology upgrading, heat-use constraints, or sectoral decarbonization
+scenarios rather than facility-level transition modeling (Uno, 2015; Tabata &
+Tsai, 2016; Yamada et al., 2023). That literature is important for sectoral
+context, but it often treats the incineration fleet as a category. It can show
+whether energy recovery is growing, yet it is less well suited to
+distinguishing facilities that enter generation from those that do not.
 
 Facility-level efficiency studies are closer to the present paper, but they
 typically begin with plants that already generate or focus on technical
-performance conditional on operation. Recent Chinese plant-level work, for
-example, is highly informative about performance differentials within the
-generating segment (Cui et al., 2026), but it does not directly address the
-modernization margin between non-generating and generating facilities. In that
-sense, such studies answer the intensive-margin question while leaving the
-extensive-margin question open.
+performance conditional on operation. Studies in Taiwan, for example, evaluate
+the efficiency of operating incinerators by decomposing waste-treatment,
+electricity-generation, or revenue performance within existing plants (Chen et
+al., 2012; Yeh, 2020). Recent Chinese plant-level work is likewise highly
+informative about performance differentials within the generating segment (Cui
+et al., 2026), but it does not directly address the modernization margin
+between non-generating and generating facilities. In that sense, such studies
+answer the intensive-margin question while leaving the extensive-margin
+question open.
 
 The lock-in literature adds a different expectation: infrastructure performance
 may be shaped by durable design choices, inherited scale, and institutional
@@ -423,6 +431,11 @@ incineration in China to balance disposal and energy supply. *Nature
 Communications*, *17*(1), Article 3069.
 https://doi.org/10.1038/s41467-026-69897-w
 
+Chen, P.-C., Chang, C.-C., Yu, M.-M., & Hsu, S.-H. (2012). Performance
+measurement for incineration plants using multi-activity network data
+envelopment analysis: The case of Taiwan. *Journal of Environmental
+Management*, *93*(1), 95-103. https://doi.org/10.1016/j.jenvman.2011.08.011
+
 Ministry of the Environment Japan. (2022). *General waste treatment survey:
 Summary report FY2021*. Environmental Management Bureau, Ministry of the
 Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html
@@ -443,8 +456,23 @@ incineration plants in Japan: Current situation and future challenges. *Waste
 Management & Research*, *34*(4), 345-351.
 https://doi.org/10.1177/0734242X15617009
 
+Uno, S. (2015). Trends in Waste-to-Energy Technologies for High Efficiency
+Power Generation. *Material Cycles and Waste Management Research*, *26*(2),
+114-119. https://doi.org/10.3985/mcwmr.26.114
+
 Unruh, G. C. (2000). Understanding carbon lock-in. *Energy Policy*, *28*(12),
 817-830. https://doi.org/10.1016/S0301-4215(00)00070-7
 
 Wooldridge, J. M. (2010). *Econometric analysis of cross section and panel
 data* (2nd ed.). MIT Press.
+
+Yamada, K., Ii, R., Yamamoto, M., Ueda, H., & Sakai, S. (2023). Japan's
+greenhouse gas reduction scenarios toward net zero by 2050 in the material
+cycles and waste management sector. *Journal of Material Cycles and Waste
+Management*, *25*(4), 1807-1823.
+https://doi.org/10.1007/s10163-023-01650-7
+
+Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies
+of Taiwan's municipal solid waste incineration plants using data envelopment
+analysis. *Waste Management*, *107*, 28-35.
+https://doi.org/10.1016/j.wasman.2020.03.040
