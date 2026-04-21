@@ -15,13 +15,18 @@ treating modernization as one average process.
 The results show that observed entry into generation is selective rather than
 diffuse, while performance within the generating segment is strongly structured
 by age, scale, and utilization, with limited within-facility movement relative
-to cross-facility heterogeneity.
+to cross-facility heterogeneity. Read together, those margins show why a single
+fleet-average view can misstate where the modernization bottleneck actually
+lies.
 
 I believe the manuscript fits *Waste Management* because it speaks directly to
 municipal waste-system transition, plant modernization, and energy-recovery
 performance in a way that is empirically grounded and operationally relevant
-for waste-management researchers and practitioners. The manuscript is original,
-has not been published previously, and is not under consideration elsewhere.
+for waste-management researchers and practitioners. The paper is especially
+relevant for readers evaluating municipal asset planning, retrofit triage, and
+energy-recovery performance across mixed fleets rather than within generators
+alone. The manuscript is original, has not been published previously, and is
+not under consideration elsewhere.
 
 Sincerely,  
 Pann Phetra
