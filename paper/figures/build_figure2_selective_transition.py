@@ -50,17 +50,17 @@ def build() -> None:
         }
     )
 
-    fig = plt.figure(figsize=(11.2, 4.2), dpi=200, constrained_layout=True)
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 1.2])
+    fig = plt.figure(figsize=(10.6, 6.6), dpi=200, constrained_layout=True)
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.05], width_ratios=[1.0, 1.0])
 
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[0, 2])
+    ax3 = fig.add_subplot(gs[1, :])
 
     style_axes(ax1)
     age_colors = ["#3f6ea8", "#91a7c2", "#91a7c2", "#91a7c2"]
     bars1 = ax1.bar(AGE_LABELS, AGE_RATES, color=age_colors, edgecolor="#4a5763", linewidth=0.6)
-    ax1.set_title("A. Annual event rate by age band", loc="left", color="#22313f")
+    ax1.set_title("A. Event rate by age band", loc="left", color="#22313f")
     ax1.set_ylabel("Percent")
     ax1.set_ylim(0, 6.5)
     for rect, value in zip(bars1, AGE_RATES):
@@ -78,7 +78,7 @@ def build() -> None:
     style_axes(ax2)
     cap_colors = ["#c7d6e6", "#adc3dc", "#6f98c9", "#3f6ea8"]
     bars2 = ax2.bar(CAPACITY_LABELS, CAPACITY_RATES, color=cap_colors, edgecolor="#4a5763", linewidth=0.6)
-    ax2.set_title("B. Annual event rate by capacity quartile", loc="left", color="#22313f")
+    ax2.set_title("B. Event rate by capacity quartile", loc="left", color="#22313f")
     ax2.set_ylabel("Percent")
     ax2.set_ylim(0, 3.5)
     for rect, value in zip(bars2, CAPACITY_RATES):
@@ -117,10 +117,10 @@ def build() -> None:
     ax3.spines["right"].set_visible(False)
     ax3.spines["left"].set_visible(False)
     ax3.spines["bottom"].set_color("#66727f")
-    ax3.tick_params(colors="#33414d", labelsize=10.2)
-    ax3.set_xlim(-2.2, 0.8)
+    ax3.tick_params(colors="#33414d", labelsize=10.8)
+    ax3.set_xlim(-2.35, 0.8)
     for x, y in zip(EFFECTS, y_positions):
-        offset = 0.09 if x >= 0 else -0.09
+        offset = 0.11 if x >= 0 else -0.11
         ha = "left" if x >= 0 else "right"
         ax3.text(
             x + offset,
@@ -128,7 +128,7 @@ def build() -> None:
             f"{x:+.2f}",
             va="center",
             ha=ha,
-            fontsize=10,
+            fontsize=10.5,
             fontweight="bold",
             color="#22313f",
         )

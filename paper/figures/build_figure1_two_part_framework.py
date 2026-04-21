@@ -43,16 +43,16 @@ def add_box(
     ax.add_patch(box)
     ax.text(
         x + 0.025,
-        y + h - 0.06,
+        y + h - 0.05,
         title,
         ha="left",
         va="top",
-        fontsize=17.5,
+        fontsize=15.6,
         fontweight="bold",
         family="DejaVu Sans",
         color=title_color,
     )
-    line_y = y + h - 0.12
+    line_y = y + h - 0.11
     for line in body_lines:
         ax.text(
             x + 0.025,
@@ -60,11 +60,12 @@ def add_box(
             line,
             ha="left",
             va="top",
-            fontsize=14.2,
+            fontsize=12.2,
             family="DejaVu Sans",
             color="#32414d",
+            linespacing=1.35,
         )
-        line_y -= 0.056
+        line_y -= 0.058 * (line.count("\n") + 1)
 
 
 def add_connector(ax, start: tuple[float, float], end: tuple[float, float]) -> None:
@@ -73,12 +74,22 @@ def add_connector(ax, start: tuple[float, float], end: tuple[float, float]) -> N
             start,
             end,
             arrowstyle="-|>",
-            mutation_scale=12,
+            mutation_scale=11,
             linewidth=1.35,
             color="#6d7d8d",
             shrinkA=4,
             shrinkB=4,
         )
+    )
+
+
+def add_line(ax, start: tuple[float, float], end: tuple[float, float]) -> None:
+    ax.plot(
+        [start[0], end[0]],
+        [start[1], end[1]],
+        color="#6d7d8d",
+        linewidth=1.35,
+        solid_capstyle="round",
     )
 
 
@@ -90,7 +101,7 @@ def build() -> None:
         }
     )
 
-    fig = plt.figure(figsize=(11.0, 5.4), dpi=200)
+    fig = plt.figure(figsize=(11.2, 6.8), dpi=200)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
@@ -98,10 +109,10 @@ def build() -> None:
 
     add_box(
         ax,
-        0.245,
-        0.74,
-        0.51,
-        0.12,
+        0.22,
+        0.78,
+        0.56,
+        0.18,
         "Full facility panel",
         [
             "MOE General Waste Treatment Survey, FY2005-FY2024",
@@ -114,13 +125,13 @@ def build() -> None:
 
     add_box(
         ax,
-        0.08,
-        0.36,
-        0.37,
-        0.27,
+        0.06,
+        0.40,
+        0.39,
+        0.32,
         "A. Adoption frame",
         [
-            "At-risk facilities first seen without generation",
+            "At-risk facilities first seen\nwithout generation",
             "13,770 facility-years | 2,035 facilities | 141 events",
             "Signal: selective modernization",
         ],
@@ -130,13 +141,13 @@ def build() -> None:
 
     add_box(
         ax,
-        0.55,
-        0.36,
-        0.37,
-        0.27,
+        0.54,
+        0.40,
+        0.39,
+        0.32,
         "B. Generator frame",
         [
-            "Operating generators with positive throughput and output",
+            "Operating generators with positive\nthroughput and output",
             "5,683 observations | 1,016 facilities",
             "Signal: bounded responsiveness",
         ],
@@ -146,23 +157,30 @@ def build() -> None:
 
     add_box(
         ax,
-        0.19,
-        0.11,
-        0.62,
-        0.12,
+        0.17,
+        0.05,
+        0.64,
+        0.20,
         "Synthesis",
         [
-            "Entry into generation and performance within generation are different estimands.",
+            "Entry into generation and performance within generation\nare different estimands.",
         ],
         edge="#495767",
         face="#f8fafc",
         title_color="#243443",
     )
 
-    add_connector(ax, (0.50, 0.74), (0.265, 0.61))
-    add_connector(ax, (0.50, 0.74), (0.735, 0.61))
-    add_connector(ax, (0.265, 0.36), (0.42, 0.23))
-    add_connector(ax, (0.735, 0.36), (0.58, 0.23))
+    # Clean tree-style split above the middle row.
+    add_line(ax, (0.50, 0.78), (0.50, 0.74))
+    add_line(ax, (0.26, 0.74), (0.74, 0.74))
+    add_connector(ax, (0.26, 0.74), (0.26, 0.71))
+    add_connector(ax, (0.74, 0.74), (0.74, 0.71))
+
+    # Clean join into the synthesis box.
+    add_line(ax, (0.26, 0.39), (0.26, 0.28))
+    add_line(ax, (0.74, 0.39), (0.74, 0.28))
+    add_line(ax, (0.26, 0.28), (0.74, 0.28))
+    add_connector(ax, (0.50, 0.28), (0.50, 0.25))
 
     fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight")
     fig.savefig(PDF_OUT, bbox_inches="tight")
