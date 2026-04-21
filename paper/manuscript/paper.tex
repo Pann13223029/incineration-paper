@@ -10,6 +10,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{tabularx}
+\usepackage{abstract}
 \usepackage{caption}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xurl}
@@ -24,6 +25,9 @@
 \setlength{\textfloatsep}{14pt plus 2pt minus 3pt}
 \setlength{\floatsep}{12pt plus 2pt minus 2pt}
 \setlength{\intextsep}{12pt plus 2pt minus 2pt}
+\setlength{\absleftindent}{1.2em}
+\setlength{\absrightindent}{1.2em}
+\setlength{\absparsep}{0.5em}
 \captionsetup{font=small, labelfont=bf, justification=raggedright, singlelinecheck=false, skip=8pt}
 \titlespacing*{\section}{0pt}{1.35\baselineskip}{0.55\baselineskip}
 \titlespacing*{\subsection}{0pt}{1.1\baselineskip}{0.45\baselineskip}
@@ -36,18 +40,24 @@
 
 \begin{center}
 {\LARGE\bfseries Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study\par}
-\vspace{0.9em}
+\vspace{1.05em}
 {\large Pann Phetra\par}
+\vspace{0.2em}
+\small
 College of Sustainability and Tourism, Ritsumeikan Asia Pacific University, 1-1 Jumonjibaru, Beppu, Oita 874-8577, Japan\par
-\vspace{0.35em}
+\vspace{0.45em}
 Corresponding author: \href{mailto:ph23p2dl@apu.ac.jp}{ph23p2dl@apu.ac.jp}\par
 \end{center}
+\normalsize
+\vspace{0.45em}
 
 \begin{abstract}
 Japan relies heavily on municipal waste incineration, yet a large share of its incineration fleet still does not convert waste heat into electricity. A one-average-fleet view therefore risks conflating two different questions: who records observed transition into generation at all, and how plants perform once they already generate. Prior work often studies fleets in aggregate or studies generators only, which blurs those two estimands. This paper separates them in a national facility-level panel built from Ministry of the Environment data for FY2005--FY2024. It first models observed transition into generation among coded facilities first seen without it, then models energy recovery efficiency among operating generators. Within the coded at-risk frame, transition is selective rather than diffuse: older facilities are less likely than 0--10 year facilities to record transition in the next observed year, while larger facilities are more likely to do so. Within the canonical generator frame, efficiency is lower at older plants and higher at larger, more fully utilized ones, while between-facility heterogeneity dominates within-facility movement. Read together, the two margins point to selective entry and bounded performance rather than one average modernization process. These patterns are descriptive within the paper's linked samples rather than causal estimates of a single modernization mechanism. For comparable municipal fleet studies, the broader lesson is methodological: adoption and conditional performance should be modeled separately before they are interpreted together.
 \end{abstract}
 
+\vspace{0.2em}
 \noindent\textbf{Keywords:} waste incineration; waste-to-energy; Japan; energy recovery; facility panel; transition
+\vspace{0.35em}
 
 \section{Introduction}
 
@@ -232,7 +242,9 @@ During the preparation of this manuscript, the author used OpenAI Codex and Anth
 
 \section*{References}
 
-\small
+\begingroup
+\footnotesize
+\setlength{\parskip}{0.35em}
 \hangindent=1.5em \hangafter=1
 Astrup, T. F., Tonini, D., Turconi, R., \& Boldrin, A. (2015). Life cycle assessment of thermal waste-to-energy technologies: Review and recommendations. \emph{Waste Management, 37}, 104--115. \url{https://doi.org/10.1016/j.wasman.2014.06.011}
 
@@ -268,5 +280,7 @@ Yamada, K., Ii, R., Yamamoto, M., Ueda, H., \& Sakai, S. (2023). Japan's greenho
 
 \hangindent=1.5em \hangafter=1
 Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies of Taiwan's municipal solid waste incineration plants using data envelopment analysis. \emph{Waste Management, 107}, 28--35. \url{https://doi.org/10.1016/j.wasman.2020.03.040}
+
+\endgroup
 
 \end{document}
