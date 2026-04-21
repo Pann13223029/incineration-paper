@@ -14,7 +14,7 @@ Reason:
 - private GitHub repo:
   - `https://github.com/Pann13223029/incineration-paper`
 - frozen baseline tag:
-  - `wm-near-submission-20260418-9af5603`
+  - `wm-near-submission-20260421`
 - target journal: `Waste Management`
 - manuscript status: near-submission draft
 - figures in place: `3`
@@ -25,6 +25,11 @@ Reason:
 - LaTeX reading-PDF workflow: working via `npm run paper:build:latex`
 - tracked share copy for cross-device reading:
   - `paper/share/waste-management-manuscript-latex.pdf`
+- latest freeze includes:
+  - tightened article framing
+  - stronger Japan-specific and generator-only comparator citations
+  - cleaned `Table 1` typesetting in the LaTeX manuscript
+  - refreshed tracked shareable PDF
 
 ## What This Baseline Is Good For
 
