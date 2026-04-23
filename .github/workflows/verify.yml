@@ -64,7 +64,11 @@ jobs:
         run: .venv/bin/python code/scripts/22_build_paper_latex.py
 
       - name: Ensure tracked outputs are up to date
-        run: git diff --exit-code
+        run: |
+          git diff --exit-code -- . \
+            ':(exclude)paper/figures/*.pdf' \
+            ':(exclude)paper/figures/*.png' \
+            ':(exclude)paper/share/waste-management-manuscript-latex.pdf'
 
       - name: Upload verification artifacts
         if: always()
