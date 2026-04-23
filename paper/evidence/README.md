@@ -2,7 +2,7 @@
 
 This directory is a paper-facing copy of the canonical output artifacts.
 
-- source repo state: `7601d53`
+- source repo state: canonical paper-workspace outputs
 - source directory: `output`
 - target directory: `paper/evidence/current`
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import shutil
-import subprocess
 from pathlib import Path
 
 
@@ -28,19 +27,6 @@ SOURCE_FILES = [
 ]
 
 
-def git_head() -> str:
-    try:
-        result = subprocess.run(
-            ["git", "-C", str(REPO_ROOT), "rev-parse", "--short", "HEAD"],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except Exception:
-        return "unknown"
-    return result.stdout.strip() or "unknown"
-
-
 def check_sources() -> list[str]:
     missing = []
     for filename in SOURCE_FILES:
@@ -51,13 +37,12 @@ def check_sources() -> list[str]:
 
 def write_index() -> Path:
     CURRENT_DIR.mkdir(parents=True, exist_ok=True)
-    head = git_head()
     lines = [
         "# Paper Evidence Snapshot",
         "",
         "This directory is a paper-facing copy of the canonical output artifacts.",
         "",
-        f"- source repo state: `{head}`",
+        "- source repo state: canonical paper-workspace outputs",
         f"- source directory: `{OUTPUT_DIR.relative_to(REPO_ROOT)}`",
         f"- target directory: `{CURRENT_DIR.relative_to(REPO_ROOT)}`",
         "",

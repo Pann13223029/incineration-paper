@@ -1,4 +1,4 @@
-name: Verify Thesis Repo
+name: Verify Paper Repo
 
 on:
   push:
@@ -42,32 +42,43 @@ jobs:
       - name: Install Python dependencies
         run: .venv/bin/pip install -r requirements.txt
 
-      - name: Install slide tooling
+      - name: Install Node dependencies
         run: npm ci
 
-      - name: Rebuild analysis and verify thesis-facing claims
-        run: .venv/bin/python code/scripts/07_rebuild_analysis.py
+      - name: Rebuild canonical analysis outputs
+        run: |
+          .venv/bin/python code/scripts/02_parse_facility_panel.py
+          .venv/bin/python code/scripts/03_grid_emission_factors.py
+          .venv/bin/python code/scripts/04_eda_facility.py
+          .venv/bin/python code/scripts/05a_power_adoption.py
+          .venv/bin/python code/scripts/05_panel_regression.py
+          .venv/bin/python code/scripts/06_robustness.py
 
-      - name: Export defense deck HTML
-        run: npm run slides:export
+      - name: Refresh paper-facing evidence copies
+        run: npm run paper:sync
 
-      - name: Build frozen review packets
-        run: npm run packets:build
+      - name: Export cross-platform submission manuscript artifacts
+        run: python3 code/scripts/21_export_paper_submission.py --no-docx --no-pdf
+
+      - name: Build LaTeX manuscript PDF
+        run: npm run paper:build:latex
 
       - name: Ensure tracked outputs are up to date
         run: git diff --exit-code
 
       - name: Upload verification artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
-          name: thesis-verify-artifacts
+          name: paper-verify-artifacts
           path: |
-            output/claim_verification.md
             output/adoption_results.md
             output/regression_results.md
             output/robustness_results.md
-            thesis/thesis.pdf
-            research/slides/dist/defense-deck.html
-            research/packets/dist/supervisor-packet.zip
-            research/packets/dist/submission-packet.zip
+            output/claim_evidence_map.md
+            output/claim_verification.md
+            paper/evidence/current/
+            paper/submission/waste-management-manuscript.md
+            paper/submission/waste-management-manuscript.html
+            paper/submission/waste-management-manuscript-latex.pdf
+            paper/share/waste-management-manuscript-latex.pdf
