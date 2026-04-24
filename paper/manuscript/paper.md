@@ -210,7 +210,9 @@ set of official facility codes appears more than once within the same fiscal
 year, so a composite-ID sensitivity appends facility names to affected duplicate
 codes. Second, heating value is treated as a noisy control and is checked under
 plausible-value restrictions. Neither sensitivity changes the main sign pattern
-or the substantive interpretation.
+or the substantive interpretation. These checks are reported as disclosure and
+robustness evidence, not as an attempt to remove all administrative uncertainty
+from the source panel.
 
 The two layers belong in one paper because they answer sequential parts of the
 same modernization problem. The adoption layer identifies which facilities
@@ -452,7 +454,10 @@ including reporting compression, unobserved retrofit histories, unmeasured
 governance differences, and institutional constraints that limit operational
 responses. The defended claim is therefore narrower: the data support a
 selective modernization process and a bounded performance envelope, not a
-uniquely identified mechanism or a full causal hierarchy.
+uniquely identified mechanism or a full causal hierarchy. The supplement is
+used to make those limits auditable: it records the pathway rules, identifier
+sensitivity, heating-value restrictions, and estimator variants rather than
+leaving those judgments implicit.
 
 For the weakest segment, especially older non-generators and small plants, the
 evidence points more toward capital-renewal planning than diffuse late-life

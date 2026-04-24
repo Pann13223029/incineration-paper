@@ -14,6 +14,25 @@ FY2005-FY2024. The full panel contains 23,599 facility-year rows. Within that,
 the coded full-fleet frame contains 19,827 observations across 2,948
 facilities.
 
+### S2.0 Reviewer-facing scope map
+
+This paper uses the administrative panel as a diagnostic fleet-decomposition
+dataset. The design is intentionally conservative about what the data can and
+cannot identify.
+
+| Potential reviewer concern | Defensive response in this paper |
+|:--|:--|
+| Observed adoption may not equal a directly observed physical retrofit. | The paper uses `observed transition into generation` language and treats the pathway audit as descriptive support, not mechanism proof. |
+| Left-censored generators can distort adoption estimates. | Facilities already generating in their first observed year are excluded from the adoption risk set. |
+| Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and efficiency signs remain stable. |
+| Heating value is noisy in administrative files. | Heating value is treated as a control, not an engineering outcome; plausible-value restrictions leave the core coefficients stable. |
+| The generator frame excludes uncoded operating rows. | The main text defines the efficiency sample as the canonical identifiable generator frame, not as a census of all generation activity. |
+| Age effects could be confounded with durable facility characteristics. | The paper interprets coefficients as structured conditional associations and uses the variance structure to justify descriptive cross-facility comparison, not causal vintage isolation. |
+
+The result is a narrower but more defensible claim: the linked samples show
+selective observed entry into generation and bounded conditional performance
+among identifiable generators.
+
 ### S2.1 Adoption frame
 
 - Left-censored facilities already generating in their first observed year: 913
@@ -48,6 +67,14 @@ left-censored for the adoption question. The lagged hazard specification then
 requires prior-year age band and prior-year design capacity, which removes the
 first observed at-risk year for each facility and a small number of additional
 rows with missing lagged predictors.
+
+The adoption estimand is therefore not "which facilities ever modernized" in a
+complete historical sense. It is the probability that a coded facility first
+records power generation in the next observed fiscal year, conditional on still
+being observed at risk in the panel and conditional on prior-year age and
+capacity. This distinction protects the paper from overclaiming about
+unobserved pre-panel investments or physical retrofit histories that the
+administrative file does not directly record.
 
 ## S4. Pathway-Audit Rule Set
 
@@ -97,6 +124,10 @@ Two robustness variants preserve the main sign pattern:
 In both variants, older facilities remain less likely to record observed
 transition and larger facilities remain more likely to do so.
 
+The robustness checks are interpreted as sign-pattern checks. They are not used
+to claim that the adoption estimates are policy effects or that the event path
+is uniquely identified as replacement, refurbishment, or new construction.
+
 ### S5.2 Efficiency estimator note
 
 The main efficiency results are presented through four compact specifications:
@@ -110,6 +141,12 @@ The paper keeps these models because the intensive-margin question is largely
 about structured cross-facility differences inside the generating segment. The
 coefficients are therefore interpreted as structured conditional associations,
 not as strict structural parameters.
+
+This choice is deliberate. A strict fixed-effects-only reading would absorb much
+of the durable facility heterogeneity that is substantively central to the
+paper's question. The paper therefore reports models that preserve
+cross-facility structure while explicitly avoiding causal language about vintage
+or policy effects.
 
 ### S5.3 Identifier and heating-value sensitivity
 
@@ -151,6 +188,30 @@ MJ/kg. Restricting the frame to positive values at or below 30 MJ/kg, or to the
 stricter 3-25 MJ/kg interval, leaves the age, capacity, and utilization
 coefficients substantively unchanged. The detailed generated report is
 available at `paper/evidence/current/data_quality_sensitivity.md`.
+
+The implication for review is limited but important: the main efficiency
+patterns do not rely on treating every heating-value record as a clean
+engineering measurement.
+
+## S5.4 What the checks do not prove
+
+The sensitivity checks reduce several obvious data-quality risks, but they do
+not convert the study into a causal or engineering-mechanism design. In
+particular, they do not prove:
+
+- that every observed adoption event is a physical retrofit rather than a
+  rebuild, replacement, coding update, or administrative timing issue
+- that official facility identifiers perfectly track all real-world plant
+  histories
+- that heating value is measured with engineering-grade precision
+- that age coefficients isolate vintage effects from all durable facility,
+  municipal, or technology characteristics
+- that the generator-frame estimates generalize to uncoded operating-generator
+  rows excluded from the canonical panel comparison
+
+These limits are why the main paper uses calibrated phrases such as
+`observed transition`, `canonical generator frame`, `structured conditional
+association`, and `descriptive pathway evidence`.
 
 ## S6. Appendix Tables
 
