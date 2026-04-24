@@ -64,7 +64,10 @@ facilities. Within the canonical regression frame, efficiency is strongly
 structured by age, scale, and utilization, while within-facility movement
 remains limited relative to between-facility heterogeneity. The same fleet can
 therefore appear merely slow in aggregate while containing one selective entry
-problem and one bounded-performance problem.
+problem and one bounded-performance problem. For municipal planning, that
+distinction changes the first diagnostic step: non-generators and mature
+generators should be evaluated as different asset-management questions before
+they are summarized as one fleet.
 
 The gap addressed here is narrower than a generic claim that Japan has been
 understudied. Waste-to-energy research can describe fleet trajectories, and
@@ -161,9 +164,11 @@ The analysis uses the Ministry of the Environment's General Waste Treatment
 Survey for FY2005-FY2024 (Ministry of the Environment Japan, 2022). From 23,599
 facility-year rows, the coded frame retains 19,827 observations across 2,948
 identifiable facilities; the analysis then separates two linked samples because
-one sample cannot answer both parts of the transition problem. The
-survey is unusually useful for this purpose because it covers both generating
-and non-generating facilities inside the same administrative system. That makes
+one sample cannot answer both parts of the transition problem. Those restricted
+frames are not only data filters. They are the analytic structure that keeps
+observed entry into generation separate from conditional performance after
+entry. The survey is unusually useful for this purpose because it covers both
+generating and non-generating facilities inside the same administrative system. That makes
 it possible to ask a question that many sector studies cannot ask cleanly:
 which facilities record observed transition into generation at all, and how do
 facilities perform once they are already inside the generating segment?
@@ -234,7 +239,9 @@ margin looks selective while the intensive margin remains hierarchical, then the
 relevant practical conclusion is not that the fleet is uniformly lagging. It is
 that different parts of the fleet face different modernization tasks.
 
-The main identification limits are explicit. In the adoption layer, the paper
+The main identification limits are explicit. The purpose of the design is
+diagnostic fleet decomposition, not policy-effect estimation. In the adoption
+layer, the paper
 models observed transition within the coded risk set, not unrestricted fleet-
 wide modernization. In the efficiency layer, age is closely tied to time and
 within-facility movement is limited, so the defended interpretation is one of
@@ -549,9 +556,11 @@ paper.
 ## Data Availability
 
 The facility-level source data are derived from the Ministry of the Environment
-Japan General Waste Treatment Survey. Processed study outputs, manuscript
-figures, and the associated reproducible analysis workspace can be provided by
-the author on reasonable request.
+Japan General Waste Treatment Survey, which is publicly released by the Ministry
+of the Environment. The cleaned analysis outputs, figure-generation scripts,
+manuscript figures, and reproducible paper workspace can be made available by
+the author on reasonable request, subject to any redistribution limits attached
+to the source administrative files.
 
 ## Generative AI And AI-Assisted Technologies Statement
 
