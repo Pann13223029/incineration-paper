@@ -3,18 +3,20 @@
   "private": true,
   "description": "Paper-focused derivative workspace seeded from the incineration thesis repo",
   "scripts": {
-    "paper:check": "python3 code/scripts/20_sync_paper_assets.py --check",
-    "paper:sync": "python3 code/scripts/20_sync_paper_assets.py",
-    "analysis:rebuild": "python3 code/scripts/07_rebuild_analysis.py",
-    "paper:export": "python3 code/scripts/21_export_paper_submission.py",
-    "paper:build:latex": "python3 code/scripts/22_build_paper_latex.py",
-    "legacy:slides:export": "python3 code/scripts/09_export_defense_slides.py",
-    "legacy:slides:export:pdf": "python3 code/scripts/09_export_defense_slides.py --pdf",
-    "legacy:slides:bundle": "python3 code/scripts/10_package_defense_bundle.py",
-    "legacy:packets:build": "python3 code/scripts/11_package_review_packets.py",
-    "legacy:supervisor:ready": "python3 code/scripts/15_prepare_supervisor_handoff.py",
-    "legacy:checkpoint:freeze": "python3 code/scripts/12_freeze_checkpoint.py",
-    "legacy:review:round:start": "python3 code/scripts/13_start_review_round.py"
+    "paper:check": ".venv/bin/python code/scripts/20_sync_paper_assets.py --check",
+    "paper:sync": ".venv/bin/python code/scripts/20_sync_paper_assets.py",
+    "claims:verify": ".venv/bin/python code/scripts/08_verify_claims.py",
+    "analysis:rebuild": ".venv/bin/python code/scripts/07_rebuild_analysis.py",
+    "paper:export": ".venv/bin/python code/scripts/21_export_paper_submission.py",
+    "paper:export:nopdf": ".venv/bin/python code/scripts/21_export_paper_submission.py --no-pdf",
+    "paper:build:latex": ".venv/bin/python code/scripts/22_build_paper_latex.py",
+    "legacy:slides:export": ".venv/bin/python code/scripts/09_export_defense_slides.py",
+    "legacy:slides:export:pdf": ".venv/bin/python code/scripts/09_export_defense_slides.py --pdf",
+    "legacy:slides:bundle": ".venv/bin/python code/scripts/10_package_defense_bundle.py",
+    "legacy:packets:build": ".venv/bin/python code/scripts/11_package_review_packets.py",
+    "legacy:supervisor:ready": ".venv/bin/python code/scripts/15_prepare_supervisor_handoff.py",
+    "legacy:checkpoint:freeze": ".venv/bin/python code/scripts/12_freeze_checkpoint.py",
+    "legacy:review:round:start": ".venv/bin/python code/scripts/13_start_review_round.py"
   },
   "engines": {
     "node": "22.x"

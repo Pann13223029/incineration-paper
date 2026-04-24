@@ -1,76 +1,28 @@
-# From Thesis To Paper
+# Incineration Paper Workspace
 
-This repository is a **paper-focused derivative workspace** cloned from the defended thesis repo on Japan's waste-incineration fleet.
+This is a private, paper-focused derivative workspace for the Japan waste-incineration study. It preserves the empirical core from the thesis repo, but the active product here is a journal-style paper.
 
-The goal here is different from the original thesis repo:
+The paper's working claim is narrow:
 
-- keep the **empirical core** intact
-- preserve the full thesis as a **reference baseline**
-- make the **active writing target** a journal-style paper
-- separate **paper drafting** from supervisor packets, viva prep, and thesis operations
+> Japan's incineration-fleet transition is split between selective modernization on the adoption margin and bounded responsiveness on the efficiency margin.
 
-> **One-sentence aim:** turn a defense-ready bachelor's thesis into a tighter article built around one dominant claim: **selective modernization on the adoption margin and bounded responsiveness on the efficiency margin**.
+## Start Here
 
----
+Use this order if you are new to the repo:
 
-## What Is Active Here
+1. Read the active manuscript: [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
+2. Check the current status: [`paper/submission/current-status.md`](paper/submission/current-status.md).
+3. Check the claim discipline: [`paper/notes/claim-stack.md`](paper/notes/claim-stack.md).
+4. Check the evidence map: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
+5. If you need the PDF, use the tracked share copy: [`paper/share/waste-management-manuscript-latex.pdf`](paper/share/waste-management-manuscript-latex.pdf).
 
-The active paper workspace lives under [`paper/`](paper/).
+For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). For assistant-specific rules, read [`AGENTS.md`](AGENTS.md).
 
-- active manuscript draft: [`paper/manuscript/paper.md`](paper/manuscript/paper.md)
-- article claim stack: [`paper/notes/claim-stack.md`](paper/notes/claim-stack.md)
-- thesis-to-paper conversion map: [`paper/notes/thesis-to-paper-map.md`](paper/notes/thesis-to-paper-map.md)
-- target journals: [`paper/journals/target-journals.md`](paper/journals/target-journals.md)
-- supplement plan: [`paper/supplement/supplement-outline.md`](paper/supplement/supplement-outline.md)
+## Current Evidence Anchors
 
-The **canonical evidence base** still lives in:
+These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-- [`code/`](code/)
-- [`data/`](data/)
-- [`output/`](output/)
-
-The original thesis and its delivery machinery are retained as **reference material**, not the active writing target:
-
-- thesis source: [`thesis/`](thesis/)
-- legacy thesis ops and defense materials: [`research/`](research/)
-
----
-
-## The Working Logic
-
-The thesis repo answered a big question.
-This repo narrows that work into a paper pipeline.
-
-![Paper conversion flow](docs/figures/readme_paper_flow.svg)
-
-The workflow is:
-
-`thesis evidence core -> article claim -> paper manuscript -> supplement -> journal targeting`
-
-That means this repo is **not** trying to keep the whole thesis alive as the main product. It is trying to extract one strong paper from it.
-
----
-
-## What Stays Canonical
-
-Even in a paper repo, not everything becomes negotiable.
-
-## Current Empirical Snapshot
-
-The current evidence base covers 23,599 observations across 2,948 facilities.
-The adoption risk set contains 13,770 facility-years across 2,035 facilities,
-with 141 observed first-adoption events; the lagged adoption model uses 11,717
-facility-years across 1,915 facilities and 140 events. Relative to prior-year
-age 0–10, older facilities are 1.1–1.8 percentage points less likely to record
-observed transition into generation, while prior-year capacity adds +0.50
-percentage points per 100 t/day. The pathway audit classifies 82 as
-reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated
-or placeholder entries, and 1 as unresolved. The canonical generator-efficiency
-frame contains 5,683 facility-years across 1,016 facilities. Across the main
-efficiency specifications, facility-age coefficients range from −0.019 to
-−0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779.
-The within/total variance ratio is 0.1499, falling from 0.1795 in
-FY2005–FY2011 to 0.0956 in FY2012–FY2024.
+The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events. Relative to prior-year age 0-10, older facilities are 1.1–1.8 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.50 percentage points per 100 t/day. The pathway audit classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. The canonical generator-efficiency frame contains 5,683 facility-years across 1,016 facilities. Across the main efficiency specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024.
 
 | Headline | Current value |
 |:--|:--|
@@ -79,136 +31,125 @@ FY2005–FY2011 to 0.0956 in FY2012–FY2024.
 | Pathway audit of adoption events | 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved |
 | Within/total variance ratio | 0.1499 (pooled), 0.1795 (pre-Fuku), 0.0956 (post-Fuku) |
 
-Verifier-aligned current facts:
+## Repository Logic
 
-- Adoption risk set: 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events
-- Lagged adoption model: 11,717 facility-years across 1,915 facilities and 140 events
-- Pathway audit: 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved
-- Main efficiency age range: −0.019 to −0.035
-- Variance structure: 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024
+![Paper conversion flow](docs/figures/readme_paper_flow.svg)
 
-### Canonical evidence
+The repo has three layers:
 
-These remain the source of truth for current results:
+| Layer | Role | Main paths |
+|:--|:--|:--|
+| Evidence core | Source data, processing, model outputs, and claim verification | [`data/`](data/), [`code/`](code/), [`output/`](output/) |
+| Active paper layer | Manuscript, supplement, figures, submission assets, and paper-facing evidence snapshots | [`paper/`](paper/) |
+| Reference thesis layer | Defended thesis source and legacy supervision/defense materials | [`thesis/`](thesis/), [`research/`](research/) |
 
-- [`output/sample_definition.md`](output/sample_definition.md)
-- [`output/adoption_results.md`](output/adoption_results.md)
-- [`output/regression_results.md`](output/regression_results.md)
-- [`output/robustness_results.md`](output/robustness_results.md)
-- [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md)
-- [`output/claim_evidence_map.md`](output/claim_evidence_map.md)
-- [`output/claim_verification.md`](output/claim_verification.md)
+Do not make the manuscript a second source of empirical truth. Paper prose stays downstream of `output/*`.
 
-### Reference baseline
+## Canonical Files
 
-These remain the archival record of what the thesis actually defended:
+| Need | Use |
+|:--|:--|
+| Current sample counts and model facts | [`output/sample_definition.md`](output/sample_definition.md), [`output/adoption_results.md`](output/adoption_results.md), [`output/regression_results.md`](output/regression_results.md) |
+| Robustness and data-quality checks | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
+| Claim synchronization status | [`output/claim_verification.md`](output/claim_verification.md) |
+| Claim-to-evidence bridge | [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
+| Active paper manuscript | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
+| Current reading PDF | [`paper/share/waste-management-manuscript-latex.pdf`](paper/share/waste-management-manuscript-latex.pdf) |
 
-- [`thesis/thesis.tex`](thesis/thesis.tex)
-- [`research/`](research/)
+## Reproducible Setup
 
-### Active paper draft
+Expected local tools:
 
-This is where the article should now evolve:
+- Python matching [`.python-version`](.python-version)
+- Node matching [`.node-version`](.node-version)
+- Tectonic for LaTeX PDF builds
+- Google Chrome only if you intentionally use browser PDF export
 
-- [`paper/manuscript/paper.md`](paper/manuscript/paper.md)
+Recommended setup:
 
----
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+npm install
+```
 
-## Repo Layers
+The GitHub workflow uses a virtual environment plus `npm ci`. Local package scripts call `.venv/bin/python`, so create the virtual environment before running `npm run ...` commands.
 
-![Paper repo layers](docs/figures/readme_paper_layers.svg)
+## Workflow Gates
 
-The repo now has three practical layers:
+Use the lightest workflow that matches the change.
 
-1. **Evidence core**
-   Data, scripts, outputs, and verification.
+| Change type | Required action |
+|:--|:--|
+| Prose-only paper edit | Edit `paper/manuscript/paper.md`; rebuild artifacts if you need updated share files. |
+| Claim wording edit with current numbers | Run `npm run claims:verify`. |
+| Evidence or model change | Run `npm run analysis:rebuild`, then `npm run paper:sync`, then `npm run claims:verify`. |
+| Submission artifact refresh | Run `npm run paper:export:nopdf` for portable Markdown/HTML/DOCX export; run `npm run paper:build:latex` for the authoritative PDF. |
+| Before pushing | Run `npm run paper:check`, `npm run claims:verify`, and `git diff --check`. |
 
-2. **Active paper layer**
-   The manuscript, claim stack, supplement plan, and journal strategy.
-
-3. **Reference thesis layer**
-   The original thesis source and supervision/defense artifacts kept for backward traceability.
-
----
-
-## Where To Start
-
-If you want the paper project in the shortest path:
-
-1. Read [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
-2. Read [`paper/notes/claim-stack.md`](paper/notes/claim-stack.md).
-3. Read [`paper/notes/thesis-to-paper-map.md`](paper/notes/thesis-to-paper-map.md).
-4. Use the synced evidence snapshot under [`paper/evidence/`](paper/evidence/) for article drafting support.
-
-If you need the defended thesis context:
-
-- [`thesis/thesis.tex`](thesis/thesis.tex)
-- [`output/claim_evidence_map.md`](output/claim_evidence_map.md)
-
----
-
-## Paper Commands
-
-This repo now adds paper-first commands.
+## Commands
 
 ```bash
 npm run paper:check
 npm run paper:sync
+npm run claims:verify
+npm run analysis:rebuild
+npm run paper:export:nopdf
+npm run paper:build:latex
 ```
 
-What they do:
+Command meanings:
 
-- `paper:check` verifies the core output artifacts needed by the paper workspace exist
-- `paper:sync` copies the current canonical output artifacts into `paper/evidence/current/` and refreshes the evidence index
+| Command | Meaning |
+|:--|:--|
+| `paper:check` | Confirms required paper evidence artifacts exist in `output/`. |
+| `paper:sync` | Copies current canonical evidence into `paper/evidence/current/`. |
+| `claims:verify` | Checks important claims and stale-pattern guards across repo docs. |
+| `analysis:rebuild` | Rebuilds the empirical outputs and claim verification from raw/processed data. |
+| `paper:export:nopdf` | Generates portable submission Markdown, HTML, and DOCX without relying on Chrome PDF export. |
+| `paper:build:latex` | Rebuilds figures and the tracked LaTeX reading PDF. |
 
-The old thesis-support commands are still available, but are explicitly marked as legacy:
+## Paper Direction
 
-- `npm run legacy:slides:export`
-- `npm run legacy:slides:export:pdf`
-- `npm run legacy:slides:bundle`
-- `npm run legacy:packets:build`
-- `npm run legacy:supervisor:ready`
-- `npm run legacy:checkpoint:freeze`
-- `npm run legacy:review:round:start`
-
----
-
-## Recommended Paper Direction
-
-The highest-leverage single-paper direction remains:
+The best current direction remains one integrated article:
 
 **Selective modernization and bounded responsiveness in Japan's waste-incineration fleet**
 
-That implies:
+Keep the article narrow:
 
-- one dominant headline
-- one named frame
-- lighter literature review in the main text
-- compressed methods in the article body
-- a stronger supplement instead of a longer narrative
+- one dominant contribution
+- linked adoption and efficiency margins
+- calibrated mechanism language
+- compact main text
+- stronger supplement for data-quality, robustness, and pathway details
 
-This repo is structured around that path.
+Avoid scope creep:
 
----
+- do not claim unique replacement identification
+- do not turn the paper into a full policy-optimization study
+- do not generalize Japan automatically to every national waste system
+- do not treat heat recovery as measured if the panel only supports electricity cleanly
 
-## Repository Structure
+## Directory Map
 
 ```text
 incineration-paper/
 |
 |-- paper/
-|   |-- manuscript/                    # active paper draft
-|   |-- notes/                         # claim stack, conversion map, rewrite logic
+|   |-- manuscript/                    # active paper draft and LaTeX source
+|   |-- notes/                         # claim stack, paper budget, reviewer rubric
+|   |-- references/                    # citation plan and selected references
 |   |-- journals/                      # target-journal strategy
-|   |-- supplement/                    # supplement planning
-|   |-- evidence/                      # synced paper-facing snapshots of canonical outputs
-|   |-- figures/
-|   +-- tables/
+|   |-- supplement/                    # supplement text and outline
+|   |-- evidence/                      # synced paper-facing output snapshots
+|   |-- figures/                       # paper figure scripts and rendered figures
+|   |-- submission/                    # local submission package artifacts
+|   +-- share/                         # tracked cross-device reading PDF
 |
-|-- code/                              # empirical pipeline retained from thesis repo
-|-- data/                              # source and processed data
+|-- code/                              # empirical and export pipeline
+|-- data/                              # raw and processed data
 |-- output/                            # canonical generated artifacts
-|-- thesis/                            # reference thesis source
+|-- thesis/                            # defended thesis baseline
 |-- research/                          # legacy thesis review / defense / packet artifacts
 |-- docs/figures/                      # README-facing diagrams
 |
@@ -219,25 +160,9 @@ incineration-paper/
 |-- requirements.txt
 ```
 
----
+## Safety Rules
 
-## Safety Note
-
-This repo was cloned from the thesis workspace, but it is now intended to diverge.
-
-- the active Git remote has been renamed to `thesis-origin`
-- do **not** push this repo back to the thesis remote
-- if you want to publish this as its own repository later, add a new `origin`
-
----
-
-## Status
-
-This repo is ready for:
-
-- paper framing work
-- article rewriting
-- supplement planning
-- journal targeting
-
-It is **not** intended to replace the thesis repo as the source of defended truth. It is the next-stage paper lab built from that truth.
+- `origin` is the active paper repo: `https://github.com/Pann13223029/incineration-paper.git`.
+- `thesis-origin` points back to the thesis baseline and should not receive paper commits.
+- Keep source-of-truth numbers in generated `output/*` files.
+- Update `README.md`, `ARCHITECTURE.md`, and `AGENTS.md` when workflow boundaries change.

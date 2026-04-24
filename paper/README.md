@@ -1,70 +1,93 @@
 # Paper Workspace
 
-This directory is the active article layer.
+This directory is the active article layer. It contains the manuscript, supplement, figures, evidence snapshots, and submission package for the journal-style paper.
 
-Current repo state:
+## Current Role
 
-- private remote: `https://github.com/Pann13223029/incineration-paper`
-- frozen milestone tag: `wm-near-submission-20260421`
+- Active writing target: `paper/manuscript/paper.md`
+- Final reading/PDF source: `paper/manuscript/paper.tex`
+- Target journal track: `Waste Management`
+- Current share PDF: `paper/share/waste-management-manuscript-latex.pdf`
+- Evidence copies: `paper/evidence/current/`
 
-Start here:
+The paper layer narrows and reorganizes the thesis evidence. It must not become a second source of empirical truth.
 
-1. [`manuscript/paper.md`](manuscript/paper.md)
-2. [`manuscript/paper.tex`](manuscript/paper.tex)
-3. [`submission/current-status.md`](submission/current-status.md)
-4. [`notes/claim-stack.md`](notes/claim-stack.md)
-5. [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md)
-6. [`notes/paper-claim-evidence-map.md`](notes/paper-claim-evidence-map.md)
-7. [`notes/paper-budget.md`](notes/paper-budget.md)
-8. [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md)
-9. [`notes/paper-structure-checklist.md`](notes/paper-structure-checklist.md)
-10. [`notes/abstract-introduction-checklist.md`](notes/abstract-introduction-checklist.md)
-11. [`journals/target-journals.md`](journals/target-journals.md)
-12. [`references/selected-references.md`](references/selected-references.md)
-13. [`references/citation-plan.md`](references/citation-plan.md)
-14. [`supplement/supplement.md`](supplement/supplement.md)
-15. [`submission/title-page.md`](submission/title-page.md)
-16. [`submission/highlights.md`](submission/highlights.md)
-17. [`submission/cover-letter.md`](submission/cover-letter.md)
-18. [`submission/submission-checklist.md`](submission/submission-checklist.md)
-19. [`evidence/`](evidence/)
+## Start Here
 
-## Rule
+| Task | File |
+|:--|:--|
+| Read or edit the paper | [`manuscript/paper.md`](manuscript/paper.md) |
+| Check final PDF source | [`manuscript/paper.tex`](manuscript/paper.tex) |
+| Check current submission state | [`submission/current-status.md`](submission/current-status.md) |
+| Check paper claim discipline | [`notes/claim-stack.md`](notes/claim-stack.md) |
+| Check thesis-to-paper conversion logic | [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md) |
+| Check reviewer risks | [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md) |
+| Check supplement | [`supplement/supplement.md`](supplement/supplement.md) |
+| Check synced evidence | [`evidence/`](evidence/) |
 
-The paper should narrow and reorganize the thesis evidence. It should not become
-a second source of empirical truth.
+## Directory Roles
 
-Refresh paper-facing evidence copies with:
+| Path | Role |
+|:--|:--|
+| `manuscript/` | Active paper prose and LaTeX source. |
+| `figures/` | Paper figure scripts and rendered figure files. |
+| `tables/` | Paper-facing table drafts and extracted result tables. |
+| `notes/` | Claim stack, structure checks, paper budget, and reviewer rubric. |
+| `references/` | Selected references and citation plan. |
+| `supplement/` | Supplement text and supplement planning. |
+| `submission/` | Local submission package outputs and administrative files. |
+| `share/` | Tracked PDF for reading from another machine. |
+| `evidence/` | Synced copies of selected canonical outputs from `../output/`. |
+
+## Paper Commands
+
+Refresh paper-facing evidence copies:
 
 ```bash
 npm run paper:sync
 ```
 
-Export submission-facing manuscript artifacts with:
+Check that evidence copies are current:
 
 ```bash
-npm run paper:export
+npm run paper:check
 ```
 
-This writes local-only generated files under `paper/submission/`:
+Export Markdown, HTML, and DOCX submission files without relying on browser PDF:
 
-- `waste-management-manuscript.md`
-- `waste-management-manuscript.html`
-- `waste-management-manuscript.docx`
-- `waste-management-manuscript.pdf`
+```bash
+npm run paper:export:nopdf
+```
 
-Build a cleaner LaTeX reading PDF with:
+Build the authoritative LaTeX reading PDF:
 
 ```bash
 npm run paper:build:latex
 ```
 
-This refreshes both the local submission PDF and the tracked GitHub/share copy:
+Run claim synchronization checks:
 
-- `paper/submission/waste-management-manuscript-latex.pdf`
-- `paper/share/waste-management-manuscript-latex.pdf`
+```bash
+npm run claims:verify
+```
 
-For opening the current paper from another machine without rebuilding it, use
-the tracked share copy:
+## Output Rules
 
-- `paper/share/waste-management-manuscript-latex.pdf`
+- Use `paper/share/waste-management-manuscript-latex.pdf` for cross-device reading.
+- Use `paper/submission/waste-management-manuscript-latex.pdf` for local submission package review.
+- Use `paper/submission/waste-management-manuscript.docx` only when a DOCX workflow is needed.
+- Treat `paper/submission/waste-management-manuscript.pdf` as browser-export convenience only, not the preferred PDF.
+
+## Resume Workflow
+
+If paper work resumes after a pause:
+
+1. Run `npm run analysis:rebuild` if evidence may have changed.
+2. Run `npm run paper:sync`.
+3. Run `npm run paper:check`.
+4. Read `submission/current-status.md`.
+5. Edit `manuscript/paper.md` or `manuscript/paper.tex` as needed.
+6. Run `npm run claims:verify`.
+7. Rebuild artifacts with `npm run paper:export:nopdf` and `npm run paper:build:latex`.
+
+If the work is prose-only and no empirical claim changes, steps 1 and 2 can be skipped, but `claims:verify` should still pass before pushing.

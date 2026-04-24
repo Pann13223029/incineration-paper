@@ -46,15 +46,7 @@ jobs:
         run: npm ci
 
       - name: Rebuild canonical analysis outputs
-        run: |
-          .venv/bin/python code/scripts/02_parse_facility_panel.py
-          .venv/bin/python code/scripts/03_grid_emission_factors.py
-          .venv/bin/python code/scripts/04_eda_facility.py
-          .venv/bin/python code/scripts/05a_power_adoption.py
-          .venv/bin/python code/scripts/05_panel_regression.py
-          .venv/bin/python code/scripts/06_robustness.py
-          .venv/bin/python code/scripts/06a_data_quality_sensitivity.py
-          .venv/bin/python code/scripts/08_verify_claims.py
+        run: .venv/bin/python code/scripts/07_rebuild_analysis.py
 
       - name: Refresh paper-facing evidence copies
         run: npm run paper:sync
