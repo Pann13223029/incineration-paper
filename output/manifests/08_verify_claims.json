@@ -6,6 +6,7 @@
     "output/manifests/05a_power_adoption.json",
     "output/manifests/05_panel_regression.json",
     "output/manifests/06_robustness.json",
+    "output/manifests/06a_data_quality_sensitivity.json",
     "README.md",
     "ARCHITECTURE.md",
     "thesis/thesis.tex",

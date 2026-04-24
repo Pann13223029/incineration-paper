@@ -58,6 +58,23 @@ The important distinction is that `paper/manuscript/paper.md` should not become
 a second uncontrolled source of empirical truth. It should remain downstream of
 the canonical outputs.
 
+## Current Evidence Snapshot
+
+- Full panel: (23,599 observations, 2,948 unique facilities, FY2005–FY2024)
+- Adoption risk set: (13,770 facility-years, 2,035 facilities, 141 observed first-adoption events)
+- Main adoption model: 11,717 facility-years across 1,915 facilities and 140 events
+- Adoption age pattern: facilities older than 10 years are 1.1–1.8 percentage points less likely to transition into generation.
+- Adoption capacity pattern: prior-year capacity raises transition probability by about 0.50 percentage points per 100 t/day.
+- Pathway audit: 82 observed transitions as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved.
+
+| Evidence block | Current finding | Check |
+|:--|:--|:--|
+| Adoption hazard, prior-year age bands | Facilities older than 10 years are 1.1–1.8 pp less likely than 0–10-year facilities to record transition in the next observed year | p < 0.05 in every reported age-band coefficient |
+| Adoption hazard, prior-year capacity | +0.50 pp per 100 t/day | p < 0.05 |
+| Facility age effect | −0.019 to −0.035 in the four main specifications | p < 0.001 in every reported main specification |
+| Design capacity effect | +0.041 to +0.103 in the four main specifications | Positive in every main specification |
+| Capacity utilization effect | +0.541 to +0.779 in the four main specifications | Positive in every main specification |
+
 ## Directory Map
 
 ```text

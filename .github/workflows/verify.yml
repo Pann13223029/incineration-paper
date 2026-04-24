@@ -53,6 +53,8 @@ jobs:
           .venv/bin/python code/scripts/05a_power_adoption.py
           .venv/bin/python code/scripts/05_panel_regression.py
           .venv/bin/python code/scripts/06_robustness.py
+          .venv/bin/python code/scripts/06a_data_quality_sensitivity.py
+          .venv/bin/python code/scripts/08_verify_claims.py
 
       - name: Refresh paper-facing evidence copies
         run: npm run paper:sync
@@ -79,6 +81,7 @@ jobs:
             output/adoption_results.md
             output/regression_results.md
             output/robustness_results.md
+            output/data_quality_sensitivity.md
             output/claim_evidence_map.md
             output/claim_verification.md
             paper/evidence/current/

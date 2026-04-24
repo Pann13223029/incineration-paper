@@ -185,7 +185,7 @@ band and prior-year design capacity, with year fixed effects, prefecture fixed
 effects, and facility-clustered standard errors. This is an observed-transition
 model, not a complete structural model of all possible modernization pathways.
 The design follows the logic of grouped event-history analysis, where each
-facility-year contributes one observation to the risk set until first event
+coded facility-year record contributes to the risk set until first event
 occurrence (Allison, 1982; Beck et al., 1998). That matters here because the
 paper is not estimating a continuous engineering retrofit process. It is
 estimating the probability that a facility first records entry into power
@@ -217,6 +217,13 @@ question is not boiler thermodynamics in isolation, but administrative
 performance in electricity recovered per tonne processed. That puts the paper
 closer to the applied energy-recovery literature than to plant-level engineering
 optimization alone (Grosso et al., 2010; Munster & Meibom, 2010).
+
+Two administrative-data checks are reported in the supplement. First, a small
+set of official facility codes appears more than once within the same fiscal
+year, so a composite-ID sensitivity appends facility names to affected duplicate
+codes. Second, heating value is treated as a noisy control and is checked under
+plausible-value restrictions. Neither sensitivity changes the main sign pattern
+or the substantive interpretation.
 
 The two layers belong in one paper because they answer sequential parts of the
 same modernization problem. The adoption layer identifies which facilities

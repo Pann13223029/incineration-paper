@@ -111,6 +111,47 @@ about structured cross-facility differences inside the generating segment. The
 coefficients are therefore interpreted as structured conditional associations,
 not as strict structural parameters.
 
+### S5.3 Identifier and heating-value sensitivity
+
+The administrative source contains a small number of same-year duplicate
+official facility codes. This is a data-structure issue rather than a hidden
+result change, so the paper keeps the official-code specification as the main
+analysis and reports a composite-ID sensitivity. The sensitivity appends
+facility names to affected duplicate official codes and reruns the core
+adoption and efficiency checks.
+
+- Official codes with at least one same-year duplicate: 39
+- Source rows using those affected official codes: 444
+- Adoption-model same-year lag events under official codes: 5
+- Regression duplicate facility-year pairs under official codes: 11
+
+**Panel A. Adoption hazard sensitivity**
+
+| Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
+|:--|--:|--:|--:|--:|
+| Prior-year age 10-20 yrs | -1.76 | 0.28 | -1.78 | 0.28 |
+| Prior-year age 20-30 yrs | -1.72 | 0.42 | -1.76 | 0.42 |
+| Prior-year age 30+ yrs | -1.13 | 0.39 | -1.15 | 0.39 |
+| Prior-year capacity per 100 t/day | 0.50 | 0.20 | 0.50 | 0.19 |
+
+**Panel B. Efficiency sensitivity**
+
+| Specification | Variable | Official coef. | Composite coef. |
+|:--|:--|--:|--:|
+| Pooled OLS | Facility age | -0.0279*** | -0.0279*** |
+| Pooled OLS | Capacity (100 t/day) | 0.0874*** | 0.0874*** |
+| Pooled OLS | Capacity utilization | 0.7468*** | 0.7468*** |
+| Year FE | Facility age | -0.0348*** | -0.0348*** |
+| Year FE | Capacity (100 t/day) | 0.1030*** | 0.1030*** |
+| Year FE | Capacity utilization | 0.7789*** | 0.7789*** |
+
+Heating value is also noisy in the administrative files: 512 rows in the
+canonical regression frame have nonpositive heating value and 17 exceed 30
+MJ/kg. Restricting the frame to positive values at or below 30 MJ/kg, or to the
+stricter 3-25 MJ/kg interval, leaves the age, capacity, and utilization
+coefficients substantively unchanged. The detailed generated report is
+available at `paper/evidence/current/data_quality_sensitivity.md`.
+
 ## S6. Appendix Tables
 
 ### S6.1 Table S1. Summary statistics for the canonical generator frame
@@ -180,6 +221,7 @@ Useful descriptive tables already synchronized into the paper workspace include:
 - [regression_results.md](../evidence/current/regression_results.md)
 - [table1_summary_stats.md](../evidence/current/table1_summary_stats.md)
 - [table2_efficiency_by_age.md](../evidence/current/table2_efficiency_by_age.md)
+- [data_quality_sensitivity.md](../evidence/current/data_quality_sensitivity.md)
 
 These files remain part of the paper's evidence layer and can be converted into
 appendix tables if a target journal asks for additional detail.

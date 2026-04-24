@@ -40,6 +40,7 @@ Evidence spine:
 - `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.
 - `output/claim_verification.md`: within/total ratio is 0.1499, with 0.1795 pre-Fukushima and 0.0956 post-Fukushima.
 - `output/robustness_results.md`: sign pattern remains stable across the defended robustness set.
+- `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.
 
 ## Claim 5: The thesis supports a policy hierarchy, not an exclusive mechanism claim
 

@@ -19,6 +19,7 @@ STAGES = [
     "05a_power_adoption.py",
     "05_panel_regression.py",
     "06_robustness.py",
+    "06a_data_quality_sensitivity.py",
     "08_verify_claims.py",
 ]
 

@@ -18,6 +18,7 @@ SOURCE_FILES = [
     "adoption_results.md",
     "regression_results.md",
     "robustness_results.md",
+    "data_quality_sensitivity.md",
     "claim_evidence_map.md",
     "claim_verification.md",
     "panel_summary.md",
