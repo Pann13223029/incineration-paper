@@ -34,7 +34,7 @@ Originality sentence:
 
 Safe interpretation sentence:
 
-- `The evidence is most consistent with selective capital renewal at the weak end of the fleet and bounded responsiveness within the generating segment.`
+- `The evidence is most consistent with asset-renewal screening and capital-side triage at the weak end of the fleet, alongside bounded responsiveness within the generating segment.`
 
 ### Writing Rules
 

@@ -17,7 +17,7 @@ That is the paper's primary originality claim.
 1. Observed transition into power generation is selective rather than diffuse.
 2. Conditional on generation, efficiency is strongly structured by age, scale, and utilization.
 3. Cross-facility heterogeneity dominates within-facility movement over time.
-4. The evidence is most consistent with capital renewal mattering more than operating-side fine-tuning for the weakest segment.
+4. The evidence is most consistent with asset-renewal screening and capital-side triage mattering more than operating-side fine-tuning for the weakest segment.
 
 ## Claim Hierarchy
 
@@ -33,12 +33,16 @@ Treat these levels differently in the manuscript.
 - observed transition into generation is selective rather than diffuse
 - conditional generator performance is bounded and strongly structured by age,
   scale, and utilization
+- the paper reports the FY2013-FY2019 event-timing cluster as a data feature,
+  not as an identified policy shock
 
 ### Level 3: Supporting interpretive findings
 
 - cross-facility heterogeneity dominates within-facility movement
-- the weakest segment looks more like a capital-renewal problem than an
-  operating-side fine-tuning problem
+- the weakest segment looks more like an asset-renewal screening and
+  capital-side triage problem than an operating-side fine-tuning problem
+- the canonical generator frame is defensible because the supplement compares
+  coded rows with the 907 uncoded operating-generator rows
 
 ### Level 4: Narrow broader lesson
 
@@ -52,7 +56,7 @@ This broader lesson is a supporting payoff, not the main novelty claim.
 
 Use this sentence or stay very close to it:
 
-- `The evidence is most consistent with selective capital renewal at the weak end of the fleet and bounded responsiveness within the generating segment.`
+- `The evidence is most consistent with asset-renewal screening and capital-side triage at the weak end of the fleet, alongside bounded responsiveness within the generating segment.`
 
 ## Claims To Avoid
 
@@ -61,6 +65,7 @@ Use this sentence or stay very close to it:
 - the study estimates unrestricted fleet-wide modernization
 - Japan automatically generalizes to every country
 - governance effects are directly estimated
+- the FY2013-FY2019 adoption cluster identifies a specific policy shock
 
 ## Gap Framing Rule
 

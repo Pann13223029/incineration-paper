@@ -51,6 +51,8 @@ Must stay in main text:
 - one adoption results table
 - one adoption figure or compact event-rate visualization
 - plain-language statement of the age and capacity pattern
+- concise disclosure that 109 of 141 first-adoption events occur in
+  FY2013-FY2019, without interpreting the cluster as an identified shock
 
 May move to supplement:
 
@@ -70,6 +72,7 @@ Current evidence:
 
 - [regression_results.md](../evidence/current/regression_results.md)
 - [sample_definition.md](../evidence/current/sample_definition.md)
+- [data_quality_sensitivity.md](../evidence/current/data_quality_sensitivity.md)
 
 Must stay in main text:
 
@@ -77,6 +80,8 @@ Must stay in main text:
 - one efficiency results table
 - the within / total variance ratio in prose or compact display
 - a concise interpretation of bounded responsiveness
+- short explanation that the canonical generator frame excludes 907 uncoded
+  operating-generator rows and that the supplement audits this exclusion
 
 May move to supplement:
 
@@ -84,23 +89,27 @@ May move to supplement:
 - extra robustness variants
 - expanded post-Fukushima split detail
 
-## Claim 4: The paper supports a calibrated capital-renewal interpretation
+## Claim 4: The paper supports a calibrated asset-renewal interpretation
 
 Claim:
 
-- the evidence is most consistent with selective capital renewal at the weak end
-  of the fleet and bounded responsiveness within the generating segment
+- the evidence is most consistent with asset-renewal screening and capital-side
+  triage at the weak end of the fleet, alongside bounded responsiveness within
+  the generating segment
 
 Current evidence:
 
 - [adoption_results.md](../evidence/current/adoption_results.md)
 - [regression_results.md](../evidence/current/regression_results.md)
+- [data_quality_sensitivity.md](../evidence/current/data_quality_sensitivity.md)
 
 Must stay in main text:
 
 - one synthesis paragraph linking the two margins
 - one sentence marking this as an evidence-consistent interpretation, not a
   uniquely identified mechanism
+- one sentence avoiding stronger claims that the data directly identify capital
+  replacement, policy-shock timing, or governance effects
 
 May move to supplement:
 

@@ -12,7 +12,7 @@ This paper workspace is a private side project derived from the defended thesis 
 | Manuscript | Near-submission draft |
 | Main figures | 3 |
 | Main-text tables | 3 |
-| Supplement | Present and updated with data-quality sensitivity |
+| Supplement | Present and updated with data-quality, identifier, and event-timing caveats |
 | Title page, highlights, cover letter | Present |
 | Evidence sync | Managed by `npm run paper:sync` |
 | Claim verification | Managed by `npm run claims:verify` |
@@ -23,8 +23,13 @@ This paper workspace is a private side project derived from the defended thesis 
 The current repo includes:
 
 - duplicate official-code and heating-value sensitivity checks
+- operating-generator inclusion audit showing 907 uncoded operating-generator rows, concentrated in FY2010-FY2012
+- event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
+- quantified FY2024 power-generation share of 41.1% in the abstract and introduction
+- explicit facility-clustered standard-error language for the efficiency models
+- safer policy wording around asset-renewal screening and capital-side triage
 - synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`
-- supplement language documenting those sensitivity checks
+- supplement language documenting the sensitivity checks, inclusion audit, and event-timing caveat
 - claim verification passing locally and in GitHub Actions
 - rebuilt LaTeX reading PDF in `paper/share/`
 
@@ -34,6 +39,7 @@ The current repo includes:
 - explaining the article version of the thesis contribution
 - preserving a stable private paper track after thesis completion
 - keeping reviewer-sensitive caveats visible before submission
+- preventing older, stronger renewal wording from being accidentally revived in future edits
 
 ## What Is Still Deferred
 
