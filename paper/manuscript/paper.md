@@ -2,13 +2,14 @@
 
 ## Abstract
 
-Japan relies heavily on municipal waste incineration, yet a large share of its
-fleet still burns waste without generating electricity. This creates a two-part
-modernization problem. Non-generators must first enter power generation, while
-existing generators must improve conditional performance. Fleet-average studies
-blur those margins, and generator-only studies miss the entry margin
-altogether. Using Ministry of the Environment data for FY2005-FY2024, this
-paper estimates both margins in one national facility panel. It models observed
+Japan relies heavily on municipal waste incineration, yet by FY2024 only 41.1%
+of facilities in the panel are flagged as power-generating. This creates a
+two-part modernization problem. Non-generators must first enter power
+generation, while existing generators must improve conditional performance.
+Fleet-average studies blur those margins, and generator-only studies miss the
+entry margin altogether. Using Ministry of the Environment data for
+FY2005-FY2024, this paper estimates both margins in one national facility panel.
+It models observed
 transition into generation among coded facilities first seen without it, then
 models energy recovery efficiency within a canonical regression frame of
 operating generators. Transition is selective rather than diffuse: facilities
@@ -31,16 +32,18 @@ Japan operates one of the world's most incineration-dependent municipal waste
 systems, yet many facilities still burn waste without generating electricity
 from the heat they produce (Ministry of the Environment Japan, 2022; Uno, 2015;
 Tabata & Tsai, 2016; Sakai et al., 2011). This is not a marginal technical
-detail. For decades, Japanese municipal waste governance has relied on thermal
-treatment for hygienic disposal, volume reduction, and local waste autonomy,
-while limited landfill space and strict environmental controls pushed
-municipalities toward sophisticated incineration infrastructure (Brunner &
-Rechberger, 2015; Sakai et al., 2011). Sectoral planning now treats the
-remaining electricity-generation gap as part of the waste sector's
-decarbonization challenge (Yamada et al., 2023; Greenhouse Gas Inventory Office
-of Japan & Ministry of the Environment Japan, 2024). The transition problem is
-therefore not whether Japan uses incineration. It is which facilities move into
-useful energy recovery and how well they perform after they enter.
+detail: in FY2024, 41.1% of facilities in the panel are flagged as
+power-generating, leaving most facilities outside electricity recovery. For
+decades, Japanese municipal waste governance has relied on thermal treatment for
+hygienic disposal, volume reduction, and local waste autonomy, while limited
+landfill space and strict environmental controls pushed municipalities toward
+sophisticated incineration infrastructure (Brunner & Rechberger, 2015; Sakai et
+al., 2011). Sectoral planning now treats the remaining electricity-generation
+gap as part of the waste sector's decarbonization challenge (Yamada et al.,
+2023; Greenhouse Gas Inventory Office of Japan & Ministry of the Environment
+Japan, 2024). The transition problem is therefore not whether Japan uses
+incineration. It is which facilities move into useful energy recovery and how
+well they perform after they enter.
 
 Aggregate fleet summaries flatten two distinct questions. One is extensive:
 which facilities record observed transition into power generation at all? The
@@ -191,7 +194,8 @@ winsorized log electricity generated per tonne processed. Main predictors are
 facility age, design capacity, capacity utilization, waste heating value, and a
 grid-emission control. The main specifications are pooled OLS, year-FE, RE, and
 year-FE plus RE models, all used as structured descriptive models rather than
-clean structural estimates (Wooldridge, 2010).
+clean structural estimates (Wooldridge, 2010). All reported standard errors are
+clustered by facility.
 
 The efficiency results should therefore be read as conditional patterns within
 the canonical regression frame, not as estimates for the entire generating
@@ -199,11 +203,13 @@ fleet. This frame is intentionally narrower than the operating-generator
 universe because the argument depends on facility-level comparison over time.
 Rows without official facility codes cannot support that comparison. The frame
 is better understood as the canonical identifiable generator sample than as a
-census of all generation activity. The paper also uses a bounded efficiency
-metric because the empirical question is not boiler thermodynamics in isolation,
-but administrative performance in electricity recovered per tonne processed.
-That puts the paper closer to applied energy-recovery studies than to plant-level
-engineering optimization alone (Grosso et al., 2010; Munster & Meibom, 2010).
+census of all generation activity. The supplement compares included and
+uncoded operating-generator rows; the uncoded rows are concentrated in
+FY2010-FY2012. The paper also uses a bounded efficiency metric because the
+empirical question is not boiler thermodynamics in isolation, but administrative
+performance in electricity recovered per tonne processed. That puts the paper
+closer to applied energy-recovery studies than to plant-level engineering
+optimization alone (Grosso et al., 2010; Munster & Meibom, 2010).
 
 Two administrative-data checks are reported in the supplement. First, a small
 set of official facility codes appears more than once within the same fiscal
@@ -274,7 +280,11 @@ set, annual event rates collapse after age 10 and rise sharply across capacity
 quartiles. Facilities aged 0-10 years account for 102 first-adoption events,
 while the three older age bands together account for only 39. By capacity, the
 largest quartile accounts for 99 first-adoption events, whereas the smallest
-quartile records only 1.
+quartile records only 1. Events are also temporally clustered: 109 of 141
+observed first adoptions occur in FY2013-FY2019. The paper treats that
+clustering as an event-timing feature of the administrative panel, not as
+evidence of a uniquely identified policy shock or reporting change; the main
+hazard includes year fixed effects.
 
 The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
@@ -406,9 +416,9 @@ where entry has occurred but performance remains uneven and bounded.
 | Facilities | 1,016 | 1,016 | 1,016 | 1,016 |
 | R-squared | 0.2470 | 0.3721 | 0.1647 | 0.3076 |
 
-*Note: standard errors are in parentheses. `***` p < 0.01. Coefficients are
-reported as structured conditional associations rather than as strict structural
-parameters.*
+*Note: standard errors are clustered by facility and reported in parentheses.
+Three asterisks denote p < 0.01. Coefficients are reported as structured
+conditional associations rather than as strict structural parameters.*
 
 ### 4.3 Why the two results belong together
 
@@ -460,14 +470,14 @@ sensitivity, heating-value restrictions, and estimator variants rather than
 leaving those judgments implicit.
 
 For the weakest segment, especially older non-generators and small plants, the
-evidence points more toward capital-renewal planning than diffuse late-life
-operational improvement. For the already-generating segment, utilization,
-routing, and selective upgrading remain real levers, but they appear more likely
-to preserve or modestly improve performance within the existing envelope than to
-eliminate large inherited gaps. For municipal waste planners, the practical
-takeaway is to separate fleet triage from generator optimization: first identify
-which non-generators plausibly warrant renewal, then identify which operating
-generators still have room for incremental gains.
+evidence points more toward asset-renewal screening and capital-side triage than
+diffuse late-life operational improvement. For the already-generating segment,
+utilization, routing, and selective upgrading remain real levers, but they
+appear more likely to preserve or modestly improve performance within the
+existing envelope than to eliminate large inherited gaps. For municipal waste
+planners, the practical takeaway is to separate fleet triage from generator
+optimization: first identify which non-generators plausibly warrant renewal,
+then identify which operating generators still have room for incremental gains.
 
 That distinction is administrative as well as technical. Japanese waste systems
 are organized through municipalities whose planning boundaries do not always

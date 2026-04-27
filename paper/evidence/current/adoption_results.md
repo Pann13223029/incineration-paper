@@ -9,6 +9,7 @@ This stage models the observed first transition into power generation among code
 - Adoption risk set: 13,770 facility-years across 2,035 facilities
 - Observed first-adoption events in FY2005-FY2024: 141
 - First-adoption events concentrated in FY2013-FY2019: 109 of 141
+- Interpretation: the time clustering is reported as an event-timing feature of the administrative panel, not as evidence of a uniquely identified policy shock or reporting change. The main hazard includes year fixed effects.
 
 ## Adoption Model Frame
 

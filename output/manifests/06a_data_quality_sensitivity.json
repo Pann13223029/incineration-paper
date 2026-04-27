@@ -24,7 +24,10 @@
     "heating_value_zero_or_less_rows": 512,
     "official_adoption_model_duplicate_pairs": 53,
     "official_adoption_model_same_year_lag_events": 5,
-    "official_regression_duplicate_pairs": 11
+    "official_regression_duplicate_pairs": 11,
+    "operating_generator_post_code_covariate_drop_rows": 70,
+    "operating_generator_rows_missing_codes": 907,
+    "operating_generator_rows_with_codes": 5753
   },
   "outputs": [
     "output/data_quality_sensitivity.md"

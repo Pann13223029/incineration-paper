@@ -16,6 +16,45 @@ The checks are sensitivity diagnostics; they do not replace the main specificati
 | Regression | Official code | 5,683 | 1,016 | 11 | 69 | 22 | - |
 | Regression | Composite sensitivity | 5,683 | 1,050 | 3 | 6 | 2 | - |
 
+## Operating-Generator Inclusion Audit
+
+This audit compares operating power-generation rows with official facility codes to operating rows missing those codes. Rows without official facility codes are excluded from the canonical regression frame because they cannot support facility-level clustering or panel comparison.
+
+- Operating-generator rows with official facility codes: 5,753
+- Operating-generator rows missing official facility codes: 907
+- Additional coded operating rows dropped for complete model covariates: 70
+- Canonical regression rows: 5,683
+
+| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Median capacity | Mean throughput (t/year) | Mean power (MWh) | Mean bounded efficiency (MWh/t) | Median bounded efficiency | Mean age |
+|:--|--:|--:|:--|--:|--:|--:|--:|--:|--:|--:|
+| Official facility code present | 5,753 | 1,018 | FY2005-FY2024 | 332.1 | 280.0 | 71,617.9 | 47,156.4 | 0.330 | 0.331 | 15.0 |
+| Official facility code missing | 907 | 316 | FY2008-FY2012 | 359.0 | 300.0 | 76,469.4 | 24,868.7 | 0.296 | 0.298 | 13.4 |
+
+**Year-by-year code availability among operating generators**
+
+| Fiscal year | Coded rows | Missing-code rows | Missing-code share (%) |
+|--:|--:|--:|--:|
+| 2005 | 274 | 0 | 0.0 |
+| 2006 | 280 | 0 | 0.0 |
+| 2007 | 285 | 0 | 0.0 |
+| 2008 | 283 | 4 | 1.4 |
+| 2009 | 293 | 4 | 1.3 |
+| 2010 | 0 | 295 | 100.0 |
+| 2011 | 0 | 300 | 100.0 |
+| 2012 | 0 | 304 | 100.0 |
+| 2013 | 306 | 0 | 0.0 |
+| 2014 | 314 | 0 | 0.0 |
+| 2015 | 328 | 0 | 0.0 |
+| 2016 | 345 | 0 | 0.0 |
+| 2017 | 354 | 0 | 0.0 |
+| 2018 | 361 | 0 | 0.0 |
+| 2019 | 370 | 0 | 0.0 |
+| 2020 | 375 | 0 | 0.0 |
+| 2021 | 384 | 0 | 0.0 |
+| 2022 | 394 | 0 | 0.0 |
+| 2023 | 399 | 0 | 0.0 |
+| 2024 | 408 | 0 | 0.0 |
+
 ## Composite-ID Adoption Sensitivity
 
 The composite sensitivity appends facility name to official codes that repeat within at least one fiscal year. Residual duplicates remain when the source reports multiple lines under the same code and name.

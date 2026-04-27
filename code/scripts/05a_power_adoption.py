@@ -401,7 +401,13 @@ def write_results(
         )
         f.write(
             f"- First-adoption events concentrated in FY2013-FY2019: "
-            f"{events_2013_2019:,} of {summary['adoption_events']:,}\n\n"
+            f"{events_2013_2019:,} of {summary['adoption_events']:,}\n"
+        )
+        f.write(
+            "- Interpretation: the time clustering is reported as an event-timing "
+            "feature of the administrative panel, not as evidence of a uniquely "
+            "identified policy shock or reporting change. The main hazard includes "
+            "year fixed effects.\n\n"
         )
 
         f.write("## Adoption Model Frame\n\n")

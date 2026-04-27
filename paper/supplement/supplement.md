@@ -26,8 +26,9 @@ cannot identify.
 | Left-censored generators can distort adoption estimates. | Facilities already generating in their first observed year are excluded from the adoption risk set. |
 | Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and efficiency signs remain stable. |
 | Heating value is noisy in administrative files. | Heating value is treated as a control, not an engineering outcome; plausible-value restrictions leave the core coefficients stable. |
-| The generator frame excludes uncoded operating rows. | The main text defines the efficiency sample as the canonical identifiable generator frame, not as a census of all generation activity. |
+| The generator frame excludes uncoded operating rows. | The main text defines the efficiency sample as the canonical identifiable generator frame, and this supplement compares coded and uncoded operating-generator rows. |
 | Age effects could be confounded with durable facility characteristics. | The paper interprets coefficients as structured conditional associations and uses the variance structure to justify descriptive cross-facility comparison, not causal vintage isolation. |
+| Adoption events are temporally clustered. | The paper reports the clustering and uses year fixed effects; it does not interpret the timing as a uniquely identified policy shock or reporting change. |
 
 The result is a narrower but more defensible claim: the linked samples show
 selective observed entry into generation and bounded conditional performance
@@ -59,6 +60,24 @@ Interpretation: the intensive-margin models are designed to describe structured
 conditional performance within the generating segment, not to identify a strict
 causal policy effect.
 
+### S2.3 Generator-frame inclusion audit
+
+The operating-generator sample contains 6,660 rows with positive throughput and
+positive electricity output. The canonical regression frame requires official
+facility codes and complete model covariates, leaving 5,683 rows.
+
+| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Mean bounded efficiency (MWh/t) | Mean age |
+|:--|--:|--:|:--|--:|--:|--:|
+| Official facility code present | 5,753 | 1,018 | FY2005-FY2024 | 332.1 | 0.330 | 15.0 |
+| Official facility code missing | 907 | 316 | FY2008-FY2012 | 359.0 | 0.296 | 13.4 |
+
+The missing-code rows are concentrated in FY2010-FY2012, when all operating
+generator rows in the source file lack official facility codes. This is why the
+paper calls the regression sample the canonical identifiable generator frame
+rather than a census of all generation activity. The full year-by-year code
+availability table is generated in
+`paper/evidence/current/data_quality_sensitivity.md`.
+
 ## S3. Adoption Risk-Set Rules
 
 The adoption frame includes facilities first observed without power generation.
@@ -75,6 +94,11 @@ being observed at risk in the panel and conditional on prior-year age and
 capacity. This distinction protects the paper from overclaiming about
 unobserved pre-panel investments or physical retrofit histories that the
 administrative file does not directly record.
+
+Observed first-adoption events are temporally clustered: 109 of 141 events occur
+in FY2013-FY2019. The main hazard includes year fixed effects, and the paper
+does not interpret the timing pattern as a separately identified policy shock or
+reporting change.
 
 ## S4. Pathway-Audit Rule Set
 

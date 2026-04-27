@@ -24,6 +24,7 @@ from panel_utils import (
     OUTPUT_DIR,
     build_adoption_frame,
     build_adoption_model_frame,
+    build_operating_power_frame,
     build_regression_frame,
     load_panel,
     significance_stars,
@@ -201,9 +202,92 @@ def heating_value_subsets(frame: pd.DataFrame) -> dict[str, pd.DataFrame]:
     }
 
 
+def summarize_operating_group(frame: pd.DataFrame, id_label: str) -> dict[str, Any]:
+    """Summarize operating-generator rows by identifier availability."""
+    if frame.empty:
+        return {
+            "label": id_label,
+            "rows": 0,
+            "facility_proxy": 0,
+            "year_start": None,
+            "year_end": None,
+            "mean_capacity": float("nan"),
+            "median_capacity": float("nan"),
+            "mean_throughput": float("nan"),
+            "mean_power": float("nan"),
+            "mean_bounded_efficiency": float("nan"),
+            "median_bounded_efficiency": float("nan"),
+            "mean_age": float("nan"),
+        }
+
+    if frame["analysis_facility_id"].notna().any():
+        facility_proxy = int(frame["analysis_facility_id"].nunique())
+    else:
+        facility_proxy = int(frame["facility_name"].astype("string").str.strip().nunique())
+
+    return {
+        "label": id_label,
+        "rows": int(len(frame)),
+        "facility_proxy": facility_proxy,
+        "year_start": int(frame["fiscal_year"].min()),
+        "year_end": int(frame["fiscal_year"].max()),
+        "mean_capacity": float(frame["capacity_t_day"].mean()),
+        "median_capacity": float(frame["capacity_t_day"].median()),
+        "mean_throughput": float(frame["throughput_t_year"].mean()),
+        "mean_power": float(frame["power_generated_mwh"].mean()),
+        "mean_bounded_efficiency": float(frame["energy_efficiency_mwh_per_t"].mean()),
+        "median_bounded_efficiency": float(frame["energy_efficiency_mwh_per_t"].median()),
+        "mean_age": float(frame["facility_age_years"].mean()),
+    }
+
+
+def operating_generator_inclusion_audit(panel: pd.DataFrame) -> dict[str, Any]:
+    """Compare operating-generator rows with and without official facility codes."""
+    operating = build_operating_power_frame(panel)
+    with_code = operating[operating["analysis_facility_id"].notna()].copy()
+    missing_code = operating[operating["analysis_facility_id"].isna()].copy()
+    regression = build_regression_frame(panel)
+
+    yearly = (
+        operating.assign(has_official_code=operating["analysis_facility_id"].notna())
+        .groupby(["fiscal_year", "has_official_code"])
+        .size()
+        .unstack(fill_value=0)
+        .rename(columns={False: "missing_code_rows", True: "coded_rows"})
+        .reset_index()
+    )
+    if "missing_code_rows" not in yearly.columns:
+        yearly["missing_code_rows"] = 0
+    if "coded_rows" not in yearly.columns:
+        yearly["coded_rows"] = 0
+    yearly["total_operating_rows"] = yearly["coded_rows"] + yearly["missing_code_rows"]
+    yearly["missing_code_share_pct"] = (
+        yearly["missing_code_rows"] / yearly["total_operating_rows"] * 100
+    )
+
+    return {
+        "with_code": summarize_operating_group(with_code, "Official facility code present"),
+        "missing_code": summarize_operating_group(missing_code, "Official facility code missing"),
+        "coded_operating_rows": int(len(with_code)),
+        "missing_code_rows": int(len(missing_code)),
+        "regression_rows": int(len(regression)),
+        "post_code_covariate_drop_rows": int(len(with_code) - len(regression)),
+        "yearly_rows": yearly.to_dict(orient="records"),
+    }
+
+
 def format_signed(value: float, digits: int = 4) -> str:
     """Format a coefficient with a fixed number of decimals."""
     return f"{value:.{digits}f}"
+
+
+def format_number(value: float | int | None, digits: int = 1) -> str:
+    """Format report numbers while handling missing values."""
+    if value is None or pd.isna(value):
+        return "-"
+    if isinstance(value, int):
+        return f"{value:,}"
+    return f"{value:,.{digits}f}"
 
 
 def write_markdown_report(path: Path, report: dict[str, Any]) -> None:
@@ -242,6 +326,65 @@ def write_markdown_report(path: Path, report: dict[str, Any]) -> None:
             f"{diagnostics['facilities']:,} | {diagnostics['duplicate_pairs']:,} | "
             f"{diagnostics['duplicate_rows']:,} | {diagnostics['max_rows_per_pair']:,} | "
             f"{same_year_events} |"
+        )
+
+    inclusion = report["operating_generator_inclusion"]
+    lines.extend(
+        [
+            "",
+            "## Operating-Generator Inclusion Audit",
+            "",
+            (
+                "This audit compares operating power-generation rows with official "
+                "facility codes to operating rows missing those codes. Rows without "
+                "official facility codes are excluded from the canonical regression "
+                "frame because they cannot support facility-level clustering or "
+                "panel comparison."
+            ),
+            "",
+            f"- Operating-generator rows with official facility codes: {inclusion['coded_operating_rows']:,}",
+            f"- Operating-generator rows missing official facility codes: {inclusion['missing_code_rows']:,}",
+            (
+                f"- Additional coded operating rows dropped for complete model covariates: "
+                f"{inclusion['post_code_covariate_drop_rows']:,}"
+            ),
+            f"- Canonical regression rows: {inclusion['regression_rows']:,}",
+            "",
+            "| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Median capacity | Mean throughput (t/year) | Mean power (MWh) | Mean bounded efficiency (MWh/t) | Median bounded efficiency | Mean age |",
+            "|:--|--:|--:|:--|--:|--:|--:|--:|--:|--:|--:|",
+        ]
+    )
+    for row in [inclusion["with_code"], inclusion["missing_code"]]:
+        fy_range = (
+            f"FY{row['year_start']}-FY{row['year_end']}"
+            if row["year_start"] is not None
+            else "-"
+        )
+        lines.append(
+            f"| {row['label']} | {row['rows']:,} | {row['facility_proxy']:,} | "
+            f"{fy_range} | {format_number(row['mean_capacity'])} | "
+            f"{format_number(row['median_capacity'])} | "
+            f"{format_number(row['mean_throughput'])} | "
+            f"{format_number(row['mean_power'])} | "
+            f"{format_number(row['mean_bounded_efficiency'], 3)} | "
+            f"{format_number(row['median_bounded_efficiency'], 3)} | "
+            f"{format_number(row['mean_age'])} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "**Year-by-year code availability among operating generators**",
+            "",
+            "| Fiscal year | Coded rows | Missing-code rows | Missing-code share (%) |",
+            "|--:|--:|--:|--:|",
+        ]
+    )
+    for row in inclusion["yearly_rows"]:
+        lines.append(
+            f"| {int(row['fiscal_year'])} | {int(row['coded_rows']):,} | "
+            f"{int(row['missing_code_rows']):,} | "
+            f"{float(row['missing_code_share_pct']):.1f} |"
         )
 
     lines.extend(
@@ -437,6 +580,7 @@ def main() -> int:
         ),
         "models": hv_models,
     }
+    report["operating_generator_inclusion"] = operating_generator_inclusion_audit(panel)
 
     out_path = Path(OUTPUT_DIR) / "data_quality_sensitivity.md"
     write_markdown_report(out_path, report)
@@ -449,6 +593,15 @@ def main() -> int:
         metadata={
             "duplicate_official_codes": report["duplicate_official_codes"],
             "duplicate_official_code_rows": report["duplicate_official_code_rows"],
+            "operating_generator_rows_with_codes": report["operating_generator_inclusion"][
+                "coded_operating_rows"
+            ],
+            "operating_generator_rows_missing_codes": report["operating_generator_inclusion"][
+                "missing_code_rows"
+            ],
+            "operating_generator_post_code_covariate_drop_rows": report[
+                "operating_generator_inclusion"
+            ]["post_code_covariate_drop_rows"],
             "official_adoption_model_duplicate_pairs": report["official_code"]["diagnostics"][
                 "adoption_model"
             ]["duplicate_pairs"],

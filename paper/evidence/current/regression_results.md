@@ -2,6 +2,8 @@
 
 DV: winsorized log(MWh per tonne processed)
 
+All reported standard errors are clustered by facility.
+
 Canonical regression frame: 5,683 observations across 1,016 facilities.
 
 Sample definition: `sample_definition.md`

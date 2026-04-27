@@ -265,6 +265,7 @@ def comparison_table(models, regression, sample_report_path):
     with open(path, "w", encoding="utf-8") as f:
         f.write("# Regression Results: Determinants of Energy Recovery Efficiency\n\n")
         f.write("DV: winsorized log(MWh per tonne processed)\n\n")
+        f.write("All reported standard errors are clustered by facility.\n\n")
         f.write(
             f"Canonical regression frame: {len(regression):,} observations across "
             f"{regression['analysis_facility_id'].nunique():,} facilities.\n\n"
