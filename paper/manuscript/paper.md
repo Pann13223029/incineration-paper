@@ -9,11 +9,10 @@ generation, while existing generators must improve conditional performance.
 Fleet-average studies blur those margins, and generator-only studies miss the
 entry margin altogether. Using Ministry of the Environment data for
 FY2005-FY2024, this paper estimates both margins in one national facility panel.
-It models observed
-transition into generation among coded facilities first seen without it, then
-models energy recovery efficiency within a canonical regression frame of
+It first asks which non-generating facilities later report power generation,
+then asks how much electricity per tonne is recovered among identifiable
 operating generators. Transition is selective rather than diffuse: facilities
-older than 0-10 years are less likely to record transition in the next observed
+older than ten years are less likely to record transition in the next observed
 year, while larger facilities are more likely to do so. Among operating
 generators, efficiency is lower at older plants and higher at larger, more fully
 utilized ones, while between-facility heterogeneity dominates within-facility
@@ -51,13 +50,18 @@ other is intensive: among plants that already generate, which facilities achieve
 high energy recovery efficiency? The system can therefore look uniformly slow in
 the mean while combining selective entry at one end of the fleet with persistent
 performance hierarchy at the other.
+In plain terms, the first question asks which plants start generating
+electricity; the second asks how well electricity-generating plants use waste
+heat once they already generate.
 
 This paper estimates both margins in one national facility-level panel. Its
 contribution is empirical and design-based: the same linked data structure is
 used to estimate observed transition into generation and conditional performance
-within generation. Within the coded at-risk frame, observed transition is
-selective toward younger and larger facilities. Within the canonical regression
-frame, efficiency is strongly structured by age, scale, and utilization, while
+within generation. It uses two linked samples: one follows non-generating
+facilities until they first report electricity generation, and the other
+compares identifiable operating generators over time. In the first sample,
+observed transition is selective toward younger and larger facilities. In the
+second, efficiency is strongly structured by age, scale, and utilization, while
 within-facility movement remains limited relative to between-facility
 heterogeneity. The same fleet can therefore look merely slow in aggregate while
 containing two different problems: selective entry into generation and bounded
@@ -162,6 +166,9 @@ facilities inside the same administrative system. That makes it possible to ask
 a question that many sector studies cannot ask cleanly: which facilities record
 observed transition into generation, and how do facilities perform once they are
 already inside the generating segment?
+The two samples differ because the questions differ: non-generators reveal who
+enters electricity recovery, while generators reveal performance differences
+after entry.
 
 The first frame is the coded adoption frame. It includes facilities first
 observed without power generation and follows them until they either record
@@ -170,9 +177,11 @@ window. After excluding left-censored facilities already generating in their
 first observed year, the adoption risk set contains 13,770 facility-years across
 2,035 facilities, with 141 observed first-adoption events.
 
-The main adoption model is a lagged discrete-time logit hazard estimated on
-11,717 observations across 1,915 facilities and 140 retained events. Predictors
-are prior-year age band and prior-year design capacity, with year fixed effects,
+In practical terms, the adoption model asks whether a facility that was still
+non-generating in one year first reports generation in the following observed
+year. Technically, it is a lagged discrete-time logit hazard estimated on 11,717
+observations across 1,915 facilities and 140 retained events. Predictors are
+prior-year age band and prior-year design capacity, with year fixed effects,
 prefecture fixed effects, and facility-clustered standard errors. This is an
 observed-transition model, not a complete structural model of all possible
 modernization pathways. The design follows grouped event-history logic: each
@@ -192,10 +201,15 @@ official facility codes and are excluded from the canonical regression frame,
 leaving 5,683 observations across 1,016 facilities. The dependent variable is
 winsorized log electricity generated per tonne processed. Main predictors are
 facility age, design capacity, capacity utilization, waste heating value, and a
-grid-emission control. The main specifications are pooled OLS, year-FE, RE, and
-year-FE plus RE models, all used as structured descriptive models rather than
-clean structural estimates (Wooldridge, 2010). All reported standard errors are
-clustered by facility.
+grid-emission control. In simpler terms, the outcome is electricity recovered
+per tonne of waste, with extreme reported values capped and log-transformed so
+that a few unusual records do not dominate the comparison. The main
+specifications are pooled OLS, year-FE, RE, and year-FE plus RE models, all used
+as structured descriptive models rather than clean structural estimates
+(Wooldridge, 2010). They are complementary descriptive views: pooled models
+compare facilities overall, year fixed effects absorb common shocks by fiscal
+year, and random-effects models summarize persistent facility-level differences.
+All reported standard errors are clustered by facility.
 
 The efficiency results should therefore be read as conditional patterns within
 the canonical regression frame, not as estimates for the entire generating
@@ -249,6 +263,8 @@ within-facility movement is limited, so the defended interpretation is one of
 structured conditional association rather than strict causal identification.
 All reported effects should be read as conditional associations within the
 specified samples, not as estimates of structural causality or policy effects.
+The goal is to diagnose where the bottleneck appears in the fleet, not to prove
+that one policy, retrofit, or plant characteristic caused the pattern.
 
 The paper also does not claim that the low within-facility variance ratio
 resolves all fixed-effects concerns. It uses that variance structure to explain
@@ -280,14 +296,16 @@ set, annual event rates collapse after age 10 and rise sharply across capacity
 quartiles. Facilities aged 0-10 years account for 102 first-adoption events,
 while the three older age bands together account for only 39. By capacity, the
 largest quartile accounts for 99 first-adoption events, whereas the smallest
-quartile records only 1. Events are also temporally clustered: 109 of 141
-observed first adoptions occur in FY2013-FY2019. The paper treats that
-clustering as an event-timing feature of the administrative panel, not as
-evidence of a uniquely identified policy shock or reporting change; the main
-hazard includes year fixed effects.
+quartile records only 1. The timing of first adoption is also clustered, with
+109 of 141 observed first adoptions occurring in FY2013-FY2019, so the pattern
+should be read as an observed administrative transition pattern rather than as a
+separately identified policy shock or reporting change; the main hazard includes
+year fixed effects.
 
 The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
+The percentages below describe changes in the annual probability of first
+reporting generation, not changes in engineering efficiency.
 Relative to 0-10 year facilities, plants aged 10-20 years are about 1.76
 percentage points less likely to record transition in the next observed year,
 plants aged 20-30 years are about 1.72 percentage points less likely, and plants
@@ -349,16 +367,17 @@ standard errors.*
 
 ### 4.2 Performance within generation is bounded and strongly structured
 
-Within the canonical regression frame, the strongest descriptive result is the
-variance structure. The within-to-total variance ratio of pooled log-efficiency
-is 0.1499, meaning that most variation is between facilities rather than within
-facilities over time. The ratio remains low in both the pre-Fukushima and
-post-Fukushima windows, falling from 0.1795 before 2011 to 0.0956 after 2011. This
-does not prove irreversibility. It does show that mature generators do not
-frequently undergo large late-life movements that reshape the fleet
-distribution. It also does not isolate vintage effects from all other durable
-plant characteristics. More narrowly, it supports cross-facility descriptive
-comparison rather than clean causal isolation of vintage itself.
+Within the canonical regression frame, the main message is that generators
+mostly differ from one another rather than repeatedly changing position over
+time. The within-to-total variance ratio of pooled log-efficiency is 0.1499,
+meaning that most variation is between facilities rather than within facilities
+over time. The ratio remains low in both the pre-Fukushima and post-Fukushima
+windows, falling from 0.1795 before 2011 to 0.0956 after 2011. This does not
+prove irreversibility. It does show that mature generators do not frequently
+undergo large late-life movements that reshape the fleet distribution. It also
+does not isolate vintage effects from all other durable plant characteristics.
+More narrowly, it supports cross-facility descriptive comparison rather than
+clean causal isolation of vintage itself.
 
 The coefficient patterns point in the same direction. Efficiency is consistently
 lower at older facilities and higher at larger and more fully utilized ones. The
@@ -422,7 +441,9 @@ conditional associations rather than as strict structural parameters.*
 
 ### 4.3 Why the two results belong together
 
-Read together, the two margins change the modernization story. The
+Read together, the two margins change the modernization story. Put simply, some
+facilities still need to enter energy recovery, while others already generate
+but remain far apart in performance. The
 adoption results show that entry into generation is already selective before
 conditional efficiency is considered, while the efficiency results show that
 large performance gaps inside the generating segment are not easily erased
@@ -437,9 +458,9 @@ operating generators can move once they are already there.
 ## 5. Discussion
 
 The paper's main interpretive claim is methodological: in this fleet, entry
-into generation and performance within generation are linked but distinct
-estimands. Modeling them separately shows that the weakest part of the fleet and
-the mature generating segment are constrained in different ways. This matters
+into generation and performance after entry are different fleet problems.
+Modeling them separately shows that the weakest part of the fleet and the
+mature generating segment are constrained in different ways. This matters
 because municipal fleets often contain both non-generators and mature generators
 at the same time. If those segments are averaged together, the analyst sees only
 a muted fleet mean rather than the combination of selective entry and persistent
@@ -478,6 +499,9 @@ existing envelope than to eliminate large inherited gaps. For municipal waste
 planners, the practical takeaway is to separate fleet triage from generator
 optimization: first identify which non-generators plausibly warrant renewal,
 then identify which operating generators still have room for incremental gains.
+For a municipality, this means deciding first whether an old non-generator is
+worth renewing or consolidating, and only then asking whether an existing
+generator can be tuned to perform better.
 
 That distinction is administrative as well as technical. Japanese waste systems
 are organized through municipalities whose planning boundaries do not always
@@ -529,6 +553,9 @@ does not identify one unique pathway or intervention hierarchy, but it does show
 why municipal fleet studies gain by separating adoption from conditional
 performance. Municipal fleet planning should treat adoption and generator
 optimization as separate tasks rather than one average problem.
+For planners, the first question is whether a facility should be renewed so that
+it can generate electricity; the second is whether an existing generator can
+realistically improve.
 
 ## Acknowledgements
 
