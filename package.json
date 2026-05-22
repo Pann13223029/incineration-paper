@@ -10,6 +10,8 @@
     "paper:export": ".venv/bin/python code/scripts/21_export_paper_submission.py",
     "paper:export:nopdf": ".venv/bin/python code/scripts/21_export_paper_submission.py --no-pdf",
     "paper:build:latex": ".venv/bin/python code/scripts/22_build_paper_latex.py",
+    "slides:paper": ".venv/bin/python code/scripts/23_export_paper_zoom_slides.py",
+    "slides:paper:pdf": ".venv/bin/python code/scripts/23_export_paper_zoom_slides.py --pdf",
     "legacy:slides:export": ".venv/bin/python code/scripts/09_export_defense_slides.py",
     "legacy:slides:export:pdf": ".venv/bin/python code/scripts/09_export_defense_slides.py --pdf",
     "legacy:slides:bundle": ".venv/bin/python code/scripts/10_package_defense_bundle.py",

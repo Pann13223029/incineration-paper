@@ -24,6 +24,7 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | Check reviewer risks | [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md) |
 | Check supplement | [`supplement/supplement.md`](supplement/supplement.md) |
 | Check synced evidence | [`evidence/`](evidence/) |
+| Present the paper in a Zoom meeting | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
 
 ## Directory Roles
 
@@ -34,6 +35,7 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | `tables/` | Paper-facing table drafts and extracted result tables. |
 | `notes/` | Claim stack, structure checks, paper budget, and reviewer rubric. |
 | `references/` | Selected references and citation plan. |
+| `slides/` | Paper-focused Zoom briefing deck, full speaker script, and presentation theme. |
 | `supplement/` | Supplement text and supplement planning. |
 | `submission/` | Local submission package outputs and administrative files. |
 | `share/` | Tracked PDF for reading from another machine. |
@@ -71,9 +73,22 @@ Run claim synchronization checks:
 npm run claims:verify
 ```
 
+Export the paper Zoom briefing deck:
+
+```bash
+npm run slides:paper
+```
+
+Export the shareable paper Zoom briefing PDF:
+
+```bash
+npm run slides:paper:pdf
+```
+
 ## Output Rules
 
 - Use `paper/share/waste-management-manuscript-latex.pdf` for cross-device reading.
+- Use `paper/share/paper-zoom-briefing.pdf` for Zoom screen sharing.
 - Use `paper/submission/waste-management-manuscript-latex.pdf` for local submission package review.
 - Use `paper/submission/waste-management-manuscript.docx` only when a DOCX workflow is needed.
 - Treat `paper/submission/waste-management-manuscript.pdf` as browser-export convenience only, not the preferred PDF.
