@@ -25,121 +25,164 @@ description: Paper-only Zoom briefing deck for the Japan waste-incineration faci
 </div>
 
 <!--
-Script cue: Start by saying this is not a general lecture on waste incineration. It is a focused explanation of one paper: what problem it studies, how the evidence is organized, what it finds, and what claim boundary makes it defensible.
+Script cue: This is a focused explanation of one paper: what problem it studies, how the evidence is organized, what it finds, and what claim boundary makes it defensible.
 -->
 
 ---
 
-# The 30-Second Version
+# The One-Line Takeaway
+
+<div class="card single-card center">
+  <p class="eyebrow">Core message</p>
+  <p class="reader-line">Japan's waste-incineration transition should not be read as one average fleet curve.</p>
+</div>
+
+<div class="takeaway-row">
+  <div class="card">
+    <p class="eyebrow">First question</p>
+    <p class="big">Which facilities enter electricity generation?</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Second question</p>
+    <p class="big">How well do generators perform after entry?</p>
+  </div>
+</div>
+
+<!--
+Script cue: Give the listener the destination first. This is a two-margin paper: entry into generation, then performance inside generation.
+-->
+
+---
+
+# The Paper in 30 Seconds
 
 <div class="three-col">
   <div class="claim-card good">
     <p class="eyebrow">Problem</p>
-    <p class="big">Japan burns waste widely, but electricity recovery is uneven.</p>
-    <p class="small">By FY2024, only 41.1% of facilities in the panel are flagged as power-generating.</p>
+    <p class="big">Electricity recovery is uneven.</p>
+    <p class="small">In FY2024, only 41.1% of facilities in the panel are flagged as power-generating.</p>
   </div>
   <div class="claim-card good">
     <p class="eyebrow">Design</p>
-    <p class="big">The paper separates two questions that averages mix together.</p>
-    <p class="small">First, which non-generators enter power generation? Second, how well do generators perform once they exist?</p>
+    <p class="big">The paper separates two questions.</p>
+    <p class="small">It studies entry into generation and performance after entry as different margins.</p>
   </div>
   <div class="claim-card good">
     <p class="eyebrow">Finding</p>
-    <p class="big">Entry is selective; generator performance remains structured.</p>
-    <p class="small">Younger and larger facilities are more likely to enter; older, smaller, less utilized generators recover less electricity per tonne.</p>
+    <p class="big">Entry is selective; performance is structured.</p>
+    <p class="small">Younger and larger facilities enter more often; generator efficiency remains uneven.</p>
+  </div>
+</div>
+
+<!--
+Script cue: Keep this slide fast. It is a map, not the evidence yet.
+-->
+
+---
+
+# Plain Physical Intuition
+
+<div class="diagram-card">
+  <div class="flow">
+    <div class="flow-step">
+      <p class="step-number">1</p>
+      <p class="mini-title">Waste is burned</p>
+      <p class="mini-text">Incineration reduces waste volume and supports hygienic municipal disposal.</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">2</p>
+      <p class="mini-title">Heat is produced</p>
+      <p class="mini-text">The plant already creates heat during treatment.</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">3</p>
+      <p class="mini-title">Electricity may be generated</p>
+      <p class="mini-text">Only some facilities convert that heat into reported power generation.</p>
+    </div>
   </div>
 </div>
 
 <div class="callout">
-  <p><strong>One-line takeaway:</strong> Japan's incineration transition should not be summarized as one average fleet problem.</p>
+  <p>The paper asks where useful electricity recovery appears, not whether incineration itself is always good or bad.</p>
 </div>
 
 <!--
-Script cue: Give the listener the destination first. The paper is about a diagnostic split: entry into generation versus performance after entry.
+Script cue: Orient non-specialists before mentioning models.
 -->
 
 ---
 
 # Why This Issue Matters
 
-<div class="two-col wide-left">
-  <div class="diagram-card">
-    <div class="flow">
-      <div class="flow-step">
-        <p class="step-number">1</p>
-        <p class="mini-title">Waste is burned</p>
-        <p class="mini-text">Incineration reduces waste volume and supports hygienic municipal disposal.</p>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <p class="step-number">2</p>
-        <p class="mini-title">Heat is produced</p>
-        <p class="mini-text">The plant already creates heat; the question is whether useful energy is recovered.</p>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <p class="step-number">3</p>
-        <p class="mini-title">Electricity may be generated</p>
-        <p class="mini-text">Only some facilities convert waste heat into reported electricity generation.</p>
-      </div>
-    </div>
+<div class="two-col">
+  <div class="card">
+    <p class="eyebrow">Policy context</p>
+    <p class="big">Japan already relies heavily on incineration.</p>
+    <p class="small">The practical question is not whether incineration exists. It is whether existing facilities recover useful energy from the heat they already produce.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Plain-language context</p>
-    <p class="body">The policy issue is not simply whether Japan uses incineration. Japan already relies heavily on incineration. The sharper issue is whether facilities recover useful energy from that system, and whether old or small facilities can realistically catch up.</p>
+    <p class="eyebrow">Planning context</p>
+    <p class="big">Old and small facilities may not catch up in the same way.</p>
+    <p class="small">That makes the fleet a planning problem: renewal, consolidation, retrofit, and generator optimization are not interchangeable decisions.</p>
   </div>
 </div>
 
-<div class="callout">
-  <p>This makes the paper a fleet-diagnosis study, not a broad argument that incineration itself is always good or bad.</p>
+<div class="contrast-note">
+  <p class="body"><strong>Reader framing:</strong> this is a fleet-diagnosis study, not a broad moral claim about all waste-to-energy systems.</p>
 </div>
 
 <!--
-Script cue: Use this slide to orient non-specialists. Explain the physical intuition before describing the econometrics.
+Script cue: The practical audience should hear that the paper is about diagnosing the type of bottleneck.
 -->
 
 ---
 
-# The Main Trap: One Average Fleet
+# The Main Trap
 
-<div class="two-col">
-  <div class="card">
-    <p class="eyebrow">What an average hides</p>
-    <p class="big">A single fleet average mixes two different bottlenecks.</p>
-    <ul>
-      <li>Some facilities do not generate electricity at all.</li>
-      <li>Some facilities generate, but recover electricity less efficiently.</li>
-      <li>Averages blur the difference between entering generation and performing well after entry.</li>
-    </ul>
+<div class="card single-card center">
+  <p class="eyebrow">What one average hides</p>
+  <p class="reader-line">A single fleet average mixes facilities that do not generate electricity with facilities that already generate but perform differently.</p>
+</div>
+
+<div class="callout">
+  <p>That is why the paper does not start with one pooled fleet model.</p>
+</div>
+
+<!--
+Script cue: This slide should be easy to read even on a small Zoom window.
+-->
+
+---
+
+# Two Groups, Two Bottlenecks
+
+<div class="matrix">
+  <div class="cell warning">
+    <p class="eyebrow">Non-generators</p>
+    <p class="mini-title">Entry problem</p>
+    <p class="mini-text">Do they ever report power generation?</p>
   </div>
-  <div class="diagram-card">
-    <div class="matrix">
-      <div class="cell warning">
-        <p class="eyebrow">Non-generators</p>
-        <p class="mini-title">Entry problem</p>
-        <p class="mini-text">Do they ever report power generation?</p>
-      </div>
-      <div class="cell safe">
-        <p class="eyebrow">Generators</p>
-        <p class="mini-title">Performance problem</p>
-        <p class="mini-text">How much electricity per tonne do they recover?</p>
-      </div>
-      <div class="cell secondary">
-        <p class="eyebrow">Weak shortcut</p>
-        <p class="mini-title">One average</p>
-        <p class="mini-text">Looks simple, but loses the bottleneck location.</p>
-      </div>
-      <div class="cell primary">
-        <p class="eyebrow">Paper design</p>
-        <p class="mini-title">Two linked margins</p>
-        <p class="mini-text">Separate the gate into generation from performance within generation.</p>
-      </div>
-    </div>
+  <div class="cell safe">
+    <p class="eyebrow">Generators</p>
+    <p class="mini-title">Performance problem</p>
+    <p class="mini-text">How much electricity per tonne do they recover?</p>
+  </div>
+  <div class="cell secondary">
+    <p class="eyebrow">Weak shortcut</p>
+    <p class="mini-title">One average</p>
+    <p class="mini-text">Looks simple, but loses the bottleneck location.</p>
+  </div>
+  <div class="cell primary">
+    <p class="eyebrow">Paper design</p>
+    <p class="mini-title">Two linked margins</p>
+    <p class="mini-text">Separates the gate into generation from performance within generation.</p>
   </div>
 </div>
 
 <!--
-Script cue: This is the conceptual heart of the presentation. Do not rush it.
+Script cue: This is the conceptual heart. The paper separates the gate from the performance layer.
 -->
 
 ---
@@ -150,50 +193,46 @@ Script cue: This is the conceptual heart of the presentation. Do not rush it.
   <div class="card">
     <p class="eyebrow">RQ1: Adoption</p>
     <p class="big">Who enters electricity generation?</p>
-    <p class="small">Among facilities first observed without generation, which ones later first report power generation?</p>
+    <p class="small">Facilities first observed without generation are followed until first reported generation.</p>
   </div>
   <div class="card">
     <p class="eyebrow">RQ2: Efficiency</p>
     <p class="big">Who performs better after entry?</p>
-    <p class="small">Among identifiable operating generators, how much electricity is recovered per tonne processed?</p>
+    <p class="small">Identifiable operating generators are compared by electricity recovered per tonne.</p>
   </div>
   <div class="card">
     <p class="eyebrow">RQ3: Synthesis</p>
     <p class="big">Do both margins tell one story?</p>
-    <p class="small">Or does the fleet contain different modernization problems at different points?</p>
+    <p class="small">The paper asks whether the two margins reveal different modernization bottlenecks.</p>
   </div>
 </div>
 
-<div class="callout">
-  <p><strong>Translation:</strong> First ask who gets through the door. Then ask how well they do once they are inside.</p>
-</div>
-
 <!--
-Script cue: Make clear that the paper is organized around questions, not around methods for their own sake.
+Script cue: The paper is organized around questions, not methods for their own sake.
 -->
 
 ---
 
-# Data and Sample Architecture
+# Data Architecture
 
 <div class="kpi-grid two">
   <div class="kpi-card">
-    <p class="eyebrow">Administrative source</p>
-    <p class="kpi">FY2005-FY2024</p>
-    <p class="kpi-label">Ministry of the Environment General Waste Treatment Survey</p>
-    <p class="kpi-note">A national facility-level panel covering Japanese municipal waste incineration facilities.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Full source panel</p>
+    <p class="eyebrow">Source panel</p>
     <p class="kpi">23,599</p>
     <p class="kpi-label">facility-year observations</p>
-    <p class="kpi-note">2,948 identifiable facilities across 47 prefectures.</p>
+    <p class="kpi-note">FY2005-FY2024, 2,948 identifiable facilities, 47 prefectures.</p>
   </div>
   <div class="kpi-card">
     <p class="eyebrow">Adoption frame</p>
     <p class="kpi">13,770</p>
     <p class="kpi-label">at-risk facility-years</p>
-    <p class="kpi-note">2,035 facilities first observed without generation, with 141 observed first-adoption events.</p>
+    <p class="kpi-note">2,035 facilities first observed without generation; 141 observed first-adoption events.</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Model frame</p>
+    <p class="kpi">11,717</p>
+    <p class="kpi-label">lagged hazard rows</p>
+    <p class="kpi-note">1,915 facilities and 140 retained first-adoption events.</p>
   </div>
   <div class="kpi-card">
     <p class="eyebrow">Generator frame</p>
@@ -204,27 +243,31 @@ Script cue: Make clear that the paper is organized around questions, not around 
 </div>
 
 <!--
-Script cue: Do not list every cleaning rule orally. Emphasize why two samples are necessary.
+Script cue: Do not list every cleaning rule. Emphasize why two linked samples are necessary.
 -->
 
 ---
 
 # Design Logic in One Diagram
 
-<div class="two-col wide-right">
-  <div class="figure-card">
-    <img src="../figures/figure1_two_part_framework.png" alt="Two-part analytical framework" />
-  </div>
-  <div class="stack">
-    <div class="card">
-      <p class="eyebrow">Extensive margin</p>
-      <p class="big">Transition into generation</p>
-      <p class="small">Estimated with a lagged discrete-time hazard among facilities still at risk of first reported generation.</p>
+<div class="diagram-card">
+  <div class="flow">
+    <div class="flow-step">
+      <p class="step-number">1</p>
+      <p class="mini-title">Full facility panel</p>
+      <p class="mini-text">23,599 facility-years across FY2005-FY2024.</p>
     </div>
-    <div class="card">
-      <p class="eyebrow">Intensive margin</p>
-      <p class="big">Efficiency among generators</p>
-      <p class="small">Estimated with descriptive panel models for electricity generated per tonne processed.</p>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">2</p>
+      <p class="mini-title">Split by question</p>
+      <p class="mini-text">Non-generators reveal entry; generators reveal conditional performance.</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">3</p>
+      <p class="mini-title">Read together</p>
+      <p class="mini-text">The fleet has selective entry and bounded generator performance.</p>
     </div>
   </div>
 </div>
@@ -234,123 +277,203 @@ Script cue: Do not list every cleaning rule orally. Emphasize why two samples ar
 </div>
 
 <!--
-Script cue: This is where you justify the architecture. A single sample would be cleaner-looking but wrong for the research question.
+Script cue: Let the diagram breathe. Do not add extra methods detail here.
+-->
+
+---
+
+# How Each Margin Is Estimated
+
+<div class="two-col">
+  <div class="card">
+    <p class="eyebrow">Extensive margin</p>
+    <p class="big">Transition into generation</p>
+    <p class="small">Lagged discrete-time hazard among facilities still at risk of first reported generation.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Intensive margin</p>
+    <p class="big">Efficiency among generators</p>
+    <p class="small">Descriptive panel models for electricity generated per tonne processed.</p>
+  </div>
+</div>
+
+<div class="contrast-note">
+  <p class="body"><strong>Important boundary:</strong> this is a diagnostic fleet decomposition, not a single causal pathway model.</p>
+</div>
+
+<!--
+Script cue: This slide carries the technical design in plain language.
 -->
 
 ---
 
 # Result 1: Adoption Is Selective
 
-<div class="two-col wide-right">
-  <div class="figure-card">
-    <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
+<div class="figure-card figure-wide">
+  <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
+</div>
+
+<div class="takeaway-row">
+  <div class="card">
+    <p class="eyebrow">By age</p>
+    <p class="big">Events collapse after age 10.</p>
   </div>
-  <div class="stack">
-    <div class="card">
-      <p class="eyebrow">By age</p>
-      <p class="big">Events collapse after age 10.</p>
-      <p class="small">Facilities aged 0-10 account for 102 of 141 first-adoption events.</p>
-    </div>
-    <div class="card">
-      <p class="eyebrow">By capacity</p>
-      <p class="big">Events concentrate in large plants.</p>
-      <p class="small">The largest capacity quartile accounts for 99 first-adoption events; the smallest quartile records only 1.</p>
-    </div>
+  <div class="card">
+    <p class="eyebrow">By capacity</p>
+    <p class="big">Events concentrate in large plants.</p>
   </div>
 </div>
 
 <!--
-Script cue: The figure should carry the visual result. Your spoken explanation should translate the pattern: adoption is not spreading evenly across the fleet.
+Script cue: Use the figure as the evidence. Adoption is not spreading evenly across the fleet.
 -->
 
 ---
 
-# Result 1 in Plain English
+# Adoption Numbers to Say Out Loud
 
 <div class="two-col">
+  <div class="kpi-card">
+    <p class="eyebrow">Age pattern</p>
+    <p class="kpi">102 / 141</p>
+    <p class="kpi-label">first-adoption events are from age 0-10 facilities</p>
+    <p class="kpi-note">The three older age bands together account for only 39 events.</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Capacity pattern</p>
+    <p class="kpi">99 / 141</p>
+    <p class="kpi-label">first-adoption events are in the largest capacity quartile</p>
+    <p class="kpi-note">The smallest capacity quartile records only one event.</p>
+  </div>
+</div>
+
+<!--
+Script cue: These two numbers are easier for listeners than a full table.
+-->
+
+---
+
+# Hazard Model Result
+
+<div class="card single-card center">
+  <p class="eyebrow">Plain English</p>
+  <p class="reader-line">Older at-risk facilities are less likely to first report generation; larger facilities are more likely to do so.</p>
+</div>
+
+<div class="two-stack">
   <div class="card">
-    <p class="eyebrow">Hazard model summary</p>
-    <p class="big">Older at-risk facilities are less likely to first report generation.</p>
-    <ul>
-      <li>Age 10-20: about <strong>-1.76 percentage points</strong>.</li>
-      <li>Age 20-30: about <strong>-1.72 percentage points</strong>.</li>
-      <li>Age 30+: about <strong>-1.13 percentage points</strong>.</li>
-      <li>Capacity: each extra 100 t/day adds about <strong>+0.50 percentage points</strong>.</li>
+    <p class="eyebrow">Age penalty</p>
+    <ul class="simple-list">
+      <li>Age 10-20: about <strong>-1.76 pp</strong>.</li>
+      <li>Age 20-30: about <strong>-1.72 pp</strong>.</li>
+      <li>Age 30+: about <strong>-1.13 pp</strong>.</li>
     </ul>
   </div>
   <div class="card">
-    <p class="eyebrow">Pathway audit</p>
-    <p class="big">The observed event mix looks capital-intensive, but not one single mechanism.</p>
-    <ul>
-      <li>82 reset/rebuild-like transitions.</li>
-      <li>38 continuity or in-place upgrade-like transitions.</li>
-      <li>20 forward-dated or placeholder entries.</li>
-    </ul>
+    <p class="eyebrow">Scale premium</p>
+    <p class="big">+0.50 pp</p>
+    <p class="small">Each extra 100 t/day of prior-year design capacity raises annual transition probability.</p>
+  </div>
+</div>
+
+<!--
+Script cue: Clarify that pp means percentage points in annual probability, not engineering efficiency.
+-->
+
+---
+
+# Pathway Audit
+
+<div class="three-col">
+  <div class="kpi-card">
+    <p class="eyebrow">Reset / rebuild-like</p>
+    <p class="kpi">82</p>
+    <p class="kpi-label">observed events</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Continuity / upgrade-like</p>
+    <p class="kpi">38</p>
+    <p class="kpi-label">observed events</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Placeholder / forward-dated</p>
+    <p class="kpi">20</p>
+    <p class="kpi-label">observed events</p>
   </div>
 </div>
 
 <div class="callout">
-  <p><strong>Defensible wording:</strong> selective modernization, not proof that replacement is the only pathway.</p>
+  <p><strong>Defensible wording:</strong> selective modernization with capital-intensive evidence, not proof that replacement is the only pathway.</p>
 </div>
 
 <!--
-Script cue: Explain percentage points carefully. These are changes in annual probability of first reporting generation, not changes in engineering efficiency.
+Script cue: The audit sharpens interpretation without overstating mechanism.
 -->
 
 ---
 
-# Result 2: Generator Performance Is Structured
+# Result 2: Generator Performance
 
-<div class="two-col wide-right">
-  <div class="figure-card">
-    <img src="../figures/figure3_efficiency_structure.png" alt="Generator efficiency structure by age and variance ratio" />
+<div class="figure-card figure-wide">
+  <img src="../figures/figure3_efficiency_structure.png" alt="Generator efficiency structure by age and variance ratio" />
+</div>
+
+<div class="takeaway-row">
+  <div class="card">
+    <p class="eyebrow">Performance gradient</p>
+    <p class="big">Older generators recover less electricity per tonne.</p>
   </div>
-  <div class="stack">
-    <div class="card">
-      <p class="eyebrow">Performance gradient</p>
-      <p class="big">Older generators recover less electricity per tonne.</p>
-      <p class="small">The pattern is descriptive, but stable across main model variants.</p>
-    </div>
-    <div class="card">
-      <p class="eyebrow">Variance structure</p>
-      <p class="big">Most differences are between facilities.</p>
-      <p class="small">The within-to-total variance ratio is 0.1499, and only 0.0956 after 2011.</p>
-    </div>
+  <div class="card">
+    <p class="eyebrow">Variance structure</p>
+    <p class="big">Most differences are between facilities.</p>
   </div>
 </div>
 
 <!--
-Script cue: Do not overclaim irreversibility. Say performance is bounded and structured, not impossible to improve.
+Script cue: Do not overclaim irreversibility. Say performance is bounded and structured.
 -->
 
 ---
 
-# Result 2 in Plain English
+# Generator Drivers
 
 <div class="three-col">
   <div class="card">
     <p class="eyebrow">Age</p>
     <p class="big">Older plants tend to perform worse.</p>
-    <p class="small">This likely reflects durable design, inherited equipment, and institutional constraints, not age alone as a magic cause.</p>
+    <p class="small">Age likely bundles durable design, equipment, and institutional history.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Scale</p>
     <p class="big">Larger plants tend to perform better.</p>
-    <p class="small">Scale can support better energy recovery and steadier operation, although the paper does not prove a single mechanism.</p>
+    <p class="small">Scale can support steadier operation and stronger energy recovery.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Utilization</p>
     <p class="big">Better-loaded plants perform better.</p>
-    <p class="small">Operations still matter, but they do not erase the larger cross-facility hierarchy.</p>
+    <p class="small">Operations matter, but do not erase large cross-facility gaps.</p>
   </div>
 </div>
 
+<!--
+Script cue: This is the simple driver slide for non-specialists.
+-->
+
+---
+
+# Generator Result Boundary
+
+<div class="card single-card center">
+  <p class="eyebrow">What this means</p>
+  <p class="reader-line">The generator result is not "nothing can improve."</p>
+</div>
+
 <div class="callout">
-  <p>The generator result is not "nothing can be improved." It is "improvement happens within a performance envelope shaped by facility characteristics."</p>
+  <p>It means improvement appears bounded by persistent facility differences. Utilization matters, but the largest pattern is still the cross-facility hierarchy.</p>
 </div>
 
 <!--
-Script cue: This slide protects the paper from sounding fatalistic.
+Script cue: This protects the paper from sounding fatalistic.
 -->
 
 ---
@@ -364,13 +487,13 @@ Script cue: This slide protects the paper from sounding fatalistic.
       <p class="mini-title">Non-generating segment</p>
       <p class="mini-text">The first problem is whether facilities enter electricity recovery at all.</p>
     </div>
-    <div class="flow-arrow">→</div>
+    <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">B</p>
       <p class="mini-title">Generating segment</p>
       <p class="mini-text">The second problem is how much electricity generators recover per tonne.</p>
     </div>
-    <div class="flow-arrow">→</div>
+    <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">C</p>
       <p class="mini-title">Planning implication</p>
@@ -379,19 +502,29 @@ Script cue: This slide protects the paper from sounding fatalistic.
   </div>
 </div>
 
+<!--
+Script cue: The slide should visually summarize the paper.
+-->
+
+---
+
+# Planner Sequence
+
 <div class="two-col">
   <div class="card">
     <p class="eyebrow">If a plant does not generate</p>
     <p class="big">Ask renewal, consolidation, or entry questions.</p>
+    <p class="small">The issue is whether power generation is a plausible asset-management path.</p>
   </div>
   <div class="card">
     <p class="eyebrow">If a plant already generates</p>
     <p class="big">Ask utilization, routing, and upgrade questions.</p>
+    <p class="small">The issue is how far the plant can move within its performance envelope.</p>
   </div>
 </div>
 
 <!--
-Script cue: This is the policy bridge. Keep it practical and avoid prescribing one universal solution.
+Script cue: Keep the policy implication practical and non-prescriptive.
 -->
 
 ---
@@ -402,26 +535,22 @@ Script cue: This is the policy bridge. Keep it practical and avoid prescribing o
   <div class="card">
     <p class="eyebrow">Originality 1</p>
     <p class="big">Same national panel, two linked margins.</p>
-    <p class="small">The paper studies both observed entry into generation and conditional performance after entry.</p>
+    <p class="small">The paper studies entry into generation and performance after entry together.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Originality 2</p>
-    <p class="big">It exposes what aggregate fleet views hide.</p>
-    <p class="small">The evidence distinguishes selective entry from persistent generator hierarchy.</p>
+    <p class="big">It exposes what aggregate views hide.</p>
+    <p class="small">The evidence separates selective entry from persistent generator hierarchy.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Originality 3</p>
-    <p class="big">It is careful about claim boundaries.</p>
+    <p class="big">It keeps claim boundaries clear.</p>
     <p class="small">The paper does not pretend to identify one causal modernization mechanism.</p>
   </div>
 </div>
 
-<div class="callout">
-  <p>The publication pitch is not "Japan is understudied." It is "entry and conditional performance should be separated before the fleet is interpreted."</p>
-</div>
-
 <!--
-Script cue: This answers the question: why does this deserve to be a paper rather than just a thesis chapter?
+Script cue: The publication pitch is the linked margin design, not simply that Japan is interesting.
 -->
 
 ---
@@ -431,22 +560,22 @@ Script cue: This answers the question: why does this deserve to be a paper rathe
 <div class="two-col">
   <div class="claim-card boundary">
     <p class="eyebrow">Boundaries</p>
-    <ul>
-      <li>It does not estimate a strict causal effect of age, scale, or policy.</li>
-      <li>It does not prove replacement is the only modernization pathway.</li>
-      <li>It does not calculate complete lifecycle climate benefits.</li>
-      <li>It does not treat the generator frame as a full census of all generation activity.</li>
+    <ul class="simple-list">
+      <li>No strict causal effect of age, scale, or policy.</li>
+      <li>No proof that replacement is the only pathway.</li>
+      <li>No complete lifecycle climate accounting.</li>
+      <li>No claim that the generator frame is a full census.</li>
     </ul>
   </div>
   <div class="claim-card good">
     <p class="eyebrow">Defended claim</p>
     <p class="big">The paper is a diagnostic fleet decomposition.</p>
-    <p class="small">Its strength is showing where the bottleneck appears in the data: selective entry into generation and bounded performance among operating generators.</p>
+    <p class="small">It shows where the bottleneck appears: selective entry into generation and bounded performance among operating generators.</p>
   </div>
 </div>
 
 <!--
-Script cue: Use this slide to sound rigorous, not defensive. Good papers are clear about what they do not identify.
+Script cue: Sound rigorous, not defensive. Good papers are clear about what they do not identify.
 -->
 
 ---
@@ -458,18 +587,18 @@ Script cue: Use this slide to sound rigorous, not defensive. Good papers are cle
     <p><strong>Q: Is this causal?</strong> No. It is a structured diagnostic analysis with explicit sample limits and robustness checks.</p>
   </div>
   <div class="q-card">
-    <p><strong>Q: Why not one model for the whole fleet?</strong> Because non-generators and generators answer different questions; one model would mix entry with performance.</p>
+    <p><strong>Q: Why not one model for the whole fleet?</strong> One model would mix entry with performance.</p>
   </div>
   <div class="q-card">
-    <p><strong>Q: Does this mean old plants cannot improve?</strong> No. It means broad late-life catch-up is not what dominates the observed data.</p>
+    <p><strong>Q: Does this mean old plants cannot improve?</strong> No. It means broad late-life catch-up does not dominate the observed data.</p>
   </div>
   <div class="q-card">
-    <p><strong>Q: What should municipalities do?</strong> First separate asset-renewal screening for non-generators from optimization of existing generators.</p>
+    <p><strong>Q: What should municipalities do?</strong> Separate renewal screening for non-generators from optimization of existing generators.</p>
   </div>
 </div>
 
 <!--
-Script cue: Keep answers short. Invite detailed methods questions only if the audience wants them.
+Script cue: Keep answers short and invite detailed methods questions only if needed.
 -->
 
 ---
@@ -481,7 +610,7 @@ Script cue: Keep answers short. Invite detailed methods questions only if the au
 <p class="subtitle">The paper argues that Japan's incineration fleet should be read as a two-part modernization problem, not as one average transition curve.</p>
 
 <div class="close-line">
-  <p>First ask which facilities enter energy recovery. Then ask how well generators perform after entry. The policy diagnosis changes when those margins are separated.</p>
+  <p>First ask which facilities enter energy recovery. Then ask how well generators perform after entry.</p>
 </div>
 
 <!--
@@ -498,7 +627,7 @@ Script cue: End with the one sentence you want remembered. Then stop and invite 
   <div class="card">
     <p class="eyebrow">Adoption model</p>
     <p class="body">Lagged discrete-time logit hazard among facilities still at risk of first observed generation.</p>
-    <ul>
+    <ul class="simple-list">
       <li>Outcome: first report of power generation in the next observed year.</li>
       <li>Predictors: prior-year age band and design capacity.</li>
       <li>Controls: fiscal-year fixed effects and prefecture fixed effects.</li>
@@ -508,10 +637,10 @@ Script cue: End with the one sentence you want remembered. Then stop and invite 
   <div class="card">
     <p class="eyebrow">Efficiency model</p>
     <p class="body">Descriptive panel models among identifiable operating generators.</p>
-    <ul>
+    <ul class="simple-list">
       <li>Outcome: winsorized log electricity generated per tonne processed.</li>
       <li>Predictors: age, capacity, utilization, heating value, grid-emission control.</li>
-      <li>Models: pooled OLS, year fixed effects, random effects, year fixed effects plus random effects.</li>
+      <li>Models: pooled OLS, year FE, RE, and year FE plus RE.</li>
       <li>Uncertainty: facility-clustered standard errors.</li>
     </ul>
   </div>
@@ -521,7 +650,7 @@ Script cue: End with the one sentence you want remembered. Then stop and invite 
 
 <!-- _class: appendix dense -->
 
-# Appendix B: Key Numbers to Remember
+# Appendix B: Key Numbers
 
 | Evidence item | Number | Interpretation |
 |:--|--:|:--|
@@ -561,4 +690,3 @@ Script cue: End with the one sentence you want remembered. Then stop and invite 
     <p class="small">Regenerates the PDF from the Markdown source.</p>
   </div>
 </div>
-
