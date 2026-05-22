@@ -478,7 +478,7 @@ section.dense li {
 }
 
 .figure-wide img {
-  max-height: 282px;
+  max-height: 318px;
   object-fit: contain;
   width: 100%;
 }

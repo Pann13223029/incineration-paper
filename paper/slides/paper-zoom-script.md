@@ -2,185 +2,152 @@
 
 This script supports a 10-15 minute Zoom explanation of the paper. Use `paper/share/paper-zoom-briefing.pdf` for screen sharing and keep this file open separately.
 
-The revised deck intentionally uses more slides with less content per slide. Move faster through simple slides rather than trying to explain dense slides slowly.
+The revised deck has 20 main slides plus 3 optional appendix slides. Move quickly through the main slides and stop at the closing slide unless the listener asks for model or number details.
 
 ## Timing Plan
 
 | Segment | Slides | Target time |
 |:--|:--|:--|
-| Opening and plain-language context | 1-5 | 3 minutes |
-| Research problem and design | 6-11 | 4 minutes |
-| Main results | 12-17 | 5 minutes |
-| Synthesis, contribution, and limits | 18-23 | 3-4 minutes |
+| Opening, claim, and scope | 1-4 | 3 minutes |
+| Questions, data, and design | 5-8 | 3 minutes |
+| Adoption result | 9-11 | 3 minutes |
+| Generator result | 12-14 | 3 minutes |
+| Synthesis and discussion | 15-20 | 3 minutes |
 | Optional appendix | A-C | only if asked |
 
 ## Slide 1: Explaining the Paper Clearly
 
-Thank you for joining. This presentation explains the paper, not the whole thesis and not the whole waste-management field. The paper studies Japan's municipal waste-incineration fleet and asks a specific question: when facilities move toward electricity recovery, is the modernization process one smooth fleet-wide transition, or does it separate into different problems?
+Thank you for joining. This is a paper briefing, not a full thesis defense and not a general lecture on waste management. The paper studies Japan's municipal waste-incineration fleet and asks whether modernization is one smooth average transition or a two-part fleet problem.
 
-The short answer is that it separates into two problems. First, some incineration facilities do not generate electricity at all. Second, even among facilities that already generate electricity, performance differs. The paper is built around keeping those two problems separate.
+The short answer is that it is two-part. Some facilities still need to enter electricity generation. Other facilities already generate, but performance remains uneven.
 
-## Slide 2: The One-Line Takeaway
+## Slide 2: What the Paper Argues
 
-The one sentence to remember is this: Japan's waste-incineration transition should not be read as one average fleet curve.
+The core claim is that Japan's waste-incineration transition should be read as a two-part modernization problem, not as one average fleet curve.
 
-The paper separates two questions. First, which facilities enter electricity generation? Second, how well do generators perform after entry? Those sound similar, but they are different decisions for municipalities and different empirical questions for the paper.
+The contribution has three parts. First, the paper separates entry into generation from performance after entry. Second, it does that inside one national facility panel from FY2005 to FY2024. Third, it keeps the claim calibrated: the evidence is diagnostic and descriptive, not a causal policy-effect estimate.
 
-## Slide 3: The Paper in 30 Seconds
+## Slide 3: Why This Matters
 
-The paper starts from a simple observation. Japan relies heavily on incineration, but electricity recovery is uneven. In FY2024, only 41.1 percent of facilities in the panel are flagged as power-generating.
+The physical intuition is simple. Incinerators burn waste. Burning waste produces heat. Some facilities use that heat to generate electricity, while other facilities do not report electricity generation.
 
-The design separates entry into generation from performance after entry. The main finding is also two-part. Younger and larger facilities are more likely to enter generation. Among facilities that already generate, performance remains structured by age, scale, and utilization.
+This matters because in FY2024 only 41.1 percent of facilities in the panel are flagged as power-generating. The paper is not arguing that incineration is always good or always bad. It asks where useful electricity recovery appears inside the existing fleet.
 
-This means one average fleet number would hide both the selectivity of entry and the hierarchy inside the generating segment.
+## Slide 4: What to Listen For
 
-## Slide 4: Plain Physical Intuition
+The main diagnostic question is where the modernization bottleneck appears. Is the problem mainly that facilities do not enter generation? Is it mainly weak performance among generators? Or is it both?
 
-For a non-specialist audience, the physical process is straightforward. A municipal incinerator burns waste. Burning waste produces heat. Some facilities use that heat to generate electricity, while other facilities do not report electricity generation.
+The scope boundary is also important. This is not a causal policy evaluation. The paper estimates structured patterns within linked samples and states what those patterns can and cannot prove.
 
-This paper is not trying to prove that incineration is always good or always bad. Japan already uses incineration widely for waste treatment. The paper asks a narrower question: where does useful electricity recovery appear inside that existing fleet?
+## Slide 5: Research Questions
 
-## Slide 5: Why This Issue Matters
+The paper has three research questions. First, among facilities first observed without generation, which facilities later first report power generation?
 
-This matters because the practical planning question is not abstract. Municipalities manage real facilities with different ages, sizes, and operating histories. If a facility does not generate electricity, the issue may involve renewal, consolidation, replacement, or a major upgrade. If a facility already generates, the issue is more likely to involve utilization, routing, maintenance, and selective improvement.
+Second, among identifiable operating generators, which facilities recover more electricity per tonne?
 
-So the paper is best understood as a fleet-diagnosis study. It asks what kind of modernization bottleneck the data reveal.
+Third, do the two margins tell one modernization story, or do they reveal different bottlenecks?
 
-## Slide 6: The Main Trap
+## Slide 6: Data Architecture
 
-The main trap is using one average fleet view. A single average mixes facilities that do not generate electricity with facilities that already generate but perform differently.
+The analysis uses Japan's Ministry of the Environment General Waste Treatment Survey from FY2005 to FY2024. The source panel has 23,599 facility-year observations across 2,948 identifiable facilities.
 
-That average can look simple, but it hides the location of the bottleneck. A non-generator and a low-performing generator are not the same problem.
+The adoption frame contains 13,770 at-risk facility-years across 2,035 facilities first observed without generation. It contains 141 observed first-adoption events.
 
-## Slide 7: Two Groups, Two Bottlenecks
+The generator frame contains 5,683 canonical generator observations across 1,016 identifiable operating generators. These samples differ because the questions differ.
 
-This slide shows the split. Non-generators face an entry problem: do they ever report power generation? Generators face a performance problem: how much electricity per tonne do they recover?
+## Slide 7: Two-Margin Design
 
-The weak shortcut is to summarize both groups with one average. The paper's design avoids that shortcut by separating the gate into generation from performance within generation.
+The design starts from the full facility panel, splits the data by question, and then reads the two results together.
 
-## Slide 8: Research Questions
+Non-generators reveal entry into generation. Generators reveal conditional performance after entry. The samples are linked because they come from the same fleet, but they are not identical because they answer different questions.
 
-The paper has three linked research questions. The first is the adoption question: among facilities first observed without generation, which facilities later first report power generation?
-
-The second is the efficiency question: among identifiable operating generators, which facilities recover more electricity per tonne processed?
-
-The third is the synthesis question: do those two margins tell one story, or do they reveal different modernization bottlenecks? The paper finds that they reveal different bottlenecks.
-
-## Slide 9: Data Architecture
-
-The analysis uses Japan's Ministry of the Environment General Waste Treatment Survey from FY2005 to FY2024. The full source panel has 23,599 facility-year observations across 2,948 identifiable facilities.
-
-From that source panel, the paper builds two linked samples. The adoption frame contains 13,770 at-risk facility-years across 2,035 facilities first observed without generation. It contains 141 observed first-adoption events.
-
-The generator frame is different. It contains 5,683 canonical generator observations across 1,016 identifiable operating generators. The samples differ because the questions differ.
-
-## Slide 10: Design Logic in One Diagram
-
-This diagram is the paper's architecture. One side follows facilities before they enter generation. The other side compares facilities after they are already operating as generators.
-
-The important point is that the samples are linked but not identical. They come from the same national administrative panel, but they answer different questions.
-
-## Slide 11: How Each Margin Is Estimated
+## Slide 8: How Each Margin Is Estimated
 
 The extensive margin is estimated with a lagged discrete-time hazard. In plain language, the model asks whether a facility that was still non-generating in one year first reports generation in the next observed year.
 
 The intensive margin is estimated with descriptive panel models for electricity generated per tonne processed. In plain language, this compares how well identifiable operating generators recover electricity from the waste they process.
 
-The paper is therefore a diagnostic fleet decomposition. It is not a single causal pathway model.
+The paper is therefore a diagnostic fleet decomposition, not a single causal pathway model.
 
-## Slide 12: Result 1: Adoption Is Selective
+## Slide 9: Result 1: Adoption Is Selective
 
-The first result is that observed adoption into generation is selective rather than diffuse. The figure shows the pattern visually.
+The first result is that observed adoption into generation is selective rather than diffuse. The figure shows that first-adoption events are concentrated among younger facilities and larger facilities.
 
-By age, first-adoption events are concentrated among younger facilities. By capacity, the pattern is also concentrated among larger facilities. The observed transition into generation is not spreading evenly across the fleet.
+This means the observed transition into generation is not spreading evenly across the fleet.
 
-## Slide 13: Adoption Numbers to Say Out Loud
+## Slide 10: Adoption Result in Numbers
 
-Two numbers make the result easy to remember. First, 102 of the 141 observed first-adoption events come from facilities aged 0 to 10 years. The three older age groups together account for only 39 events.
+Two numbers make the adoption result easy to remember. First, 102 of the 141 observed first-adoption events come from facilities aged 0 to 10 years. The three older age groups together account for only 39 events.
 
-Second, 99 of the 141 first-adoption events are in the largest capacity quartile. The smallest capacity quartile records only one event.
+Second, 99 of the 141 events are in the largest capacity quartile. The smallest capacity quartile records only one event.
 
-This is why the paper describes the adoption margin as selective modernization rather than broad late-life catch-up.
+The hazard model confirms the same pattern. Older age bands are lower by about 1.13 to 1.76 percentage points, and capacity is positive at about 0.50 percentage points per 100 tonnes per day. These are changes in annual transition probability, not engineering-efficiency changes.
 
-## Slide 14: Hazard Model Result
-
-The hazard model summarizes the same pattern after controls. Older at-risk facilities are less likely to first report generation, while larger facilities are more likely to do so.
-
-Compared with facilities aged 0 to 10, facilities aged 10 to 20 are about 1.76 percentage points less likely to first report generation in the next observed year. Facilities aged 20 to 30 are about 1.72 percentage points less likely, and facilities aged 30 or more are about 1.13 percentage points less likely.
-
-Capacity moves in the opposite direction. Each additional 100 tonnes per day of prior-year design capacity raises the annual probability of first reporting generation by about 0.50 percentage points.
-
-These are percentage-point changes in annual transition probability. They are not engineering-efficiency changes.
-
-## Slide 15: Pathway Audit
+## Slide 11: Pathway Audit
 
 The pathway audit helps interpret the adoption events without overstating mechanism. Eighty-two events look reset- or rebuild-like. Thirty-eight look more consistent with continuity or in-place upgrade. Twenty are forward-dated or placeholder entries.
 
-The safe interpretation is selective modernization with capital-intensive evidence. The paper does not claim that replacement is the only possible pathway.
+The safe interpretation is selective modernization with capital-intensive evidence, not proof that replacement is the only possible pathway.
 
-## Slide 16: Result 2: Generator Performance Is Structured
+## Slide 12: Result 2: Generator Performance
 
 The second result looks inside the generating segment. The figure shows that older generators recover less electricity per tonne. It also shows that most variation is between facilities rather than within the same facility over time.
 
-The within-to-total variance ratio is 0.1499 in the full sample and 0.0956 after 2011. That does not prove irreversibility. It means the main observed differences are cross-facility differences.
+The result should be described as structured and bounded, not irreversible.
 
-## Slide 17: Generator Drivers
+## Slide 13: Generator Drivers
 
-The generator result has three main drivers. Older plants tend to perform worse. Larger plants tend to perform better. Better-utilized plants also tend to perform better.
+The generator result has three main drivers. Older plants tend to perform worse. Larger plants tend to perform better. Better-loaded plants also tend to perform better.
 
-The interpretation should remain careful. Age is not treated as a magic causal force. It likely bundles durable plant design, inherited equipment, and institutional history. Utilization matters, but it does not erase the larger cross-facility hierarchy.
+Age is not treated as a magic causal force. It likely bundles durable plant design, inherited equipment, and institutional history. Utilization matters, but it does not erase the larger cross-facility hierarchy.
 
-## Slide 18: Generator Result Boundary
+## Slide 14: Generator Result Boundary
 
 This result should not be interpreted as "nothing can improve." Operations do matter, and utilization is positively associated with performance.
 
 The more precise interpretation is that improvement appears bounded by persistent facility differences. Mature generators can improve, but the data do not show easy convergence across the whole generator segment.
 
-## Slide 19: The Combined Story
+## Slide 15: The Combined Story
 
 When the two results are read together, the modernization story changes. Some facilities still need to enter energy recovery. Other facilities already generate electricity but remain far apart in performance.
 
-So the paper's combined claim is not just "Japan is slow" or "old plants are bad." The claim is that the fleet contains different modernization problems at different margins.
+So the combined claim is not just "Japan is slow" or "old plants are bad." The claim is that the fleet contains different modernization problems at different margins.
 
-## Slide 20: Planner Sequence
+## Slide 16: Planning Implication
 
 For a non-generating plant, the first planning question is whether generation is a plausible asset-management path at all. That may involve renewal, consolidation, replacement, or a major upgrade.
 
 For a plant that already generates, the planning question is different. The issue becomes utilization, routing, maintenance, selective upgrading, and realistic movement within the plant's existing performance envelope.
 
-That is why the paper recommends separating fleet triage from generator optimization.
+## Slide 17: Why This Can Be a Paper
 
-## Slide 21: What Makes the Paper Original
+The paper can stand as an article because it has a clear linked-margin contribution. It does not reduce transition to generator performance alone.
 
-The paper's originality is not only that Japan is an interesting case. The stronger contribution is the linked two-margin design.
+It also identifies an empirical blind spot: aggregate fleet views hide selective entry and persistent generator hierarchy. Finally, it keeps the claim narrow enough to be defensible.
 
-Many studies can describe waste-to-energy systems in aggregate. Generator-only studies can examine performance after entry. This paper puts both margins into one national facility-level panel and asks whether they point to the same modernization bottleneck.
-
-That is the article-level contribution: adoption and conditional performance should be separated before Japan's incineration modernization is interpreted.
-
-## Slide 22: What the Paper Does Not Claim
+## Slide 18: What the Paper Does Not Claim
 
 This slide is important for defending the paper. The paper does not claim strict causality. It does not prove that replacement is the only modernization pathway. It does not provide complete lifecycle climate accounting. It does not claim that the generator frame is a perfect census of every generating facility-year.
 
-Those limits are not weaknesses if they are stated clearly. They define the paper's job. The job is diagnostic fleet decomposition: showing where the bottleneck appears in the data.
+Those limits define the paper's job. The job is diagnostic fleet decomposition: showing where the bottleneck appears in the data.
 
-## Slide 23: Likely Zoom Questions
+## Slide 19: Likely Supervisor Questions
 
-If someone asks whether this is causal, the answer is no. It is a structured diagnostic analysis with explicit sample limits and robustness checks.
+If asked whether this is causal, the answer is no. It is a structured diagnostic analysis with explicit sample limits and robustness checks.
 
-If someone asks why not use one model for the whole fleet, the answer is that one model would mix entry with performance.
+If asked why not one model for the whole fleet, the answer is that one model would mix entry with performance.
 
-If someone asks whether old plants cannot improve, the answer is also no. The paper says broad late-life catch-up does not dominate the observed data, not that improvement is impossible.
+If asked whether old plants cannot improve, the answer is no. The paper says broad late-life catch-up does not dominate the observed data, not that improvement is impossible.
 
-If someone asks what municipalities should do, the answer is to separate renewal screening for non-generators from optimization of existing generators.
+If asked what feedback is most useful, ask whether the two-margin claim is clear, defensible, and worth developing into the paper's main pitch.
 
-## Slide 24: Closing Takeaway
+## Slide 20: Closing Takeaway
 
 The final takeaway is simple: Japan's incineration fleet should be read as a two-part modernization problem, not as one average transition curve.
 
 First ask which facilities enter energy recovery. Then ask how well generators perform after entry.
 
-At this point, stop the presentation and invite questions. If the audience wants more technical detail, use the appendix slides.
+Stop here unless the listener asks for appendix details.
 
 ## Appendix Use
 
