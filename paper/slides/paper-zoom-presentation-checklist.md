@@ -5,17 +5,17 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 ## Core Rule
 
 - [ ] Say the paper in one sentence: "First ask which facilities enter energy recovery, then ask how well generators perform after entry."
-- [ ] Keep the live presentation to slides 1-12.
+- [ ] Keep the live presentation to slides 1-10.
 - [ ] Use appendix slides only when the listener asks for details.
 - [ ] Do not explain every model, coefficient, or table.
 - [ ] Repeat the framing phrase when needed: "entry first, performance second."
 
 ## One-Day-Before Checklist
 
-- [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 16 slides.
+- [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 14 slides.
 - [ ] Open `paper/slides/paper-zoom-script.md` on a second screen or print it.
-- [ ] Practice once with a timer and stop at slide 12.
-- [ ] Target 10-12 minutes for the main presentation.
+- [ ] Practice once with a timer and stop at slide 10.
+- [ ] Target 8-10 minutes for the main presentation.
 - [ ] Mark any slide that takes more than 60 seconds and shorten the spoken explanation.
 - [ ] Check that the two figures are readable at Zoom screen-share size.
 - [ ] Prepare one answer for each likely question: causality, replacement, old-plant improvement, and why not one model.
@@ -34,11 +34,11 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 
 - [ ] Start with purpose: "This is a short paper briefing and I want feedback on the main pitch."
 - [ ] Use plain language before technical language.
-- [ ] Pause after the core claim on slide 2.
-- [ ] Say the two key adoption numbers slowly on slide 7.
+- [ ] Pause after the core claim on slide 3.
+- [ ] Say the two key adoption numbers slowly on slide 5.
 - [ ] Avoid reading all text on the slides.
 - [ ] If interrupted, answer briefly and return to the slide route.
-- [ ] Stop at slide 12 and invite feedback.
+- [ ] Stop at slide 10 and invite feedback.
 - [ ] Do not continue into appendices unless requested.
 
 ## Slide-By-Slide Checklist
@@ -46,17 +46,15 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 | Slide | Must-say message | Do not do |
 |:--|:--|:--|
 | 1 | This is a short paper briefing. | Do not start with methods. |
-| 2 | One average hides two problems. | Do not overdefine "modernization." |
-| 3 | Incineration produces heat, but not all plants generate electricity. | Do not debate whether incineration is good or bad. |
+| 2 | Incineration produces heat, but energy recovery is uneven. | Do not debate whether incineration is good or bad. |
+| 3 | One average hides two problems. | Do not overdefine "modernization." |
 | 4 | Non-generators and generators require different questions. | Do not use model terms yet. |
-| 5 | The evidence is national facility-level data. | Do not list every sample rule. |
-| 6 | Entry is selective. | Do not explain every axis label. |
-| 7 | 102/141 young; 99/141 largest quartile. | Do not add every hazard coefficient unless asked. |
-| 8 | Generator performance is uneven. | Do not say old plants cannot improve. |
-| 9 | Age, scale, and utilization explain the plain pattern. | Do not turn this into a regression lecture. |
-| 10 | Planning should separate fleet triage from generator optimization. | Do not prescribe a one-size-fits-all policy. |
-| 11 | The paper is diagnostic, not causal. | Do not sound apologetic about boundaries. |
-| 12 | Ask whether the two-part story is clear and defensible. | Do not keep presenting after the ask. |
+| 5 | Entry is selective: 102/141 young; 99/141 largest quartile. | Do not explain every axis label. |
+| 6 | Generator performance is uneven. | Do not say old plants cannot improve. |
+| 7 | Seeing two problems changes the planning logic. | Do not prescribe a one-size-fits-all policy. |
+| 8 | The paper contribution is clear, national, and diagnostic. | Do not oversell publishability. |
+| 9 | The paper is diagnostic, not causal. | Do not sound apologetic about boundaries. |
+| 10 | Ask whether the two-part story is clear and defensible. | Do not keep presenting after the ask. |
 
 ## Simple Q&A Answers
 
@@ -68,11 +66,10 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 
 ## If Time Is Short
 
-- [ ] Use slides 1, 2, 3, 4, 6, 8, 10, 11, and 12.
-- [ ] Skip slide 5 if the listener already trusts the data source.
-- [ ] Skip slide 7 if the listener does not need exact numbers.
-- [ ] Skip slide 9 if the listener already understands the generator result.
-- [ ] Never skip slide 11; it protects the claim boundary.
+- [ ] Use slides 1, 2, 3, 5, 6, 7, 9, and 10.
+- [ ] Skip slide 4 if the listener already understands the two-group design.
+- [ ] Skip slide 8 if the listener only wants the main empirical story.
+- [ ] Never skip slide 9; it protects the claim boundary.
 
 ## After-Meeting Checklist
 

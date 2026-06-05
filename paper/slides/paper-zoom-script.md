@@ -1,122 +1,119 @@
-# Paper Zoom Briefing: Streamlined Speaker Script
+# Paper Zoom Briefing: Separate Presentation Script
 
-Use this script with `paper/share/paper-zoom-briefing.pdf`. The live route is 12 main slides. Appendix slides are only for questions.
+Use this script with `paper/share/paper-zoom-briefing.pdf`. The live route is 10 slides. Appendix slides are only for questions.
+
+## Delivery Rule
+
+Say the paper this way whenever you need to reset the audience:
+
+> Entry first, performance second.
+
+The listener should leave understanding three things:
+
+- Why the paper matters: incineration creates heat, but energy recovery is uneven.
+- What the paper argues: one fleet average hides two different modernization problems.
+- What feedback is needed: whether the two-part story is clear and defensible.
 
 ## Timing Plan
 
 | Segment | Slides | Target time |
 |:--|:--|:--|
-| Opening and core claim | 1-2 | 1.5 minutes |
-| Motivation and design | 3-5 | 2.5 minutes |
-| Adoption result | 6-7 | 2 minutes |
-| Generator result | 8-9 | 2 minutes |
-| Meaning, limits, and ask | 10-12 | 2.5 minutes |
+| Opening and motivation | 1-2 | 1.5 minutes |
+| Claim and design | 3-4 | 2 minutes |
+| Main evidence | 5-6 | 2.5 minutes |
+| Meaning and contribution | 7-8 | 2 minutes |
+| Limits and feedback ask | 9-10 | 1.5 minutes |
 | Optional appendix | A-D | only if asked |
-
-## Simple Delivery Rules
-
-- Say one main sentence per slide before adding detail.
-- Do not explain every number. Explain why the number matters.
-- If the listener looks lost, return to this phrase: "entry first, performance second."
-- Stop at slide 12 unless the listener asks for details.
 
 ## Slide 1: Explaining the Paper Simply
 
-Thank you for joining. This is a short paper briefing, not a full thesis defense. I will keep it simple: what the paper argues, what evidence supports it, and what feedback I need.
+Thank you for joining. This is a short paper briefing. I will not try to explain every table or model. I want to explain the main story clearly and get feedback on whether it works as the paper's central pitch.
 
-The topic is Japan's municipal waste-incineration fleet and whether energy-recovery modernization should be read as one smooth average transition or as two separate problems.
+The paper is about Japan's municipal waste-incineration fleet and the uneven recovery of electricity from incineration heat.
 
-## Slide 2: The Whole Argument
+## Slide 2: Why This Matters
 
-The whole argument is this: do not read Japan's incineration fleet as one average transition curve.
+The reason this matters is simple. Japan burns a large amount of municipal waste. Burning waste creates heat. Some facilities recover that heat as electricity, but many do not.
 
-There are two problems. First, some plants do not generate electricity at all. That is the entry problem. Second, plants that already generate electricity do not perform equally well. That is the performance problem.
+In FY2024, only 41.1 percent of facilities in the panel are flagged as power-generating. So the practical question is not abstract. It is: where does useful electricity recovery appear, and where does it not?
 
-The contribution is to separate those two problems, then read them together using one national facility panel.
+This paper is not trying to judge whether incineration is always good or always bad. It studies energy recovery inside the existing fleet.
 
-## Slide 3: Why This Matters
+## Slide 3: The Paper's Main Claim
 
-The physical intuition is simple. Incinerators burn waste. Burning waste produces heat. Some facilities recover that heat as electricity, while other facilities do not.
+The main claim is that Japan's incineration fleet is a two-part modernization problem, not one average transition curve.
 
-In FY2024, only 41.1 percent of facilities in the panel are flagged as power-generating. So the paper asks a narrow question: where does useful electricity recovery appear inside the existing fleet?
+The first problem is entry. Some plants do not enter electricity generation at all.
 
-It is not making a general moral claim that incineration is always good or always bad.
+The second problem is performance. Plants that already generate electricity do not all perform equally well.
 
-## Slide 4: The Design Choice
+That is the phrase I want the listener to remember: entry first, performance second.
 
-The key design choice is to split the fleet into two groups.
+## Slide 4: What the Paper Compares
 
-For facilities not yet generating, the question is entry: which facilities first report electricity generation?
+The paper compares two groups.
 
-For facilities already generating, the question is performance: how much electricity do they recover per tonne?
+For non-generators, it asks which facilities first report power generation. That tells us where entry into energy recovery appears.
 
-One average would mix those two questions. That is why the paper separates them.
+For generators, it asks which facilities recover more electricity per tonne. That tells us how uneven performance is after entry.
 
-## Slide 5: Data and Scope
+The evidence comes from national facility-level data from FY2005 to FY2024, so this is not a small case study.
 
-The evidence comes from Japan's Ministry of the Environment General Waste Treatment Survey from FY2005 to FY2024.
+## Slide 5: Result 1: Entry Is Selective
 
-The source panel covers 2,948 identifiable facilities. The entry analysis uses 141 observed first-adoption events. The generator analysis uses 5,683 generator observations.
+The first result is that entry is selective.
 
-The important point is that this is national facility-level evidence, not a small case study.
+The figure shows that first adoption into power generation is concentrated among younger and larger facilities.
 
-## Slide 6: Result 1: Entry Is Selective
+Two numbers make this clear. Out of 141 observed first-adoption events, 102 come from facilities aged 0 to 10 years, and 99 are in the largest capacity quartile.
 
-The first result is that entry into electricity generation is selective.
+The simple meaning is that entry is not spreading evenly across the fleet.
 
-The figure shows that first adoption is concentrated among younger facilities and larger facilities. It is not spreading evenly across the fleet.
-
-## Slide 7: Result 1 in Plain Numbers
-
-Two numbers make the adoption result easy to remember.
-
-First, 102 of the 141 observed first-adoption events come from facilities aged 0 to 10 years. Second, 99 of the 141 events are in the largest capacity quartile.
-
-Plainly, the facilities entering generation tend to be young and large.
-
-## Slide 8: Result 2: Generator Performance Is Uneven
+## Slide 6: Result 2: Performance Is Uneven
 
 The second result looks only at facilities that already generate electricity.
 
-The figure shows two points. Older generators recover less electricity per tonne. Also, most variation is between facilities rather than within the same facility over time.
+The figure shows that older generators recover less electricity per tonne. The analysis also shows that scale and utilization help, but they do not erase large facility-level differences.
 
-This does not mean improvement is impossible. It means the performance differences are structured and persistent.
+This does not mean older plants can never improve. The careful wording is that generator performance is structured and uneven.
 
-## Slide 9: Result 2 in Plain Words
+## Slide 7: What Changes If We See Two Problems?
 
-The generator result can be explained in three plain drivers.
+If we see the fleet as two problems, the planning logic changes.
 
-Older generators tend to perform worse. Larger generators tend to perform better. Better utilization still matters.
+For non-generators, the question is whether energy recovery is a plausible asset path. That may involve renewal, consolidation, or a major upgrade decision.
 
-The careful interpretation is that operations can help, but they do not erase large cross-facility gaps.
+For generators, the question is how far performance can improve within existing constraints. That is more about utilization, operations, maintenance, and targeted upgrades.
 
-## Slide 10: What This Means
+So renewal, entry, and generator optimization should not be treated as one identical intervention problem.
 
-The practical implication is to avoid treating all facilities as the same planning problem.
+## Slide 8: Why This Can Stand as a Paper
 
-For non-generators, the first question is whether energy recovery is a plausible asset path. For generators, the question is how far performance can improve within existing constraints.
+The paper can stand because it has a clear contribution.
 
-So fleet triage and generator optimization should be treated as different tasks.
+First, it separates entry from performance. Second, it uses one national facility panel. Third, it keeps the claim diagnostic rather than causal.
 
-## Slide 11: What the Paper Does Not Claim
+The paper is not just saying Japan has incinerators. It is showing that energy-recovery modernization has two different bottlenecks inside the same fleet.
 
-The paper keeps the claim narrow.
+## Slide 9: What the Paper Does Not Claim
+
+The paper keeps its boundaries clear.
 
 It does not claim a strict causal policy effect. It does not prove replacement is the only pathway. It does not provide full lifecycle climate accounting. It also does not claim that the generator frame is a perfect census.
 
-The defended claim is simpler: the paper is a diagnostic fleet decomposition. It shows two bottlenecks: selective entry into generation and uneven performance among generators.
+The defended claim is narrower and stronger: this is a diagnostic fleet decomposition showing selective entry and uneven generator performance.
 
-## Slide 12: Closing and Feedback Ask
+## Slide 10: Feedback Ask
 
-The final message is simple: first ask which facilities enter energy recovery, then ask how well generators perform after entry.
+The final message is: entry first, performance second.
 
-The feedback I need is whether this two-part story is clear, defensible, and strong enough to become the paper's main pitch.
+The feedback I need is whether this two-part story is clear, defensible, and strong enough to use as the paper's main pitch.
 
-I will stop here and use the appendix only if you want model details, extra numbers, pathway interpretation, or file locations.
+I will stop here. If you want details, I can use the appendix for model details, exact numbers, pathway interpretation, or file locations.
 
-## Appendix Use
+## Appendix Prompts
 
-Use Appendix A only if someone asks how the models work. Keep it plain: the adoption model predicts first reported generation next year among facilities still at risk, while the efficiency models compare electricity recovered per tonne among operating generators.
+Use Appendix A if someone asks how the models work. Keep it plain: the adoption model predicts first reported generation next year among facilities still at risk, while the efficiency models compare electricity recovered per tonne among operating generators.
 
 Use Appendix B if someone asks for exact numbers. The most important numbers are 41.1 percent generating in FY2024, 141 first-adoption events, 102 young-facility adoption events, 99 largest-quartile adoption events, 5,683 generator observations, and the 0.1499 within-to-total variance ratio.
 

@@ -4,19 +4,19 @@ paginate: true
 theme: paper-zoom
 size: 16:9
 title: Simple Briefing on the Waste-Incineration Paper
-description: Streamlined paper-only Zoom briefing deck for the Japan waste-incineration facility-panel study.
+description: Extra-streamlined paper-only Zoom briefing deck for the Japan waste-incineration facility-panel study.
 ---
 
 <!-- _class: hero -->
 
 # Explaining the Paper Simply
 
-## Japan's waste-incineration energy-recovery paper
+## Why Japan's incineration energy-recovery pattern matters
 
 <div class="pill-row">
-  <span class="pill">10-12 minute Zoom briefing</span>
+  <span class="pill">8-10 minute live route</span>
   <span class="pill">Paper only</span>
-  <span class="pill">Simple main route</span>
+  <span class="pill">Appendix only if asked</span>
 </div>
 
 <div class="meta">
@@ -25,38 +25,7 @@ description: Streamlined paper-only Zoom briefing deck for the Japan waste-incin
 </div>
 
 <!--
-Script cue: Set expectation. This is a simple explanation of the paper's claim, evidence, and requested feedback.
--->
-
----
-
-# The Whole Argument
-
-<div class="card single-card center">
-  <p class="eyebrow">Core claim</p>
-  <p class="reader-line">Do not read Japan's incineration fleet as one average transition curve.</p>
-</div>
-
-<div class="three-col">
-  <div class="card">
-    <p class="eyebrow">Part 1</p>
-    <p class="big">Some plants do not generate electricity.</p>
-    <p class="small">This is the entry problem.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Part 2</p>
-    <p class="big">Generators perform unevenly.</p>
-    <p class="small">This is the performance problem.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Contribution</p>
-    <p class="big">Separate the two problems.</p>
-    <p class="small">The paper uses one national facility panel to read them together.</p>
-  </div>
-</div>
-
-<!--
-Script cue: If the listener remembers one thing, it should be entry first, performance second.
+Script cue: Set expectation. This is a simple route through why the paper matters, what it finds, and what feedback is needed.
 -->
 
 ---
@@ -73,84 +42,75 @@ Script cue: If the listener remembers one thing, it should be entry first, perfo
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">2</p>
-      <p class="mini-title">Heat is produced</p>
-      <p class="mini-text">Heat exists whether or not electricity is recovered.</p>
+      <p class="mini-title">Heat already exists</p>
+      <p class="mini-text">Incineration creates heat whether or not electricity is recovered.</p>
     </div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">3</p>
-      <p class="mini-title">Power is optional</p>
+      <p class="mini-title">Power is uneven</p>
       <p class="mini-text">In FY2024, only 41.1% of panel facilities are flagged as power-generating.</p>
     </div>
   </div>
 </div>
 
 <div class="callout">
-  <p>The paper asks where energy recovery appears inside the existing fleet, not whether incineration itself is always good or bad.</p>
+  <p>The practical question is simple: where does useful electricity recovery appear, and where does it not?</p>
 </div>
 
 <!--
-Script cue: Keep this non-technical. The question is where useful electricity recovery appears.
+Script cue: Start with practical stakes, not methods.
 -->
 
 ---
 
-# The Design Choice
+# The Paper's Main Claim
+
+<div class="card single-card center">
+  <p class="eyebrow">One sentence</p>
+  <p class="reader-line">Japan's incineration fleet is a two-part modernization problem, not one average transition curve.</p>
+</div>
 
 <div class="two-col">
   <div class="card">
-    <p class="eyebrow">Group A</p>
-    <p class="big">Facilities not yet generating</p>
-    <p class="small">Question: which facilities first enter electricity generation?</p>
+    <p class="eyebrow">Problem 1</p>
+    <p class="big">Some plants do not enter electricity generation.</p>
+    <p class="small">This is the entry problem.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Group B</p>
-    <p class="big">Facilities already generating</p>
-    <p class="small">Question: how well do generators recover electricity per tonne?</p>
+    <p class="eyebrow">Problem 2</p>
+    <p class="big">Generators do not perform equally well.</p>
+    <p class="small">This is the performance problem.</p>
+  </div>
+</div>
+
+<!--
+Script cue: Use the repeatable phrase: entry first, performance second.
+-->
+
+---
+
+# What the Paper Compares
+
+<div class="two-col">
+  <div class="card">
+    <p class="eyebrow">Non-generators</p>
+    <p class="big">Who first reports power generation?</p>
+    <p class="small">This identifies where entry into energy recovery appears.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Generators</p>
+    <p class="big">Who recovers more electricity per tonne?</p>
+    <p class="small">This identifies how uneven performance is after entry.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>A single fleet average mixes these two groups, so it hides the bottleneck.</p>
+  <p>The evidence is national facility-level data from FY2005-FY2024, not a small case study.</p>
 </div>
 
 <!--
-Script cue: This is the core logic. Avoid model vocabulary unless asked.
--->
-
----
-
-# Data and Scope
-
-<div class="kpi-grid two">
-  <div class="kpi-card">
-    <p class="eyebrow">Data source</p>
-    <p class="kpi">FY2005-FY2024</p>
-    <p class="kpi-label">Japan municipal facility panel</p>
-    <p class="kpi-note">Ministry of the Environment General Waste Treatment Survey.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Facilities</p>
-    <p class="kpi">2,948</p>
-    <p class="kpi-label">identifiable facilities</p>
-    <p class="kpi-note">National facility-level evidence, not a small case study.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Entry evidence</p>
-    <p class="kpi">141</p>
-    <p class="kpi-label">first-adoption events</p>
-    <p class="kpi-note">Observed first reports of power generation.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Generator evidence</p>
-    <p class="kpi">5,683</p>
-    <p class="kpi-label">generator observations</p>
-    <p class="kpi-note">Used for conditional performance models.</p>
-  </div>
-</div>
-
-<!--
-Script cue: Say only enough data detail to build trust. Appendix has the full model details.
+Script cue: Make the design understandable without model language.
 -->
 
 ---
@@ -162,38 +122,11 @@ Script cue: Say only enough data detail to build trust. Appendix has the full mo
 </div>
 
 <div class="callout">
-  <p>First adoption into power generation is concentrated among younger and larger facilities.</p>
+  <p>Entry into power generation is concentrated among younger and larger facilities: 102/141 events are from age 0-10 facilities, and 99/141 are in the largest capacity quartile.</p>
 </div>
 
 <!--
-Script cue: Let the chart be visual evidence. Do not over-explain the axes.
--->
-
----
-
-# Result 1 in Plain Numbers
-
-<div class="two-col">
-  <div class="kpi-card">
-    <p class="eyebrow">Age pattern</p>
-    <p class="kpi">102 / 141</p>
-    <p class="kpi-label">events come from age 0-10 facilities</p>
-    <p class="kpi-note">Older facilities account for far fewer first-adoption events.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Capacity pattern</p>
-    <p class="kpi">99 / 141</p>
-    <p class="kpi-label">events are in the largest capacity quartile</p>
-    <p class="kpi-note">The smallest quartile records only one event.</p>
-  </div>
-</div>
-
-<div class="callout">
-  <p>Plain meaning: adoption is not spreading evenly across the fleet.</p>
-</div>
-
-<!--
-Script cue: These are the two numbers to say slowly.
+Script cue: Say the two numbers slowly, then stop.
 -->
 
 ---
@@ -205,42 +138,16 @@ Script cue: These are the two numbers to say slowly.
 </div>
 
 <div class="callout">
-  <p>Among generators, older facilities recover less electricity per tonne, and most variation is between facilities.</p>
+  <p>Among generators, older facilities recover less electricity per tonne. Scale and utilization help, but they do not erase large facility-level differences.</p>
 </div>
 
 <!--
-Script cue: Avoid fatalistic wording. This is structured unevenness, not proof that improvement is impossible.
+Script cue: Avoid saying old plants cannot improve. Say the observed gaps are structured.
 -->
 
 ---
 
-# Result 2 in Plain Words
-
-<div class="three-col">
-  <div class="card">
-    <p class="eyebrow">Age</p>
-    <p class="big">Older generators tend to perform worse.</p>
-    <p class="small">Age likely bundles design, equipment, and operating history.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Scale</p>
-    <p class="big">Larger generators tend to perform better.</p>
-    <p class="small">Scale can support steadier operation.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Operations</p>
-    <p class="big">Utilization still matters.</p>
-    <p class="small">Operations help, but they do not erase large facility gaps.</p>
-  </div>
-</div>
-
-<!--
-Script cue: Translate coefficients into intuitive drivers.
--->
-
----
-
-# What This Means
+# What Changes If We See Two Problems?
 
 <div class="diagram-card">
   <div class="flow">
@@ -259,13 +166,43 @@ Script cue: Translate coefficients into intuitive drivers.
     <div class="flow-step">
       <p class="step-number">C</p>
       <p class="mini-title">Planning</p>
-      <p class="mini-text">Treat fleet triage and generator optimization as different tasks.</p>
+      <p class="mini-text">Do not use one intervention logic for the whole fleet.</p>
     </div>
   </div>
 </div>
 
+<div class="callout">
+  <p>This matters because renewal, entry, and generator optimization are different decisions.</p>
+</div>
+
 <!--
-Script cue: This is the practical interpretation. Keep it non-prescriptive.
+Script cue: This is the practical payoff. Keep it grounded and non-prescriptive.
+-->
+
+---
+
+# Why This Can Stand as a Paper
+
+<div class="three-col">
+  <div class="card">
+    <p class="eyebrow">Clear contribution</p>
+    <p class="big">It separates entry from performance.</p>
+    <p class="small">That avoids a misleading one-average story.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Useful evidence</p>
+    <p class="big">It uses one national facility panel.</p>
+    <p class="small">The same fleet is read across two linked margins.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Defensible claim</p>
+    <p class="big">It stays diagnostic.</p>
+    <p class="small">The paper shows where bottlenecks appear without overstating causality.</p>
+  </div>
+</div>
+
+<!--
+Script cue: This is the supervisor-facing contribution pitch.
 -->
 
 ---
@@ -290,16 +227,16 @@ Script cue: This is the practical interpretation. Keep it non-prescriptive.
 </div>
 
 <!--
-Script cue: Limits should sound disciplined, not apologetic.
+Script cue: Present limits as discipline, not weakness.
 -->
 
 ---
 
 <!-- _class: close -->
 
-# Closing and Feedback Ask
+# Feedback Ask
 
-<p class="subtitle">The paper's message is simple: first ask which facilities enter energy recovery, then ask how well generators perform after entry.</p>
+<p class="subtitle">The paper's message is: entry first, performance second.</p>
 
 <div class="close-line">
   <p>Useful feedback: is this two-part story clear, defensible, and worth using as the paper's main pitch?</p>
@@ -348,6 +285,7 @@ Script cue: Stop here. Use appendices only if the listener asks.
 |:--|--:|:--|
 | FY2024 facilities flagged as power-generating | 41.1% | Most facilities remain outside electricity generation in the panel. |
 | Source panel | 23,599 | Facility-year observations across FY2005-FY2024. |
+| Identifiable facilities | 2,948 | National facility-level evidence. |
 | Adoption risk-set size | 13,770 | Facility-years first observed without generation. |
 | Observed first-adoption events | 141 | Events used to describe entry into generation. |
 | Events from age 0-10 facilities | 102 | Adoption is concentrated among young facilities. |
@@ -398,7 +336,7 @@ Script cue: Stop here. Use appendices only if the listener asks.
   <div class="card">
     <p class="eyebrow">Script</p>
     <p class="big">paper/slides/paper-zoom-script.md</p>
-    <p class="small">Full speaking script and timing guide.</p>
+    <p class="small">Separate live presentation script.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Checklist</p>
