@@ -4,11 +4,11 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 
 ## Core Rule
 
-- [ ] Say the paper in one sentence: "First ask which facilities enter energy recovery, then ask how well generators perform after entry."
+- [ ] Say the paper in one sentence: "First ask who starts generating electricity, then ask who generates well after starting."
 - [ ] Keep the live presentation to slides 1-10.
 - [ ] Use appendix slides only when the listener asks for details.
 - [ ] Do not explain every model, coefficient, or table.
-- [ ] Repeat the framing phrase when needed: "entry first, performance second."
+- [ ] Repeat the framing phrase when needed: "who starts generating, and who generates well?"
 
 ## One-Day-Before Checklist
 
@@ -47,22 +47,22 @@ Use this checklist to keep the presentation simple, direct, and easy to follow. 
 |:--|:--|:--|
 | 1 | This is a short paper briefing. | Do not start with methods. |
 | 2 | Incineration produces heat, but energy recovery is uneven. | Do not debate whether incineration is good or bad. |
-| 3 | One average hides two problems. | Do not overdefine "modernization." |
-| 4 | Non-generators and generators require different questions. | Do not use model terms yet. |
-| 5 | Entry is selective: 102/141 young; 99/141 largest quartile. | Do not explain every axis label. |
-| 6 | Generator performance is uneven. | Do not say old plants cannot improve. |
-| 7 | Seeing two problems changes the planning logic. | Do not prescribe a one-size-fits-all policy. |
-| 8 | The paper contribution is clear, national, and diagnostic. | Do not oversell publishability. |
-| 9 | The paper is diagnostic, not causal. | Do not sound apologetic about boundaries. |
+| 3 | One average hides two questions: who starts, and who performs well. | Do not overdefine "modernization." |
+| 4 | Method: build panel, split facilities, read both patterns. | Do not turn this into a regression lecture. |
+| 5 | Starting generation is uneven: 102/141 young; 99/141 largest quartile. | Do not explain every axis label. |
+| 6 | Generator output is uneven. | Do not say old plants cannot improve. |
+| 7 | The method matters because different bottlenecks need different decisions. | Do not prescribe a one-size-fits-all policy. |
+| 8 | The paper contribution is clear, national, and careful. | Do not oversell publishability. |
+| 9 | The paper identifies bottlenecks; it does not prove strict causality. | Do not sound apologetic about boundaries. |
 | 10 | Ask whether the two-part story is clear and defensible. | Do not keep presenting after the ask. |
 
 ## Simple Q&A Answers
 
-- [ ] Causality: "No, the paper is diagnostic and descriptive. It shows structured patterns, not strict policy effects."
+- [ ] Causality: "No, the paper identifies patterns and bottlenecks. It does not prove strict policy effects."
 - [ ] Replacement: "No, the paper does not prove replacement is the only pathway. It says adoption evidence looks selective and often capital-intensive."
 - [ ] Old plants: "No, the paper does not say old plants cannot improve. It says broad late-life catch-up does not dominate the observed data."
-- [ ] One model: "One model would mix entry into generation with performance after entry, so it would hide the bottleneck."
-- [ ] Contribution: "The contribution is the linked two-margin reading of one national facility panel."
+- [ ] One model: "One model would mix who starts generating with who generates well, so it would hide the bottleneck."
+- [ ] Contribution: "The contribution is the linked two-question reading of one national facility panel."
 
 ## If Time Is Short
 

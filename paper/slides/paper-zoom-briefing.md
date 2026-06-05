@@ -48,14 +48,14 @@ Script cue: Set expectation. This is a simple route through why the paper matter
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">3</p>
-      <p class="mini-title">Power is uneven</p>
+      <p class="mini-title">Not all heat becomes electricity</p>
       <p class="mini-text">In FY2024, only 41.1% of panel facilities are flagged as power-generating.</p>
     </div>
   </div>
 </div>
 
 <div class="callout">
-  <p>The practical question is simple: where does useful electricity recovery appear, and where does it not?</p>
+  <p>This matters because the same waste-treatment process can either recover useful power or miss that energy-recovery opportunity.</p>
 </div>
 
 <!--
@@ -64,65 +64,74 @@ Script cue: Start with practical stakes, not methods.
 
 ---
 
-# The Paper's Main Claim
+# Main Idea in Plain Words
 
 <div class="card single-card center">
-  <p class="eyebrow">One sentence</p>
-  <p class="reader-line">Japan's incineration fleet is a two-part modernization problem, not one average transition curve.</p>
+  <p class="eyebrow">Plain claim</p>
+  <p class="reader-line">One fleet average hides two different questions.</p>
 </div>
 
 <div class="two-col">
   <div class="card">
-    <p class="eyebrow">Problem 1</p>
-    <p class="big">Some plants do not enter electricity generation.</p>
-    <p class="small">This is the entry problem.</p>
+    <p class="eyebrow">Question 1</p>
+    <p class="big">Which plants start generating electricity?</p>
+    <p class="small">This is the "entry" question.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Problem 2</p>
-    <p class="big">Generators do not perform equally well.</p>
-    <p class="small">This is the performance problem.</p>
+    <p class="eyebrow">Question 2</p>
+    <p class="big">Among generators, who produces more electricity per tonne?</p>
+    <p class="small">This is the "performance" question.</p>
   </div>
 </div>
 
 <!--
-Script cue: Use the repeatable phrase: entry first, performance second.
+Script cue: Define entry and performance before using those words.
 -->
 
 ---
 
-# What the Paper Compares
+# Method in Plain Language
 
-<div class="two-col">
-  <div class="card">
-    <p class="eyebrow">Non-generators</p>
-    <p class="big">Who first reports power generation?</p>
-    <p class="small">This identifies where entry into energy recovery appears.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Generators</p>
-    <p class="big">Who recovers more electricity per tonne?</p>
-    <p class="small">This identifies how uneven performance is after entry.</p>
+<div class="diagram-card">
+  <div class="flow">
+    <div class="flow-step">
+      <p class="step-number">1</p>
+      <p class="mini-title">Build a facility panel</p>
+      <p class="mini-text">Follow municipal incineration facilities from FY2005-FY2024.</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">2</p>
+      <p class="mini-title">Split by generation status</p>
+      <p class="mini-text">Non-generators answer the start-generating question; generators answer the output question.</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <p class="step-number">3</p>
+      <p class="mini-title">Read both patterns</p>
+      <p class="mini-text">The method shows where bottlenecks appear in the fleet.</p>
+    </div>
   </div>
 </div>
 
 <div class="callout">
-  <p>The evidence is national facility-level data from FY2005-FY2024, not a small case study.</p>
+  <p>This is diagnostic: it identifies patterns and bottlenecks, not strict cause-and-effect.</p>
 </div>
 
 <!--
-Script cue: Make the design understandable without model language.
+Script cue: Keep the method to three steps. Technical model details are appendix-only.
 -->
 
 ---
 
-# Result 1: Entry Is Selective
+# Result 1: Starting Generation Is Uneven
 
 <div class="figure-card figure-wide">
   <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
 </div>
 
 <div class="callout">
-  <p>Entry into power generation is concentrated among younger and larger facilities: 102/141 events are from age 0-10 facilities, and 99/141 are in the largest capacity quartile.</p>
+  <p>Facilities that first start generating electricity are mostly young and large: 102/141 events are from age 0-10 facilities, and 99/141 are in the largest capacity quartile.</p>
 </div>
 
 <!--
@@ -131,14 +140,14 @@ Script cue: Say the two numbers slowly, then stop.
 
 ---
 
-# Result 2: Performance Is Uneven
+# Result 2: Generator Output Is Uneven
 
 <div class="figure-card figure-wide">
   <img src="../figures/figure3_efficiency_structure.png" alt="Generator efficiency structure by age and variance ratio" />
 </div>
 
 <div class="callout">
-  <p>Among generators, older facilities recover less electricity per tonne. Scale and utilization help, but they do not erase large facility-level differences.</p>
+  <p>Among plants that already generate, older facilities recover less electricity per tonne. Scale and utilization help, but they do not erase large facility-level differences.</p>
 </div>
 
 <!--
@@ -147,32 +156,32 @@ Script cue: Avoid saying old plants cannot improve. Say the observed gaps are st
 
 ---
 
-# What Changes If We See Two Problems?
+# Why the Method Matters for Decisions
 
 <div class="diagram-card">
   <div class="flow">
     <div class="flow-step">
       <p class="step-number">A</p>
       <p class="mini-title">Non-generators</p>
-      <p class="mini-text">Ask whether energy recovery is a plausible asset path.</p>
+      <p class="mini-text">Can this plant start recovering electricity?</p>
     </div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">B</p>
       <p class="mini-title">Generators</p>
-      <p class="mini-text">Ask how far performance can improve within existing constraints.</p>
+      <p class="mini-text">Can this plant recover more electricity from the same waste?</p>
     </div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step">
       <p class="step-number">C</p>
       <p class="mini-title">Planning</p>
-      <p class="mini-text">Do not use one intervention logic for the whole fleet.</p>
+      <p class="mini-text">Use different decisions for different bottlenecks.</p>
     </div>
   </div>
 </div>
 
 <div class="callout">
-  <p>This matters because renewal, entry, and generator optimization are different decisions.</p>
+  <p>This matters because renewal, starting electricity generation, and generator optimization are not the same task.</p>
 </div>
 
 <!--
@@ -185,19 +194,19 @@ Script cue: This is the practical payoff. Keep it grounded and non-prescriptive.
 
 <div class="three-col">
   <div class="card">
-    <p class="eyebrow">Clear contribution</p>
-    <p class="big">It separates entry from performance.</p>
-    <p class="small">That avoids a misleading one-average story.</p>
+    <p class="eyebrow">Clear question</p>
+    <p class="big">It separates starting generation from generator output.</p>
+    <p class="small">That avoids a confusing one-average story.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Useful evidence</p>
-    <p class="big">It uses one national facility panel.</p>
-    <p class="small">The same fleet is read across two linked margins.</p>
+    <p class="big">It follows one national facility panel.</p>
+    <p class="small">The same fleet is read through two linked questions.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Defensible claim</p>
-    <p class="big">It stays diagnostic.</p>
-    <p class="small">The paper shows where bottlenecks appear without overstating causality.</p>
+    <p class="eyebrow">Careful claim</p>
+    <p class="big">It says what the evidence can and cannot prove.</p>
+    <p class="small">That keeps the paper useful without overstating causality.</p>
   </div>
 </div>
 
@@ -207,7 +216,7 @@ Script cue: This is the supervisor-facing contribution pitch.
 
 ---
 
-# What the Paper Does Not Claim
+# What This Does and Does Not Prove
 
 <div class="two-col">
   <div class="claim-card boundary">
@@ -221,8 +230,8 @@ Script cue: This is the supervisor-facing contribution pitch.
   </div>
   <div class="claim-card good">
     <p class="eyebrow">Defended claim</p>
-    <p class="big">This is a diagnostic fleet decomposition.</p>
-    <p class="small">It shows two bottlenecks: selective entry into generation and uneven performance among generators.</p>
+    <p class="big">It identifies where the bottlenecks appear.</p>
+    <p class="small">Starting generation is unevenly spread, and generator output remains uneven after entry.</p>
   </div>
 </div>
 
@@ -236,7 +245,7 @@ Script cue: Present limits as discipline, not weakness.
 
 # Feedback Ask
 
-<p class="subtitle">The paper's message is: entry first, performance second.</p>
+<p class="subtitle">The paper's message is: first ask who starts generating electricity, then ask who generates well after starting.</p>
 
 <div class="close-line">
   <p>Useful feedback: is this two-part story clear, defensible, and worth using as the paper's main pitch?</p>
@@ -250,12 +259,12 @@ Script cue: Stop here. Use appendices only if the listener asks.
 
 <!-- _class: appendix dense -->
 
-# Appendix A: Model Details
+# Appendix A: Method Details
 
 <div class="two-col">
   <div class="card">
-    <p class="eyebrow">Adoption model</p>
-    <p class="body">Lagged discrete-time logit hazard among facilities still at risk of first observed generation.</p>
+    <p class="eyebrow">Start-generating model</p>
+    <p class="body">Among facilities not yet generating, estimate who first reports generation in the next observed year.</p>
     <ul class="simple-list">
       <li>Outcome: first report of power generation in the next observed year.</li>
       <li>Predictors: prior-year age band and design capacity.</li>
@@ -264,8 +273,8 @@ Script cue: Stop here. Use appendices only if the listener asks.
     </ul>
   </div>
   <div class="card">
-    <p class="eyebrow">Efficiency model</p>
-    <p class="body">Descriptive panel models among identifiable operating generators.</p>
+    <p class="eyebrow">Generator-output model</p>
+    <p class="body">Among identifiable operating generators, compare electricity generated per tonne processed.</p>
     <ul class="simple-list">
       <li>Outcome: winsorized log electricity generated per tonne processed.</li>
       <li>Predictors: age, capacity, utilization, heating value, grid-emission control.</li>
