@@ -13,6 +13,11 @@ description: Audience-facing Zoom briefing deck for the Japan waste-incineration
 
 ## Two bottlenecks in Japan's municipal waste-incineration fleet
 
+<div class="hero-title-card">
+  <p class="hero-title-label">Paper title</p>
+  <p class="hero-paper-title">Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study</p>
+</div>
+
 <div class="pill-row">
   <span class="pill">15-18 minute route</span>
   <span class="pill">Data + method</span>
@@ -99,6 +104,12 @@ Script cue: Defuse the "common sense" objection early.
     <p class="big">Among generators, who produces more electricity per tonne?</p>
     <p class="small">This is the performance bottleneck.</p>
   </div>
+</div>
+
+<div class="term-row">
+  <div class="term-chip"><strong>Entry</strong> = a plant first starts reporting electricity generation.</div>
+  <div class="term-chip"><strong>MWh/t</strong> = electricity produced per tonne of waste processed.</div>
+  <div class="term-chip"><strong>Bottleneck</strong> = the step where improvement is most constrained.</div>
 </div>
 
 <!--

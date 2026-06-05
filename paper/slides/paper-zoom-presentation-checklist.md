@@ -6,6 +6,8 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 
 - [ ] Say the paper in one sentence: "The paper maps two bottlenecks: who starts generating electricity, and who generates well after starting."
 - [ ] Keep the live presentation to slides 1-20.
+- [ ] Assume no prior knowledge unless the audience clearly signals otherwise.
+- [ ] Define key terms once: entry, MWh/t, bottleneck, fleet, robustness check, and causal claim.
 - [ ] Do not explain every coefficient.
 - [ ] Repeat the skeptical framing when needed: "The point is not that young and large plants have advantages; the point is whether modernization is broad catch-up or selective modernization."
 - [ ] Stop after slide 20 and ask for targeted feedback.
@@ -15,6 +17,7 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 - [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 20 slides.
 - [ ] Open `paper/slides/paper-zoom-script.md` on a second screen or print it.
 - [ ] Practice once with a timer and stop at slide 20.
+- [ ] Confirm slide 1 includes the formal paper title.
 - [ ] Target 15-18 minutes for the main presentation.
 - [ ] Mark any slide that takes more than 70 seconds and shorten the spoken explanation.
 - [ ] Check that the data-source table, sample pipeline, method boxes, rate chart, Figure 2, and Figure 3 are readable at Zoom screen-share size.
@@ -23,6 +26,7 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 ## Live Delivery Checklist
 
 - [ ] Start with purpose in the script, not on the slide: "This is a paper briefing and I want feedback on the main contribution."
+- [ ] Translate jargon before using it heavily.
 - [ ] Explain why the issue matters before showing methods.
 - [ ] Say clearly that the paper is not trying to make age and scale sound surprising.
 - [ ] Spend enough time on slides 5-9; these are the methodological credibility slides.
@@ -36,10 +40,10 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 
 | Slide | Must-say message | Do not do |
 |:--|:--|:--|
-| 1 | The topic is where energy recovery stalls in the fleet. | Do not start with regression terms. |
+| 1 | The talk title is plain language; the formal paper title is also shown. | Do not start with regression terms. |
 | 2 | Incineration creates heat, but electricity recovery is uneven. | Do not debate all pros/cons of incineration. |
 | 3 | The real question is broad catch-up versus selective modernization. | Do not oversell obvious findings. |
-| 4 | One average hides two bottlenecks. | Do not use "entry" without defining it. |
+| 4 | One average hides two bottlenecks; define entry, MWh/t, and bottleneck. | Do not use jargon without defining it. |
 | 5 | The data are national facility-level administrative records with clear limits. | Do not imply retrofit contracts or lifecycle emissions are observed. |
 | 6 | The sample pipeline creates two analysis frames for two questions. | Do not treat sample construction as boring. |
 | 7 | Two samples are necessary because the outcomes differ. | Do not use one-model language. |

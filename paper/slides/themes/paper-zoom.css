@@ -179,6 +179,34 @@ section.close::after {
   margin-top: 1.2rem;
 }
 
+.hero-title-card {
+  background: rgba(255, 253, 248, 0.09);
+  border: 1px solid rgba(255, 253, 248, 0.34);
+  border-radius: 8px;
+  margin: 0.7rem 0 0.78rem;
+  max-width: 1080px;
+  padding: 0.56rem 0.72rem;
+}
+
+.hero-title-label {
+  color: rgba(255, 253, 248, 0.72);
+  font-size: 0.34em;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.26rem;
+  text-transform: uppercase;
+}
+
+.hero-paper-title {
+  color: #fffdf8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.58em;
+  font-weight: 700;
+  line-height: 1.24;
+  margin: 0;
+  max-width: 980px;
+}
+
 .pill-row {
   display: flex;
   flex-wrap: wrap;
@@ -607,4 +635,26 @@ section.dense li {
 
 .muted-fill {
   background: var(--gold);
+}
+
+.term-row {
+  display: grid;
+  gap: 0.46rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.68rem;
+}
+
+.term-chip {
+  background: #eef3f4;
+  border: 1px solid #d5dddf;
+  border-left: 4px solid var(--gold);
+  border-radius: 7px;
+  color: var(--ink);
+  font-size: 0.42em;
+  line-height: 1.34;
+  padding: 0.46rem 0.54rem;
+}
+
+.term-chip strong {
+  color: var(--navy-2);
 }
