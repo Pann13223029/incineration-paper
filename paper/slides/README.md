@@ -8,6 +8,7 @@ This directory contains a paper-only presentation package for explaining the art
 |:--|:--|
 | `paper-zoom-briefing.md` | Editable Marp slide deck. |
 | `paper-zoom-script.md` | Full slide-by-slide speaker script and Zoom run sheet. |
+| `paper-zoom-presentation-checklist.md` | Practical delivery checklist for a simple supervisor-facing presentation. |
 | `themes/paper-zoom.css` | Custom academic presentation theme. |
 | `dist/` | Local generated HTML output, ignored by Git. |
 
@@ -39,5 +40,4 @@ npm run slides:paper:pdf
 
 ## Presentation Use
 
-Use the PDF for Zoom screen sharing and keep `paper-zoom-script.md` open on a second screen. The main deck is designed for a mixed academic/non-expert audience: plain-language framing comes first, while model details and claim boundaries are placed later or in the appendix.
-
+Use the PDF for Zoom screen sharing and keep `paper-zoom-script.md` open on a second screen. The live route is 12 main slides; appendix slides are only for questions. Before presenting, run through `paper-zoom-presentation-checklist.md` to keep the explanation simple, direct, and supervisor-friendly.
