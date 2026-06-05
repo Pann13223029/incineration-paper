@@ -3,29 +3,29 @@ marp: true
 paginate: true
 theme: paper-zoom
 size: 16:9
-title: Critical Briefing on the Waste-Incineration Paper
-description: Expanded paper-only Zoom briefing deck for the Japan waste-incineration facility-panel study.
+title: Where Energy Recovery Stalls
+description: Audience-facing Zoom briefing deck for the Japan waste-incineration facility-panel study.
 ---
 
 <!-- _class: hero -->
 
-# Explaining the Paper Clearly
+# Where Energy Recovery Stalls
 
-## Why Japan's incineration energy-recovery pattern matters
+## Two bottlenecks in Japan's municipal waste-incineration fleet
 
 <div class="pill-row">
   <span class="pill">15-18 minute route</span>
-  <span class="pill">Paper only</span>
-  <span class="pill">Methods + limits included</span>
+  <span class="pill">Data + method</span>
+  <span class="pill">Results + limits</span>
 </div>
 
 <div class="meta">
   Pann Phetra<br/>
-  Paper briefing for discussion and feedback
+  Paper discussion briefing
 </div>
 
 <!--
-Script cue: Set expectation. This version is still simple, but more critical: data, method, robustness, limits, and future direction are included in the live route.
+Script cue: Set expectation. This is an audience-facing route: problem, method, results, limits, and feedback questions.
 -->
 
 ---
@@ -55,7 +55,7 @@ Script cue: Set expectation. This version is still simple, but more critical: da
 </div>
 
 <div class="callout">
-  <p>This matters because the same waste-treatment process can either recover useful power or miss that energy-recovery opportunity.</p>
+  <p>The same waste-treatment process can either recover useful power or miss that energy-recovery opportunity.</p>
 </div>
 
 <!--
@@ -64,15 +64,15 @@ Script cue: Start from practical stakes before methodology.
 
 ---
 
-# The Claim Is Not the Obvious Part
+# The Real Question
 
 <div class="card single-card center">
-  <p class="eyebrow">Skeptical framing</p>
-  <p class="reader-line">The paper is not asking the listener to be surprised that young and large plants have advantages.</p>
+  <p class="eyebrow">Expected part</p>
+  <p class="reader-line">Younger and larger plants have advantages. That is not the surprising claim.</p>
 </div>
 
 <div class="callout">
-  <p>The stronger question is whether modernization spreads broadly through the lagging fleet, or mostly appears where conditions are already favorable.</p>
+  <p>The real question is whether energy-recovery modernization spreads through lagging facilities, or concentrates where conditions are already favorable.</p>
 </div>
 
 <!--
@@ -81,23 +81,23 @@ Script cue: Defuse the "common sense" objection early.
 
 ---
 
-# Main Idea in Plain Words
+# Two Questions, One Fleet
 
 <div class="card single-card center">
-  <p class="eyebrow">Plain claim</p>
-  <p class="reader-line">One fleet average hides two different questions.</p>
+  <p class="eyebrow">Core logic</p>
+  <p class="reader-line">One fleet average hides two different bottlenecks.</p>
 </div>
 
 <div class="two-col">
   <div class="card">
     <p class="eyebrow">Question 1</p>
     <p class="big">Which plants start generating electricity?</p>
-    <p class="small">This is the entry question.</p>
+    <p class="small">This is the entry bottleneck.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Question 2</p>
     <p class="big">Among generators, who produces more electricity per tonne?</p>
-    <p class="small">This is the performance question.</p>
+    <p class="small">This is the performance bottleneck.</p>
   </div>
 </div>
 
@@ -107,14 +107,14 @@ Script cue: Define the terms before using them.
 
 ---
 
-# Data Sources: What Is Observed
+# What the Data Can See
 
 <table class="source-table">
   <thead>
     <tr>
-      <th>Source layer</th>
-      <th>What it contributes</th>
-      <th>How the paper uses it</th>
+      <th>Observed layer</th>
+      <th>Observed fields</th>
+      <th>Analytical role</th>
     </tr>
   </thead>
   <tbody>
@@ -142,7 +142,7 @@ Script cue: Define the terms before using them.
 </table>
 
 <div class="callout">
-  <p>This is broad administrative panel evidence. It observes facility reporting patterns well, but not internal retrofit contracts, municipal bargaining, or full lifecycle emissions.</p>
+  <p>The panel observes facility reporting patterns well. It does not directly observe internal retrofit contracts, municipal bargaining, or full lifecycle emissions.</p>
 </div>
 
 <!--
@@ -151,7 +151,7 @@ Script cue: Say what the dataset can and cannot observe.
 
 ---
 
-# From Data to Analysis Frames
+# How the Panel Becomes Two Frames
 
 <div class="pipeline">
   <div class="pipe-card">
@@ -184,7 +184,7 @@ Script cue: Say what the dataset can and cannot observe.
 </div>
 
 <div class="callout">
-  <p>The split is methodological, not cosmetic: the paper first asks who crosses into generation, then asks how well generators perform after crossing.</p>
+  <p>The split separates two outcomes: crossing into power generation, and performing well after crossing.</p>
 </div>
 
 <!--
@@ -193,7 +193,7 @@ Script cue: The sample split is a substantive choice, not just a data-cleaning d
 
 ---
 
-# Two Samples Because There Are Two Questions
+# Why Two Samples Are Needed
 
 <table class="source-table">
   <thead>
@@ -230,7 +230,7 @@ Script cue: This slide prevents the audience from asking why there is not one mo
 
 ---
 
-# Method 1: Who Had a Chance to Start?
+# Method: First Entry Into Generation
 
 <div class="method-grid">
   <div class="formula-card">
@@ -255,7 +255,7 @@ Script cue: This slide prevents the audience from asking why there is not one mo
 </div>
 
 <div class="callout">
-  <p>The model asks: among facilities still outside power generation, who first reports generation in the next observed year?</p>
+  <p>Plain question: among facilities still outside power generation, who first reports generation in the next observed year?</p>
 </div>
 
 <!--
@@ -264,7 +264,7 @@ Script cue: This is where the method becomes more than common sense.
 
 ---
 
-# Method 2: How Generator Output Is Compared
+# Method: Output Among Generators
 
 <div class="method-grid">
   <div class="formula-card">
@@ -279,7 +279,7 @@ Script cue: This is where the method becomes more than common sense.
   <div class="card">
     <p class="eyebrow">Model family</p>
     <p class="big">Pooled OLS, year FE, RE, year FE + RE.</p>
-    <p class="small">The paper checks whether the sign pattern survives alternative structures.</p>
+    <p class="small">Multiple structures check whether the sign pattern survives.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Interpretation</p>
@@ -298,14 +298,14 @@ Script cue: Move the discussion from "old plants are worse" to "do generators co
 
 ---
 
-# Result 1: Starting Generation Is Selective
+# Result 1: Entry Clusters in Young, Large Facilities
 
 <div class="figure-card figure-wide">
   <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
 </div>
 
 <div class="callout">
-  <p>Facilities that first start generating electricity are mostly young and large: 102/141 events are from age 0-10 facilities, and 99/141 are in the largest capacity quartile.</p>
+  <p>First entry is concentrated in already favorable facility types: 102/141 events are age 0-10, and 99/141 are in the largest capacity quartile.</p>
 </div>
 
 <!--
@@ -314,7 +314,7 @@ Script cue: Say the two numbers slowly, but do not stop at counts.
 
 ---
 
-# What Result 1 Rules Out
+# Interpretation: Not Broad Fleet Catch-Up
 
 <div class="rate-panels">
   <div class="rate-panel">
@@ -366,7 +366,7 @@ Script cue: Say the two numbers slowly, but do not stop at counts.
 </div>
 
 <div class="callout">
-  <p>This rules out a simple broad-catch-up story: the smallest capacity quartile records only one first-entry event, while the largest quartile records 99.</p>
+  <p>If modernization were broad catch-up, older and smaller non-generators would show more entry. Instead, the smallest capacity quartile records 1 event; the largest records 99.</p>
 </div>
 
 <!--
@@ -375,7 +375,7 @@ Script cue: This answers the obviousness objection.
 
 ---
 
-# What Kind of Entry Was This?
+# Entry Pathways: Modernization, Not One Mechanism
 
 <div class="three-col">
   <div class="kpi-card">
@@ -399,7 +399,7 @@ Script cue: This answers the obviousness objection.
 </div>
 
 <div class="callout">
-  <p>The audit prevents overclaiming: the data support selective modernization, not proof that replacement is the only pathway.</p>
+  <p>The evidence supports selective modernization, but it does not prove that replacement is the only pathway.</p>
 </div>
 
 <!--
@@ -408,14 +408,14 @@ Script cue: This slide shows critical restraint.
 
 ---
 
-# Result 2: Entry Is Not the Finish Line
+# Result 2: Generation Status Is Not Enough
 
 <div class="figure-card figure-wide">
   <img src="../figures/figure3_efficiency_structure.png" alt="Generator efficiency structure by age and variance ratio" />
 </div>
 
 <div class="callout">
-  <p>Among plants that already generate, older facilities recover less electricity per tonne. Existing generators remain uneven after entry.</p>
+  <p>Among generators, output intensity still differs sharply: age 0-10 averages 0.400 MWh/t, while age 30+ averages 0.183 MWh/t.</p>
 </div>
 
 <!--
@@ -424,7 +424,7 @@ Script cue: Do not imply older plants cannot improve; say the observed hierarchy
 
 ---
 
-# Generator Convergence Is Limited
+# Interpretation: Performance Gaps Persist
 
 <div class="three-col">
   <div class="kpi-card">
@@ -448,7 +448,7 @@ Script cue: Do not imply older plants cannot improve; say the observed hierarchy
 </div>
 
 <div class="callout">
-  <p>The critical point is not that older generators are worse; it is that operating generators do not appear to converge enough to erase inherited gaps.</p>
+  <p>Only about 15% of full-sample output variation is within facilities over time. Most variation remains between facilities, so entry does not erase inherited gaps.</p>
 </div>
 
 <!--
@@ -457,7 +457,7 @@ Script cue: This makes result 2 more critical and less obvious.
 
 ---
 
-# Robustness: What I Tried to Break
+# Stress Tests: The Pattern Survives
 
 <table class="source-table">
   <thead>
@@ -501,7 +501,7 @@ Script cue: Use this to show the paper is more than descriptive common sense.
 
 ---
 
-# Data Limitations Are Real
+# Data Limits: Disclosed and Tested
 
 <div class="three-col">
   <div class="kpi-card">
@@ -525,7 +525,7 @@ Script cue: Use this to show the paper is more than descriptive common sense.
 </div>
 
 <div class="callout">
-  <p>The paper discloses these limits and stress-tests them. It maps bottlenecks; it does not claim a perfect engineering census or a fully identified causal mechanism.</p>
+  <p>These limits are disclosed and stress-tested. The evidence maps bottlenecks; it does not claim a perfect engineering census or fully identified causal mechanism.</p>
 </div>
 
 <!--
@@ -534,7 +534,7 @@ Script cue: Make limits sound like research discipline, not weakness.
 
 ---
 
-# Decision Logic
+# Why the Split Matters for Decisions
 
 <div class="diagram-card">
   <div class="flow">
@@ -559,7 +559,7 @@ Script cue: Make limits sound like research discipline, not weakness.
 </div>
 
 <div class="callout">
-  <p>This matters because renewal, starting electricity generation, and generator optimization are not the same task.</p>
+  <p>Renewal, starting electricity generation, and generator optimization are different decisions, not one generic "improve incineration" task.</p>
 </div>
 
 <!--
@@ -568,23 +568,23 @@ Script cue: This is the practical payoff.
 
 ---
 
-# Weak Claim vs Defensible Claim
+# Contribution: Two Bottlenecks in One Fleet
 
 <div class="two-col">
   <div class="claim-card boundary">
-    <p class="eyebrow">Weak claim</p>
+    <p class="eyebrow">Weak version</p>
     <p class="big">Newer and larger plants generate more.</p>
     <p class="small">This is plausible but not enough for a paper by itself.</p>
   </div>
   <div class="claim-card good">
-    <p class="eyebrow">Defensible claim</p>
+    <p class="eyebrow">Stronger version</p>
     <p class="big">The fleet has two bottlenecks.</p>
     <p class="small">Starting generation is selective, and generator output remains uneven after entry.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The paper's contribution is mapping where the bottleneck sits, not pretending that age and scale are surprising.</p>
+  <p>The contribution is locating the bottlenecks, not pretending that age and scale advantages are surprising.</p>
 </div>
 
 <!--
@@ -593,7 +593,7 @@ Script cue: This is the publishability pitch.
 
 ---
 
-# Future Work: Mechanisms Not Yet Tested
+# Next Step: Test Mechanisms
 
 <div class="three-col">
   <div class="card">
@@ -614,7 +614,7 @@ Script cue: This is the publishability pitch.
 </div>
 
 <div class="callout">
-  <p>These extensions have not started yet. They are the next step from diagnostic mapping to mechanism testing.</p>
+  <p>The next research step is moving from diagnostic mapping to mechanism testing.</p>
 </div>
 
 <!--
@@ -625,12 +625,12 @@ Script cue: Be honest that future work is proposed, not completed.
 
 <!-- _class: close -->
 
-# Feedback Ask
+# Discussion Questions
 
-<p class="subtitle">The paper's message is: first ask who starts generating electricity, then ask who generates well after starting.</p>
+<p class="subtitle">Two bottlenecks shape the story: who starts generating electricity, and who generates well after starting.</p>
 
 <div class="close-line">
-  <p>Is the two-question design strong enough as the paper's main contribution? Which limitation or future-work path should be prioritized?</p>
+  <p>Is the two-bottleneck explanation strong enough as the central contribution? Which limitation or future direction should be prioritized?</p>
 </div>
 
 <!--

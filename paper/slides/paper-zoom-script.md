@@ -25,11 +25,11 @@ The listener should leave understanding four things:
 | Robustness, limits, and future work | 15-19 | 5 minutes |
 | Feedback ask | 20 | 1 minute |
 
-## Slide 1: Explaining the Paper Clearly
+## Slide 1: Where Energy Recovery Stalls
 
 Thank you for joining. This is a paper briefing, not a full thesis defense. I will explain the data, method, key results, limitations, and future directions.
 
-The main goal is to test whether the current paper pitch is clear and defensible.
+The main goal is to test whether the paper's two-bottleneck story is clear and defensible.
 
 ## Slide 2: Why This Matters
 
@@ -39,25 +39,25 @@ In FY2024, only 41.1 percent of panel facilities are flagged as power-generating
 
 The paper asks where useful electricity recovery appears inside the existing fleet.
 
-## Slide 3: The Claim Is Not the Obvious Part
+## Slide 3: The Real Question
 
 This slide is important because the result could sound too obvious if phrased badly.
 
 I am not asking the listener to be surprised that young and large plants have advantages. That part is expected.
 
-The stronger question is whether modernization spreads broadly through older and smaller lagging facilities, or whether it mostly appears where conditions are already favorable.
+The stronger question is whether energy-recovery modernization spreads broadly through older and smaller lagging facilities, or whether it mostly appears where conditions are already favorable.
 
-## Slide 4: Main Idea in Plain Words
+## Slide 4: Two Questions, One Fleet
 
-The main idea is that one fleet average hides two different questions.
+The main idea is that one fleet average hides two different bottlenecks.
 
-First, which plants start generating electricity? That is the entry question.
+First, which plants start generating electricity? That is the entry bottleneck.
 
-Second, among generators, who produces more electricity per tonne? That is the performance question.
+Second, among generators, who produces more electricity per tonne? That is the performance bottleneck.
 
 The paper is built around keeping these two questions separate and then reading them together.
 
-## Slide 5: Data Sources: What Is Observed
+## Slide 5: What the Data Can See
 
 The data source is Japan's Ministry of the Environment General Waste Treatment Survey.
 
@@ -65,7 +65,7 @@ The panel covers FY2005 to FY2024 and uses facility-level municipal waste-treatm
 
 The important point is that this is national facility-level evidence, not one local case. But I should also be clear about the boundary: the administrative panel does not directly observe internal retrofit contracts, municipal bargaining, or full lifecycle emissions.
 
-## Slide 6: From Data to Analysis Frames
+## Slide 6: How the Panel Becomes Two Frames
 
 The full analytical starting point is 23,599 facility-year rows.
 
@@ -77,7 +77,7 @@ The generator-output frame has 5,683 observations among identifiable operating g
 
 This split is methodological. The first frame studies crossing into electricity generation. The second frame studies output intensity after a facility is already inside generation.
 
-## Slide 7: Two Samples Because There Are Two Questions
+## Slide 7: Why Two Samples Are Needed
 
 The two samples are linked but not identical.
 
@@ -85,9 +85,9 @@ For the start-generating question, the sample is facilities first observed witho
 
 For the generator-output question, the sample is already-operating generators. The outcome is electricity generated per tonne processed.
 
-One model for everything would mix the gate into generation with performance after entry. That would make the paper less clear because it would hide where the bottleneck actually sits.
+One model for everything would mix the gate into generation with performance after entry. That would make the result less clear because it would hide where the bottleneck actually sits.
 
-## Slide 8: Method 1: Who Had a Chance to Start?
+## Slide 8: Method: First Entry Into Generation
 
 The first method is a risk-set design.
 
@@ -97,17 +97,17 @@ The model asks for the probability of first generation in a given year using pri
 
 In plain language, the model asks: among facilities still outside power generation, who first reports generation in the next observed year?
 
-## Slide 9: Method 2: How Generator Output Is Compared
+## Slide 9: Method: Output Among Generators
 
 The second method is a generator-only comparison.
 
 The outcome is electricity recovered per tonne processed. This focuses on output intensity, not just whether a plant has any power generation.
 
-The models compare age, scale, utilization, heating value, grid context, and year structure. The paper checks pooled OLS, year fixed effects, random effects, and year fixed effects plus random effects.
+The models compare age, scale, utilization, heating value, grid context, and year structure. I check pooled OLS, year fixed effects, random effects, and year fixed effects plus random effects.
 
 The interpretation is diagnostic, not causal. The critical question is whether operating generators converge enough to erase inherited facility differences.
 
-## Slide 10: Result 1: Starting Generation Is Selective
+## Slide 10: Result 1: Entry Clusters in Young, Large Facilities
 
 The first result is selective entry.
 
@@ -115,7 +115,9 @@ The figure shows that facilities first starting electricity generation are mostl
 
 Out of 141 observed first-entry events, 102 come from facilities aged 0 to 10 years, and 99 are in the largest capacity quartile.
 
-## Slide 11: What Result 1 Rules Out
+The audience-facing interpretation is simple: the entry margin is not evenly spread across the fleet.
+
+## Slide 11: Interpretation: Not Broad Fleet Catch-Up
 
 This slide explains why the result is more than common sense.
 
@@ -127,7 +129,9 @@ The smallest capacity quartile records only one first-entry event, while the lar
 
 So the evidence does not look like broad late-life catch-up across the whole fleet. It looks like selective modernization.
 
-## Slide 12: What Kind of Entry Was This?
+The key wording for the meeting is: this is not "new plants are better"; it is "catch-up is not broad across lagging plants."
+
+## Slide 12: Entry Pathways: Modernization, Not One Mechanism
 
 The pathway audit helps avoid overclaiming.
 
@@ -135,15 +139,15 @@ Eighty-two observed first-entry events look reset- or rebuild-like. Thirty-eight
 
 The safe interpretation is that capital-side modernization is present, but the paper does not prove replacement is the only pathway.
 
-## Slide 13: Result 2: Entry Is Not the Finish Line
+## Slide 13: Result 2: Generation Status Is Not Enough
 
 The second result looks inside the generating segment.
 
-Older generators recover less electricity per tonne, and existing generators remain uneven after entry.
+Older generators recover less electricity per tonne, and existing generators remain uneven after entry. The age 0 to 10 group averages about 0.400 MWh per tonne, while the 30-plus group averages about 0.183 MWh per tonne.
 
-The point is not that older plants can never improve. The point is that entering electricity generation does not erase generator hierarchy.
+The point is not that older plants can never improve. The point is that simply entering electricity generation does not erase generator hierarchy.
 
-## Slide 14: Generator Convergence Is Limited
+## Slide 14: Interpretation: Performance Gaps Persist
 
 The within-to-total variance ratio is 0.1499 in the full sample. In plain terms, most output variation is between facilities rather than movement within the same facility over time.
 
@@ -151,7 +155,9 @@ The post-2011 ratio is even lower at 0.0956.
 
 This is why the result is framed as bounded responsiveness: generator performance does not appear to converge enough to erase inherited gaps.
 
-## Slide 15: Robustness: What I Tried to Break
+The audience-facing version is: becoming a generator is not the finish line; performance remains structurally uneven.
+
+## Slide 15: Stress Tests: The Pattern Survives
 
 This slide shows why the pattern is not just a fragile coding artifact.
 
@@ -161,7 +167,7 @@ For generator output, I checked pre/post-Fukushima splits, capacity terciles, ra
 
 These checks do not make the estimates causal, but they make the diagnostic pattern more credible.
 
-## Slide 16: Data Limitations Are Real
+## Slide 16: Data Limits: Disclosed and Tested
 
 The data have real limits.
 
@@ -171,7 +177,7 @@ Heating-value data also need plausibility checks: 569 regression-frame rows are 
 
 These limitations discipline the claim. The paper maps bottlenecks and stress-tests data issues; it does not claim a perfect engineering census or a fully identified causal mechanism.
 
-## Slide 17: Decision Logic
+## Slide 17: Why the Split Matters for Decisions
 
 If the two bottlenecks are different, planning questions should also differ.
 
@@ -179,7 +185,7 @@ For non-generators, ask whether the plant can start recovering electricity. For 
 
 Renewal, starting generation, and generator optimization are not the same task.
 
-## Slide 18: Weak Claim vs Defensible Claim
+## Slide 18: Contribution: Two Bottlenecks in One Fleet
 
 The weak claim is: newer and larger plants generate more. That sounds plausible, but it is not enough for a paper.
 
@@ -187,7 +193,7 @@ The defensible claim is: the fleet has two bottlenecks. Starting generation is s
 
 That is the paper's contribution: mapping where the bottleneck sits.
 
-## Slide 19: Future Work: Mechanisms Not Yet Tested
+## Slide 19: Next Step: Test Mechanisms
 
 Future work would move from diagnostic mapping to mechanism testing.
 
@@ -195,10 +201,10 @@ I have not started these extensions yet. The next step could link facility histo
 
 The most publishable future direction is probably the one that best explains why some facilities start generation while others do not.
 
-## Slide 20: Feedback Ask
+## Slide 20: Discussion Questions
 
 The paper's message is: first ask who starts generating electricity, then ask who generates well after starting.
 
 The feedback I need is targeted.
 
-Is the two-question design strong enough as the paper's main contribution? Which limitation most needs to become a robustness check? Which future-work path is most publishable: capital renewal, governance, lifecycle accounting, or comparative fleet evidence?
+Is the two-bottleneck explanation strong enough as the paper's central contribution? Which limitation most needs to become a robustness check? Which future-work path is most publishable: capital renewal, governance, lifecycle accounting, or comparative fleet evidence?

@@ -22,7 +22,7 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 
 ## Live Delivery Checklist
 
-- [ ] Start with purpose: "This is a paper briefing and I want feedback on the main contribution."
+- [ ] Start with purpose in the script, not on the slide: "This is a paper briefing and I want feedback on the main contribution."
 - [ ] Explain why the issue matters before showing methods.
 - [ ] Say clearly that the paper is not trying to make age and scale sound surprising.
 - [ ] Spend enough time on slides 5-9; these are the methodological credibility slides.
@@ -36,26 +36,26 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 
 | Slide | Must-say message | Do not do |
 |:--|:--|:--|
-| 1 | This is a paper briefing, not a full defense. | Do not start with regression terms. |
+| 1 | The topic is where energy recovery stalls in the fleet. | Do not start with regression terms. |
 | 2 | Incineration creates heat, but electricity recovery is uneven. | Do not debate all pros/cons of incineration. |
-| 3 | The claim is not "young/large plants do better." | Do not oversell obvious findings. |
-| 4 | One average hides two questions. | Do not use "entry" without defining it. |
+| 3 | The real question is broad catch-up versus selective modernization. | Do not oversell obvious findings. |
+| 4 | One average hides two bottlenecks. | Do not use "entry" without defining it. |
 | 5 | The data are national facility-level administrative records with clear limits. | Do not imply retrofit contracts or lifecycle emissions are observed. |
 | 6 | The sample pipeline creates two analysis frames for two questions. | Do not treat sample construction as boring. |
 | 7 | Two samples are necessary because the outcomes differ. | Do not use one-model language. |
 | 8 | The adoption method follows facilities still at risk and uses lagged predictors. | Do not forget pre-event timing. |
 | 9 | Generator output is compared after entry using output intensity. | Do not claim causal effects. |
-| 10 | Starting generation is selective. | Do not stop at "young/large." |
-| 11 | The rate chart rules out a broad catch-up story. | Do not overstate mechanism. |
-| 12 | Pathway audit prevents replacement overclaim. | Do not say replacement is the only pathway. |
-| 13 | Entry is not the finish line. | Do not say old generators cannot improve. |
-| 14 | Generator convergence is limited. | Do not overexplain variance decomposition. |
+| 10 | Entry clusters in young, large facilities. | Do not stop at "young/large." |
+| 11 | The rate chart rules out broad fleet catch-up. | Do not overstate mechanism. |
+| 12 | Entry pathway evidence supports modernization, not one mechanism. | Do not say replacement is the only pathway. |
+| 13 | Generation status alone does not mean high performance. | Do not say old generators cannot improve. |
+| 14 | Performance gaps persist between facilities. | Do not overexplain variance decomposition. |
 | 15 | Robustness checks stress-test identifiers, model form, period, scale, outcome coding, and heating value. | Do not say robustness proves causality. |
 | 16 | Data limitations are disclosed with counts and sensitivity logic. | Do not hide data caveats. |
 | 17 | Different bottlenecks imply different planning questions. | Do not prescribe one policy. |
-| 18 | Defensible claim beats weak claim. | Do not present common sense as novelty. |
-| 19 | Future work is proposed, not completed. | Do not pretend mechanisms are already tested. |
-| 20 | Ask for targeted feedback. | Do not keep presenting after the ask. |
+| 18 | The contribution is two bottlenecks in one fleet. | Do not present common sense as novelty. |
+| 19 | Future work should test mechanisms. | Do not pretend mechanisms are already tested. |
+| 20 | Ask discussion questions. | Do not keep presenting after the ask. |
 
 ## Simple Q&A Answers
 
