@@ -30,6 +30,8 @@ The current repo includes:
   main manuscript
 - reader-facing regression guide explaining AMEs, log coefficients, fixed
   effects, random effects, and clustered standard errors
+- supervisor-facing comparator and method-lineage packet at
+  `paper/notes/professor-comparator-method-lineage.md`
 - explicit facility-clustered standard-error language for the efficiency models
 - safer policy wording around asset-renewal screening and capital-side triage
 - synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`
@@ -69,6 +71,7 @@ Then review:
 2. `paper/supplement/supplement.md`
 3. `paper/submission/submission-checklist.md`
 4. `paper/references/selected-references.md`
+5. `paper/notes/professor-comparator-method-lineage.md`
 
 After editing, refresh artifacts:
 
