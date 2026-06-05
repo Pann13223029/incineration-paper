@@ -26,6 +26,10 @@ The current repo includes:
 - operating-generator inclusion audit showing 907 uncoded operating-generator rows, concentrated in FY2010-FY2012
 - event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
 - quantified FY2024 power-generation share of 41.1% in the abstract and introduction
+- explicit adoption-hazard and electricity-recovery regression equations in the
+  main manuscript
+- reader-facing regression guide explaining AMEs, log coefficients, fixed
+  effects, random effects, and clustered standard errors
 - explicit facility-clustered standard-error language for the efficiency models
 - safer policy wording around asset-renewal screening and capital-side triage
 - synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`

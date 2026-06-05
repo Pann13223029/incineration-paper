@@ -7,6 +7,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
+\usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{tabularx}
@@ -91,7 +92,57 @@ The first frame is the coded adoption frame. It includes facilities first observ
 
 In practical terms, the adoption model asks whether a facility that was still non-generating in one year first reports generation in the following observed year. Technically, it is a lagged discrete-time logit hazard estimated on 11,717 observations across 1,915 facilities and 140 retained events. Predictors are prior-year age band and prior-year design capacity, with year fixed effects, prefecture fixed effects, and facility-clustered standard errors. This is an observed-transition model, not a complete structural model of all possible modernization pathways. The design follows grouped event-history logic: each coded facility-year contributes to the risk set until first event occurrence (Allison, 1982; Beck et al., 1998). That distinction matters because the paper is not estimating a continuous engineering retrofit process. It estimates the probability that a facility first records entry into power generation in the next observed year, conditional on still being at risk. The lagged predictor structure ensures that age band and capacity are measured before the observed event rather than on the event row itself.
 
-The second frame is the canonical generator frame. It contains operating facilities with positive throughput and positive power output, after standard cleaning and efficiency bounding. The operating-generation sample contains 6,660 rows before identifier and regression cleaning. Of those, 907 rows lack official facility codes and are excluded from the canonical regression frame, leaving 5,683 observations across 1,016 facilities. The dependent variable is winsorized log electricity generated per tonne processed. Main predictors are facility age, design capacity, capacity utilization, waste heating value, and a grid-emission control. In simpler terms, the outcome is electricity recovered per tonne of waste, with extreme reported values capped and log-transformed so that a few unusual records do not dominate the comparison. The main specifications are pooled OLS, year-FE, RE, and year-FE plus RE models, all used as structured descriptive models rather than clean structural estimates (Wooldridge, 2010). They are complementary descriptive views: pooled models compare facilities overall, year fixed effects absorb common shocks by fiscal year, and random-effects models summarize persistent facility-level differences. All reported standard errors are clustered by facility.
+Formally, let $A_{it}=1$ if facility $i$ first reports power generation in fiscal year $t$, conditional on still being in the at-risk set $R_{it}=1$. The main adoption model is:
+
+\begin{equation}
+\begin{aligned}
+\Pr(A_{it}=1 \mid R_{it}=1)
+= \operatorname{logit}^{-1}\big[
+&\alpha
++ \beta_1 I(\text{Age}_{i,t-1}=10\text{--}20)
++ \beta_2 I(\text{Age}_{i,t-1}=20\text{--}30) \\
+&+ \beta_3 I(\text{Age}_{i,t-1}\geq 30)
++ \beta_4 \text{Capacity100}_{i,t-1}
++ \gamma_t + \delta_p
+\big].
+\end{aligned}
+\end{equation}
+
+The omitted age group is 0--10 years. $\gamma_t$ absorbs common fiscal-year differences, $\delta_p$ absorbs prefecture-level context, and $\text{Capacity100}$ measures design capacity in 100 t/day units. Table 2 reports average marginal effects in percentage points, not log-odds coefficients. A value of -1.76 percentage points therefore means that the annual probability of first reporting generation is 1.76 percentage points lower than the 0--10 year reference group, conditional on the model covariates.
+
+The second frame is the canonical generator frame. It contains operating facilities with positive throughput and positive power output, after standard cleaning and efficiency bounding. The operating-generation sample contains 6,660 rows before identifier and regression cleaning. Of those, 907 rows lack official facility codes and are excluded from the canonical regression frame, leaving 5,683 observations across 1,016 facilities. The dependent variable is log electricity recovered per tonne processed. Main predictors are facility age, design capacity, capacity utilization, waste heating value, and a grid-emission control. In simpler terms, the outcome is electricity recovered per tonne of waste. The raw ratio is MWh generated divided by tonnes processed, clipped to 0.01--0.80 MWh/t, and then log-transformed so that a few unusual administrative records do not dominate the comparison. Capacity utilization is also capped at 1.0. The paper uses this measure as electricity recovery intensity, not as a full thermodynamic efficiency measure.
+
+Let $q_{it}$ be the clipped electricity recovery ratio and let $y_{it}=\log(q_{it})$. The compact model is:
+
+\begin{equation}
+y_{it}
+= \alpha + X_{it}'\beta + \gamma_t + u_i + \varepsilon_{it},
+\end{equation}
+
+where $X_{it}$ contains facility age, design capacity in 100 t/day units, capped capacity utilization, heating value, and the grid-emission factor. The four reported models are nested descriptive versions of this equation. Model 1 omits both $\gamma_t$ and $u_i$ and compares facilities overall with pooled OLS. Model 2 includes fiscal-year fixed effects $\gamma_t$, which absorb year-specific shocks common to the fleet. Model 3 includes a facility-specific random intercept $u_i$, which summarizes persistent facility-level differences. Model 4 includes both year fixed effects and the random intercept. All four models use facility-clustered standard errors to avoid treating repeated observations from the same facility as fully independent (Wooldridge, 2010).
+
+Because the dependent variable is logged, small coefficients can be read approximately as percentage changes in electricity recovered per tonne. For example, the pooled age coefficient of -0.0279 implies about 2.8\% lower electricity recovered per tonne for each additional facility year, conditional on the listed variables. The pooled capacity coefficient of 0.0874 implies about 9.1\% higher electricity recovered per tonne for each additional 100 t/day of design capacity. The random-effects models are used descriptively; they do not prove that unobserved facility traits are unrelated to age, capacity, technology, or municipal context.
+
+\par\smallskip
+\noindent\textbf{Regression reader guide}
+\begin{center}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{L{3.1cm} L{4.9cm} X}
+\toprule
+Term & Plain meaning & Reader takeaway \\
+\midrule
+Adoption hazard & Annual chance that a non-generator first reports generation & Table 2 is about entry into generation, not generator performance \\
+Average marginal effect & Change in that annual chance & A -1.76 pp estimate means 1.76 percentage points lower annual probability \\
+Electricity recovery regression & Comparison of MWh/t among operating generators & Table 3 is about performance after entry \\
+Log coefficient & Approximate percentage change in MWh/t & A -0.028 coefficient is roughly 2.8\% lower electricity recovered per tonne \\
+Year fixed effects & Adjusts for common fiscal-year differences & This does not identify a specific policy shock \\
+Random effects & Allows persistent facility-level differences & Descriptive summary, not causal proof \\
+Clustered standard errors & Uncertainty adjusted for repeated facility observations & Repeated rows are not treated as fully independent \\
+\bottomrule
+\end{tabularx}
+\normalsize
+\end{center}
 
 The efficiency results should therefore be read as conditional patterns within the canonical regression frame, not as estimates for the entire generating fleet. This frame is intentionally narrower than the operating-generator universe because the argument depends on facility-level comparison over time. Rows without official facility codes cannot support that comparison. The frame is better understood as the canonical identifiable generator sample than as a census of all generation activity. The supplement compares included and uncoded operating-generator rows; the uncoded rows are concentrated in FY2010--FY2012. The paper also uses a bounded efficiency metric because the empirical question is not boiler thermodynamics in isolation, but administrative performance in electricity recovered per tonne processed. That puts the paper closer to applied energy-recovery studies than to plant-level engineering optimization alone (Grosso et al., 2010; M\"{u}nster \& Meibom, 2010).
 
@@ -129,7 +180,7 @@ Synthesis & Two linked but non-identical analytical frames & Would one average-f
 
 The adoption results show a strongly selective transition pattern. In the risk set, annual event rates collapse after age 10 and rise sharply across capacity quartiles. Facilities aged 0--10 years account for 102 first-adoption events, while the three older age bands together account for only 39. By capacity, the largest quartile accounts for 99 first-adoption events, whereas the smallest quartile records only 1. The timing of first adoption is also clustered, with 109 of 141 observed first adoptions occurring in FY2013--FY2019, so the pattern should be read as an observed administrative transition pattern rather than as a separately identified policy shock or reporting change; the main hazard includes year fixed effects.
 
-The discrete-time logit hazard summarizes the same pattern in average marginal effects. The percentages below describe changes in the annual probability of first reporting generation, not changes in engineering efficiency. Relative to 0--10 year facilities, plants aged 10--20 years are about 1.76 percentage points less likely to record transition in the next observed year, plants aged 20--30 years are about 1.72 percentage points less likely, and plants aged 30 years or more are about 1.13 percentage points less likely. Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.50 percentage points. The sign pattern is stable in the complementary log-log and linear probability robustness variants.
+The discrete-time logit hazard summarizes the same pattern in average marginal effects. The percentages below describe changes in the annual probability of first reporting generation, not changes in engineering efficiency. Relative to 0--10 year facilities, plants aged 10--20 years are about 1.76 percentage points less likely to record transition in the next observed year, plants aged 20--30 years are about 1.72 percentage points less likely, and plants aged 30 years or more are about 1.13 percentage points less likely. Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.50 percentage points. The sign pattern is stable in the alternative event-model checks reported in the supplement.
 
 These effects should be read within the coded at-risk frame, not as a model of all modernization activity in the Japanese fleet. Even within that narrower frame, the evidence does not show broad late-life conversion among old, small plants. Transition is concentrated among facilities that were already younger and larger before the event year. Older plants do transition in some cases, but they do so less often and do not define the main event pattern. The extensive margin therefore looks like selective modernization rather than broad catch-up across the whole fleet. This matters because a descriptive fleet mean could be read as gradual modernization delayed by inertia, when the event pattern is more selective than gradual.
 
@@ -167,9 +218,9 @@ Pseudo-R-squared & \multicolumn{2}{r}{0.1842} \\
 
 \subsection{Performance within generation is bounded and strongly structured}
 
-Within the canonical regression frame, the main message is that generators mostly differ from one another rather than repeatedly changing position over time. The within-to-total variance ratio of pooled log-efficiency is 0.1499, meaning that most variation is between facilities rather than within facilities over time. The ratio remains low in both the pre-Fukushima and post-Fukushima windows, falling from 0.1795 before 2011 to 0.0956 after 2011. This does not prove irreversibility. It does show that mature generators do not frequently undergo large late-life movements that reshape the fleet distribution. It also does not isolate vintage effects from all other durable plant characteristics. More narrowly, it supports cross-facility descriptive comparison rather than clean causal isolation of vintage itself.
+Within the canonical regression frame, the main message is that generators mostly differ from one another rather than repeatedly changing position over time. The within-to-total variance ratio of pooled log-efficiency is 0.1499, meaning that most variation is between facilities rather than within facilities over time. The ratio remains low in both the pre-Fukushima and post-Fukushima windows, falling from 0.1795 before 2011 to 0.0956 after 2011. This does not prove irreversibility. It shows more narrowly that the observed panel contains limited evidence of frequent large late-life movements that reshape the fleet distribution. It also does not isolate vintage effects from all other durable plant characteristics. More narrowly, it supports cross-facility descriptive comparison rather than clean causal isolation of vintage itself.
 
-The coefficient patterns point in the same direction. Efficiency is consistently lower at older facilities and higher at larger and more fully utilized ones. The magnitudes differ across models, but the sign pattern is stable. The emphasis is therefore on structured conditional association rather than on any single structural parameter. This is consistent with earlier facility-level work showing that energy recovery performance is uneven across operating incinerators and that plant scale and operational intensity matter for output performance (Chen et al., 2012; Yeh, 2020; Grosso et al., 2010). What this paper adds is the linked comparison to the non-generating segment: the same fleet that shows selective entry at one margin also shows a stable hierarchy among mature generators at the other.
+The coefficient patterns point in the same direction. Efficiency is consistently lower at older facilities and higher at larger and more fully utilized ones. The magnitudes differ across models, but the sign pattern is stable. The emphasis is therefore on structured conditional association rather than on a causal estimate of what would happen if a plant's age, capacity, or utilization were changed by policy. This is consistent with earlier facility-level work showing that energy recovery performance is uneven across operating incinerators and that plant scale and operational intensity matter for output performance (Chen et al., 2012; Yeh, 2020; Grosso et al., 2010). What this paper adds is the linked comparison to the non-generating segment: the same fleet that shows selective entry at one margin also shows a stable hierarchy among mature generators at the other.
 
 \begin{figure}[t]
 \centering
@@ -209,7 +260,7 @@ R-squared & 0.2470 & 0.3721 & 0.1647 & 0.3076 \\
 \bottomrule
 \end{tabular}}
 \normalsize
-\caption*{\footnotesize Note: standard errors are clustered by facility and reported in parentheses. Three asterisks denote $p<0.01$. Coefficients are reported as structured conditional associations rather than as strict structural parameters.}
+\caption*{\footnotesize Note: standard errors are clustered by facility and reported in parentheses. Three asterisks denote $p<0.01$. Coefficients are reported as structured conditional associations rather than as strict structural parameters. Because the dependent variable is logged, small coefficients can be read approximately as percentage changes in electricity recovered per tonne.}
 \end{table}
 
 \subsection{Why the two results belong together}

@@ -136,6 +136,107 @@ refurbishment, or new build as the dominant mechanism.
 
 ## S5. Robustness And Estimator Notes
 
+### S5.0 Regression reader guide
+
+This subsection expands the regression notation used in the main text. It is
+included to make the estimation choices auditable without turning the article
+body into an econometrics appendix.
+
+#### Adoption model
+
+For facility \(i\) in prefecture \(p\) and fiscal year \(t\), let \(A_{it}=1\)
+if the facility first reports power generation in year \(t\). The model is
+estimated only when the facility is still in the adoption risk set, denoted
+\(R_{it}=1\). The main discrete-time logit hazard is:
+
+$$
+\Pr(A_{it}=1 \mid R_{it}=1)
+= \operatorname{logit}^{-1}
+\left[
+\alpha
++ \beta_1 I(\text{Age}_{i,t-1}=10\text{-}20)
++ \beta_2 I(\text{Age}_{i,t-1}=20\text{-}30)
++ \beta_3 I(\text{Age}_{i,t-1}\geq 30)
++ \beta_4 \text{Capacity100}_{i,t-1}
++ \gamma_t + \delta_p
+\right].
+$$
+
+The omitted age category is 0-10 years. \(\gamma_t\) denotes fiscal-year fixed
+effects and \(\delta_p\) denotes prefecture fixed effects. Capacity is measured
+in 100 t/day units. Standard errors are clustered by facility. The table reports
+average marginal effects in percentage points because those are easier to read
+than log-odds coefficients. For example, an average marginal effect of -1.76
+percentage points means that the annual probability of first reporting
+generation is 1.76 percentage points lower than in the omitted 0-10 year age
+group, conditional on the included variables and fixed effects.
+
+The adoption equation should not be read as a physical retrofit model. The
+dependent variable is observed entry into reported generation in the
+administrative panel. A recorded event may correspond to a new plant,
+replacement, major refurbishment, reporting transition, or a continuity-type
+upgrade; the pathway audit is used only to bound that interpretation.
+
+#### Electricity recovery model
+
+For each operating generator, raw electricity recovery intensity is:
+
+$$
+q^{raw}_{it} =
+\frac{\text{power generated}_{it}\;(\text{MWh})}
+{\text{waste processed}_{it}\;(\text{tonnes})}.
+$$
+
+The analysis clips this ratio to 0.01-0.80 MWh/t and then logs it:
+
+$$
+q_{it}=\operatorname{clip}(q^{raw}_{it},0.01,0.80),
+\qquad
+y_{it}=\log(q_{it}).
+$$
+
+The core panel regression can be written as:
+
+$$
+y_{it}
+= \alpha + X_{it}'\beta + \gamma_t + u_i + \varepsilon_{it}.
+$$
+
+\(X_{it}\) contains facility age, design capacity in 100 t/day units, capacity
+utilization capped at 1.0, heating value in MJ/kg, and the grid-emission factor.
+The four main models use the same outcome and covariates but vary the panel
+structure:
+
+| Model | Equation terms included | Interpretation |
+|:--|:--|:--|
+| Pooled OLS | \(X_{it}\) | Overall cross-facility comparison with clustered standard errors |
+| Year fixed effects | \(X_{it}+\gamma_t\) | Adds fiscal-year adjustments for shocks common to the fleet |
+| Random effects | \(X_{it}+u_i\) | Summarizes persistent facility-level differences |
+| Year fixed effects + random effects | \(X_{it}+\gamma_t+u_i\) | Combines fiscal-year adjustment with persistent facility-level differences |
+
+Because the outcome is logged, coefficients are semi-elasticities. For small
+coefficients, multiplying by 100 gives an approximate percentage change in MWh/t
+for a one-unit change in the predictor. The exact transformation is
+\(100[\exp(\beta)-1]\). Thus the pooled age coefficient of -0.0279 corresponds
+to about 2.8% lower electricity recovered per tonne for each additional
+facility year, while the pooled capacity coefficient of 0.0874 corresponds to
+about 9.1% higher electricity recovered per tonne per additional 100 t/day of
+design capacity. For utilization, a 0.10 increase in the capped utilization
+ratio under the pooled model corresponds to about 7.8% higher electricity
+recovered per tonne.
+
+The random-effects specifications are used descriptively. They retain
+between-facility structure by estimating a facility-specific intercept, but the
+paper does not rely on a causal assumption that unobserved facility or municipal
+traits are unrelated to age, capacity, technology, or utilization. A
+facility-fixed-effects model would answer a different question: how much
+electricity recovery changes within the same facility as its covariates change
+over time. That is useful for some policy-effect designs, but it would absorb
+much of the durable plant scale, design, and vintage structure that this paper
+is explicitly trying to describe. The main paper therefore treats fixed-effects
+and random-effects choices as complementary descriptive views, not as a claim
+that one estimator identifies a structural causal effect.
+
 ### S5.1 Adoption robustness
 
 The main adoption result is estimated as a lagged discrete-time logit hazard
@@ -164,13 +265,11 @@ The main efficiency results are presented through four compact specifications:
 The paper keeps these models because the intensive-margin question is largely
 about structured cross-facility differences inside the generating segment. The
 coefficients are therefore interpreted as structured conditional associations,
-not as strict structural parameters.
-
-This choice is deliberate. A strict fixed-effects-only reading would absorb much
-of the durable facility heterogeneity that is substantively central to the
-paper's question. The paper therefore reports models that preserve
-cross-facility structure while explicitly avoiding causal language about vintage
-or policy effects.
+not as strict structural parameters. This choice is deliberate: a strict
+facility-fixed-effects-only reading would absorb much of the durable facility
+heterogeneity that is substantively central to the paper's question. The paper
+therefore reports models that preserve cross-facility structure while
+explicitly avoiding causal language about vintage or policy effects.
 
 ### S5.3 Identifier and heating-value sensitivity
 
