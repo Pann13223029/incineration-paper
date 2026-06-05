@@ -65,7 +65,7 @@ def add_box(
             color="#32414d",
             linespacing=1.35,
         )
-        line_y -= 0.058 * (line.count("\n") + 1)
+        line_y -= 0.046 * (line.count("\n") + 1)
 
 
 def add_connector(ax, start: tuple[float, float], end: tuple[float, float]) -> None:
@@ -101,7 +101,7 @@ def build() -> None:
         }
     )
 
-    fig = plt.figure(figsize=(11.2, 6.8), dpi=200)
+    fig = plt.figure(figsize=(11.6, 7.2), dpi=200)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
@@ -109,14 +109,14 @@ def build() -> None:
 
     add_box(
         ax,
-        0.22,
-        0.78,
-        0.56,
-        0.18,
+        0.19,
+        0.77,
+        0.62,
+        0.20,
         "Full facility panel",
         [
             "MOE General Waste Treatment Survey, FY2005-FY2024",
-            "23,599 facility-year rows before the analytical split",
+            "23,599 facility-year rows",
         ],
         edge="#6d7f94",
         face="#f8fafc",
@@ -125,15 +125,16 @@ def build() -> None:
 
     add_box(
         ax,
-        0.06,
+        0.055,
         0.40,
-        0.39,
+        0.405,
         0.32,
         "A. Adoption frame",
         [
             "At-risk facilities first seen\nwithout generation",
-            "13,770 facility-years | 2,035 facilities | 141 events",
-            "Signal: selective modernization",
+            "13,770 facility-years | 2,035 facilities",
+            "141 observed first-adoption events",
+            "Signal: selective observed entry",
         ],
         edge="#6f7f90",
         face="#fcfcfd",
@@ -143,13 +144,13 @@ def build() -> None:
         ax,
         0.54,
         0.40,
-        0.39,
+        0.405,
         0.32,
         "B. Generator frame",
         [
             "Operating generators with positive\nthroughput and output",
             "5,683 observations | 1,016 facilities",
-            "Signal: bounded responsiveness",
+            "Signal: persistent generator hierarchy",
         ],
         edge="#6f7f90",
         face="#fcfcfd",
@@ -163,7 +164,7 @@ def build() -> None:
         0.20,
         "Synthesis",
         [
-            "Entry into generation and performance within generation\nare different estimands.",
+            "Entry into generation and performance within generation\nare different estimands in one linked fleet.",
         ],
         edge="#495767",
         face="#f8fafc",
@@ -171,7 +172,7 @@ def build() -> None:
     )
 
     # Clean tree-style split above the middle row.
-    add_line(ax, (0.50, 0.78), (0.50, 0.74))
+    add_line(ax, (0.50, 0.77), (0.50, 0.74))
     add_line(ax, (0.26, 0.74), (0.74, 0.74))
     add_connector(ax, (0.26, 0.74), (0.26, 0.71))
     add_connector(ax, (0.74, 0.74), (0.74, 0.71))

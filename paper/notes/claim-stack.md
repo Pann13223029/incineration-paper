@@ -2,7 +2,7 @@
 
 ## Dominant Headline
 
-Japan's waste-incineration transition is split between **selective modernization** on the adoption margin and **bounded responsiveness** on the efficiency margin.
+Japan's waste-incineration transition is split between **selective observed entry** on the adoption margin and **structured electricity-recovery performance** on the generator margin.
 
 ## Dominant Empirical Novelty
 
@@ -15,9 +15,9 @@ That is the paper's primary originality claim.
 ## Core Claims In Order
 
 1. Observed transition into power generation is selective rather than diffuse.
-2. Conditional on generation, efficiency is strongly structured by age, scale, and utilization.
+2. Conditional on generation, electricity recovery intensity is strongly structured by age, scale, and utilization.
 3. Cross-facility heterogeneity dominates within-facility movement over time.
-4. The evidence is most consistent with asset-renewal screening and capital-side triage mattering more than operating-side fine-tuning for the weakest segment.
+4. Planning interpretation should distinguish diagnostic screening for facilities outside electricity recovery from performance assessment among operating generators.
 
 ## Claim Hierarchy
 
@@ -31,7 +31,7 @@ Treat these levels differently in the manuscript.
 ### Level 2: Headline substantive findings
 
 - observed transition into generation is selective rather than diffuse
-- conditional generator performance is bounded and strongly structured by age,
+- conditional generator performance is strongly structured by age,
   scale, and utilization
 - the paper reports the FY2013-FY2019 event-timing cluster as a data feature,
   not as an identified policy shock
@@ -39,8 +39,8 @@ Treat these levels differently in the manuscript.
 ### Level 3: Supporting interpretive findings
 
 - cross-facility heterogeneity dominates within-facility movement
-- the weakest segment looks more like an asset-renewal screening and
-  capital-side triage problem than an operating-side fine-tuning problem
+- facilities outside electricity recovery and operating generators require
+  different planning diagnostics
 - the canonical generator frame is defensible because the supplement compares
   coded rows with the 907 uncoded operating-generator rows
 
@@ -56,7 +56,7 @@ This broader lesson is a supporting payoff, not the main novelty claim.
 
 Use this sentence or stay very close to it:
 
-- `The evidence is most consistent with asset-renewal screening and capital-side triage at the weak end of the fleet, alongside bounded responsiveness within the generating segment.`
+- `The estimates describe conditional associations within the coded adoption frame and canonical identifiable generator frame; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
 
 ## Claims To Avoid
 

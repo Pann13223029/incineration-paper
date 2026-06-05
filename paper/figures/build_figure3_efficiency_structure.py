@@ -50,7 +50,7 @@ def build() -> None:
     )
 
     style_axes(ax1)
-    ax1.set_title("A. Mean efficiency by generator age group", loc="left", color="#22313f")
+    ax1.set_title("A. Mean MWh/t by generator age group", loc="left", color="#22313f")
     ax1.set_ylabel("Winsorized MWh per tonne")
     x_age = np.arange(len(AGE_LABELS))
     colors_age = ["#345d94", "#5f84b8", "#88a8cf", "#b7cae1"]

@@ -1,6 +1,6 @@
 # Extensive-Margin Results: Observed Transition Into Power Generation
 
-This stage models the observed first transition into power generation among coded facilities first observed without it, separating the extensive margin from conditional generator efficiency.
+This stage models the observed first transition into power generation among coded facilities first observed without it, separating the extensive margin from conditional generator performance.
 
 ## Risk Set
 

@@ -35,7 +35,7 @@ OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript.pdf"
 
 
 TITLE = (
-    "Selective Modernization and Bounded Responsiveness in Japan's "
+    "Selective Entry and Structured Electricity-Recovery Performance in Japan's "
     "Waste-Incineration Fleet: A Facility-Level Panel Study"
 )
 AUTHOR = "Pann Phetra"

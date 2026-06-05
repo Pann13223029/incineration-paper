@@ -54,7 +54,7 @@ Use the smallest sufficient gate:
 
 - Audience: waste management, industrial ecology, and environmental policy readers.
 - Main contribution: separating adoption into generation from conditional generator performance in one national facility panel.
-- Framing default: selective modernization on the adoption margin plus bounded responsiveness on the efficiency margin.
+- Framing default: selective observed entry on the adoption margin plus structured electricity-recovery performance on the generator margin.
 - Mechanism language: calibrated, not exclusive. Do not claim replacement is uniquely identified.
 - Generalization: cautious. Japan is the empirical case, not automatic proof for all waste systems.
 

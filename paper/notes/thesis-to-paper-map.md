@@ -24,7 +24,7 @@ Who transitions into generation, and conditional on generation, what predicts ef
 
 ### Paper version
 
-How does Japan's waste-incineration transition split between selective entry into generation and bounded performance among generators?
+How does Japan's waste-incineration transition split between selective observed entry into generation and structured electricity-recovery performance among generators?
 
 ## What Moves Out Of Main Text
 

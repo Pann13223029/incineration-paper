@@ -3,7 +3,7 @@
 ## Article Information
 
 **Title**  
-Selective Modernization and Bounded Responsiveness in Japan's
+Selective Entry and Structured Electricity-Recovery Performance in Japan's
 Waste-Incineration Fleet: A Facility-Level Panel Study
 
 **Article type**  
@@ -30,7 +30,7 @@ transition
 
 ## Current Draft Metrics
 
-- abstract word count: approximately 235 words
+- abstract word count: approximately 245 words
 - main text before references: approximately 4,870 words
 - main-text figures: 3
 - main-text tables: 3

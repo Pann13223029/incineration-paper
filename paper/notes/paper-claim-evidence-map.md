@@ -60,7 +60,7 @@ May move to supplement:
 - extended event-year detail
 - extra subgroup tables
 
-## Claim 3: Conditional generator performance is bounded and strongly structured
+## Claim 3: Conditional generator performance is strongly structured
 
 Claim:
 
@@ -77,9 +77,9 @@ Current evidence:
 Must stay in main text:
 
 - generator sample counts
-- one efficiency results table
+- one electricity-recovery results table
 - the within / total variance ratio in prose or compact display
-- a concise interpretation of bounded responsiveness
+- a concise interpretation of structured generator performance
 - short explanation that the canonical generator frame excludes 907 uncoded
   operating-generator rows and that the supplement audits this exclusion
 
@@ -89,13 +89,13 @@ May move to supplement:
 - extra robustness variants
 - expanded post-Fukushima split detail
 
-## Claim 4: The paper supports a calibrated asset-renewal interpretation
+## Claim 4: The paper supports calibrated planning diagnostics
 
 Claim:
 
-- the evidence is most consistent with asset-renewal screening and capital-side
-  triage at the weak end of the fleet, alongside bounded responsiveness within
-  the generating segment
+- planning assessments should distinguish facilities outside electricity
+  recovery from operating generators because the observable constraints differ
+  across those two groups
 
 Current evidence:
 

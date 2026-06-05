@@ -27,7 +27,7 @@ The title should:
 
 Target style, not mandatory wording:
 
-- `Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study`
+- `Selective Entry and Structured Electricity-Recovery Performance in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study`
 
 Avoid:
 
@@ -42,7 +42,7 @@ Use a five-part arc:
 1. State the Japan puzzle.
 2. State the two-part design.
 3. State the adoption result.
-4. State the efficiency result.
+4. State the electricity-recovery result.
 5. State the calibrated implication and broader methodological lesson.
 
 Keep only the highest-signal numbers.
@@ -55,7 +55,7 @@ The first page should accomplish four jobs:
 1. open with the concrete Japan puzzle
 2. state that the fleet should not be treated as a single category
 3. introduce the two-part design
-4. state the contribution and named frame
+4. state the contribution and research questions
 
 By the end of the introduction opening, the reader should know:
 
@@ -80,7 +80,7 @@ If the section becomes a broad field review, cut it.
 The methods section should have three compact parts:
 
 1. adoption frame
-2. generator-efficiency frame
+2. generator electricity-recovery frame
 3. identification and scope caveat paragraph
 
 Each analytical layer should still get one short main-text paragraph on:
@@ -117,7 +117,7 @@ Use:
 
 - one page-1 or page-2 framework figure that explains the two-part design
 - one main results table for adoption
-- one main results table for efficiency
+- one main results table for electricity-recovery performance
 - one adoption-first results figure
 - one efficiency-structure figure only if it adds more than prose plus the main
   efficiency table

@@ -6,7 +6,7 @@ for the current article direction:
 - one integrated paper
 - Waste Management as the primary submission lane
 - empirical design contribution first
-- selective modernization plus bounded responsiveness as the named frame
+- selective observed entry plus structured electricity-recovery performance as the named frame
 
 Use this to judge drafts before adding more content.
 
@@ -28,7 +28,7 @@ The draft should clearly pass these concrete checks:
 - the first page states the Japan puzzle, the analytical split, and the main
   contribution
 - a framework figure appears on page 1 or page 2
-- the main text presents adoption first and efficiency second
+- the main text presents adoption first and electricity-recovery performance second
 - there is one core results table per margin
 - the pathway audit is concise in main text and detailed in supplement
 - the paper does not read like a shortened thesis
@@ -89,7 +89,7 @@ What strong looks like:
 
 - one framework figure explains the two-part design quickly
 - one main results table anchors the adoption margin
-- one main results table anchors the efficiency margin
+- one main results table anchors the electricity-recovery margin
 - the pathway audit is summarized briefly but clearly
 - the core claims are supportable without opening the supplement
 

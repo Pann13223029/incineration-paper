@@ -1,12 +1,12 @@
 # Claim-to-Evidence Map
 
-Curated bridge between the defended thesis claims and the canonical generated outputs.
+Curated bridge between the paper's defended claims and the canonical generated outputs.
 
 Use this alongside `output/claim_verification.md`: the verifier confirms wording is synchronized, while this map explains which artifact supports which defended claim.
 
 ## Claim 1: The thesis is empirically two-part
 
-Defended claim: the fleet transition question must be split into an extensive-margin adoption layer and an intensive-margin generator-efficiency layer.
+Defended claim: the fleet transition question must be split into an extensive-margin adoption layer and a conditional generator-performance layer.
 
 Evidence spine:
 - `output/adoption_results.md`: observed first-adoption risk set of 13,770 facility-years across 2,035 facilities, with 141 observed transition events.
@@ -34,7 +34,7 @@ Evidence spine:
 
 ## Claim 4: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement
 
-Defended claim: within the generator sample, age, scale, and utilization matter strongly, while within-facility responsiveness remains bounded.
+Defended claim: within the generator sample, age, scale, and utilization matter strongly, while most observed variation remains between facilities rather than within facilities over time.
 
 Evidence spine:
 - `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.
@@ -42,14 +42,14 @@ Evidence spine:
 - `output/robustness_results.md`: sign pattern remains stable across the defended robustness set.
 - `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.
 
-## Claim 5: The thesis supports a policy hierarchy, not an exclusive mechanism claim
+## Claim 5: The paper supports planning diagnostics, not an exclusive mechanism claim
 
-Defended claim: capital-side modernization and consolidation likely matter more for the weakest segment than operating-side fine-tuning alone, while operations still matter within the design envelope.
+Defended claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.
 
 Evidence spine:
 - `output/adoption_results.md`: old and small facilities rarely record observed transition into generation.
 - `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.
-- `research/notes/what-this-thesis-does-not-claim.md`: the thesis explicitly avoids claiming causal proof, exclusive replacement, full lifecycle accounting, or heat-recovery evaluation.
+- `research/notes/what-this-thesis-does-not-claim.md`: the project explicitly avoids claiming causal proof, exclusive replacement, full lifecycle accounting, or heat-recovery evaluation.
 
 ## Reviewer Use
 

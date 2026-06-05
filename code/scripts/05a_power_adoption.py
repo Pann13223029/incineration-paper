@@ -380,7 +380,7 @@ def write_results(
         f.write(
             "This stage models the observed first transition into power generation "
             "among coded facilities first observed without it, separating the "
-            "extensive margin from conditional generator efficiency.\n\n"
+            "extensive margin from conditional generator performance.\n\n"
         )
         f.write("## Risk Set\n\n")
         f.write(

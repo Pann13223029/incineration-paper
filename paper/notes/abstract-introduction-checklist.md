@@ -21,7 +21,7 @@ The abstract should answer five questions in order:
   waste language
 - one sentence introducing the analytical split
 - one sentence on selective adoption into generation
-- one sentence on bounded performance among generators
+- one sentence on structured electricity-recovery performance among generators
 - one final sentence with a narrow broader lesson
 
 ### Required Anchor Phrases
@@ -34,7 +34,7 @@ Originality sentence:
 
 Safe interpretation sentence:
 
-- `The evidence is most consistent with asset-renewal screening and capital-side triage at the weak end of the fleet, alongside bounded responsiveness within the generating segment.`
+- `The estimates describe conditional associations within the coded adoption frame and canonical identifiable generator frame; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
 
 ### Writing Rules
 

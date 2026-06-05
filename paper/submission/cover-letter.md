@@ -2,9 +2,10 @@
 
 Dear Editors,
 
-Please consider the enclosed manuscript, *Selective Modernization and Bounded
-Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel
-Study*, for publication as a full length article in *Waste Management*.
+Please consider the enclosed manuscript, *Selective Entry and Structured
+Electricity-Recovery Performance in Japan's Waste-Incineration Fleet: A
+Facility-Level Panel Study*, for publication as a full length article in *Waste
+Management*.
 
 The paper studies Japan's municipal waste-incineration fleet using a national
 facility-level panel for FY2005-FY2024. Its main contribution is a diagnostic
@@ -25,7 +26,7 @@ performance in a way that is empirically grounded and operationally relevant for
 waste-management researchers and practitioners. Its main practical value is to
 show why mixed incineration fleets should not be evaluated through one blended
 average: non-generators require renewal and entry assessment, while operating
-generators require performance and optimization assessment. The paper is
+generators require performance assessment. The paper is
 especially relevant for readers evaluating municipal asset planning, retrofit
 triage, and energy-recovery performance across mixed fleets rather than within
 generators alone. The manuscript is original, has not been published previously,

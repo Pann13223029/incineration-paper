@@ -4,7 +4,7 @@ This is a private, paper-focused derivative workspace for the Japan waste-incine
 
 The paper's working claim is narrow:
 
-> Japan's incineration-fleet transition is split between selective modernization on the adoption margin and bounded responsiveness on the efficiency margin.
+> Japan's incineration-fleet transition is better read as two linked but distinct margins: selective observed entry into electricity generation and structured electricity-recovery performance among operating generators.
 
 ## Start Here
 
@@ -22,7 +22,7 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events. Relative to prior-year age 0-10, older facilities are 1.1–1.8 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.50 percentage points per 100 t/day. The pathway audit classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. The canonical generator-efficiency frame contains 5,683 facility-years across 1,016 facilities. Across the main efficiency specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024.
+The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events. Relative to prior-year age 0-10, older facilities are 1.1–1.8 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.50 percentage points per 100 t/day. The pathway audit classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024.
 
 | Headline | Current value |
 |:--|:--|
@@ -113,12 +113,12 @@ Command meanings:
 
 The best current direction remains one integrated article:
 
-**Selective modernization and bounded responsiveness in Japan's waste-incineration fleet**
+**Selective entry and structured electricity-recovery performance in Japan's waste-incineration fleet**
 
 Keep the article narrow:
 
 - one dominant contribution
-- linked adoption and efficiency margins
+- linked adoption and electricity-recovery margins
 - calibrated mechanism language
 - compact main text
 - stronger supplement for data-quality, robustness, and pathway details
