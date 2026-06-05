@@ -18,7 +18,7 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 - [ ] Target 15-18 minutes for the main presentation.
 - [ ] Mark any slide that takes more than 70 seconds and shorten the spoken explanation.
 - [ ] Check that the data-source table, sample pipeline, method boxes, rate chart, Figure 2, and Figure 3 are readable at Zoom screen-share size.
-- [ ] Prepare one answer for each likely question: causality, replacement, data quality, old-plant improvement, and why not one model.
+- [ ] Prepare one answer for each likely question: causality, replacement, data quality, old-plant improvement, why not one model, and why 2011/Fukushima appears.
 
 ## Live Delivery Checklist
 
@@ -60,6 +60,7 @@ Use this checklist to keep the presentation critical but still easy to follow. T
 ## Simple Q&A Answers
 
 - [ ] Causality: "No, the paper identifies patterns and bottlenecks. It does not prove strict policy effects."
+- [ ] 2011/Fukushima: "The 2011 split is a context and robustness check around the Great East Japan Earthquake and Fukushima Daiichi nuclear accident. It is not a claim that Fukushima caused the observed facility-performance structure."
 - [ ] Replacement: "No, the pathway audit shows many reset/rebuild-like events, but also continuity upgrades and unresolved entries."
 - [ ] Data quality: "The administrative data have duplicate-code, missing-code, and heating-value issues; sensitivity checks do not overturn the headline pattern."
 - [ ] Old plants: "The paper does not say old plants cannot improve. It says broad late-life catch-up does not dominate the observed data."

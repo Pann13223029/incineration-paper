@@ -434,21 +434,21 @@ Script cue: Do not imply older plants cannot improve; say the observed hierarchy
     <p class="kpi-note">Most generator-output variation is between facilities.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">Pre-2011</p>
+    <p class="eyebrow">FY2005-FY2011</p>
     <p class="kpi">0.1795</p>
     <p class="kpi-label">within-to-total ratio</p>
-    <p class="kpi-note">Within-facility movement is limited even before the post-2011 period.</p>
+    <p class="kpi-note">Baseline period for the Fukushima-context robustness split.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">Post-2011</p>
+    <p class="eyebrow">FY2012-FY2024</p>
     <p class="kpi">0.0956</p>
     <p class="kpi-label">within-to-total ratio</p>
-    <p class="kpi-note">After 2011, most variation remains cross-facility hierarchy.</p>
+    <p class="kpi-note">Post-Fukushima-context period; cross-facility hierarchy remains.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>Only about 15% of full-sample output variation is within facilities over time. Most variation remains between facilities, so entry does not erase inherited gaps.</p>
+  <p>The 2011 split is a context check around Fukushima, not a causal claim. In both periods, generation entry does not erase inherited facility gaps.</p>
 </div>
 
 <!--
