@@ -1,80 +1,75 @@
 # Paper Zoom Presentation Checklist
 
-Use this checklist to keep the presentation simple, direct, and easy to follow. The goal is not to show everything in the paper. The goal is to make the listener understand the paper's main claim and give useful feedback.
+Use this checklist to keep the presentation critical but still easy to follow. The goal is not to show every detail in the paper. The goal is to make the listener understand why the paper is more than the obvious claim that newer and larger plants have advantages.
 
 ## Core Rule
 
-- [ ] Say the paper in one sentence: "First ask who starts generating electricity, then ask who generates well after starting."
-- [ ] Keep the live presentation to slides 1-10.
-- [ ] Use appendix slides only when the listener asks for details.
-- [ ] Do not explain every model, coefficient, or table.
-- [ ] Repeat the framing phrase when needed: "who starts generating, and who generates well?"
+- [ ] Say the paper in one sentence: "The paper maps two bottlenecks: who starts generating electricity, and who generates well after starting."
+- [ ] Keep the live presentation to slides 1-20.
+- [ ] Do not explain every coefficient.
+- [ ] Repeat the skeptical framing when needed: "The point is not that young and large plants have advantages; the point is whether modernization is broad catch-up or selective modernization."
+- [ ] Stop after slide 20 and ask for targeted feedback.
 
 ## One-Day-Before Checklist
 
-- [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 14 slides.
+- [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 20 slides.
 - [ ] Open `paper/slides/paper-zoom-script.md` on a second screen or print it.
-- [ ] Practice once with a timer and stop at slide 10.
-- [ ] Target 8-10 minutes for the main presentation.
-- [ ] Mark any slide that takes more than 60 seconds and shorten the spoken explanation.
-- [ ] Check that the two figures are readable at Zoom screen-share size.
-- [ ] Prepare one answer for each likely question: causality, replacement, old-plant improvement, and why not one model.
-
-## One-Hour-Before Checklist
-
-- [ ] Close distracting apps and browser tabs.
-- [ ] Open the PDF to slide 1.
-- [ ] Open the speaker script separately.
-- [ ] Test microphone, camera, and screen sharing.
-- [ ] Confirm Zoom is sharing the PDF window, not the whole desktop if avoidable.
-- [ ] Keep a blank notes file ready for supervisor feedback.
-- [ ] Have the paper PDF available, but do not open it unless asked.
+- [ ] Practice once with a timer and stop at slide 20.
+- [ ] Target 15-18 minutes for the main presentation.
+- [ ] Mark any slide that takes more than 70 seconds and shorten the spoken explanation.
+- [ ] Check that the data-source table, sample pipeline, method boxes, rate chart, Figure 2, and Figure 3 are readable at Zoom screen-share size.
+- [ ] Prepare one answer for each likely question: causality, replacement, data quality, old-plant improvement, and why not one model.
 
 ## Live Delivery Checklist
 
-- [ ] Start with purpose: "This is a short paper briefing and I want feedback on the main pitch."
-- [ ] Use plain language before technical language.
-- [ ] Pause after the core claim on slide 3.
-- [ ] Say the two key adoption numbers slowly on slide 5.
-- [ ] Avoid reading all text on the slides.
-- [ ] If interrupted, answer briefly and return to the slide route.
-- [ ] Stop at slide 10 and invite feedback.
-- [ ] Do not continue into appendices unless requested.
+- [ ] Start with purpose: "This is a paper briefing and I want feedback on the main contribution."
+- [ ] Explain why the issue matters before showing methods.
+- [ ] Say clearly that the paper is not trying to make age and scale sound surprising.
+- [ ] Spend enough time on slides 5-9; these are the methodological credibility slides.
+- [ ] Say the adoption numbers slowly on slide 10.
+- [ ] Use slide 11 to explain why the result is not just common sense.
+- [ ] Use slide 15 to show robustness without reading every test.
+- [ ] Use slide 16 to show limitations without sounding apologetic.
+- [ ] Stop at slide 20 and ask for feedback.
 
 ## Slide-By-Slide Checklist
 
 | Slide | Must-say message | Do not do |
 |:--|:--|:--|
-| 1 | This is a short paper briefing. | Do not start with methods. |
-| 2 | Incineration produces heat, but energy recovery is uneven. | Do not debate whether incineration is good or bad. |
-| 3 | One average hides two questions: who starts, and who performs well. | Do not overdefine "modernization." |
-| 4 | Method: build panel, split facilities, read both patterns. | Do not turn this into a regression lecture. |
-| 5 | Starting generation is uneven: 102/141 young; 99/141 largest quartile. | Do not explain every axis label. |
-| 6 | Generator output is uneven. | Do not say old plants cannot improve. |
-| 7 | The method matters because different bottlenecks need different decisions. | Do not prescribe a one-size-fits-all policy. |
-| 8 | The paper contribution is clear, national, and careful. | Do not oversell publishability. |
-| 9 | The paper identifies bottlenecks; it does not prove strict causality. | Do not sound apologetic about boundaries. |
-| 10 | Ask whether the two-part story is clear and defensible. | Do not keep presenting after the ask. |
+| 1 | This is a paper briefing, not a full defense. | Do not start with regression terms. |
+| 2 | Incineration creates heat, but electricity recovery is uneven. | Do not debate all pros/cons of incineration. |
+| 3 | The claim is not "young/large plants do better." | Do not oversell obvious findings. |
+| 4 | One average hides two questions. | Do not use "entry" without defining it. |
+| 5 | The data are national facility-level administrative records with clear limits. | Do not imply retrofit contracts or lifecycle emissions are observed. |
+| 6 | The sample pipeline creates two analysis frames for two questions. | Do not treat sample construction as boring. |
+| 7 | Two samples are necessary because the outcomes differ. | Do not use one-model language. |
+| 8 | The adoption method follows facilities still at risk and uses lagged predictors. | Do not forget pre-event timing. |
+| 9 | Generator output is compared after entry using output intensity. | Do not claim causal effects. |
+| 10 | Starting generation is selective. | Do not stop at "young/large." |
+| 11 | The rate chart rules out a broad catch-up story. | Do not overstate mechanism. |
+| 12 | Pathway audit prevents replacement overclaim. | Do not say replacement is the only pathway. |
+| 13 | Entry is not the finish line. | Do not say old generators cannot improve. |
+| 14 | Generator convergence is limited. | Do not overexplain variance decomposition. |
+| 15 | Robustness checks stress-test identifiers, model form, period, scale, outcome coding, and heating value. | Do not say robustness proves causality. |
+| 16 | Data limitations are disclosed with counts and sensitivity logic. | Do not hide data caveats. |
+| 17 | Different bottlenecks imply different planning questions. | Do not prescribe one policy. |
+| 18 | Defensible claim beats weak claim. | Do not present common sense as novelty. |
+| 19 | Future work is proposed, not completed. | Do not pretend mechanisms are already tested. |
+| 20 | Ask for targeted feedback. | Do not keep presenting after the ask. |
 
 ## Simple Q&A Answers
 
 - [ ] Causality: "No, the paper identifies patterns and bottlenecks. It does not prove strict policy effects."
-- [ ] Replacement: "No, the paper does not prove replacement is the only pathway. It says adoption evidence looks selective and often capital-intensive."
-- [ ] Old plants: "No, the paper does not say old plants cannot improve. It says broad late-life catch-up does not dominate the observed data."
+- [ ] Replacement: "No, the pathway audit shows many reset/rebuild-like events, but also continuity upgrades and unresolved entries."
+- [ ] Data quality: "The administrative data have duplicate-code, missing-code, and heating-value issues; sensitivity checks do not overturn the headline pattern."
+- [ ] Old plants: "The paper does not say old plants cannot improve. It says broad late-life catch-up does not dominate the observed data."
 - [ ] One model: "One model would mix who starts generating with who generates well, so it would hide the bottleneck."
 - [ ] Contribution: "The contribution is the linked two-question reading of one national facility panel."
 
-## If Time Is Short
-
-- [ ] Use slides 1, 2, 3, 5, 6, 7, 9, and 10.
-- [ ] Skip slide 4 if the listener already understands the two-group design.
-- [ ] Skip slide 8 if the listener only wants the main empirical story.
-- [ ] Never skip slide 9; it protects the claim boundary.
-
 ## After-Meeting Checklist
 
-- [ ] Write down the supervisor's main concern in one sentence.
-- [ ] Record whether the two-part claim was clear or confusing.
-- [ ] Record which slide caused the most questions.
-- [ ] Record any requested citation, table, model, or robustness addition.
-- [ ] Decide the next paper revision based on feedback, not on every side comment.
+- [ ] Write down whether the supervisor accepted the two-question contribution.
+- [ ] Record which limitation sounded most serious.
+- [ ] Record which future-work direction sounded most publishable.
+- [ ] Record whether the methodology explanation was clear or still too technical.
+- [ ] Decide the next paper revision based on the strongest feedback, not every side comment.

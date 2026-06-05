@@ -1,126 +1,204 @@
-# Paper Zoom Briefing: Separate Presentation Script
+# Paper Zoom Briefing: Presentation Script
 
-Use this script with `paper/share/paper-zoom-briefing.pdf`. The live route is 10 slides. Appendix slides are only for questions.
+Use this script with `paper/share/paper-zoom-briefing.pdf`. The deck has 20 live slides. It is designed for a 15-18 minute supervisor-facing discussion.
 
 ## Delivery Rule
 
-Say the paper this way whenever you need to reset the audience:
+Reset the audience with this sentence:
 
-> Who starts generating electricity, and among generators, who produces more electricity per tonne?
+> The paper is not asking whether young and large plants have advantages. It asks whether modernization spreads broadly through the lagging fleet or remains selective and bounded.
 
-The listener should leave understanding three things:
+The listener should leave understanding four things:
 
-- Why the paper matters: incineration creates heat, but energy recovery is uneven.
+- Why the topic matters: incineration creates heat, but energy recovery is uneven.
 - What the paper argues: one fleet average hides two different questions.
-- What feedback is needed: whether the two-part story is clear and defensible.
+- Why the method matters: risk-set framing and generator-only comparison prevent the two questions from being mixed.
+- What feedback is needed: whether the two-question design is strong enough and which limitation or future-work path matters most.
 
 ## Timing Plan
 
 | Segment | Slides | Target time |
 |:--|:--|:--|
-| Opening and motivation | 1-2 | 1.5 minutes |
-| Claim and method | 3-4 | 2 minutes |
-| Main evidence | 5-6 | 2.5 minutes |
-| Meaning and contribution | 7-8 | 2 minutes |
-| Limits and feedback ask | 9-10 | 1.5 minutes |
-| Optional appendix | A-D | only if asked |
+| Motivation and framing | 1-4 | 3 minutes |
+| Data and method | 5-9 | 5 minutes |
+| Results and interpretation | 10-14 | 5 minutes |
+| Robustness, limits, and future work | 15-19 | 5 minutes |
+| Feedback ask | 20 | 1 minute |
 
-## Slide 1: Explaining the Paper Simply
+## Slide 1: Explaining the Paper Clearly
 
-Thank you for joining. This is a short paper briefing. I will not try to explain every table or model. I want to explain the main story clearly and get feedback on whether it works as the paper's central pitch.
+Thank you for joining. This is a paper briefing, not a full thesis defense. I will explain the data, method, key results, limitations, and future directions.
 
-The paper is about Japan's municipal waste-incineration fleet and the uneven recovery of electricity from incineration heat.
+The main goal is to test whether the current paper pitch is clear and defensible.
 
 ## Slide 2: Why This Matters
 
-The reason this matters is simple. Japan burns a large amount of municipal waste. Burning waste creates heat. Some facilities recover that heat as electricity, but many do not.
+Japan relies heavily on municipal waste incineration. Incineration creates heat. Some facilities use that heat to generate electricity, but many do not.
 
-In FY2024, only 41.1 percent of facilities in the panel are flagged as power-generating. That means the same waste-treatment process can either recover useful electricity or miss that energy-recovery opportunity.
+In FY2024, only 41.1 percent of panel facilities are flagged as power-generating. That means the same waste-treatment process can either recover useful power or miss that opportunity.
 
-So the practical question is not abstract. It is: where does useful electricity recovery appear, and where does it not?
+The paper asks where useful electricity recovery appears inside the existing fleet.
 
-This paper is not trying to judge whether incineration is always good or always bad. It studies energy recovery inside the existing fleet.
+## Slide 3: The Claim Is Not the Obvious Part
 
-## Slide 3: Main Idea in Plain Words
+This slide is important because the result could sound too obvious if phrased badly.
+
+I am not asking the listener to be surprised that young and large plants have advantages. That part is expected.
+
+The stronger question is whether modernization spreads broadly through older and smaller lagging facilities, or whether it mostly appears where conditions are already favorable.
+
+## Slide 4: Main Idea in Plain Words
 
 The main idea is that one fleet average hides two different questions.
 
-The first question is: which plants start generating electricity? In the paper, I call this the entry question.
+First, which plants start generating electricity? That is the entry question.
 
-The second question is: among generators, who produces more electricity per tonne? In the paper, I call this the performance question.
+Second, among generators, who produces more electricity per tonne? That is the performance question.
 
-If the wording "entry" or "performance" feels abstract, the plain version is: who starts generating, and who generates well after starting?
+The paper is built around keeping these two questions separate and then reading them together.
 
-## Slide 4: Method in Plain Language
+## Slide 5: Data Sources: What Is Observed
 
-The method has three steps.
+The data source is Japan's Ministry of the Environment General Waste Treatment Survey.
 
-First, I build a facility panel from FY2005 to FY2024. This follows municipal incineration facilities over time.
+The panel covers FY2005 to FY2024 and uses facility-level municipal waste-treatment records. The main fields are power-generation status, electricity output, throughput, facility age, design capacity, fiscal year, prefecture, heating value, and grid-emission context.
 
-Second, I split the facilities by generation status. Facilities not yet generating answer the start-generating question. Facilities already generating answer the electricity-output question.
+The important point is that this is national facility-level evidence, not one local case. But I should also be clear about the boundary: the administrative panel does not directly observe internal retrofit contracts, municipal bargaining, or full lifecycle emissions.
 
-Third, I read both patterns together. This shows where bottlenecks appear in the fleet.
+## Slide 6: From Data to Analysis Frames
 
-The key boundary is that this is diagnostic. It identifies patterns and bottlenecks; it does not prove strict cause-and-effect.
+The full analytical starting point is 23,599 facility-year rows.
 
-## Slide 5: Result 1: Starting Generation Is Uneven
+Within the coded full-fleet frame, there are 2,948 identifiable facilities.
 
-The first result is about facilities that first start generating electricity.
+The start-generating frame has 13,770 at-risk facility-years across facilities first observed without generation. It contains 141 first-entry events.
 
-The figure shows that first adoption into power generation is concentrated among younger and larger facilities.
+The generator-output frame has 5,683 observations among identifiable operating generators.
 
-Two numbers make this clear. Out of 141 observed first-adoption events, 102 come from facilities aged 0 to 10 years, and 99 are in the largest capacity quartile.
+This split is methodological. The first frame studies crossing into electricity generation. The second frame studies output intensity after a facility is already inside generation.
 
-The simple meaning is that starting electricity generation is not spreading evenly across the fleet.
+## Slide 7: Two Samples Because There Are Two Questions
 
-## Slide 6: Result 2: Generator Output Is Uneven
+The two samples are linked but not identical.
 
-The second result looks only at facilities that already generate electricity.
+For the start-generating question, the sample is facilities first observed without generation. The outcome is first report of power generation.
 
-The figure shows that older generators recover less electricity per tonne. The analysis also shows that scale and utilization help, but they do not erase large facility-level differences.
+For the generator-output question, the sample is already-operating generators. The outcome is electricity generated per tonne processed.
 
-This does not mean older plants can never improve. The careful wording is that generator output is structured and uneven.
+One model for everything would mix the gate into generation with performance after entry. That would make the paper less clear because it would hide where the bottleneck actually sits.
 
-## Slide 7: Why the Method Matters for Decisions
+## Slide 8: Method 1: Who Had a Chance to Start?
 
-If we split the fleet into these two questions, the planning logic changes.
+The first method is a risk-set design.
 
-For non-generators, the question is whether the plant can start recovering electricity. That may involve renewal, consolidation, or a major upgrade decision.
+Only non-generators can first start generating. Facilities already generating in their first observed year are left-censored for this question.
 
-For generators, the question is whether the plant can recover more electricity from the same waste. That is more about utilization, operations, maintenance, and targeted upgrades.
+The model asks for the probability of first generation in a given year using prior-year age and prior-year capacity, plus year and prefecture controls. This matters because it describes the facility before first entry, not after entry.
 
-So renewal, starting electricity generation, and generator optimization should not be treated as one identical task.
+In plain language, the model asks: among facilities still outside power generation, who first reports generation in the next observed year?
 
-## Slide 8: Why This Can Stand as a Paper
+## Slide 9: Method 2: How Generator Output Is Compared
 
-The paper can stand because it has a clear contribution.
+The second method is a generator-only comparison.
 
-First, it separates starting generation from generator output. Second, it follows one national facility panel. Third, it says what the evidence can and cannot prove.
+The outcome is electricity recovered per tonne processed. This focuses on output intensity, not just whether a plant has any power generation.
 
-The paper is not just saying Japan has incinerators. It is showing that energy-recovery modernization has two different bottlenecks inside the same fleet.
+The models compare age, scale, utilization, heating value, grid context, and year structure. The paper checks pooled OLS, year fixed effects, random effects, and year fixed effects plus random effects.
 
-## Slide 9: What This Does and Does Not Prove
+The interpretation is diagnostic, not causal. The critical question is whether operating generators converge enough to erase inherited facility differences.
 
-The paper keeps its boundaries clear.
+## Slide 10: Result 1: Starting Generation Is Selective
 
-It does not claim a strict causal policy effect. It does not prove replacement is the only pathway. It does not provide full lifecycle climate accounting. It also does not claim that the generator frame is a perfect census.
+The first result is selective entry.
 
-The defended claim is narrower and stronger: it identifies where bottlenecks appear. Starting generation is unevenly spread, and generator output remains uneven after entry.
+The figure shows that facilities first starting electricity generation are mostly young and large.
 
-## Slide 10: Feedback Ask
+Out of 141 observed first-entry events, 102 come from facilities aged 0 to 10 years, and 99 are in the largest capacity quartile.
 
-The final message is: first ask who starts generating electricity, then ask who generates well after starting.
+## Slide 11: What Result 1 Rules Out
 
-The feedback I need is whether this two-part story is clear, defensible, and strong enough to use as the paper's main pitch.
+This slide explains why the result is more than common sense.
 
-I will stop here. If you want details, I can use the appendix for model details, exact numbers, pathway interpretation, or file locations.
+Young facilities have a much higher annual event rate: 5.94 percent for age 0 to 10.
 
-## Appendix Prompts
+Facilities age 30 or more have an annual event rate of only 0.27 percent. On the capacity side, the smallest quartile has an annual event rate of 0.03 percent, while the largest quartile has 3.11 percent.
 
-Use Appendix A if someone asks how the models work. Keep it plain: the start-generating model estimates who first reports generation next year among facilities still at risk, while the generator-output models compare electricity recovered per tonne among operating generators.
+The smallest capacity quartile records only one first-entry event, while the largest quartile records 99.
 
-Use Appendix B if someone asks for exact numbers. The most important numbers are 41.1 percent generating in FY2024, 141 first-adoption events, 102 young-facility adoption events, 99 largest-quartile adoption events, 5,683 generator observations, and the 0.1499 within-to-total variance ratio.
+So the evidence does not look like broad late-life catch-up across the whole fleet. It looks like selective modernization.
 
-Use Appendix C if someone asks whether adoption means replacement. The safe answer is no: the audit supports selective modernization with capital-intensive evidence, but it does not prove replacement is the only pathway.
+## Slide 12: What Kind of Entry Was This?
 
-Use Appendix D if someone asks where the files are or how to regenerate the presentation.
+The pathway audit helps avoid overclaiming.
+
+Eighty-two observed first-entry events look reset- or rebuild-like. Thirty-eight look consistent with continuity or in-place upgrade. Twenty are placeholder or forward-dated entries.
+
+The safe interpretation is that capital-side modernization is present, but the paper does not prove replacement is the only pathway.
+
+## Slide 13: Result 2: Entry Is Not the Finish Line
+
+The second result looks inside the generating segment.
+
+Older generators recover less electricity per tonne, and existing generators remain uneven after entry.
+
+The point is not that older plants can never improve. The point is that entering electricity generation does not erase generator hierarchy.
+
+## Slide 14: Generator Convergence Is Limited
+
+The within-to-total variance ratio is 0.1499 in the full sample. In plain terms, most output variation is between facilities rather than movement within the same facility over time.
+
+The post-2011 ratio is even lower at 0.0956.
+
+This is why the result is framed as bounded responsiveness: generator performance does not appear to converge enough to erase inherited gaps.
+
+## Slide 15: Robustness: What I Tried to Break
+
+This slide shows why the pattern is not just a fragile coding artifact.
+
+For adoption, I checked composite facility identifiers and alternative adoption models. The age penalties and positive capacity pattern remain.
+
+For generator output, I checked pre/post-Fukushima splits, capacity terciles, raw-outcome checks, and heating-value restrictions. Age remains negative, while capacity and utilization remain positive.
+
+These checks do not make the estimates causal, but they make the diagnostic pattern more credible.
+
+## Slide 16: Data Limitations Are Real
+
+The data have real limits.
+
+There are 39 official codes with same-year duplicate issues, affecting 444 source rows. There are also 907 operating-generator rows missing official facility codes, mainly around FY2010 to FY2012, so they cannot support the canonical facility-clustered regression frame.
+
+Heating-value data also need plausibility checks: 569 regression-frame rows are outside 3 to 25 megajoules per kilogram.
+
+These limitations discipline the claim. The paper maps bottlenecks and stress-tests data issues; it does not claim a perfect engineering census or a fully identified causal mechanism.
+
+## Slide 17: Decision Logic
+
+If the two bottlenecks are different, planning questions should also differ.
+
+For non-generators, ask whether the plant can start recovering electricity. For generators, ask whether the plant can recover more electricity from the same waste.
+
+Renewal, starting generation, and generator optimization are not the same task.
+
+## Slide 18: Weak Claim vs Defensible Claim
+
+The weak claim is: newer and larger plants generate more. That sounds plausible, but it is not enough for a paper.
+
+The defensible claim is: the fleet has two bottlenecks. Starting generation is selective, and generator output remains uneven after entry.
+
+That is the paper's contribution: mapping where the bottleneck sits.
+
+## Slide 19: Future Work: Mechanisms Not Yet Tested
+
+Future work would move from diagnostic mapping to mechanism testing.
+
+I have not started these extensions yet. The next step could link facility histories to investment and rebuild records, retrofit histories, municipal governance, waste-routing decisions, heat recovery, lifecycle emissions, or comparative fleet data.
+
+The most publishable future direction is probably the one that best explains why some facilities start generation while others do not.
+
+## Slide 20: Feedback Ask
+
+The paper's message is: first ask who starts generating electricity, then ask who generates well after starting.
+
+The feedback I need is targeted.
+
+Is the two-question design strong enough as the paper's main contribution? Which limitation most needs to become a robustness check? Which future-work path is most publishable: capital renewal, governance, lifecycle accounting, or comparative fleet evidence?

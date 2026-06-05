@@ -490,3 +490,121 @@ section.dense li {
 .simple-list li {
   margin: 0.3rem 0;
 }
+
+.source-table {
+  margin-top: 0.62rem;
+}
+
+.source-table th {
+  font-size: 0.43em;
+  text-align: left;
+}
+
+.source-table td {
+  font-size: 0.43em;
+  line-height: 1.32;
+  vertical-align: top;
+}
+
+.pipeline {
+  align-items: stretch;
+  display: grid;
+  gap: 0.42rem;
+  grid-template-columns: 1fr 0.08fr 1fr 0.08fr 1fr 0.08fr 1fr;
+  margin-top: 0.72rem;
+}
+
+.pipe-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--navy);
+  border-radius: 9px;
+  min-height: 176px;
+  padding: 0.62rem 0.68rem;
+}
+
+.pipe-arrow {
+  align-self: center;
+  color: var(--accent);
+  font-size: 0.9em;
+  font-weight: 900;
+  text-align: center;
+}
+
+.method-grid {
+  display: grid;
+  gap: 0.72rem;
+  grid-template-columns: 1.18fr 1fr;
+  margin-top: 0.68rem;
+}
+
+.formula-card {
+  background: #eef3f4;
+  border: 1px solid #b9c8cc;
+  border-left: 6px solid var(--navy);
+  border-radius: 9px;
+  min-height: 124px;
+  padding: 0.7rem 0.82rem;
+}
+
+.formula {
+  color: var(--navy-2);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.68em;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.rate-panels {
+  display: grid;
+  gap: 0.86rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0.68rem;
+}
+
+.rate-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 0.76rem 0.86rem;
+}
+
+.bar-row {
+  align-items: center;
+  display: grid;
+  gap: 0.48rem;
+  grid-template-columns: 4.7rem 1fr 2.6rem;
+  margin: 0.46rem 0;
+}
+
+.bar-label,
+.bar-value {
+  color: var(--ink);
+  font-size: 0.45em;
+  font-weight: 800;
+}
+
+.bar-value {
+  color: var(--navy-2);
+  text-align: right;
+}
+
+.bar-track {
+  background: #e5ecee;
+  border: 1px solid #d0dadc;
+  border-radius: 999px;
+  display: block;
+  height: 16px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  background: var(--navy);
+  display: block;
+  height: 100%;
+}
+
+.muted-fill {
+  background: var(--gold);
+}
