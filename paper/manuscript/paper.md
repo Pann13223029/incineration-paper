@@ -54,16 +54,15 @@ high electricity recovery per tonne? The system can therefore look uniformly
 slow in the mean while combining selective entry at one end of the fleet with
 persistent performance hierarchy at the other.
 
-This paper asks three descriptive research questions. RQ1: Among coded
-facilities first observed without power generation, which prior-year age and
-capacity profiles are associated with first observed reporting of power
-generation in the following fiscal year? RQ2: Among identifiable operating
-generators, how is electricity recovered per tonne associated with facility
-age, design capacity, utilization, heating value, and common fiscal-year
-conditions? RQ3: Taken together, do the observed entry pattern and
-generator-frame performance associations support one average-fleet
-modernization interpretation, or do they indicate distinct adoption and
-performance problems within the same incineration system?
+### Research questions
+
+This paper asks three descriptive, sample-bounded research questions:
+
+| RQ | Margin | Question |
+|:--|:--|:--|
+| RQ1 | Entry margin | Among coded facilities first observed without power generation, which prior-year age and capacity profiles are associated with first observed reporting of power generation in the following fiscal year? |
+| RQ2 | Generator-performance margin | Among identifiable operating generators, how is electricity recovered per tonne associated with facility age, design capacity, utilization, heating value, and common fiscal-year conditions? |
+| RQ3 | Synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
 
 The contribution is not a causal estimate of retrofit effects or a technical
 optimization model. It is a linked facility-panel decomposition that shows why
@@ -82,7 +81,7 @@ changes the first diagnostic step. Facilities outside electricity recovery and
 mature generators should be evaluated as different asset-management questions
 before they are summarized as one fleet.
 
-![Figure 1. The paper separates the full facility panel into an adoption frame and a generator-performance frame before interpreting both margins together.](../figures/figure1_two_part_framework.png)
+![Figure 1. Analytical design separating the source panel into entry and generator-performance margins before interpreting both margins together.](../figures/figure1_two_part_framework.png)
 
 The gap addressed here is narrower than a generic claim that Japan has been
 understudied. Waste-to-energy research can describe fleet trajectories, and

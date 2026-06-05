@@ -1,96 +1,106 @@
 #!/usr/bin/env python3
-"""Generate a formal Figure 1 for the paper manuscript.
-
-This replaces the previous slide-like SVG with a source-generated paper figure
-that can be used both in Markdown/HTML exports (PNG) and in the LaTeX reading
-PDF (PDF).
-"""
+"""Generate Figure 1 as a formal analytical-design schematic."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.patches import Rectangle
 
 
 ROOT = Path(__file__).resolve().parent
 PNG_OUT = ROOT / "figure1_two_part_framework.png"
 PDF_OUT = ROOT / "figure1_two_part_framework.pdf"
 
+INK = "#1f2933"
+RULE = "#3f4a56"
+MUTED = "#596671"
+FILL = "#f4f5f6"
+HEADER = "#e8eaed"
 
-def add_box(
+
+def add_text(
+    ax,
+    x: float,
+    y: float,
+    text: str,
+    *,
+    size: float = 10.5,
+    weight: str = "normal",
+    color: str = INK,
+    ha: str = "left",
+    va: str = "top",
+) -> None:
+    ax.text(
+        x,
+        y,
+        text,
+        ha=ha,
+        va=va,
+        fontsize=size,
+        fontweight=weight,
+        family="DejaVu Serif",
+        color=color,
+        linespacing=1.18,
+    )
+
+
+def add_panel(
     ax,
     x: float,
     y: float,
     w: float,
     h: float,
     title: str,
-    body_lines: list[str],
-    edge: str = "#415364",
-    face: str = "#fcfdff",
-    title_color: str = "#1f2e3a",
+    rows: list[tuple[str, str]],
 ) -> None:
-    box = FancyBboxPatch(
-        (x, y),
-        w,
-        h,
-        boxstyle="square,pad=0.012",
-        linewidth=1.4,
-        edgecolor=edge,
-        facecolor=face,
-    )
-    ax.add_patch(box)
-    ax.text(
-        x + 0.025,
-        y + h - 0.05,
-        title,
-        ha="left",
-        va="top",
-        fontsize=15.6,
-        fontweight="bold",
-        family="DejaVu Sans",
-        color=title_color,
-    )
-    line_y = y + h - 0.11
-    for line in body_lines:
-        ax.text(
-            x + 0.025,
-            line_y,
-            line,
-            ha="left",
-            va="top",
-            fontsize=12.2,
-            family="DejaVu Sans",
-            color="#32414d",
-            linespacing=1.35,
-        )
-        line_y -= 0.046 * (line.count("\n") + 1)
+    ax.add_patch(Rectangle((x, y), w, h, facecolor="white", edgecolor=RULE, linewidth=1.0))
+    header_h = 0.075
+    ax.add_patch(Rectangle((x, y + h - header_h), w, header_h, facecolor=HEADER, edgecolor=RULE, linewidth=1.0))
+    add_text(ax, x + 0.018, y + h - 0.022, title, size=11.3, weight="bold")
+
+    body_h = h - header_h
+    row_h = body_h / len(rows)
+    label_w = 0.105
+    for idx, (label, body) in enumerate(rows):
+        row_top = y + h - header_h - idx * row_h
+        row_bottom = row_top - row_h
+        if idx:
+            ax.plot([x, x + w], [row_top, row_top], color="#c3c8ce", linewidth=0.65)
+        add_text(ax, x + 0.018, row_top - 0.018, label, size=8.8, weight="bold", color=MUTED)
+        add_text(ax, x + label_w, row_top - 0.018, body, size=8.6)
+        if idx == len(rows) - 1:
+            ax.plot([x, x + w], [row_bottom, row_bottom], color=RULE, linewidth=1.0)
 
 
-def add_connector(ax, start: tuple[float, float], end: tuple[float, float]) -> None:
-    ax.add_patch(
-        FancyArrowPatch(
-            start,
-            end,
-            arrowstyle="-|>",
-            mutation_scale=11,
-            linewidth=1.35,
-            color="#6d7d8d",
-            shrinkA=4,
-            shrinkB=4,
-        )
+def add_source_panel(ax) -> None:
+    x, y, w, h = 0.12, 0.81, 0.76, 0.125
+    ax.add_patch(Rectangle((x, y), w, h, facecolor=FILL, edgecolor=RULE, linewidth=1.0))
+    add_text(ax, x + 0.025, y + h - 0.03, "Source panel", size=11.5, weight="bold")
+    add_text(
+        ax,
+        x + 0.19,
+        y + h - 0.03,
+        "Ministry of the Environment General Waste Treatment Survey\nFY2005-FY2024 | 23,599 facility-year rows",
+        size=9.5,
     )
 
 
-def add_line(ax, start: tuple[float, float], end: tuple[float, float]) -> None:
-    ax.plot(
-        [start[0], end[0]],
-        [start[1], end[1]],
-        color="#6d7d8d",
-        linewidth=1.35,
-        solid_capstyle="round",
-    )
+def add_connectors(ax) -> None:
+    # Minimal bracket-style split: source panel to the two analytical frames.
+    ax.plot([0.50, 0.50], [0.81, 0.765], color=RULE, linewidth=0.9)
+    ax.plot([0.25, 0.75], [0.765, 0.765], color=RULE, linewidth=0.9)
+    ax.plot([0.25, 0.25], [0.765, 0.735], color=RULE, linewidth=0.9)
+    ax.plot([0.75, 0.75], [0.765, 0.735], color=RULE, linewidth=0.9)
+    ax.add_patch(Rectangle((0.455, 0.745), 0.09, 0.028, facecolor="white", edgecolor="none"))
+    add_text(ax, 0.50, 0.755, "analytical split", size=8.2, color=MUTED, ha="center")
+
+    # Minimal merge into synthesis.
+    ax.plot([0.25, 0.25], [0.29, 0.245], color=RULE, linewidth=0.9)
+    ax.plot([0.75, 0.75], [0.29, 0.245], color=RULE, linewidth=0.9)
+    ax.plot([0.25, 0.75], [0.245, 0.245], color=RULE, linewidth=0.9)
+    ax.plot([0.50, 0.50], [0.245, 0.205], color=RULE, linewidth=0.9)
 
 
 def build() -> None:
@@ -101,87 +111,80 @@ def build() -> None:
         }
     )
 
-    fig = plt.figure(figsize=(11.6, 7.2), dpi=200)
+    fig = plt.figure(figsize=(11.8, 7.0), dpi=220)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
 
-    add_box(
-        ax,
-        0.19,
-        0.77,
-        0.62,
-        0.20,
-        "Full facility panel",
-        [
-            "MOE General Waste Treatment Survey, FY2005-FY2024",
-            "23,599 facility-year rows",
-        ],
-        edge="#6d7f94",
-        face="#f8fafc",
-        title_color="#243443",
-    )
+    add_source_panel(ax)
+    add_connectors(ax)
 
-    add_box(
+    add_panel(
         ax,
         0.055,
-        0.40,
-        0.405,
-        0.32,
-        "A. Adoption frame",
+        0.29,
+        0.42,
+        0.44,
+        "A. Adoption frame: entry margin",
         [
-            "At-risk facilities first seen\nwithout generation",
-            "13,770 facility-years | 2,035 facilities",
-            "141 observed first-adoption events",
-            "Signal: selective observed entry",
+            (
+                "Sample",
+                "Coded at-risk facilities first observed\nwithout power generation\n13,770 facility-years | 2,035 facilities | 141 events",
+            ),
+            (
+                "Estimand",
+                "First observed reporting of power\ngeneration in the following fiscal year",
+            ),
+            (
+                "Model",
+                "Lagged discrete-time logit hazard\nwith year and prefecture fixed effects",
+            ),
+            (
+                "Role",
+                "Identifies selective observed entry,\nnot a causal retrofit mechanism",
+            ),
         ],
-        edge="#6f7f90",
-        face="#fcfcfd",
     )
 
-    add_box(
+    add_panel(
         ax,
-        0.54,
-        0.40,
-        0.405,
-        0.32,
-        "B. Generator frame",
+        0.525,
+        0.29,
+        0.42,
+        0.44,
+        "B. Generator frame: performance margin",
         [
-            "Operating generators with positive\nthroughput and output",
-            "5,683 observations | 1,016 facilities",
-            "Signal: persistent generator hierarchy",
+            (
+                "Sample",
+                "Operating generators with positive\nthroughput and power output\n5,683 observations | 1,016 facilities",
+            ),
+            (
+                "Outcome",
+                "Electricity recovered per tonne\nclipped and logged MWh/t",
+            ),
+            (
+                "Model",
+                "Pooled, year-FE, and random-effects\npanel specifications",
+            ),
+            (
+                "Role",
+                "Describes structured performance\nhierarchy within generators",
+            ),
         ],
-        edge="#6f7f90",
-        face="#fcfcfd",
     )
 
-    add_box(
+    x, y, w, h = 0.15, 0.09, 0.70, 0.12
+    ax.add_patch(Rectangle((x, y), w, h, facecolor=FILL, edgecolor=RULE, linewidth=1.0))
+    add_text(ax, x + 0.025, y + h - 0.028, "Synthesis", size=11.2, weight="bold")
+    add_text(
         ax,
-        0.17,
-        0.05,
-        0.64,
-        0.20,
-        "Synthesis",
-        [
-            "Entry into generation and performance within generation\nare different estimands in one linked fleet.",
-        ],
-        edge="#495767",
-        face="#f8fafc",
-        title_color="#243443",
+        x + 0.16,
+        y + h - 0.026,
+        "The same national fleet is interpreted through two linked but non-identical margins;\n"
+        "one average-fleet estimate would conflate entry with post-entry performance.",
+        size=9.0,
     )
-
-    # Clean tree-style split above the middle row.
-    add_line(ax, (0.50, 0.77), (0.50, 0.74))
-    add_line(ax, (0.26, 0.74), (0.74, 0.74))
-    add_connector(ax, (0.26, 0.74), (0.26, 0.71))
-    add_connector(ax, (0.74, 0.74), (0.74, 0.71))
-
-    # Clean join into the synthesis box.
-    add_line(ax, (0.26, 0.39), (0.26, 0.28))
-    add_line(ax, (0.74, 0.39), (0.74, 0.28))
-    add_line(ax, (0.26, 0.28), (0.74, 0.28))
-    add_connector(ax, (0.50, 0.28), (0.50, 0.25))
 
     fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight")
     fig.savefig(PDF_OUT, bbox_inches="tight")
