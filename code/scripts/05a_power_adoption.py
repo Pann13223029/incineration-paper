@@ -350,6 +350,11 @@ def sign_pattern_matches(marginal_effects: pd.DataFrame) -> bool:
     )
 
 
+def manifest_float(value: float, significant_digits: int = 6) -> float:
+    """Round manifest floats enough to avoid platform-specific last-bit drift."""
+    return float(f"{float(value):.{significant_digits}g}")
+
+
 def model_pseudo_r2(model) -> float:
     """Return a deviance-based pseudo-R^2 for GLM hazards."""
     if hasattr(model, "prsquared"):
@@ -719,9 +724,9 @@ def main():
 
     marginal_effect_meta = {
         row["variable"]: {
-            "ame": float(row["ame"]),
-            "se": float(row["se"]),
-            "pvalue": float(row["pvalue"]),
+            "ame": manifest_float(row["ame"]),
+            "se": manifest_float(row["se"]),
+            "pvalue": manifest_float(row["pvalue"]),
         }
         for _, row in marginal_effects.iterrows()
     }
@@ -771,38 +776,38 @@ def main():
                 "predictors_lagged_exact_one_year": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
-                    "lag_age_10_20": float(model.params["age_10-20 yrs"]),
-                    "lag_age_20_30": float(model.params["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(model.params["age_30+ yrs"]),
-                    "lag_capacity_100t": float(model.params["lag_capacity_100t"]),
+                    "lag_age_10_20": manifest_float(model.params["age_10-20 yrs"]),
+                    "lag_age_20_30": manifest_float(model.params["age_20-30 yrs"]),
+                    "lag_age_30_plus": manifest_float(model.params["age_30+ yrs"]),
+                    "lag_capacity_100t": manifest_float(model.params["lag_capacity_100t"]),
                 },
                 "pvalues": {
-                    "lag_age_10_20": float(model.pvalues["age_10-20 yrs"]),
-                    "lag_age_20_30": float(model.pvalues["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(model.pvalues["age_30+ yrs"]),
-                    "lag_capacity_100t": float(model.pvalues["lag_capacity_100t"]),
+                    "lag_age_10_20": manifest_float(model.pvalues["age_10-20 yrs"]),
+                    "lag_age_20_30": manifest_float(model.pvalues["age_20-30 yrs"]),
+                    "lag_age_30_plus": manifest_float(model.pvalues["age_30+ yrs"]),
+                    "lag_capacity_100t": manifest_float(model.pvalues["lag_capacity_100t"]),
                 },
                 "average_marginal_effects": marginal_effect_meta,
-                "pseudo_r_squared": pseudo_r2,
+                "pseudo_r_squared": manifest_float(pseudo_r2),
             },
             "cloglog_robustness": {
                 "type": "discrete_time_cloglog",
                 "sign_pattern_matches_main": True,
                 "coefficients": {
-                    "lag_age_10_20": float(cloglog_robustness.params["age_10-20 yrs"]),
-                    "lag_age_20_30": float(cloglog_robustness.params["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(cloglog_robustness.params["age_30+ yrs"]),
-                    "lag_capacity_100t": float(cloglog_robustness.params["lag_capacity_100t"]),
+                    "lag_age_10_20": manifest_float(cloglog_robustness.params["age_10-20 yrs"]),
+                    "lag_age_20_30": manifest_float(cloglog_robustness.params["age_20-30 yrs"]),
+                    "lag_age_30_plus": manifest_float(cloglog_robustness.params["age_30+ yrs"]),
+                    "lag_capacity_100t": manifest_float(cloglog_robustness.params["lag_capacity_100t"]),
                 },
             },
             "lpm_robustness": {
                 "type": "linear_probability_hazard",
                 "sign_pattern_matches_main": True,
                 "coefficients": {
-                    "lag_age_10_20": float(lpm_robustness.params["age_10-20 yrs"]),
-                    "lag_age_20_30": float(lpm_robustness.params["age_20-30 yrs"]),
-                    "lag_age_30_plus": float(lpm_robustness.params["age_30+ yrs"]),
-                    "lag_capacity_100t": float(lpm_robustness.params["lag_capacity_100t"]),
+                    "lag_age_10_20": manifest_float(lpm_robustness.params["age_10-20 yrs"]),
+                    "lag_age_20_30": manifest_float(lpm_robustness.params["age_20-30 yrs"]),
+                    "lag_age_30_plus": manifest_float(lpm_robustness.params["age_30+ yrs"]),
+                    "lag_capacity_100t": manifest_float(lpm_robustness.params["lag_capacity_100t"]),
                 },
             },
             "pathway_audit": {
@@ -815,7 +820,7 @@ def main():
                     "n": int(result["model"].nobs),
                     "events": int(result["diagnostics"]["events"]),
                     "parameters": int(result["diagnostics"]["parameters"]),
-                    "events_per_parameter": float(
+                    "events_per_parameter": manifest_float(
                         result["diagnostics"]["events_per_parameter"]
                     ),
                     "sign_pattern_matches_main": sign_pattern_matches(
@@ -823,9 +828,9 @@ def main():
                     ),
                     "average_marginal_effects": {
                         row["variable"]: {
-                            "ame": float(row["ame"]),
-                            "se": float(row["se"]),
-                            "pvalue": float(row["pvalue"]),
+                            "ame": manifest_float(row["ame"]),
+                            "se": manifest_float(row["se"]),
+                            "pvalue": manifest_float(row["pvalue"]),
                         }
                         for _, row in result["marginal_effects"].iterrows()
                     },

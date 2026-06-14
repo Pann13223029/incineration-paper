@@ -20,9 +20,9 @@
     "cloglog_robustness": {
       "coefficients": {
         "lag_age_10_20": -3.06957,
-        "lag_age_20_30": -2.218771,
-        "lag_age_30_plus": -1.617233,
-        "lag_capacity_100t": 0.4074622
+        "lag_age_20_30": -2.21877,
+        "lag_age_30_plus": -1.61723,
+        "lag_capacity_100t": 0.407462
       },
       "sign_pattern_matches_main": true,
       "type": "discrete_time_cloglog"
@@ -60,10 +60,10 @@
     "left_censored_generators": 913,
     "lpm_robustness": {
       "coefficients": {
-        "lag_age_10_20": -0.02253619,
-        "lag_age_20_30": -0.02307156,
-        "lag_age_30_plus": -0.01811529,
-        "lag_capacity_100t": 0.01322372
+        "lag_age_10_20": -0.0225362,
+        "lag_age_20_30": -0.0230716,
+        "lag_age_30_plus": -0.0181153,
+        "lag_capacity_100t": 0.0132237
       },
       "sign_pattern_matches_main": true,
       "type": "linear_probability_hazard"
@@ -71,40 +71,40 @@
     "model": {
       "average_marginal_effects": {
         "age_10-20 yrs": {
-          "ame": -0.01823123,
-          "pvalue": 6.284578e-10,
-          "se": 0.002948548
+          "ame": -0.0182312,
+          "pvalue": 6.28458e-10,
+          "se": 0.00294855
         },
         "age_20-30 yrs": {
-          "ame": -0.02314922,
-          "pvalue": 6.582587e-06,
-          "se": 0.005136559
+          "ame": -0.0231492,
+          "pvalue": 6.58259e-06,
+          "se": 0.00513656
         },
         "age_30+ yrs": {
-          "ame": -0.01593013,
-          "pvalue": 0.0001875075,
-          "se": 0.004264776
+          "ame": -0.0159301,
+          "pvalue": 0.000187507,
+          "se": 0.00426478
         },
         "lag_capacity_100t": {
-          "ame": 0.003983792,
-          "pvalue": 0.001083224,
-          "se": 0.001219042
+          "ame": 0.00398379,
+          "pvalue": 0.00108322,
+          "se": 0.00121904
         }
       },
       "baseline_prior_year_age_band": "0-10 yrs",
       "coefficients": {
-        "lag_age_10_20": -3.113575,
-        "lag_age_20_30": -2.250639,
-        "lag_age_30_plus": -1.683902,
-        "lag_capacity_100t": 0.4791276
+        "lag_age_10_20": -3.11357,
+        "lag_age_20_30": -2.25064,
+        "lag_age_30_plus": -1.6839,
+        "lag_capacity_100t": 0.479128
       },
       "predictors_lagged_exact_one_year": true,
-      "pseudo_r_squared": 0.2341324,
+      "pseudo_r_squared": 0.234132,
       "pvalues": {
-        "lag_age_10_20": 8.289133e-10,
-        "lag_age_20_30": 5.789872e-11,
-        "lag_age_30_plus": 2.223885e-06,
-        "lag_capacity_100t": 0.0007627247
+        "lag_age_10_20": 8.28913e-10,
+        "lag_age_20_30": 5.78987e-11,
+        "lag_age_30_plus": 2.22389e-06,
+        "lag_capacity_100t": 0.000762725
       },
       "reported_scale": "average_marginal_effect",
       "type": "discrete_time_logit_hazard",
@@ -143,28 +143,28 @@
       {
         "average_marginal_effects": {
           "age_10-20 yrs": {
-            "ame": -0.01763927,
-            "pvalue": 4.672004e-10,
+            "ame": -0.0176393,
+            "pvalue": 4.672e-10,
             "se": 0.00283146
           },
           "age_20-30 yrs": {
-            "ame": -0.01722517,
-            "pvalue": 3.676316e-05,
-            "se": 0.004173841
+            "ame": -0.0172252,
+            "pvalue": 3.67632e-05,
+            "se": 0.00417384
           },
           "age_30+ yrs": {
-            "ame": -0.01125809,
-            "pvalue": 0.004196783,
-            "se": 0.003932298
+            "ame": -0.0112581,
+            "pvalue": 0.00419678,
+            "se": 0.0039323
           },
           "lag_capacity_100t": {
-            "ame": 0.005041559,
-            "pvalue": 0.01288944,
+            "ame": 0.00504156,
+            "pvalue": 0.0128894,
             "se": 0.00202732
           }
         },
         "events": 140,
-        "events_per_parameter": 2.121212,
+        "events_per_parameter": 2.12121,
         "label": "Previous observed coded row: year FE + prefecture FE",
         "n": 11717,
         "parameters": 66,
@@ -173,28 +173,28 @@
       {
         "average_marginal_effects": {
           "age_10-20 yrs": {
-            "ame": -0.01667635,
-            "pvalue": 1.590482e-11,
-            "se": 0.002474458
+            "ame": -0.0166763,
+            "pvalue": 1.59048e-11,
+            "se": 0.00247446
           },
           "age_20-30 yrs": {
-            "ame": -0.01935711,
-            "pvalue": 6.686495e-07,
-            "se": 0.003894591
+            "ame": -0.0193571,
+            "pvalue": 6.6865e-07,
+            "se": 0.00389459
           },
           "age_30+ yrs": {
             "ame": -0.0123675,
-            "pvalue": 0.001009289,
-            "se": 0.003761491
+            "pvalue": 0.00100929,
+            "se": 0.00376149
           },
           "lag_capacity_100t": {
-            "ame": 0.004536838,
-            "pvalue": 0.003303464,
-            "se": 0.001544197
+            "ame": 0.00453684,
+            "pvalue": 0.00330346,
+            "se": 0.0015442
           }
         },
         "events": 98,
-        "events_per_parameter": 5.444444,
+        "events_per_parameter": 5.44444,
         "label": "Exact-year: year FE only",
         "n": 10823,
         "parameters": 18,
@@ -203,28 +203,28 @@
       {
         "average_marginal_effects": {
           "age_10-20 yrs": {
-            "ame": -0.01385148,
-            "pvalue": 4.364442e-11,
-            "se": 0.002101529
+            "ame": -0.0138515,
+            "pvalue": 4.36444e-11,
+            "se": 0.00210153
           },
           "age_20-30 yrs": {
-            "ame": -0.01182878,
-            "pvalue": 4.820729e-05,
-            "se": 0.002910516
+            "ame": -0.0118288,
+            "pvalue": 4.82073e-05,
+            "se": 0.00291052
           },
           "age_30+ yrs": {
-            "ame": -0.005838604,
-            "pvalue": 0.03690762,
-            "se": 0.002797895
+            "ame": -0.0058386,
+            "pvalue": 0.0369076,
+            "se": 0.00279789
           },
           "lag_capacity_100t": {
-            "ame": 0.003504828,
-            "pvalue": 0.001219376,
-            "se": 0.001083641
+            "ame": 0.00350483,
+            "pvalue": 0.00121938,
+            "se": 0.00108364
           }
         },
         "events": 98,
-        "events_per_parameter": 1.921569,
+        "events_per_parameter": 1.92157,
         "label": "Exact-year: prefecture FE only",
         "n": 10823,
         "parameters": 51,
@@ -233,24 +233,24 @@
       {
         "average_marginal_effects": {
           "age_10-20 yrs": {
-            "ame": -0.01337356,
-            "pvalue": 1.014409e-11,
-            "se": 0.001965417
+            "ame": -0.0133736,
+            "pvalue": 1.01441e-11,
+            "se": 0.00196542
           },
           "age_20-30 yrs": {
             "ame": -0.010981,
             "pvalue": 2.56677e-05,
-            "se": 0.002609028
+            "se": 0.00260903
           },
           "age_30+ yrs": {
-            "ame": -0.004816984,
-            "pvalue": 0.07888706,
-            "se": 0.002741314
+            "ame": -0.00481698,
+            "pvalue": 0.0788871,
+            "se": 0.00274131
           },
           "lag_capacity_100t": {
-            "ame": 0.003953817,
-            "pvalue": 0.004225325,
-            "se": 0.001382052
+            "ame": 0.00395382,
+            "pvalue": 0.00422533,
+            "se": 0.00138205
           }
         },
         "events": 98,
