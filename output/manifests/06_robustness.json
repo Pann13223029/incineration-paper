@@ -1,7 +1,8 @@
 {
   "analysis_config": {
     "adoption_model": "observed_first_adoption_logit_hazard",
-    "adoption_predictors_lagged_one_year": true,
+    "adoption_predictors_lagged_exact_one_year": true,
+    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
     "capacity_utilization_cap": 1.0,
     "efficiency_ceiling_mwh_per_t": 0.8,
@@ -16,13 +17,13 @@
     "data/processed/incineration_panel_enriched.csv"
   ],
   "metadata": {
-    "post_fukushima_window": [
-      2012,
-      2024
-    ],
-    "pre_fukushima_window": [
+    "early_coded_window": [
       2005,
-      2011
+      2009
+    ],
+    "later_coded_window": [
+      2013,
+      2024
     ],
     "specifications": [
       {
@@ -34,7 +35,7 @@
         "facilities": 335,
         "facility_age_years_coef": -0.04175911,
         "facility_age_years_p": 1.242109e-36,
-        "label": "R1: Pre-Fukushima pooled OLS (FY2005-FY2011)",
+        "label": "R1: Early coded-window pooled OLS (FY2005-FY2009)",
         "n": 1400,
         "r2": 0.3591932,
         "year_fe": false
@@ -48,7 +49,7 @@
         "facilities": 335,
         "facility_age_years_coef": -0.04269454,
         "facility_age_years_p": 8.549049e-39,
-        "label": "R2: Pre-Fukushima year FE (FY2005-FY2011)",
+        "label": "R2: Early coded-window year FE (FY2005-FY2009)",
         "n": 1400,
         "r2": 0.3813463,
         "year_fe": true
@@ -62,7 +63,7 @@
         "facilities": 878,
         "facility_age_years_coef": -0.03170517,
         "facility_age_years_p": 2.011725e-39,
-        "label": "R3: Post-Fukushima pooled OLS (FY2012-FY2024)",
+        "label": "R3: Later coded-window pooled OLS (FY2013-FY2024)",
         "n": 4283,
         "r2": 0.33018,
         "year_fe": false
@@ -76,7 +77,7 @@
         "facilities": 878,
         "facility_age_years_coef": -0.03308575,
         "facility_age_years_p": 4.725939e-40,
-        "label": "R4: Post-Fukushima year FE (FY2012-FY2024)",
+        "label": "R4: Later coded-window year FE (FY2013-FY2024)",
         "n": 4283,
         "r2": 0.3538776,
         "year_fe": true

@@ -17,7 +17,7 @@ PDF_OUT = ROOT / "figure3_efficiency_structure.pdf"
 AGE_LABELS = ["0-10", "10-20", "20-30", "30+"]
 AGE_EFF = np.array([0.400, 0.338, 0.272, 0.183])
 
-VAR_LABELS = ["Full sample", "Pre-2011", "Post-2011"]
+VAR_LABELS = ["Full coded", "FY2005-2009", "FY2013-2024"]
 VAR_VALUES = np.array([0.1499, 0.1795, 0.0956])
 
 

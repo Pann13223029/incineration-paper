@@ -1,7 +1,8 @@
 {
   "analysis_config": {
     "adoption_model": "observed_first_adoption_logit_hazard",
-    "adoption_predictors_lagged_one_year": true,
+    "adoption_predictors_lagged_exact_one_year": true,
+    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
     "capacity_utilization_cap": 1.0,
     "efficiency_ceiling_mwh_per_t": 0.8,

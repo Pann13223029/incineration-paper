@@ -139,7 +139,7 @@ Only non-generators can first start generating. Facilities already generating in
 
 The model asks for the probability of first generation in a given year using prior-year age and prior-year capacity, plus year and prefecture controls. This matters because it describes the facility before first entry, not after entry.
 
-In plain language, the model asks: among facilities still outside power generation, who first reports generation in the next observed year?
+In plain language, the model asks: among facilities still outside power generation, who first reports generation in the next fiscal year?
 
 Do not overexplain the model. The important point is timing: predictors are measured before entry.
 

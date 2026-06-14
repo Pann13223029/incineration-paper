@@ -16,7 +16,9 @@ This report documents the canonical descriptive and regression samples used by t
 - Left-censored facilities already generating power in their first observed year: 913
 - Adoption risk-set observations: 13,770 (2,035 facilities)
 - Observed first-adoption events in the panel window: 141
-- Lagged adoption-model observations: 11,717 (1,915 facilities; 140 events)
+- Exact-year lagged adoption-model observations: 10,823 (1,911 facilities; 98 events)
+- Broader previous-observed-coded-row adoption frame before exact-year restriction: 11,717 observations (1,915 facilities; 140 events)
+- Non-exact lag rows excluded from the main adoption model: 894 (42 events)
 - First observed at-risk years dropped because lagged predictors are required: 2,035
 - Additional rows dropped for missing lagged age/capacity: 18 (12 facilities)
 
@@ -25,5 +27,5 @@ This report documents the canonical descriptive and regression samples used by t
 - Regression observations: 5,683 (1,016 facilities)
 - Fiscal years: FY2005 to FY2024
 - Within/total variance ratio (pooled log-efficiency): 0.1499
-- Pre-Fukushima ratio (FY2005-FY2011): 0.1795
-- Post-Fukushima ratio (FY2012-FY2024): 0.0956
+- Early coded-window ratio (FY2005-FY2009): 0.1795
+- Later coded-window ratio (FY2013-FY2024): 0.0956

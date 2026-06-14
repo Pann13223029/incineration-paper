@@ -1,7 +1,8 @@
 {
   "analysis_config": {
     "adoption_model": "observed_first_adoption_logit_hazard",
-    "adoption_predictors_lagged_one_year": true,
+    "adoption_predictors_lagged_exact_one_year": true,
+    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
     "capacity_utilization_cap": 1.0,
     "efficiency_ceiling_mwh_per_t": 0.8,
@@ -50,6 +51,16 @@
         "pct_of_total_avoided": 14.2
       }
     },
+    "early_coded_window": [
+      2005,
+      2009
+    ],
+    "early_coded_within_total_ratio": 0.1795,
+    "later_coded_window": [
+      2013,
+      2024
+    ],
+    "later_coded_within_total_ratio": 0.0956,
     "main_models": {
       "coefficients": {
         "capacity_100t": [

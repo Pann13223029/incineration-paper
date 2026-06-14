@@ -14,7 +14,7 @@ prior-year age and capacity, how electricity recovered per tonne is associated
 with observed facility and operating conditions among identifiable generators,
 and whether those two margins support one average-fleet modernization
 interpretation. Entry is selective rather than diffuse: facilities older than
-ten years are less likely to record transition in the next observed year, while
+ten years are less likely to record transition in the next fiscal year, while
 larger facilities are more likely to do so. Among operating generators,
 electricity recovery intensity is lower at older plants and higher at larger,
 more fully utilized ones, while between-facility heterogeneity dominates
@@ -191,20 +191,20 @@ first observed year, the adoption risk set contains 13,770 facility-years across
 2,035 facilities, with 141 observed first-adoption events.
 
 In practical terms, the adoption model asks whether a facility that was still
-non-generating in one year first reports generation in the following observed
-year. Technically, it is a lagged discrete-time logit hazard estimated on 11,717
-observations across 1,915 facilities and 140 retained events. Predictors are
-prior-year age band and prior-year design capacity, with year fixed effects,
-prefecture fixed effects, and facility-clustered standard errors. This is an
-observed-transition model, not a complete structural model of all possible
-modernization pathways. The design follows grouped event-history logic: each
-coded facility-year contributes to the risk set until first event occurrence
-(Allison, 1982; Beck et al., 1998). That distinction matters because the paper
-is not estimating a continuous engineering retrofit process. It estimates the
-probability that a facility first records entry into power generation in the
-next observed year, conditional on still being at risk. The lagged predictor
-structure ensures that age band and capacity are measured before the observed
-event rather than on the event row itself.
+non-generating in one year first reports generation in the following fiscal
+year. Technically, it is an exact one-fiscal-year lagged discrete-time logit
+hazard estimated on 10,823 observations across 1,911 facilities and 98 retained
+events. Predictors are prior-year age band and prior-year design capacity, with
+year fixed effects, prefecture fixed effects, and facility-clustered standard
+errors. This is an observed-transition model, not a complete structural model of
+all possible modernization pathways. The design follows grouped event-history
+logic: each coded facility-year contributes to the risk set until first event
+occurrence (Allison, 1982; Beck et al., 1998). That distinction matters because
+the paper is not estimating a continuous engineering retrofit process. It
+estimates the probability that a facility first records entry into power
+generation in the next fiscal year, conditional on still being at risk. The
+lagged predictor structure ensures that age band and capacity are measured
+before the observed event rather than on the event row itself.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports power generation in
 fiscal year \(t\), conditional on still being in the at-risk set \(R_{it}=1\).
@@ -227,8 +227,8 @@ The omitted age group is 0-10 years. \(\gamma_t\) absorbs common fiscal-year
 differences, \(\delta_p\) absorbs prefecture-level context, and
 \(\text{Capacity100}\) measures design capacity in 100 t/day units. Table 2
 reports average marginal effects in percentage points, not log-odds
-coefficients. A value of -1.76 percentage points therefore means that the
-annual probability of first reporting generation is 1.76 percentage points
+coefficients. A value of -1.82 percentage points therefore means that the
+annual probability of first reporting generation is 1.82 percentage points
 lower than the 0-10 year reference group, conditional on the model covariates.
 
 The second frame is the canonical generator frame. It contains operating
@@ -284,11 +284,13 @@ Rows without official facility codes cannot support that comparison. The frame
 is better understood as the canonical identifiable generator sample than as a
 census of all generation activity. The supplement compares included and
 uncoded operating-generator rows; the uncoded rows are concentrated in
-FY2010-FY2012. The paper also uses a bounded electricity-recovery metric because the
-empirical question is not boiler thermodynamics in isolation, but administrative
-performance in electricity recovered per tonne processed. That puts the paper
-closer to applied energy-recovery studies than to plant-level engineering
-optimization alone (Grosso et al., 2010; Munster & Meibom, 2010).
+FY2010-FY2012, so period comparisons are treated as coded-window diagnostics
+rather than as a clean Fukushima-era identification design. The paper also uses
+a bounded electricity-recovery metric because the empirical question is not
+boiler thermodynamics in isolation, but administrative performance in
+electricity recovered per tonne processed. That puts the paper closer to applied
+energy-recovery studies than to plant-level engineering optimization alone
+(Grosso et al., 2010; Munster & Meibom, 2010).
 
 Two administrative-data checks are reported in the supplement. First, a small
 set of official facility codes appears more than once within the same fiscal
@@ -371,13 +373,14 @@ The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
 The percentages below describe changes in the annual probability of first
 reporting generation, not changes in engineering efficiency.
-Relative to 0-10 year facilities, plants aged 10-20 years are about 1.76
-percentage points less likely to record transition in the next observed year,
-plants aged 20-30 years are about 1.72 percentage points less likely, and plants
-aged 30 years or more are about 1.13 percentage points less likely. Each
+Relative to 0-10 year facilities, plants aged 10-20 years are about 1.82
+percentage points less likely to record transition in the next fiscal year,
+plants aged 20-30 years are about 2.31 percentage points less likely, and plants
+aged 30 years or more are about 1.59 percentage points less likely. Each
 additional 100 t/day of prior-year design capacity raises annual transition
-probability by about 0.50 percentage points. The sign pattern is stable in the
-alternative event-model checks reported in the supplement.
+probability by about 0.40 percentage points. The sign pattern is stable in the
+alternative event-model checks reported in the supplement, including the broader
+previous-observed-coded-row sensitivity.
 
 These effects should be read within the coded at-risk frame, not as a model of
 all modernization activity in the Japanese fleet. Even within that narrower
@@ -391,10 +394,11 @@ read as gradual modernization delayed by inertia, when the event pattern is more
 selective than gradual.
 
 The pathway audit supports that interpretation without overstating mechanism.
-Among the 141 observed adoption events, 82 are classified as reset- or
-rebuild-like, 38 as continuity-type upgrades, 20 as forward-dated or placeholder
-entries, and 1 as unresolved. This is descriptive pathway evidence, not
-mechanism identification. The event mix is more consistent with
+Among the 141 observed adoption events, 50 are classified as reset- or
+rebuild-like adjacent-year events, 36 as adjacent-year continuity-type upgrades,
+12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent
+coded-row events, and 1 as unresolved. This is descriptive pathway evidence, not
+mechanism identification. The adjacent-year event mix is more consistent with
 capital-intensive pathways than with diffuse late-life catch-up, but it does not
 uniquely identify replacement, major refurbishment, or new build as the single
 pathway. In the main text, the audit therefore functions as a credibility guard
@@ -414,21 +418,21 @@ is selective from the start.
 
 | Variable | AME (pp) | SE (pp) |
 |:--|--:|--:|
-| Prior-year age 10-20 yrs (vs 0-10) | -1.76 | 0.28 |
-| Prior-year age 20-30 yrs (vs 0-10) | -1.72 | 0.42 |
-| Prior-year age 30+ yrs (vs 0-10) | -1.13 | 0.39 |
-| Prior-year capacity (per 100 t/day) | 0.50 | 0.20 |
+| Prior-year age 10-20 yrs (vs 0-10) | -1.82 | 0.29 |
+| Prior-year age 20-30 yrs (vs 0-10) | -2.31 | 0.51 |
+| Prior-year age 30+ yrs (vs 0-10) | -1.59 | 0.43 |
+| Prior-year capacity (per 100 t/day) | 0.40 | 0.12 |
 
 | Model summary | Value |
 |:--|--:|
-| Observations | 11,717 |
-| Facilities | 1,915 |
-| First-adoption events | 140 |
-| Pseudo-R-squared | 0.1842 |
+| Observations | 10,823 |
+| Facilities | 1,911 |
+| First-adoption events | 98 |
+| Pseudo-R-squared | 0.2341 |
 
 *Note: entries are average marginal effects in percentage points from the main
-lagged logit hazard with year and prefecture fixed effects and facility-clustered
-standard errors.*
+exact one-fiscal-year lagged logit hazard with year and prefecture fixed effects
+and facility-clustered standard errors.*
 
 ### 4.2 Electricity recovery within generation is strongly structured
 
@@ -436,13 +440,15 @@ Within the canonical regression frame, the main message is that generators
 mostly differ from one another rather than repeatedly changing position over
 time. The within-to-total variance ratio of pooled log-efficiency is 0.1499,
 meaning that most variation is between facilities rather than within facilities
-over time. The ratio remains low in both the pre-Fukushima and post-Fukushima
-windows, falling from 0.1795 before 2011 to 0.0956 after 2011. This does not
-prove irreversibility. It shows more narrowly that the observed panel contains
-limited evidence of frequent large late-life movements that reshape the fleet
-distribution. It also does not isolate vintage effects from all other durable
-plant characteristics. More narrowly, it supports cross-facility descriptive
-comparison rather than clean causal isolation of vintage itself.
+over time. The ratio remains low in both the early coded window and later coded
+window, falling from 0.1795 in FY2005-FY2009 to 0.0956 in FY2013-FY2024. This
+is not a Fukushima identification design because FY2010-FY2012
+operating-generator rows lack official facility codes. It shows more narrowly
+that the identifiable generator panel contains limited evidence of frequent
+large late-life movements that reshape the fleet distribution. It also does not
+isolate vintage effects from all other durable plant characteristics. More
+narrowly, it supports cross-facility descriptive comparison rather than clean
+causal isolation of vintage itself.
 
 The coefficient patterns point in the same direction. Electricity recovery
 intensity is consistently lower at older facilities and higher at larger and
@@ -458,7 +464,7 @@ comparison to the non-generating segment: the same fleet that shows selective
 entry at one margin also shows a stable hierarchy among mature generators at
 the other.
 
-![Figure 3. Mean electricity recovery intensity declines across generator age groups, while the within-to-total variance ratio stays low in the full sample and in pre/post-Fukushima splits.](../figures/figure3_efficiency_structure.png)
+![Figure 3. Mean electricity recovery intensity declines across generator age groups, while the within-to-total variance ratio stays low in the full coded sample and early/later coded windows.](../figures/figure3_efficiency_structure.png)
 
 The electricity-recovery margin therefore looks structured rather than static.
 Facilities vary through utilization and operating conditions, but age and scale

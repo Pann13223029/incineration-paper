@@ -16,6 +16,7 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 - `regression_results.md`
 - `robustness_results.md`
 - `data_quality_sensitivity.md`
+- `identifier_gap_audit.md`
 - `claim_evidence_map.md`
 - `claim_verification.md`
 - `panel_summary.md`

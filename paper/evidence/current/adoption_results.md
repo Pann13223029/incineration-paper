@@ -13,8 +13,10 @@ This stage models the observed first transition into power generation among code
 
 ## Adoption Model Frame
 
-- Lagged model frame: 11,717 observations across 1,915 facilities
-- Events retained in lagged model frame: 140
+- Main exact-year lagged model frame: 10,823 observations across 1,911 facilities
+- Events retained in lagged model frame: 98
+- Broader previous-observed-coded-row frame before exact-year restriction: 11,717 observations across 1,915 facilities with 140 events
+- Non-exact lag rows excluded from the main model: 894 rows (42 events)
 - First observed at-risk years dropped because lagged predictors are required: 2,035
 - Additional rows dropped for missing lagged age/capacity: 18 (12 facilities)
 
@@ -38,35 +40,50 @@ This stage models the observed first transition into power generation among code
 
 ## Adoption Hazard Model
 
-Main specification: lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
+Main specification: exact one-fiscal-year lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
 
 | Variable                            | AME (pp)   | SE (pp)   |
 |:------------------------------------|:-----------|:----------|
-| Prior-year age 10-20 yrs (vs 0-10)  | -1.76***   | (0.28)    |
-| Prior-year age 20-30 yrs (vs 0-10)  | -1.72***   | (0.42)    |
-| Prior-year age 30+ yrs (vs 0-10)    | -1.13**    | (0.39)    |
-| Prior-year capacity (per 100 t/day) | 0.50*      | (0.20)    |
+| Prior-year age 10-20 yrs (vs 0-10)  | -1.82***   | (0.29)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -2.31***   | (0.51)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -1.59***   | (0.43)    |
+| Prior-year capacity (per 100 t/day) | 0.40**     | (0.12)    |
 
-- Observations: 11,717
-- Facilities: 1,915
-- First-adoption events: 140
-- Pseudo-R-squared (deviance-based): 0.1842
-- Robustness: lagged complementary log-log and lagged linear probability specifications return the same sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.345; LPM coef. 1.47 pp).
+- Observations: 10,823
+- Facilities: 1,911
+- First-adoption events: 98
+- Events per parameter: 1.53 (98 events / 64 parameters)
+- Zero-event fiscal-year levels in main frame: 1 of 14
+- Zero-event prefecture levels in main frame: 8 of 47
+- Pseudo-R-squared (deviance-based): 0.2341
+- Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.407; LPM coef. 1.32 pp).
+
+### Adoption specification sensitivity
+
+| Specification                                        | N      |   Events |   Parameters |   Events/parameter |   Age 10-20 AME (pp) |   Age 20-30 AME (pp) |   Age 30+ AME (pp) |   Capacity AME (pp) | Sign pattern   |
+|:-----------------------------------------------------|:-------|---------:|-------------:|-------------------:|---------------------:|---------------------:|-------------------:|--------------------:|:---------------|
+| Previous observed coded row: year FE + prefecture FE | 11,717 |      140 |           66 |               2.12 |                -1.76 |                -1.72 |              -1.13 |                0.5  | yes            |
+| Exact-year: year FE only                             | 10,823 |       98 |           18 |               5.44 |                -1.67 |                -1.94 |              -1.24 |                0.45 | yes            |
+| Exact-year: prefecture FE only                       | 10,823 |       98 |           51 |               1.92 |                -1.39 |                -1.18 |              -0.58 |                0.35 | yes            |
+| Exact-year: age and capacity only                    | 10,823 |       98 |            5 |              19.6  |                -1.34 |                -1.1  |              -0.48 |                0.4  | yes            |
+
+*Interpretation: the exact-year model is the main specification because it preserves annual transition timing. The broader previous-observed-coded-row specification is reported only as a sensitivity check because official facility identifiers are missing for FY2010-FY2012.*
 
 ## Transition Pathway Audit
 
 A conservative event-level audit classifies each observed adoption using continuity in `year_started`, facility age, design capacity, and naming. The goal is not to prove the mechanism of modernization, but to bound what the panel can and cannot support.
 
-Rule set: `reset / rebuild-like` requires an observed `year_started` reset or a mature-to-new age reset; `continuity / in-place upgrade` requires no such reset on the observed event row; forward-dated or placeholder entries remain unresolved rather than forced into a stronger mechanism claim.
+Rule set: `reset / rebuild-like` requires an observed `year_started` reset or a mature-to-new age reset on an exact adjacent-year event; `continuity / in-place upgrade` requires no such reset on an exact adjacent-year event; forward-dated or placeholder entries remain weaker evidence; non-adjacent coded-row events are classified as timing-ambiguous rather than forced into a stronger mechanism claim.
 
-| Category                                 |   Events |   Share (%) |
-|:-----------------------------------------|---------:|------------:|
-| Reset / rebuild-like transition          |       82 |        58.2 |
-| In-place upgrade / continuity transition |       38 |        27   |
-| Forward-dated / placeholder entry        |       20 |        14.2 |
-| Unresolved / insufficient continuity     |        1 |         0.7 |
+| Category                                  |   Events |   Share (%) |
+|:------------------------------------------|---------:|------------:|
+| Reset / rebuild-like transition           |       50 |        35.5 |
+| In-place upgrade / continuity transition  |       36 |        25.5 |
+| Forward-dated / placeholder entry         |       12 |         8.5 |
+| Timing-ambiguous / non-adjacent coded row |       42 |        29.8 |
+| Unresolved / insufficient continuity      |        1 |         0.7 |
 
-*Interpretation: the largest observed pathway bucket is reset- or rebuild-like, a meaningful minority retain continuity consistent with in-place upgrades, and a nontrivial set are forward-dated or placeholder entries that should not be forced into a stronger mechanism claim than the data support.*
+*Interpretation: exact adjacent-year events still contain reset/rebuild-like and continuity-type cases, but non-adjacent coded-row events are deliberately weakened to timing-ambiguous evidence. The audit supports selective observed entry, not a uniquely identified modernization mechanism.*
 
 ### Event Year Distribution
 
@@ -88,4 +105,4 @@ Rule set: `reset / rebuild-like` requires an observed `year_started` reset or a 
 |          2023 |                 2 |
 |          2024 |                 3 |
 
-*Interpretation: observed transition into power generation is more common among facilities that were younger and larger in the prior year. Under the stronger hazard specification, the age penalty remains negative and the capacity effect remains positive, while the pathway audit suggests that capital-side modernization is empirically present but not reducible to one identified mechanism such as replacement alone.*
+*Interpretation: observed transition into power generation is more common among facilities that were younger and larger in the previous fiscal year under the exact-year model. The pathway audit suggests that capital-side modernization is empirically present in adjacent-year events, but the evidence is not reducible to one identified mechanism such as replacement alone.*

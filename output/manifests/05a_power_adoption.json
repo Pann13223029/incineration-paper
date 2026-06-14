@@ -1,7 +1,8 @@
 {
   "analysis_config": {
     "adoption_model": "observed_first_adoption_logit_hazard",
-    "adoption_predictors_lagged_one_year": true,
+    "adoption_predictors_lagged_exact_one_year": true,
+    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
     "capacity_utilization_cap": 1.0,
     "efficiency_ceiling_mwh_per_t": 0.8,
@@ -18,25 +19,51 @@
   "metadata": {
     "cloglog_robustness": {
       "coefficients": {
-        "lag_age_10_20": -1.933327,
-        "lag_age_20_30": -1.44222,
-        "lag_age_30_plus": -0.9595331,
-        "lag_capacity_100t": 0.3450291
+        "lag_age_10_20": -3.06957,
+        "lag_age_20_30": -2.218771,
+        "lag_age_30_plus": -1.617233,
+        "lag_capacity_100t": 0.4074622
       },
       "sign_pattern_matches_main": true,
       "type": "discrete_time_cloglog"
+    },
+    "event_lag_gap_counts": {
+      "0": 5,
+      "1": 98,
+      "11": 1,
+      "2": 1,
+      "4": 24,
+      "5": 1,
+      "6": 4,
+      "7": 2,
+      "8": 2,
+      "9": 2
     },
     "events": 141,
     "lag_drop_additional_missing_facilities": 12,
     "lag_drop_additional_missing_rows": 18,
     "lag_drop_first_rows": 2035,
+    "lag_gap_counts": {
+      "0": 67,
+      "1": 10823,
+      "10": 2,
+      "11": 2,
+      "2": 14,
+      "3": 1,
+      "4": 716,
+      "5": 3,
+      "6": 69,
+      "7": 12,
+      "8": 4,
+      "9": 4
+    },
     "left_censored_generators": 913,
     "lpm_robustness": {
       "coefficients": {
-        "lag_age_10_20": -0.0216869,
-        "lag_age_20_30": -0.0198329,
-        "lag_age_30_plus": -0.01516003,
-        "lag_capacity_100t": 0.01471598
+        "lag_age_10_20": -0.02253619,
+        "lag_age_20_30": -0.02307156,
+        "lag_age_30_plus": -0.01811529,
+        "lag_capacity_100t": 0.01322372
       },
       "sign_pattern_matches_main": true,
       "type": "linear_probability_hazard"
@@ -44,59 +71,196 @@
     "model": {
       "average_marginal_effects": {
         "age_10-20 yrs": {
-          "ame": -0.01763927,
-          "pvalue": 4.672004e-10,
-          "se": 0.00283146
+          "ame": -0.01823123,
+          "pvalue": 6.284578e-10,
+          "se": 0.002948548
         },
         "age_20-30 yrs": {
-          "ame": -0.01722517,
-          "pvalue": 3.676316e-05,
-          "se": 0.004173841
+          "ame": -0.02314922,
+          "pvalue": 6.582587e-06,
+          "se": 0.005136559
         },
         "age_30+ yrs": {
-          "ame": -0.01125809,
-          "pvalue": 0.004196783,
-          "se": 0.003932298
+          "ame": -0.01593013,
+          "pvalue": 0.0001875075,
+          "se": 0.004264776
         },
         "lag_capacity_100t": {
-          "ame": 0.005041559,
-          "pvalue": 0.01288944,
-          "se": 0.00202732
+          "ame": 0.003983792,
+          "pvalue": 0.001083224,
+          "se": 0.001219042
         }
       },
       "baseline_prior_year_age_band": "0-10 yrs",
       "coefficients": {
-        "lag_age_10_20": -1.97478,
-        "lag_age_20_30": -1.480543,
-        "lag_age_30_plus": -1.068071,
-        "lag_capacity_100t": 0.4551554
+        "lag_age_10_20": -3.113575,
+        "lag_age_20_30": -2.250639,
+        "lag_age_30_plus": -1.683902,
+        "lag_capacity_100t": 0.4791276
       },
-      "predictors_lagged_one_year": true,
-      "pseudo_r_squared": 0.1841827,
+      "predictors_lagged_exact_one_year": true,
+      "pseudo_r_squared": 0.2341324,
       "pvalues": {
-        "lag_age_10_20": 1.654948e-10,
-        "lag_age_20_30": 7.581598e-07,
-        "lag_age_30_plus": 0.003123235,
-        "lag_capacity_100t": 0.01165395
+        "lag_age_10_20": 8.289133e-10,
+        "lag_age_20_30": 5.789872e-11,
+        "lag_age_30_plus": 2.223885e-06,
+        "lag_capacity_100t": 0.0007627247
       },
       "reported_scale": "average_marginal_effect",
       "type": "discrete_time_logit_hazard",
       "uncertainty_method": "cluster_robust_marginal_effect"
     },
-    "model_events": 140,
-    "model_facilities": 1915,
-    "model_obs": 11717,
+    "model_events": 98,
+    "model_facilities": 1911,
+    "model_obs": 10823,
+    "non_exact_lag_events_excluded": 42,
+    "non_exact_lag_rows_excluded": 894,
     "pathway_audit": {
       "counts": {
-        "Forward-dated / placeholder entry": 20,
-        "In-place upgrade / continuity transition": 38,
-        "Reset / rebuild-like transition": 82,
+        "Forward-dated / placeholder entry": 12,
+        "In-place upgrade / continuity transition": 36,
+        "Reset / rebuild-like transition": 50,
+        "Timing-ambiguous / non-adjacent coded row": 42,
         "Unresolved / insufficient continuity": 1
       },
       "events": 141
     },
+    "previous_observed_model_events": 140,
+    "previous_observed_model_facilities": 1915,
+    "previous_observed_model_obs": 11717,
     "risk_set_facilities": 2035,
-    "risk_set_obs": 13770
+    "risk_set_obs": 13770,
+    "sparse_event_diagnostics": {
+      "events": 98,
+      "events_per_parameter": 1.53125,
+      "parameters": 64,
+      "prefectures": 47,
+      "years": 14,
+      "zero_event_prefectures": 8,
+      "zero_event_years": 1
+    },
+    "specification_sensitivity": [
+      {
+        "average_marginal_effects": {
+          "age_10-20 yrs": {
+            "ame": -0.01763927,
+            "pvalue": 4.672004e-10,
+            "se": 0.00283146
+          },
+          "age_20-30 yrs": {
+            "ame": -0.01722517,
+            "pvalue": 3.676316e-05,
+            "se": 0.004173841
+          },
+          "age_30+ yrs": {
+            "ame": -0.01125809,
+            "pvalue": 0.004196783,
+            "se": 0.003932298
+          },
+          "lag_capacity_100t": {
+            "ame": 0.005041559,
+            "pvalue": 0.01288944,
+            "se": 0.00202732
+          }
+        },
+        "events": 140,
+        "events_per_parameter": 2.121212,
+        "label": "Previous observed coded row: year FE + prefecture FE",
+        "n": 11717,
+        "parameters": 66,
+        "sign_pattern_matches_main": true
+      },
+      {
+        "average_marginal_effects": {
+          "age_10-20 yrs": {
+            "ame": -0.01667635,
+            "pvalue": 1.590482e-11,
+            "se": 0.002474458
+          },
+          "age_20-30 yrs": {
+            "ame": -0.01935711,
+            "pvalue": 6.686495e-07,
+            "se": 0.003894591
+          },
+          "age_30+ yrs": {
+            "ame": -0.0123675,
+            "pvalue": 0.001009289,
+            "se": 0.003761491
+          },
+          "lag_capacity_100t": {
+            "ame": 0.004536838,
+            "pvalue": 0.003303464,
+            "se": 0.001544197
+          }
+        },
+        "events": 98,
+        "events_per_parameter": 5.444444,
+        "label": "Exact-year: year FE only",
+        "n": 10823,
+        "parameters": 18,
+        "sign_pattern_matches_main": true
+      },
+      {
+        "average_marginal_effects": {
+          "age_10-20 yrs": {
+            "ame": -0.01385148,
+            "pvalue": 4.364442e-11,
+            "se": 0.002101529
+          },
+          "age_20-30 yrs": {
+            "ame": -0.01182878,
+            "pvalue": 4.820729e-05,
+            "se": 0.002910516
+          },
+          "age_30+ yrs": {
+            "ame": -0.005838604,
+            "pvalue": 0.03690762,
+            "se": 0.002797895
+          },
+          "lag_capacity_100t": {
+            "ame": 0.003504828,
+            "pvalue": 0.001219376,
+            "se": 0.001083641
+          }
+        },
+        "events": 98,
+        "events_per_parameter": 1.921569,
+        "label": "Exact-year: prefecture FE only",
+        "n": 10823,
+        "parameters": 51,
+        "sign_pattern_matches_main": true
+      },
+      {
+        "average_marginal_effects": {
+          "age_10-20 yrs": {
+            "ame": -0.01337356,
+            "pvalue": 1.014409e-11,
+            "se": 0.001965417
+          },
+          "age_20-30 yrs": {
+            "ame": -0.010981,
+            "pvalue": 2.56677e-05,
+            "se": 0.002609028
+          },
+          "age_30+ yrs": {
+            "ame": -0.004816984,
+            "pvalue": 0.07888706,
+            "se": 0.002741314
+          },
+          "lag_capacity_100t": {
+            "ame": 0.003953817,
+            "pvalue": 0.004225325,
+            "se": 0.001382052
+          }
+        },
+        "events": 98,
+        "events_per_parameter": 19.6,
+        "label": "Exact-year: age and capacity only",
+        "n": 10823,
+        "parameters": 5,
+        "sign_pattern_matches_main": true
+      }
+    ]
   },
   "outputs": [
     "output/adoption_results.md",

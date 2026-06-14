@@ -266,7 +266,7 @@ Script cue: This slide prevents the audience from asking why there is not one mo
 </div>
 
 <div class="callout">
-  <p>Plain question: among facilities still outside power generation, who first reports generation in the next observed year?</p>
+  <p>Plain question: among facilities still outside power generation, who first reports generation in the next fiscal year?</p>
 </div>
 
 <!--

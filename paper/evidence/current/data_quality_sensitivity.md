@@ -11,8 +11,8 @@ The checks are sensitivity diagnostics; they do not replace the main specificati
 
 | Frame | ID rule | Rows | Facilities | Duplicate facility-year pairs | Duplicate rows | Max rows/pair | Same-year lag events |
 |:--|:--|--:|--:|--:|--:|--:|--:|
-| Adoption model | Official code | 11,717 | 1,915 | 53 | 110 | 4 | 5 |
-| Adoption model | Composite sensitivity | 11,720 | 1,935 | 42 | 84 | 2 | 3 |
+| Adoption model | Official code | 10,823 | 1,911 | 0 | 0 | 1 | 0 |
+| Adoption model | Composite sensitivity | 10,850 | 1,931 | 0 | 0 | 1 | 0 |
 | Regression | Official code | 5,683 | 1,016 | 11 | 69 | 22 | - |
 | Regression | Composite sensitivity | 5,683 | 1,050 | 3 | 6 | 2 | - |
 
@@ -61,15 +61,15 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 | Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.76 | 0.28 | -1.78 | 0.28 |
-| Prior-year age 20-30 yrs | -1.72 | 0.42 | -1.76 | 0.42 |
-| Prior-year age 30+ yrs | -1.13 | 0.39 | -1.15 | 0.39 |
-| Prior-year capacity per 100 t/day | 0.50 | 0.20 | 0.50 | 0.19 |
+| Prior-year age 10-20 yrs | -1.82 | 0.29 | -1.79 | 0.29 |
+| Prior-year age 20-30 yrs | -2.31 | 0.51 | -2.19 | 0.50 |
+| Prior-year age 30+ yrs | -1.59 | 0.43 | -1.52 | 0.42 |
+| Prior-year capacity per 100 t/day | 0.40 | 0.12 | 0.42 | 0.13 |
 
 | ID rule | Observations | Facilities | Events | Pseudo-R2 |
 |:--|--:|--:|--:|--:|
-| Official code | 11,717 | 1,915 | 140 | 0.1842 |
-| Composite sensitivity | 11,720 | 1,935 | 138 | 0.1847 |
+| Official code | 10,823 | 1,911 | 98 | 0.2341 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.2265 |
 
 ## Composite-ID Efficiency Sensitivity
 

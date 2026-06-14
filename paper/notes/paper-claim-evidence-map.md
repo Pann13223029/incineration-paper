@@ -87,7 +87,7 @@ May move to supplement:
 
 - fuller estimator comparisons
 - extra robustness variants
-- expanded post-Fukushima split detail
+- expanded early/later coded-window detail
 
 ## Claim 4: The paper supports calibrated planning diagnostics
 

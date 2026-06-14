@@ -17,16 +17,22 @@
     "data/processed/incineration_panel_enriched.csv"
   ],
   "metadata": {
-    "operating_power_obs": 6660,
+    "adoption_exact_year_events": 98,
+    "adoption_exact_year_rows": 10823,
+    "adoption_non_exact_events_excluded": 42,
+    "adoption_non_exact_rows_excluded": 894,
+    "adoption_previous_observed_events": 140,
+    "adoption_previous_observed_rows": 11717,
+    "missing_code_rows_2010_2012": 3718,
+    "multi_year_gap_events": 37,
+    "operating_generator_missing_code_rows_2010_2012": 899,
     "regression_facilities": 1016,
-    "regression_obs": 5683,
-    "within_total_ratio": 0.1499
+    "regression_rows": 5683,
+    "same_year_duplicate_code_events": 5
   },
   "outputs": [
-    "output/fig01_establishing_shot.png",
-    "output/fig02_heterogeneity_shot.png",
-    "output/pre_regression_decision.md"
+    "output/identifier_gap_audit.md"
   ],
   "python": "3.12.12",
-  "stage": "04_eda_facility"
+  "stage": "06b_identifier_gap_audit"
 }

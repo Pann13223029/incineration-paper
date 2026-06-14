@@ -4,8 +4,8 @@
 Verify that paper-facing claims stay synchronized with canonical outputs.
 
 This script reads structured manifests and generated result artifacts, checks a
-curated set of headline claims in README.md, ARCHITECTURE.md, and thesis.tex,
-and fails hard on drift or known overclaim language.
+curated set of headline claims in repo-facing documents, and fails hard on drift
+or known overclaim language.
 """
 
 from __future__ import annotations
@@ -42,16 +42,8 @@ def write_stage_manifest(
 
 README_PATH = REPO_ROOT / "README.md"
 ARCHITECTURE_PATH = REPO_ROOT / "ARCHITECTURE.md"
-THESIS_PATH = REPO_ROOT / "thesis" / "thesis.tex"
 REPORT_PATH = OUTPUT_DIR / "claim_verification.md"
 CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
-EXEC_SUMMARY_PATH = REPO_ROOT / "research" / "notes" / "executive-summary-for-supervisor.md"
-DEFENSE_QA_PATH = REPO_ROOT / "research" / "notes" / "defense-q-and-a.md"
-DEFENSE_RAPID_PATH = REPO_ROOT / "research" / "notes" / "defense-rapid-answers.md"
-DEFENSE_ORDER_PATH = REPO_ROOT / "research" / "notes" / "defense-question-order.md"
-DEFENSE_OUTLINE_PATH = REPO_ROOT / "research" / "notes" / "defense-slide-outline.md"
-DEFENSE_DECK_PATH = REPO_ROOT / "research" / "slides" / "defense-deck.md"
-DEFENSE_ADOPTION_FIG_PATH = REPO_ROOT / "research" / "slides" / "figures" / "defense_adoption_hazard.svg"
 
 CORE_MANIFESTS = [
     "02_parse_facility_panel",
@@ -60,6 +52,8 @@ CORE_MANIFESTS = [
     "05a_power_adoption",
     "05_panel_regression",
     "06_robustness",
+    "06a_data_quality_sensitivity",
+    "06b_identifier_gap_audit",
 ]
 
 
@@ -73,16 +67,12 @@ def fmt_int(value: int) -> str:
 
 
 def fmt_pp_abs(value: float, decimals: int = 1) -> str:
-    scaled = Decimal(f"{abs(value) * 100:.{decimals + 1}f}")
-    quantum = Decimal("1").scaleb(-decimals)
-    return format(scaled.quantize(quantum, rounding=ROUND_HALF_UP), f".{decimals}f")
+    return f"{abs(value) * 100:.{decimals}f}"
 
 
 def fmt_signed_pp(value: float, decimals: int = 2) -> str:
     sign = "+" if value >= 0 else "−"
-    scaled = Decimal(f"{abs(value) * 100:.{decimals + 1}f}")
-    quantum = Decimal("1").scaleb(-decimals)
-    return f"{sign}{format(scaled.quantize(quantum, rounding=ROUND_HALF_UP), f'.{decimals}f')}"
+    return f"{sign}{abs(value) * 100:.{decimals}f}"
 
 
 def fmt_signed_decimal(value: float, decimals: int = 3) -> str:
@@ -114,6 +104,11 @@ def build_canonical_metrics() -> dict:
 
     age_group_summary = regression_manifest["metadata"]["age_group_summary"]
     robustness_specs = robustness_manifest["metadata"]["specifications"]
+    pathway_counts = adoption_manifest["metadata"]["pathway_audit"]["counts"]
+    early_coded_window = regression_manifest["metadata"].get("early_coded_window", [2005, 2009])
+    later_coded_window = regression_manifest["metadata"].get("later_coded_window", [2013, 2024])
+    early_window_label = f"FY{early_coded_window[0]}–FY{early_coded_window[1]}"
+    later_window_label = f"FY{later_coded_window[0]}–FY{later_coded_window[1]}"
     log_dv_robust_age = [
         spec["facility_age_years_coef"]
         for spec in robustness_specs
@@ -162,23 +157,28 @@ def build_canonical_metrics() -> dict:
             ]["ame"],
             2,
         ),
-        "pathway_reset": adoption_manifest["metadata"]["pathway_audit"]["counts"][
-            "Reset / rebuild-like transition"
+        "pathway_reset": pathway_counts["Reset / rebuild-like transition"],
+        "pathway_continuity": pathway_counts["In-place upgrade / continuity transition"],
+        "pathway_placeholder": pathway_counts["Forward-dated / placeholder entry"],
+        "pathway_timing_ambiguous": pathway_counts[
+            "Timing-ambiguous / non-adjacent coded row"
         ],
-        "pathway_continuity": adoption_manifest["metadata"]["pathway_audit"]["counts"][
-            "In-place upgrade / continuity transition"
-        ],
-        "pathway_placeholder": adoption_manifest["metadata"]["pathway_audit"]["counts"][
-            "Forward-dated / placeholder entry"
-        ],
-        "pathway_unresolved": adoption_manifest["metadata"]["pathway_audit"]["counts"][
-            "Unresolved / insufficient continuity"
-        ],
+        "pathway_unresolved": pathway_counts["Unresolved / insufficient continuity"],
         "regression_obs": regression_manifest["metadata"]["regression_obs"],
         "regression_facilities": regression_manifest["metadata"]["regression_facilities"],
         "within_total_ratio": regression_manifest["metadata"]["within_total_ratio"],
-        "pre_ratio": regression_manifest["metadata"]["pre_fukushima_within_total_ratio"],
-        "post_ratio": regression_manifest["metadata"]["post_fukushima_within_total_ratio"],
+        "early_ratio": regression_manifest["metadata"].get(
+            "early_coded_within_total_ratio",
+            regression_manifest["metadata"]["pre_fukushima_within_total_ratio"],
+        ),
+        "later_ratio": regression_manifest["metadata"].get(
+            "later_coded_within_total_ratio",
+            regression_manifest["metadata"]["post_fukushima_within_total_ratio"],
+        ),
+        "early_coded_window": early_coded_window,
+        "later_coded_window": later_coded_window,
+        "early_window_label": early_window_label,
+        "later_window_label": later_window_label,
         "main_age_range": (
             fmt_signed_decimal(max(main_age), 3),
             fmt_signed_decimal(min(main_age), 3),
@@ -222,7 +222,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     (
                         f"{fmt_int(metrics['model_obs'])} facility-years across "
                         f"{fmt_int(metrics['model_facilities'])} facilities and "
-                        f"{fmt_int(metrics['model_events'])} events"
+                        f"{fmt_int(metrics['model_events'])} retained events"
                     ),
                 ),
                 (
@@ -242,6 +242,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                         f"{metrics['pathway_reset']} as reset/rebuild-like, "
                         f"{metrics['pathway_continuity']} as continuity/in-place-upgrade-like, "
                         f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
+                        f"{metrics['pathway_timing_ambiguous']} as timing-ambiguous non-adjacent coded-row events, "
                         f"and {metrics['pathway_unresolved']} as unresolved"
                     ),
                 ),
@@ -274,8 +275,8 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     README_PATH,
                     (
                         f"{metrics['within_total_ratio']:.4f}, falling from "
-                        f"{metrics['pre_ratio']:.4f} in FY2005–FY2011 to "
-                        f"{metrics['post_ratio']:.4f} in FY2012–FY2024"
+                        f"{metrics['early_ratio']:.4f} in {metrics['early_window_label']} to "
+                        f"{metrics['later_ratio']:.4f} in {metrics['later_window_label']}"
                     ),
                 ),
             ],
@@ -303,6 +304,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                         f"| Pathway audit of adoption events | {metrics['pathway_reset']} reset/rebuild-like, "
                         f"{metrics['pathway_continuity']} continuity-like, "
                         f"{metrics['pathway_placeholder']} forward-dated/placeholder, "
+                        f"{metrics['pathway_timing_ambiguous']} timing-ambiguous, "
                         f"{metrics['pathway_unresolved']} unresolved |"
                     ),
                 ),
@@ -310,7 +312,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     README_PATH,
                     (
                         f"| Within/total variance ratio | {metrics['within_total_ratio']:.4f} (pooled), "
-                        f"{metrics['pre_ratio']:.4f} (pre-Fuku), {metrics['post_ratio']:.4f} (post-Fuku) |"
+                        f"{metrics['early_ratio']:.4f} (early coded), {metrics['later_ratio']:.4f} (later coded) |"
                     ),
                 ),
             ],
@@ -357,6 +359,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                         f"{metrics['pathway_reset']} observed transitions as reset/rebuild-like, "
                         f"{metrics['pathway_continuity']} as continuity/in-place-upgrade-like, "
                         f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
+                        f"{metrics['pathway_timing_ambiguous']} as timing-ambiguous non-adjacent coded-row events, "
                         f"and {metrics['pathway_unresolved']} as unresolved"
                     ),
                 ),
@@ -370,7 +373,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     (
                         "| Adoption hazard, prior-year age bands | Facilities older than 10 years are "
                         f"{metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely than 0–10-year facilities "
-                        "to record transition in the next observed year | p < 0.05 in every reported age-band coefficient |"
+                        "to record transition in the next fiscal year | p < 0.05 in every reported age-band coefficient |"
                     ),
                 ),
                 (
@@ -402,136 +405,6 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 ),
             ],
         },
-        {
-            "id": "thesis_core_claims",
-            "targets": [
-                (
-                    THESIS_PATH,
-                    "23,599 facility-year observations across 2,948 incinerators",
-                ),
-                (
-                    THESIS_PATH,
-                    (
-                        f"{fmt_int(metrics['events'])} observed first-adoption events among "
-                        f"{fmt_int(metrics['risk_set_facilities'])} facilities first observed without power generation"
-                    ),
-                ),
-                (
-                    THESIS_PATH,
-                    (
-                        f"about {metrics['adoption_age_range_1dp'][0]}--{metrics['adoption_age_range_1dp'][1]} "
-                        "percentage points less likely"
-                    ),
-                ),
-                (
-                    THESIS_PATH,
-                    (
-                        f"A conservative pathway audit of the {metrics['events']} observed adoption events classifies "
-                        f"{metrics['pathway_reset']} as reset- or rebuild-like, "
-                        f"{metrics['pathway_continuity']} as continuity-type upgrades, "
-                        f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
-                        f"and {metrics['pathway_unresolved']} as unresolved"
-                    ),
-                ),
-                (
-                    THESIS_PATH,
-                    (
-                        f"{fmt_int(metrics['regression_obs'])} facility-year observations across "
-                        f"{fmt_int(metrics['regression_facilities'])} facilities"
-                    ),
-                ),
-                (
-                    THESIS_PATH,
-                    (
-                        f"{metrics['within_total_ratio']:.4f}, falling to {metrics['post_ratio']:.4f} "
-                        "in the post-Fukushima window"
-                    ),
-                ),
-            ],
-        },
-        {
-            "id": "supervisor_brief_current_numbers",
-            "targets": [
-                (
-                    EXEC_SUMMARY_PATH,
-                    "lagged discrete-time logit hazard",
-                ),
-                (
-                    EXEC_SUMMARY_PATH,
-                    (
-                        f"about {metrics['adoption_age_range_1dp'][0]}-"
-                        f"{metrics['adoption_age_range_1dp'][1]} percentage points less likely"
-                    ),
-                ),
-                (
-                    EXEC_SUMMARY_PATH,
-                    (
-                        f"about {metrics['adoption_capacity_pp_1dp']} percentage points"
-                    ),
-                ),
-                (
-                    EXEC_SUMMARY_PATH,
-                    (
-                        f"{metrics['pathway_reset']} of {metrics['events']} observed transitions as reset/rebuild-like"
-                    ),
-                ),
-            ],
-        },
-        {
-            "id": "defense_notes_current_spec",
-            "targets": [
-                (
-                    DEFENSE_QA_PATH,
-                    "### 3. Why use a logit hazard rather than LPM?",
-                ),
-                (
-                    DEFENSE_QA_PATH,
-                    "The main specification is a lagged logit hazard",
-                ),
-                (
-                    DEFENSE_RAPID_PATH,
-                    "### Why use logit rather than LPM?",
-                ),
-                (
-                    DEFENSE_ORDER_PATH,
-                    "### 9. Why use logit rather than LPM?",
-                ),
-            ],
-        },
-        {
-            "id": "defense_slides_current_numbers",
-            "targets": [
-                (
-                    DEFENSE_OUTLINE_PATH,
-                    (
-                        f"- Prior-year age `10-20`: `{metrics['adoption_age_range_2dp'][0].replace('−', '-')}` pp"
-                    ),
-                ),
-                (
-                    DEFENSE_OUTLINE_PATH,
-                    (
-                        f"- Prior-year capacity: `{metrics['adoption_capacity_pp_2dp'].replace('+', '')}` pp per `100 t/day`"
-                    ),
-                ),
-                (
-                    DEFENSE_DECK_PATH,
-                    (
-                        f"<strong>{metrics['adoption_age_range_1dp'][0]}-"
-                        f"{metrics['adoption_age_range_1dp'][1]} pp less likely</strong>"
-                    ),
-                ),
-                (
-                    DEFENSE_DECK_PATH,
-                    (
-                        f"<strong>{metrics['adoption_capacity_pp_1dp']} pp</strong>"
-                    ),
-                ),
-                (
-                    DEFENSE_ADOPTION_FIG_PATH,
-                    f">{metrics['adoption_capacity_pp_2dp']} pp<",
-                ),
-            ],
-        },
     ]
 
 
@@ -542,18 +415,6 @@ def make_forbidden_patterns() -> list[dict]:
             "path": README_PATH,
             "pattern": "```mermaid",
             "reason": "README diagrams must be checked-in SVGs rather than viewer-dependent Mermaid blocks.",
-        },
-        {
-            "id": "dominant_pathway_language",
-            "path": THESIS_PATH,
-            "pattern": "dominant pathway",
-            "reason": "Pathway audit language must stay calibrated to the observed panel, not overclaim dominance.",
-        },
-        {
-            "id": "route_to_large_gains_language",
-            "path": THESIS_PATH,
-            "pattern": "route to large gains in this panel",
-            "reason": "The pathway audit classifies modernization pathways, not realized gain magnitudes.",
         },
         {
             "id": "stale_architecture_age_effect",
@@ -568,58 +429,16 @@ def make_forbidden_patterns() -> list[dict]:
             "reason": "Pre-hardening adoption capacity effect wording should not persist in the architecture doc.",
         },
         {
-            "id": "stale_supervisor_cloglog_method",
-            "path": EXEC_SUMMARY_PATH,
-            "pattern": "lagged complementary log-log discrete-time hazard",
-            "reason": "Supervisor brief must reflect the current logit main specification.",
+            "id": "stale_readme_previous_observed_main_model",
+            "path": README_PATH,
+            "pattern": "11,717 facility-years across 1,915 facilities and 140 events",
+            "reason": "README must present the exact one-fiscal-year adoption model as main, not the previous-observed-row sensitivity.",
         },
         {
-            "id": "stale_supervisor_old_age_range",
-            "path": EXEC_SUMMARY_PATH,
-            "pattern": "2.3-3.2 percentage points less likely",
-            "reason": "Supervisor brief should not retain pre-logit adoption effects.",
-        },
-        {
-            "id": "stale_supervisor_old_capacity_effect",
-            "path": EXEC_SUMMARY_PATH,
-            "pattern": "0.39 percentage points",
-            "reason": "Supervisor brief should not retain pre-logit capacity effects.",
-        },
-        {
-            "id": "stale_defense_q_and_a_heading",
-            "path": DEFENSE_QA_PATH,
-            "pattern": "Why use a complementary log-log hazard?",
-            "reason": "Defense Q&A must present logit as the main adoption specification.",
-        },
-        {
-            "id": "stale_defense_rapid_heading",
-            "path": DEFENSE_RAPID_PATH,
-            "pattern": "Why use cloglog rather than LPM?",
-            "reason": "Rapid answers must present logit as the main adoption specification.",
-        },
-        {
-            "id": "stale_defense_order_heading",
-            "path": DEFENSE_ORDER_PATH,
-            "pattern": "Why use cloglog rather than LPM?",
-            "reason": "Question order must present logit as the main adoption specification.",
-        },
-        {
-            "id": "stale_defense_outline_old_age_range",
-            "path": DEFENSE_OUTLINE_PATH,
-            "pattern": "- Prior-year age `10-20`: `-3.19` pp",
-            "reason": "Defense outline should not retain pre-logit adoption effects.",
-        },
-        {
-            "id": "stale_defense_deck_old_capacity_effect",
-            "path": DEFENSE_DECK_PATH,
-            "pattern": "0.39 pp",
-            "reason": "Defense deck should not retain pre-logit capacity effects.",
-        },
-        {
-            "id": "stale_defense_figure_cloglog",
-            "path": DEFENSE_ADOPTION_FIG_PATH,
-            "pattern": "lagged cloglog hazard",
-            "reason": "Adoption slide figure must reflect the current logit main specification.",
+            "id": "stale_readme_fukushima_shorthand",
+            "path": README_PATH,
+            "pattern": "pre-Fuku",
+            "reason": "README must use early/later coded-window language rather than Fukushima shorthand.",
         },
     ]
 
@@ -629,14 +448,6 @@ def run_checks() -> tuple[list[dict], list[dict], dict]:
     texts = {
         README_PATH: README_PATH.read_text(encoding="utf-8"),
         ARCHITECTURE_PATH: ARCHITECTURE_PATH.read_text(encoding="utf-8"),
-        THESIS_PATH: THESIS_PATH.read_text(encoding="utf-8"),
-        EXEC_SUMMARY_PATH: EXEC_SUMMARY_PATH.read_text(encoding="utf-8"),
-        DEFENSE_QA_PATH: DEFENSE_QA_PATH.read_text(encoding="utf-8"),
-        DEFENSE_RAPID_PATH: DEFENSE_RAPID_PATH.read_text(encoding="utf-8"),
-        DEFENSE_ORDER_PATH: DEFENSE_ORDER_PATH.read_text(encoding="utf-8"),
-        DEFENSE_OUTLINE_PATH: DEFENSE_OUTLINE_PATH.read_text(encoding="utf-8"),
-        DEFENSE_DECK_PATH: DEFENSE_DECK_PATH.read_text(encoding="utf-8"),
-        DEFENSE_ADOPTION_FIG_PATH: DEFENSE_ADOPTION_FIG_PATH.read_text(encoding="utf-8"),
     }
 
     passes = []
@@ -706,7 +517,7 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
     lines = [
         "# Claim Verification Report",
         "",
-        "Repo-level check that thesis-facing claims stay synchronized with canonical outputs.",
+        "Repo-level check that paper-facing claims stay synchronized with canonical outputs.",
         "",
         f"- Core manifest Python: {metrics['source_manifest_python'][0] if len(metrics['source_manifest_python']) == 1 else ', '.join(metrics['source_manifest_python'])}",
         f"- Full panel: {fmt_int(metrics['full_panel_obs'])} observations across {fmt_int(metrics['full_panel_facilities'])} facilities",
@@ -722,12 +533,14 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
             f"- Pathway audit: {metrics['pathway_reset']} reset/rebuild-like, "
             f"{metrics['pathway_continuity']} continuity-like, "
             f"{metrics['pathway_placeholder']} forward-dated/placeholder, "
+            f"{metrics['pathway_timing_ambiguous']} timing-ambiguous, "
             f"{metrics['pathway_unresolved']} unresolved"
         ),
         (
             f"- Regression frame: {fmt_int(metrics['regression_obs'])} observations across "
             f"{fmt_int(metrics['regression_facilities'])} facilities; within/total ratio "
-            f"{metrics['within_total_ratio']:.4f} ({metrics['pre_ratio']:.4f} pre-Fuku, {metrics['post_ratio']:.4f} post-Fuku)"
+            f"{metrics['within_total_ratio']:.4f} ({metrics['early_ratio']:.4f} early coded, "
+            f"{metrics['later_ratio']:.4f} later coded)"
         ),
         "",
         f"## Result: {'PASS' if not failures else 'FAIL'}",
@@ -770,22 +583,22 @@ def write_claim_map(metrics: dict) -> None:
     lines = [
         "# Claim-to-Evidence Map",
         "",
-        "Curated bridge between the paper's defended claims and the canonical generated outputs.",
+        "Curated bridge between the paper's claims and the canonical generated outputs.",
         "",
         "Use this alongside `output/claim_verification.md`: the verifier confirms wording is synchronized, while this map explains which artifact supports which defended claim.",
         "",
         "## Claim 1: The thesis is empirically two-part",
         "",
-        "Defended claim: the fleet transition question must be split into an extensive-margin adoption layer and a conditional generator-performance layer.",
+        "Paper claim: the fleet transition question must be split into an extensive-margin adoption layer and a conditional generator-performance layer.",
         "",
         "Evidence spine:",
         f"- `output/adoption_results.md`: observed first-adoption risk set of {fmt_int(metrics['risk_set_obs'])} facility-years across {fmt_int(metrics['risk_set_facilities'])} facilities, with {fmt_int(metrics['events'])} observed transition events.",
         f"- `output/regression_results.md`: canonical generator frame of {fmt_int(metrics['regression_obs'])} facility-years across {fmt_int(metrics['regression_facilities'])} facilities.",
-        "- `thesis/thesis.tex` Chapters 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
+        "- `paper/manuscript/paper.md` Sections 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
         "",
         "## Claim 2: Observed transition into generation is selective rather than diffuse",
         "",
-        "Defended claim: among coded facilities first observed without generation, younger and larger facilities are more likely to record observed transition into generation.",
+        "Paper claim: among coded facilities first observed without generation, younger and larger facilities are more likely to record observed transition into generation.",
         "",
         "Evidence spine:",
         f"- `output/adoption_results.md`: lagged logit hazard on {fmt_int(metrics['model_obs'])} facility-years across {fmt_int(metrics['model_facilities'])} facilities and {fmt_int(metrics['model_events'])} retained events.",
@@ -795,38 +608,38 @@ def write_claim_map(metrics: dict) -> None:
         "",
         "## Claim 3: Capital-reset-like modernization is empirically prominent, but not uniquely identified",
         "",
-        "Defended claim: the pathway audit supports a calibrated mechanism claim, not a proof that replacement is the only pathway.",
+        "Paper claim: the pathway audit supports a calibrated mechanism claim, not a proof that replacement is the only pathway.",
         "",
         "Evidence spine:",
-        f"- `output/adoption_results.md`: pathway audit counts {metrics['pathway_reset']} reset/rebuild-like, {metrics['pathway_continuity']} continuity/in-place-upgrade-like, {metrics['pathway_placeholder']} forward-dated/placeholder, {metrics['pathway_unresolved']} unresolved.",
-        "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, and unresolved placeholder cases.",
-        "- `research/notes/what-this-thesis-does-not-claim.md`: the non-claims note keeps the mechanism language calibrated.",
+        f"- `output/adoption_results.md`: pathway audit counts {metrics['pathway_reset']} reset/rebuild-like, {metrics['pathway_continuity']} continuity/in-place-upgrade-like, {metrics['pathway_placeholder']} forward-dated/placeholder, {metrics['pathway_timing_ambiguous']} timing-ambiguous, {metrics['pathway_unresolved']} unresolved.",
+        "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, timing ambiguity, and unresolved placeholder cases.",
+        "- `paper/notes/claim-stack.md`: the claim stack keeps mechanism language calibrated.",
         "",
         "## Claim 4: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement",
         "",
-        "Defended claim: within the generator sample, age, scale, and utilization matter strongly, while most observed variation remains between facilities rather than within facilities over time.",
+        "Paper claim: within the generator sample, age, scale, and utilization matter strongly, while most observed variation remains between facilities rather than within facilities over time.",
         "",
         "Evidence spine:",
         "- `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.",
-        f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['pre_ratio']:.4f} pre-Fukushima and {metrics['post_ratio']:.4f} post-Fukushima.",
-        "- `output/robustness_results.md`: sign pattern remains stable across the defended robustness set.",
+        f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['early_ratio']:.4f} in the early coded window ({metrics['early_window_label']}) and {metrics['later_ratio']:.4f} in the later coded window ({metrics['later_window_label']}).",
+        "- `output/robustness_results.md`: sign pattern remains stable across the reported robustness set.",
         "- `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.",
         "",
         "## Claim 5: The paper supports planning diagnostics, not an exclusive mechanism claim",
         "",
-        "Defended claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.",
+        "Paper claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.",
         "",
         "Evidence spine:",
         "- `output/adoption_results.md`: old and small facilities rarely record observed transition into generation.",
         "- `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.",
-        "- `research/notes/what-this-thesis-does-not-claim.md`: the project explicitly avoids claiming causal proof, exclusive replacement, full lifecycle accounting, or heat-recovery evaluation.",
+        "- `paper/supplement/supplement.md`: the supplement explicitly records the data-quality caveats and identification limits.",
         "",
         "## Reviewer Use",
         "",
-        "1. Start with `research/notes/executive-summary-for-supervisor.md` for the one-page narrative.",
+        "1. Start with `paper/manuscript/paper.md` for the active narrative.",
         "2. Use `output/claim_verification.md` to confirm the current wording matches the generated artifacts.",
-        "3. Use this file to see which exact output anchors each defended claim.",
-        "4. Use `research/notes/what-this-thesis-does-not-claim.md` to keep the scope disciplined during review or viva prep.",
+        "3. Use this file to see which exact output anchors each paper claim.",
+        "4. Use `paper/supplement/supplement.md` and `paper/notes/claim-stack.md` to keep the scope disciplined during review.",
     ]
     CLAIM_MAP_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -846,16 +659,9 @@ def main() -> None:
             "output/manifests/05_panel_regression.json",
             "output/manifests/06_robustness.json",
             "output/manifests/06a_data_quality_sensitivity.json",
+            "output/manifests/06b_identifier_gap_audit.json",
             "README.md",
             "ARCHITECTURE.md",
-            "thesis/thesis.tex",
-            "research/notes/executive-summary-for-supervisor.md",
-            "research/notes/defense-q-and-a.md",
-            "research/notes/defense-rapid-answers.md",
-            "research/notes/defense-question-order.md",
-            "research/notes/defense-slide-outline.md",
-            "research/slides/defense-deck.md",
-            "research/slides/figures/defense_adoption_hazard.svg",
         ],
         outputs=["output/claim_verification.md", "output/claim_evidence_map.md"],
         metadata={

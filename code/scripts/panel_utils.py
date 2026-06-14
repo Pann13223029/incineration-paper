@@ -72,6 +72,9 @@ ADOPTION_COLUMNS = [
 
 ADOPTION_MODEL_COLUMNS = [
     *ADOPTION_COLUMNS,
+    "lag_fiscal_year",
+    "lag_gap_years",
+    "exact_one_year_lag",
     "lag_facility_age_years",
     "lag_age_band",
     "lag_capacity_t_day",
@@ -84,6 +87,9 @@ ADOPTION_PATHWAY_AUDIT_COLUMNS = [
     "fiscal_year",
     "prefecture",
     "facility_name",
+    "lag_fiscal_year",
+    "lag_gap_years",
+    "exact_one_year_lag",
     "year_started",
     "lag_year_started",
     "facility_age_years",
@@ -143,7 +149,8 @@ def analysis_config() -> dict[str, Any]:
         "regression_winsorization_method": "clip",
         "adoption_model": "observed_first_adoption_logit_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
-        "adoption_predictors_lagged_one_year": True,
+        "adoption_predictors_lagged_exact_one_year": True,
+        "adoption_previous_observed_coded_row_retained_as_sensitivity": True,
     }
 
 
@@ -250,19 +257,25 @@ def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
 def build_adoption_model_frame(
     panel: pd.DataFrame | None = None,
     adoption: pd.DataFrame | None = None,
+    *,
+    exact_year_only: bool = True,
 ) -> pd.DataFrame:
     """
     Build the estimation frame for the adoption model.
 
-    The hazard uses lagged facility characteristics so the reported predictors
-    are measured before the observed adoption year rather than contemporaneously
-    with it.
+    The main hazard uses exact one-fiscal-year lagged facility characteristics so
+    the reported predictors are measured before the observed adoption year rather
+    than contemporaneously with it. Setting ``exact_year_only=False`` keeps the
+    broader previous-observed-coded-row frame for sensitivity checks.
     """
     if adoption is None:
         adoption = build_adoption_frame(panel)
 
     model = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
     group = model.groupby("analysis_facility_id", sort=False)
+    model["lag_fiscal_year"] = group["fiscal_year"].shift(1)
+    model["lag_gap_years"] = model["fiscal_year"] - model["lag_fiscal_year"]
+    model["exact_one_year_lag"] = model["lag_gap_years"].eq(1)
     model["lag_facility_age_years"] = group["facility_age_years"].shift(1)
     model["lag_age_band"] = group["age_band"].shift(1)
     model["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
@@ -281,9 +294,36 @@ def build_adoption_model_frame(
     )
 
     model = model.dropna(subset=["lag_age_band", "lag_capacity_100t", "prefecture"]).copy()
+    previous_observed_obs = int(len(model))
+    previous_observed_facilities = int(model["analysis_facility_id"].nunique())
+    previous_observed_events = int(model["adopt_power_this_year"].sum())
+    non_exact_mask = ~model["exact_one_year_lag"]
+    non_exact_rows = int(non_exact_mask.sum())
+    non_exact_events = int(model.loc[non_exact_mask, "adopt_power_this_year"].sum())
+    lag_gap_counts = {
+        str(int(gap)): int(count)
+        for gap, count in model["lag_gap_years"].value_counts().sort_index().items()
+    }
+    event_lag_gap_counts = {
+        str(int(gap)): int(count)
+        for gap, count in model.loc[
+            model["adopt_power_this_year"] == 1,
+            "lag_gap_years",
+        ].value_counts().sort_index().items()
+    }
+    if exact_year_only:
+        model = model[model["exact_one_year_lag"]].copy()
     model.attrs["lag_drop_first_rows"] = lag_drop_first_rows
     model.attrs["lag_drop_additional_missing_rows"] = lag_drop_additional_missing_rows
     model.attrs["lag_drop_additional_missing_facilities"] = lag_drop_additional_missing_facilities
+    model.attrs["exact_year_only"] = exact_year_only
+    model.attrs["previous_observed_model_obs"] = previous_observed_obs
+    model.attrs["previous_observed_model_facilities"] = previous_observed_facilities
+    model.attrs["previous_observed_model_events"] = previous_observed_events
+    model.attrs["non_exact_lag_rows"] = non_exact_rows
+    model.attrs["non_exact_lag_events"] = non_exact_events
+    model.attrs["lag_gap_counts"] = lag_gap_counts
+    model.attrs["event_lag_gap_counts"] = event_lag_gap_counts
     result = model[ADOPTION_MODEL_COLUMNS].copy()
     result.attrs.update(model.attrs)
     return result
@@ -308,6 +348,9 @@ def build_adoption_pathway_audit(
     adoption_aug = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
 
     group = adoption_aug.groupby("analysis_facility_id", sort=False)
+    adoption_aug["lag_fiscal_year"] = group["fiscal_year"].shift(1)
+    adoption_aug["lag_gap_years"] = adoption_aug["fiscal_year"] - adoption_aug["lag_fiscal_year"]
+    adoption_aug["exact_one_year_lag"] = adoption_aug["lag_gap_years"].eq(1)
     adoption_aug["lag_year_started"] = group["year_started"].shift(1)
     adoption_aug["lag_facility_age_years"] = group["facility_age_years"].shift(1)
     adoption_aug["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
@@ -329,14 +372,22 @@ def build_adoption_pathway_audit(
     events["pathway_category"] = "Unresolved / insufficient continuity"
     events["pathway_basis"] = "No prior observed at-risk row with usable continuity fields"
 
-    forward_mask = events["year_started_forward"] | placeholder_mask
-    reset_mask = ~forward_mask & (events["year_reset"] | events["age_reset"])
+    timing_ambiguous_mask = ~events["exact_one_year_lag"]
+    forward_mask = ~timing_ambiguous_mask & (events["year_started_forward"] | placeholder_mask)
+    reset_mask = ~timing_ambiguous_mask & ~forward_mask & (events["year_reset"] | events["age_reset"])
     continuity_mask = (
-        ~forward_mask
+        ~timing_ambiguous_mask
+        & ~forward_mask
         & ~reset_mask
         & events["lag_year_started"].notna()
     )
 
+    events.loc[timing_ambiguous_mask, "pathway_category"] = (
+        "Timing-ambiguous / non-adjacent coded row"
+    )
+    events.loc[timing_ambiguous_mask, "pathway_basis"] = (
+        "Prior coded row is not the immediately preceding fiscal year; mechanism language is weakened"
+    )
     events.loc[forward_mask, "pathway_category"] = "Forward-dated / placeholder entry"
     events.loc[forward_mask, "pathway_basis"] = (
         "Forward-dated `year_started` or placeholder/new-build naming at event row"
@@ -478,6 +529,25 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         "adoption_model_obs": int(len(adoption_model)),
         "adoption_model_facilities": int(adoption_model["analysis_facility_id"].nunique()),
         "adoption_model_events": int(adoption_model["adopt_power_this_year"].sum()),
+        "adoption_previous_observed_model_obs": int(
+            adoption_model.attrs.get("previous_observed_model_obs", len(adoption_model))
+        ),
+        "adoption_previous_observed_model_facilities": int(
+            adoption_model.attrs.get(
+                "previous_observed_model_facilities",
+                adoption_model["analysis_facility_id"].nunique(),
+            )
+        ),
+        "adoption_previous_observed_model_events": int(
+            adoption_model.attrs.get(
+                "previous_observed_model_events",
+                adoption_model["adopt_power_this_year"].sum(),
+            )
+        ),
+        "adoption_non_exact_lag_rows": int(adoption_model.attrs.get("non_exact_lag_rows", 0)),
+        "adoption_non_exact_lag_events": int(adoption_model.attrs.get("non_exact_lag_events", 0)),
+        "adoption_lag_gap_counts": adoption_model.attrs.get("lag_gap_counts", {}),
+        "adoption_event_lag_gap_counts": adoption_model.attrs.get("event_lag_gap_counts", {}),
         "adoption_model_drop_first_rows": int(adoption_model.attrs.get("lag_drop_first_rows", 0)),
         "adoption_model_drop_additional_missing_rows": int(
             adoption_model.attrs.get("lag_drop_additional_missing_rows", 0)
@@ -579,9 +649,20 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"{summary['adoption_events']:,}"
         ),
         (
-            f"- Lagged adoption-model observations: {summary['adoption_model_obs']:,} "
+            f"- Exact-year lagged adoption-model observations: {summary['adoption_model_obs']:,} "
             f"({summary['adoption_model_facilities']:,} facilities; "
             f"{summary['adoption_model_events']:,} events)"
+        ),
+        (
+            f"- Broader previous-observed-coded-row adoption frame before exact-year restriction: "
+            f"{summary['adoption_previous_observed_model_obs']:,} observations "
+            f"({summary['adoption_previous_observed_model_facilities']:,} facilities; "
+            f"{summary['adoption_previous_observed_model_events']:,} events)"
+        ),
+        (
+            f"- Non-exact lag rows excluded from the main adoption model: "
+            f"{summary['adoption_non_exact_lag_rows']:,} "
+            f"({summary['adoption_non_exact_lag_events']:,} events)"
         ),
         (
             f"- First observed at-risk years dropped because lagged predictors are required: "
@@ -608,11 +689,11 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"{summary['regression_within_total_ratio']:.4f}"
         ),
         (
-            f"- Pre-Fukushima ratio (FY2005-FY{PRE_FUKUSHIMA_END}): "
+            f"- Early coded-window ratio (FY2005-FY2009): "
             f"{summary['pre_fukushima_within_total_ratio']:.4f}"
         ),
         (
-            f"- Post-Fukushima ratio (FY{POST_FUKUSHIMA_START}-FY2024): "
+            f"- Later coded-window ratio (FY2013-FY2024): "
             f"{summary['post_fukushima_within_total_ratio']:.4f}"
         ),
     ]

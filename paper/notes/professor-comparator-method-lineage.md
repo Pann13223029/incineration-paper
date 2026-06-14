@@ -1,6 +1,6 @@
 # Professor Comparator And Method-Lineage Packet
 
-Last updated: 2026-06-05
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -16,6 +16,27 @@ The short answer is:
 > and more defensible two-margin facility-panel design: a discrete-time
 > adoption hazard for entry into power generation, followed by panel
 > regressions for electricity recovered per tonne among generators.
+
+## 2026-06-14 Method Hardening Note
+
+A red-team methods review identified that FY2010-FY2012 source rows lack
+official facility codes, which can turn a naive `shift(1)` lag into the
+previous observed coded row rather than the previous fiscal year. The paper now
+uses the stricter version as the main adoption model:
+
+| Item | Current treatment |
+|:--|:--|
+| Main adoption model | Exact one-fiscal-year lagged discrete-time logit hazard |
+| Main adoption frame | 10,823 observations, 1,911 facilities, 98 events |
+| Sensitivity frame | Broader previous-observed-coded-row model: 11,717 observations, 1,915 facilities, 140 events |
+| Non-exact lag rows | 894 rows and 42 events excluded from the main adoption model |
+| Pathway audit | Strong mechanism labels kept only for adjacent-year events; non-adjacent events are timing-ambiguous |
+| Generator panel | FY2010-FY2012 missing-code rows are disclosed; period checks are early/later coded-window diagnostics, not Fukushima causal tests |
+
+This strengthens the paper's integrity position. The paper is still inspired by
+high-profile facility-level waste-incineration papers, but its empirical claims
+now rest on a stricter Japan-specific administrative-panel design rather than a
+loose analogy to those papers.
 
 The paper does not copy one single paper. It combines three research families:
 

@@ -24,6 +24,7 @@ cannot identify.
 |:--|:--|
 | Observed adoption may not equal a directly observed physical retrofit. | The paper uses `observed transition into generation` language and treats the pathway audit as descriptive support, not mechanism proof. |
 | Left-censored generators can distort adoption estimates. | Facilities already generating in their first observed year are excluded from the adoption risk set. |
+| Official-code gaps can turn prior-year lags into previous-observed-row lags. | The main adoption model now keeps only exact one-fiscal-year lags; the broader previous-observed-coded-row model is reported only as sensitivity evidence. |
 | Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and efficiency signs remain stable. |
 | Heating value is noisy in administrative files. | Heating value is treated as a control, not an engineering outcome; plausible-value restrictions leave the core coefficients stable. |
 | The generator frame excludes uncoded operating rows. | The main text defines the efficiency sample as the canonical identifiable generator frame, and this supplement compares coded and uncoded operating-generator rows. |
@@ -40,9 +41,11 @@ among identifiable generators.
 - Adoption risk-set observations: 13,770
 - Adoption risk-set facilities: 2,035
 - Observed first-adoption events in the panel window: 141
-- Lagged adoption-model observations: 11,717
-- Lagged adoption-model facilities: 1,915
-- First-adoption events retained in the lagged model: 140
+- Exact-year lagged adoption-model observations: 10,823
+- Exact-year lagged adoption-model facilities: 1,911
+- First-adoption events retained in the exact-year lagged model: 98
+- Broader previous-observed-coded-row model frame before exact-year restriction: 11,717 observations, 1,915 facilities, 140 events
+- Non-exact lag rows excluded from the main adoption model: 894 rows, including 42 events
 
 Interpretation: the main adoption model is a model of observed transition within
 the coded at-risk frame, not an unrestricted fleet-wide modernization model.
@@ -53,8 +56,8 @@ the coded at-risk frame, not an unrestricted fleet-wide modernization model.
 - Canonical regression facilities: 1,016
 - Fiscal years covered: FY2005-FY2024
 - Within/total variance ratio of pooled log-efficiency: 0.1499
-- Pre-Fukushima ratio: 0.1795
-- Post-Fukushima ratio: 0.0956
+- Early coded-window ratio (FY2005-FY2009): 0.1795
+- Later coded-window ratio (FY2013-FY2024): 0.0956
 
 Interpretation: the intensive-margin models are designed to describe structured
 conditional performance within the generating segment, not to identify a strict
@@ -82,16 +85,17 @@ availability table is generated in
 
 The adoption frame includes facilities first observed without power generation.
 Facilities already generating in their first observed year are excluded as
-left-censored for the adoption question. The lagged hazard specification then
-requires prior-year age band and prior-year design capacity, which removes the
-first observed at-risk year for each facility and a small number of additional
-rows with missing lagged predictors.
+left-censored for the adoption question. The main lagged hazard specification
+then requires exact one-fiscal-year prior age band and prior-year design
+capacity, which removes the first observed at-risk year for each facility, a
+small number of additional rows with missing lagged predictors, and non-exact
+lag rows created by duplicate same-year codes or official-code gaps.
 
 The adoption estimand is therefore not "which facilities ever modernized" in a
 complete historical sense. It is the probability that a coded facility first
 records power generation in the next observed fiscal year, conditional on still
-being observed at risk in the panel and conditional on prior-year age and
-capacity. This distinction protects the paper from overclaiming about
+being observed at risk in the panel and conditional on exact one-fiscal-year
+prior age and capacity. This distinction protects the paper from overclaiming about
 unobserved pre-panel investments or physical retrofit histories that the
 administrative file does not directly record.
 
@@ -110,28 +114,34 @@ modernization pathway.
 - `Reset / rebuild-like transition`
 - `In-place upgrade / continuity transition`
 - `Forward-dated / placeholder entry`
+- `Timing-ambiguous / non-adjacent coded row`
 - `Unresolved / insufficient continuity`
 
 ### S4.2 Rule logic
 
-- `Reset / rebuild-like` requires an observed reset in `year_started` or a
-  mature-to-new age reset before adoption.
-- `In-place upgrade / continuity` requires no such reset on the observed event
-  row and continuity of the facility record into the adoption event.
+- `Reset / rebuild-like` requires an exact adjacent-year event plus an observed
+  reset in `year_started` or a mature-to-new age reset before adoption.
+- `In-place upgrade / continuity` requires an exact adjacent-year event, no such
+  reset on the observed event row, and continuity of the facility record into the
+  adoption event.
 - `Forward-dated / placeholder` captures cases where the event row appears to be
   forward-dated or placeholder-like and should not be forced into a stronger
   mechanism claim.
+- `Timing-ambiguous / non-adjacent coded row` captures events whose prior coded
+  row is not the immediately preceding fiscal year.
 - `Unresolved` is reserved for events without a usable continuity row.
 
 ### S4.3 Category counts
 
-- Reset / rebuild-like: 82
-- In-place upgrade / continuity: 38
-- Forward-dated / placeholder: 20
+- Reset / rebuild-like: 50
+- In-place upgrade / continuity: 36
+- Forward-dated / placeholder: 12
+- Timing-ambiguous / non-adjacent coded row: 42
 - Unresolved: 1
 
-Interpretation: the pathway distribution is supportive descriptive evidence for
-selective modernization, but it does not uniquely identify replacement, major
+Interpretation: the adjacent-year pathway distribution is supportive descriptive
+evidence for selective modernization, but timing-ambiguous events are deliberately
+weakened and the audit does not uniquely identify replacement, major
 refurbishment, or new build as the dominant mechanism.
 
 ## S5. Robustness And Estimator Notes
@@ -166,9 +176,9 @@ The omitted age category is 0-10 years. \(\gamma_t\) denotes fiscal-year fixed
 effects and \(\delta_p\) denotes prefecture fixed effects. Capacity is measured
 in 100 t/day units. Standard errors are clustered by facility. The table reports
 average marginal effects in percentage points because those are easier to read
-than log-odds coefficients. For example, an average marginal effect of -1.76
+than log-odds coefficients. For example, an average marginal effect of -1.82
 percentage points means that the annual probability of first reporting
-generation is 1.76 percentage points lower than in the omitted 0-10 year age
+generation is 1.82 percentage points lower than in the omitted 0-10 year age
 group, conditional on the included variables and fixed effects.
 
 The adoption equation should not be read as a physical retrofit model. The
@@ -239,14 +249,21 @@ that one estimator identifies a structural causal effect.
 
 ### S5.1 Adoption robustness
 
-The main adoption result is estimated as a lagged discrete-time logit hazard
-with year and prefecture fixed effects plus facility-clustered standard errors.
-Two robustness variants preserve the main sign pattern:
+The main adoption result is estimated as an exact one-fiscal-year lagged
+discrete-time logit hazard with year and prefecture fixed effects plus
+facility-clustered standard errors. The broader previous-observed-coded-row
+model is retained only as sensitivity evidence because official facility codes
+are missing for FY2010-FY2012. Several robustness variants preserve the main
+sign pattern:
 
+- previous-observed-coded-row logit
+- exact-year logit with year fixed effects only
+- exact-year logit with prefecture fixed effects only
+- exact-year logit with age and capacity only
 - lagged complementary log-log
 - lagged linear probability model
 
-In both variants, older facilities remain less likely to record observed
+Across these variants, older facilities remain less likely to record observed
 transition and larger facilities remain more likely to do so.
 
 The robustness checks are interpreted as sign-pattern checks. They are not used
@@ -287,12 +304,17 @@ adoption and efficiency checks.
 
 **Panel A. Adoption hazard sensitivity**
 
-| Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
+| Variable | Exact-year official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.76 | 0.28 | -1.78 | 0.28 |
-| Prior-year age 20-30 yrs | -1.72 | 0.42 | -1.76 | 0.42 |
-| Prior-year age 30+ yrs | -1.13 | 0.39 | -1.15 | 0.39 |
-| Prior-year capacity per 100 t/day | 0.50 | 0.20 | 0.50 | 0.19 |
+| Prior-year age 10-20 yrs | -1.82 | 0.29 | -1.79 | 0.29 |
+| Prior-year age 20-30 yrs | -2.31 | 0.51 | -2.19 | 0.50 |
+| Prior-year age 30+ yrs | -1.59 | 0.43 | -1.52 | 0.42 |
+| Prior-year capacity per 100 t/day | 0.40 | 0.12 | 0.42 | 0.13 |
+
+| ID rule | Observations | Facilities | Events | Pseudo-R2 |
+|:--|--:|--:|--:|--:|
+| Official code | 10,823 | 1,911 | 98 | 0.2341 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.2265 |
 
 **Panel B. Efficiency sensitivity**
 
@@ -364,12 +386,13 @@ short main-text summary.
 
 **Panel A. Pathway categories**
 
-| Category                                 | Events | Share (%) |
-|:-----------------------------------------|------:|----------:|
-| Reset / rebuild-like transition          |    82 |      58.2 |
-| In-place upgrade / continuity transition |    38 |      27.0 |
-| Forward-dated / placeholder entry        |    20 |      14.2 |
-| Unresolved / insufficient continuity     |     1 |       0.7 |
+| Category                                  | Events | Share (%) |
+|:------------------------------------------|------:|----------:|
+| Reset / rebuild-like transition           |    50 |      35.5 |
+| In-place upgrade / continuity transition  |    36 |      25.5 |
+| Forward-dated / placeholder entry         |    12 |       8.5 |
+| Timing-ambiguous / non-adjacent coded row |    42 |      29.8 |
+| Unresolved / insufficient continuity      |     1 |       0.7 |
 
 **Panel B. Event-year distribution**
 
@@ -392,9 +415,9 @@ short main-text summary.
 |        2024 |               3 |
 
 Interpretation: the pathway audit supports a selective modernization reading,
-but the panel still does not uniquely identify replacement, major
-refurbishment, or new build as the singular pathway behind the observed
-transition events.
+but non-adjacent coded-row events are timing-ambiguous and the panel still does
+not uniquely identify replacement, major refurbishment, or new build as the
+singular pathway behind the observed transition events.
 
 ## S7. Additional Descriptive Material
 

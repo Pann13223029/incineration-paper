@@ -4,10 +4,10 @@
 Robustness checks built from the shared regression frame.
 
 Specifications:
-1. Pre-Fukushima pooled OLS
-2. Pre-Fukushima OLS with year FE
-3. Post-Fukushima pooled OLS
-4. Post-Fukushima OLS with year FE
+1. Early coded-window pooled OLS
+2. Early coded-window OLS with year FE
+3. Later coded-window pooled OLS
+4. Later coded-window OLS with year FE
 5. Small capacity tercile (pooled OLS)
 6. Large capacity tercile (pooled OLS)
 7. Raw DV pooled OLS
@@ -24,8 +24,6 @@ import statsmodels.api as sm
 
 from panel_utils import (
     OUTPUT_DIR,
-    POST_FUKUSHIMA_START,
-    PRE_FUKUSHIMA_END,
     build_regression_frame,
     load_panel,
     significance_stars,
@@ -41,6 +39,8 @@ CORE_IVS = [
     "heating_value_mj_kg",
     "grid_ef_kgco2_kwh",
 ]
+EARLY_CODED_END = 2009
+LATER_CODED_START = 2013
 
 
 def load_regression_frame():
@@ -101,15 +101,15 @@ def main():
     results = []
 
     print("=" * 60)
-    print("TEST 1: Pre/Post Fukushima")
+    print("TEST 1: Early/Later Coded Windows")
     print("=" * 60)
-    pre = frame[frame["fiscal_year"] <= PRE_FUKUSHIMA_END].copy()
-    post = frame[frame["fiscal_year"] >= POST_FUKUSHIMA_START].copy()
+    pre = frame[frame["fiscal_year"] <= EARLY_CODED_END].copy()
+    post = frame[frame["fiscal_year"] >= LATER_CODED_START].copy()
     for label, subset, year_fe in [
-        (f"R1: Pre-Fukushima pooled OLS (FY2005-FY{PRE_FUKUSHIMA_END})", pre, False),
-        (f"R2: Pre-Fukushima year FE (FY2005-FY{PRE_FUKUSHIMA_END})", pre, True),
-        (f"R3: Post-Fukushima pooled OLS (FY{POST_FUKUSHIMA_START}-FY2024)", post, False),
-        (f"R4: Post-Fukushima year FE (FY{POST_FUKUSHIMA_START}-FY2024)", post, True),
+        (f"R1: Early coded-window pooled OLS (FY2005-FY{EARLY_CODED_END})", pre, False),
+        (f"R2: Early coded-window year FE (FY2005-FY{EARLY_CODED_END})", pre, True),
+        (f"R3: Later coded-window pooled OLS (FY{LATER_CODED_START}-FY2024)", post, False),
+        (f"R4: Later coded-window year FE (FY{LATER_CODED_START}-FY2024)", post, True),
     ]:
         result = run_ols(subset, label, include_year_fe=year_fe)
         if result:
@@ -165,7 +165,12 @@ def main():
     path = os.path.join(OUTPUT_DIR, "robustness_results.md")
     with open(path, "w", encoding="utf-8") as f:
         f.write("# Robustness Checks\n\n")
-        f.write("All models use the canonical regression frame and facility-clustered standard errors.\n\n")
+        f.write(
+            "All models use the canonical identifiable generator frame and "
+            "facility-clustered standard errors. Early/later coded-window checks "
+            "avoid treating the FY2010-FY2012 official-code gap as a clean "
+            "Fukushima identification split.\n\n"
+        )
         f.write("| Specification | N | Facilities | R² | facility_age | capacity_100t | cap_utilization |\n")
         f.write("|:---|---:|---:|---:|---:|---:|---:|\n")
         for _, row in df_results.iterrows():
@@ -186,8 +191,8 @@ def main():
         outputs=["output/robustness_results.md"],
         metadata={
             "specifications": results,
-            "pre_fukushima_window": [2005, PRE_FUKUSHIMA_END],
-            "post_fukushima_window": [POST_FUKUSHIMA_START, 2024],
+            "early_coded_window": [2005, EARLY_CODED_END],
+            "later_coded_window": [LATER_CODED_START, 2024],
         },
     )
     print(f"Manifest: {manifest_path}")

@@ -385,6 +385,10 @@ def main():
             "within_total_ratio": summary["regression_within_total_ratio"],
             "pre_fukushima_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
             "post_fukushima_within_total_ratio": summary["post_fukushima_within_total_ratio"],
+            "early_coded_window": [2005, 2009],
+            "later_coded_window": [2013, 2024],
+            "early_coded_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
+            "later_coded_within_total_ratio": summary["post_fukushima_within_total_ratio"],
             "main_models": serialize_main_models(models),
             "age_group_summary": serialize_age_group_summary(age_table_path),
             "outputs": {

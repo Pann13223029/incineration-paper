@@ -7,20 +7,13 @@
     "output/manifests/05_panel_regression.json",
     "output/manifests/06_robustness.json",
     "output/manifests/06a_data_quality_sensitivity.json",
+    "output/manifests/06b_identifier_gap_audit.json",
     "README.md",
-    "ARCHITECTURE.md",
-    "thesis/thesis.tex",
-    "research/notes/executive-summary-for-supervisor.md",
-    "research/notes/defense-q-and-a.md",
-    "research/notes/defense-rapid-answers.md",
-    "research/notes/defense-question-order.md",
-    "research/notes/defense-slide-outline.md",
-    "research/slides/defense-deck.md",
-    "research/slides/figures/defense_adoption_hazard.svg"
+    "ARCHITECTURE.md"
   ],
   "metadata": {
     "failed_checks": 0,
-    "passed_checks": 23,
+    "passed_checks": 10,
     "source_manifest_python": [
       "3.12.12"
     ]

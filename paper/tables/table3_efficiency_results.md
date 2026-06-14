@@ -18,4 +18,4 @@ Dependent variable: winsorized log(MWh per tonne processed). Canonical regressio
 | Facilities | 1,016 | 1,016 | 1,016 | 1,016 |
 | R-squared | 0.2470 | 0.3721 | 0.1647 | 0.3076 |
 
-*Notes: coefficients are reported as structured descriptive associations rather than strict causal parameters. The within-to-total variance ratio of pooled log-efficiency is 0.1499, with a pre-Fukushima ratio of 0.1795 and a post-Fukushima ratio of 0.0956.*
+*Notes: coefficients are reported as structured descriptive associations rather than strict causal parameters. The within-to-total variance ratio of pooled log-efficiency is 0.1499, with an early coded-window ratio of 0.1795 (FY2005-FY2009) and a later coded-window ratio of 0.0956 (FY2013-FY2024).*

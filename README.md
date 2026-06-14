@@ -22,14 +22,14 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The lagged adoption model uses 11,717 facility-years across 1,915 facilities and 140 events. Relative to prior-year age 0-10, older facilities are 1.1–1.8 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.50 percentage points per 100 t/day. The pathway audit classifies 82 as reset/rebuild-like, 38 as continuity/in-place-upgrade-like, 20 as forward-dated or placeholder entries, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2011 to 0.0956 in FY2012–FY2024.
+The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The exact one-fiscal-year lagged adoption model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Relative to prior-year age 0-10, older facilities are 1.6–2.3 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.40 percentage points per 100 t/day. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024.
 
 | Headline | Current value |
 |:--|:--|
-| Adoption age effect | −1.76 to −1.13 percentage points vs prior-year age 0–10 |
-| Adoption capacity effect | +0.50 percentage points per 100 t/day of prior-year capacity |
-| Pathway audit of adoption events | 82 reset/rebuild-like, 38 continuity-like, 20 forward-dated/placeholder, 1 unresolved |
-| Within/total variance ratio | 0.1499 (pooled), 0.1795 (pre-Fuku), 0.0956 (post-Fuku) |
+| Adoption age effect | −2.31 to −1.59 percentage points vs prior-year age 0–10 |
+| Adoption capacity effect | +0.40 percentage points per 100 t/day of prior-year capacity |
+| Pathway audit of adoption events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
+| Within/total variance ratio | 0.1499 (pooled), 0.1795 (early coded), 0.0956 (later coded) |
 
 ## Repository Logic
 
@@ -104,7 +104,7 @@ Command meanings:
 |:--|:--|
 | `paper:check` | Confirms required paper evidence artifacts exist in `output/`. |
 | `paper:sync` | Copies current canonical evidence into `paper/evidence/current/`. |
-| `claims:verify` | Checks important claims and stale-pattern guards across repo docs. |
+| `claims:verify` | Checks important claims and stale-pattern guards in active paper-facing repo docs. |
 | `analysis:rebuild` | Rebuilds the empirical outputs and claim verification from raw/processed data. |
 | `paper:export:nopdf` | Generates portable submission Markdown, HTML, and DOCX without relying on Chrome PDF export. |
 | `paper:build:latex` | Rebuilds figures and the tracked LaTeX reading PDF. |

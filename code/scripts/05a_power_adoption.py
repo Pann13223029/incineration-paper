@@ -44,6 +44,7 @@ PATHWAY_ORDER = [
     "Reset / rebuild-like transition",
     "In-place upgrade / continuity transition",
     "Forward-dated / placeholder entry",
+    "Timing-ambiguous / non-adjacent coded row",
     "Unresolved / insufficient continuity",
 ]
 
@@ -52,22 +53,31 @@ def load_adoption_data():
     panel = load_panel()
     adoption = build_adoption_frame(panel)
     adoption_model = build_adoption_model_frame(adoption=adoption)
+    previous_observed_model = build_adoption_model_frame(
+        adoption=adoption,
+        exact_year_only=False,
+    )
     pathway_audit = build_adoption_pathway_audit(panel, adoption=adoption)
     summary = sample_summary(panel)
 
     print(f"Adoption risk set: {len(adoption):,} obs")
     print(f"  Facilities at risk: {adoption['analysis_facility_id'].nunique():,}")
     print(f"  First-adoption events: {int(adoption['adopt_power_this_year'].sum()):,}")
-    print(f"Adoption model frame (lagged predictors): {len(adoption_model):,} obs")
+    print(f"Adoption model frame (exact one-year lagged predictors): {len(adoption_model):,} obs")
     print(f"  Facilities in model frame: {adoption_model['analysis_facility_id'].nunique():,}")
     print(f"  Events in model frame: {int(adoption_model['adopt_power_this_year'].sum()):,}")
+    print(
+        "Previous-observed-coded-row sensitivity frame: "
+        f"{len(previous_observed_model):,} obs, "
+        f"{int(previous_observed_model['adopt_power_this_year'].sum()):,} events"
+    )
     print(f"Pathway audit rows: {len(pathway_audit):,}")
     print(
         "  Left-censored facilities already generating in first observed year: "
         f"{summary['left_censored_generators']:,}"
     )
 
-    return panel, adoption, adoption_model, pathway_audit, summary
+    return panel, adoption, adoption_model, previous_observed_model, pathway_audit, summary
 
 
 def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -108,7 +118,12 @@ def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     return age_table, cap_table
 
 
-def build_design_matrix(reg: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
+def build_design_matrix(
+    reg: pd.DataFrame,
+    *,
+    include_year_fe: bool = True,
+    include_pref_fe: bool = True,
+) -> tuple[pd.DataFrame, pd.Series]:
     """Build the shared design matrix used by the adoption estimators."""
     age_dummies = pd.get_dummies(
         reg["lag_age_band"],
@@ -116,22 +131,27 @@ def build_design_matrix(reg: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         drop_first=True,
         dtype=float,
     )
-    year_dummies = pd.get_dummies(
-        reg["fiscal_year"],
-        prefix="fy",
-        drop_first=True,
-        dtype=float,
-    )
-    pref_dummies = pd.get_dummies(
-        reg["prefecture"],
-        prefix="pref",
-        drop_first=True,
-        dtype=float,
-    )
+    parts = [age_dummies, reg[["lag_capacity_100t"]]]
+    if include_year_fe:
+        parts.append(
+            pd.get_dummies(
+                reg["fiscal_year"],
+                prefix="fy",
+                drop_first=True,
+                dtype=float,
+            )
+        )
+    if include_pref_fe:
+        parts.append(
+            pd.get_dummies(
+                reg["prefecture"],
+                prefix="pref",
+                drop_first=True,
+                dtype=float,
+            )
+        )
 
-    X = sm.add_constant(
-        pd.concat([age_dummies, reg[["lag_capacity_100t"]], year_dummies, pref_dummies], axis=1)
-    ).astype(float)
+    X = sm.add_constant(pd.concat(parts, axis=1)).astype(float)
     y = reg["adopt_power_this_year"].astype(float)
     return X, y
 
@@ -276,6 +296,60 @@ def fit_lpm_hazard(X: pd.DataFrame, y: pd.Series, groups: pd.Series):
     )
 
 
+def sparse_event_diagnostics(reg: pd.DataFrame, X: pd.DataFrame) -> dict[str, int | float]:
+    """Return sparse-event diagnostics for the adoption model frame."""
+    events = int(reg["adopt_power_this_year"].sum())
+    parameters = int(X.shape[1])
+    year_events = reg.groupby("fiscal_year")["adopt_power_this_year"].sum()
+    pref_events = reg.groupby("prefecture")["adopt_power_this_year"].sum()
+    return {
+        "events": events,
+        "parameters": parameters,
+        "events_per_parameter": float(events / parameters) if parameters else float("nan"),
+        "zero_event_years": int((year_events == 0).sum()),
+        "zero_event_prefectures": int((pref_events == 0).sum()),
+        "years": int(year_events.shape[0]),
+        "prefectures": int(pref_events.shape[0]),
+    }
+
+
+def fit_reported_logit_spec(
+    reg: pd.DataFrame,
+    *,
+    label: str,
+    include_year_fe: bool = True,
+    include_pref_fe: bool = True,
+) -> dict[str, object]:
+    """Fit one reported logit specification and return compact diagnostics."""
+    X, y = build_design_matrix(
+        reg,
+        include_year_fe=include_year_fe,
+        include_pref_fe=include_pref_fe,
+    )
+    model = fit_logit_hazard(X, y, groups=reg["analysis_facility_id"])
+    marginal_effects = compute_logit_average_marginal_effects(model)
+    return {
+        "label": label,
+        "model": model,
+        "reg": reg,
+        "X": X,
+        "marginal_effects": marginal_effects,
+        "pseudo_r2": model_pseudo_r2(model),
+        "diagnostics": sparse_event_diagnostics(reg, X),
+    }
+
+
+def sign_pattern_matches(marginal_effects: pd.DataFrame) -> bool:
+    """Return whether the core expected adoption sign pattern is preserved."""
+    effects = marginal_effects.set_index("variable")["ame"]
+    return bool(
+        (effects["age_10-20 yrs"] < 0)
+        and (effects["age_20-30 yrs"] < 0)
+        and (effects["age_30+ yrs"] < 0)
+        and (effects["lag_capacity_100t"] > 0)
+    )
+
+
 def model_pseudo_r2(model) -> float:
     """Return a deviance-based pseudo-R^2 for GLM hazards."""
     if hasattr(model, "prsquared"):
@@ -310,13 +384,15 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     The main specification uses a clustered discrete-time logit with built-in
     marginal effects. A cloglog version is retained as a robustness check.
     """
-    reg = adoption_model.copy()
-    X, y = build_design_matrix(reg)
-    groups = reg["analysis_facility_id"]
-
-    model = fit_logit_hazard(X, y, groups=groups)
-    marginal_effects = compute_logit_average_marginal_effects(model)
-    pseudo_r2 = model_pseudo_r2(model)
+    result = fit_reported_logit_spec(
+        adoption_model.copy(),
+        label="Main exact-year logit: year FE + prefecture FE",
+    )
+    reg = result["reg"]
+    model = result["model"]
+    marginal_effects = result["marginal_effects"]
+    pseudo_r2 = result["pseudo_r2"]
+    diagnostics = result["diagnostics"]
 
     print("\n" + "=" * 60)
     print("ADOPTION HAZARD MODEL")
@@ -324,6 +400,11 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     print(f"  N: {int(model.nobs):,}")
     print(f"  Facilities: {reg['analysis_facility_id'].nunique():,}")
     print(f"  Events: {int(reg['adopt_power_this_year'].sum()):,}")
+    print(
+        "  Events per parameter: "
+        f"{diagnostics['events_per_parameter']:.2f} "
+        f"({diagnostics['events']} events / {diagnostics['parameters']} parameters)"
+    )
     print(f"  Pseudo-R-squared: {pseudo_r2:.4f}")
     for variable in REPORTED_VARIABLES:
         row = marginal_effects.loc[marginal_effects["variable"] == variable].iloc[0]
@@ -332,7 +413,7 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
             f"  SE={row['se'] * 100:>7.3f}  p={row['pvalue']:>7.4g}"
         )
 
-    return model, reg, X, marginal_effects, pseudo_r2
+    return result
 
 
 def write_results(
@@ -345,8 +426,11 @@ def write_results(
     model,
     marginal_effects: pd.DataFrame,
     pseudo_r2: float,
+    diagnostics: dict[str, int | float],
     cloglog_robustness,
     lpm_robustness,
+    previous_observed_result: dict[str, object],
+    robustness_results: list[dict[str, object]],
     reg: pd.DataFrame,
 ) -> None:
     """Write a markdown report for the adoption stage."""
@@ -412,11 +496,22 @@ def write_results(
 
         f.write("## Adoption Model Frame\n\n")
         f.write(
-            f"- Lagged model frame: {summary['adoption_model_obs']:,} observations "
+            f"- Main exact-year lagged model frame: {summary['adoption_model_obs']:,} observations "
             f"across {summary['adoption_model_facilities']:,} facilities\n"
         )
         f.write(
             f"- Events retained in lagged model frame: {summary['adoption_model_events']:,}\n"
+        )
+        f.write(
+            f"- Broader previous-observed-coded-row frame before exact-year restriction: "
+            f"{summary['adoption_previous_observed_model_obs']:,} observations across "
+            f"{summary['adoption_previous_observed_model_facilities']:,} facilities "
+            f"with {summary['adoption_previous_observed_model_events']:,} events\n"
+        )
+        f.write(
+            f"- Non-exact lag rows excluded from the main model: "
+            f"{summary['adoption_non_exact_lag_rows']:,} rows "
+            f"({summary['adoption_non_exact_lag_events']:,} events)\n"
         )
         f.write(
             f"- First observed at-risk years dropped because lagged predictors are required: "
@@ -464,7 +559,7 @@ def write_results(
 
         f.write("## Adoption Hazard Model\n\n")
         f.write(
-            "Main specification: lagged discrete-time logit hazard "
+            "Main specification: exact one-fiscal-year lagged discrete-time logit hazard "
             "with prior-year age band and prior-year design capacity, plus year "
             "fixed effects, prefecture fixed effects, and facility-clustered "
             "standard errors. Reported effects are average marginal effects in "
@@ -476,13 +571,47 @@ def write_results(
             f"- Observations: {int(model.nobs):,}\n"
             f"- Facilities: {reg['analysis_facility_id'].nunique():,}\n"
             f"- First-adoption events: {int(reg['adopt_power_this_year'].sum()):,}\n"
+            f"- Events per parameter: {diagnostics['events_per_parameter']:.2f} "
+            f"({diagnostics['events']} events / {diagnostics['parameters']} parameters)\n"
+            f"- Zero-event fiscal-year levels in main frame: "
+            f"{diagnostics['zero_event_years']} of {diagnostics['years']}\n"
+            f"- Zero-event prefecture levels in main frame: "
+            f"{diagnostics['zero_event_prefectures']} of {diagnostics['prefectures']}\n"
             f"- Pseudo-R-squared (deviance-based): {pseudo_r2:.4f}\n"
         )
         f.write(
-            "- Robustness: lagged complementary log-log and lagged linear probability specifications "
-            "return the same sign pattern on all reported terms; capacity remains "
+            "- Link robustness on the exact-year frame: complementary log-log and linear probability specifications "
+            "return the same expected sign pattern on all reported terms; capacity remains "
             f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}; "
             f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp).\n\n"
+        )
+
+        f.write("### Adoption specification sensitivity\n\n")
+        sensitivity_rows = []
+        for result in [previous_observed_result, *robustness_results]:
+            me = result["marginal_effects"].set_index("variable")
+            diag = result["diagnostics"]
+            sensitivity_rows.append(
+                {
+                    "Specification": result["label"],
+                    "N": f"{int(result['model'].nobs):,}",
+                    "Events": int(diag["events"]),
+                    "Parameters": int(diag["parameters"]),
+                    "Events/parameter": f"{diag['events_per_parameter']:.2f}",
+                    "Age 10-20 AME (pp)": f"{me.loc['age_10-20 yrs', 'ame'] * 100:.2f}",
+                    "Age 20-30 AME (pp)": f"{me.loc['age_20-30 yrs', 'ame'] * 100:.2f}",
+                    "Age 30+ AME (pp)": f"{me.loc['age_30+ yrs', 'ame'] * 100:.2f}",
+                    "Capacity AME (pp)": f"{me.loc['lag_capacity_100t', 'ame'] * 100:.2f}",
+                    "Sign pattern": "yes" if sign_pattern_matches(result["marginal_effects"]) else "no",
+                }
+            )
+        f.write(pd.DataFrame(sensitivity_rows).to_markdown(index=False))
+        f.write(
+            "\n\n"
+            "*Interpretation: the exact-year model is the main specification because it preserves "
+            "annual transition timing. The broader previous-observed-coded-row specification is "
+            "reported only as a sensitivity check because official facility identifiers are missing "
+            "for FY2010-FY2012.*\n\n"
         )
 
         f.write("## Transition Pathway Audit\n\n")
@@ -494,10 +623,11 @@ def write_results(
         )
         f.write(
             "Rule set: `reset / rebuild-like` requires an observed `year_started` "
-            "reset or a mature-to-new age reset; `continuity / in-place upgrade` "
-            "requires no such reset on the observed event row; forward-dated or "
-            "placeholder entries remain unresolved rather than forced into a "
-            "stronger mechanism claim.\n\n"
+            "reset or a mature-to-new age reset on an exact adjacent-year event; "
+            "`continuity / in-place upgrade` requires no such reset on an exact "
+            "adjacent-year event; forward-dated or placeholder entries remain "
+            "weaker evidence; non-adjacent coded-row events are classified as "
+            "timing-ambiguous rather than forced into a stronger mechanism claim.\n\n"
         )
         f.write(
             pathway_summary.assign(
@@ -506,10 +636,10 @@ def write_results(
         )
         f.write(
             "\n\n"
-            "*Interpretation: the largest observed pathway bucket is reset- or rebuild-like, "
-            "a meaningful minority retain continuity consistent with in-place upgrades, "
-            "and a nontrivial set are forward-dated or placeholder entries that should "
-            "not be forced into a stronger mechanism claim than the data support.*\n"
+            "*Interpretation: exact adjacent-year events still contain reset/rebuild-like "
+            "and continuity-type cases, but non-adjacent coded-row events are deliberately "
+            "weakened to timing-ambiguous evidence. The audit supports selective observed "
+            "entry, not a uniquely identified modernization mechanism.*\n"
         )
 
         f.write("\n### Event Year Distribution\n\n")
@@ -517,22 +647,51 @@ def write_results(
         f.write(
             "\n\n"
             "*Interpretation: observed transition into power generation is more common "
-            "among facilities that were younger and larger in the prior year. Under "
-            "the stronger hazard specification, the age penalty remains negative and "
-            "the capacity effect remains positive, while the pathway audit suggests "
-            "that capital-side modernization is empirically present but not reducible "
-            "to one identified mechanism such as replacement alone.*\n"
+            "among facilities that were younger and larger in the previous fiscal year "
+            "under the exact-year model. The pathway audit suggests that capital-side "
+            "modernization is empirically present in adjacent-year events, but the evidence "
+            "is not reducible to one identified mechanism such as replacement alone.*\n"
         )
 
 
 def main():
-    _, adoption, adoption_model, pathway_audit, summary = load_adoption_data()
+    _, adoption, adoption_model, previous_observed_model, pathway_audit, summary = load_adoption_data()
     age_table, cap_table = event_tables(adoption)
-    model, reg, X, marginal_effects, pseudo_r2 = run_adoption_hazard(adoption_model)
+    main_result = run_adoption_hazard(adoption_model)
+    model = main_result["model"]
+    reg = main_result["reg"]
+    X = main_result["X"]
+    marginal_effects = main_result["marginal_effects"]
+    pseudo_r2 = main_result["pseudo_r2"]
+    diagnostics = main_result["diagnostics"]
     groups = reg["analysis_facility_id"]
     y = reg["adopt_power_this_year"].astype(float)
     cloglog_robustness = fit_glm_hazard(X, y, link_name="cloglog", groups=groups)
     lpm_robustness = fit_lpm_hazard(X, y, groups=groups)
+    previous_observed_result = fit_reported_logit_spec(
+        previous_observed_model,
+        label="Previous observed coded row: year FE + prefecture FE",
+    )
+    robustness_results = [
+        fit_reported_logit_spec(
+            adoption_model,
+            label="Exact-year: year FE only",
+            include_year_fe=True,
+            include_pref_fe=False,
+        ),
+        fit_reported_logit_spec(
+            adoption_model,
+            label="Exact-year: prefecture FE only",
+            include_year_fe=False,
+            include_pref_fe=True,
+        ),
+        fit_reported_logit_spec(
+            adoption_model,
+            label="Exact-year: age and capacity only",
+            include_year_fe=False,
+            include_pref_fe=False,
+        ),
+    ]
     pathway_summary = pathway_summary_table(pathway_audit)
 
     results_path = os.path.join(OUTPUT_DIR, "adoption_results.md")
@@ -548,8 +707,11 @@ def main():
         model,
         marginal_effects,
         pseudo_r2,
+        diagnostics,
         cloglog_robustness,
         lpm_robustness,
+        previous_observed_result,
+        robustness_results,
         reg,
     )
     print(f"\nSaved: {results_path}")
@@ -583,6 +745,18 @@ def main():
             "model_obs": int(len(reg)),
             "model_facilities": int(reg["analysis_facility_id"].nunique()),
             "model_events": int(reg["adopt_power_this_year"].sum()),
+            "previous_observed_model_obs": int(len(previous_observed_model)),
+            "previous_observed_model_facilities": int(
+                previous_observed_model["analysis_facility_id"].nunique()
+            ),
+            "previous_observed_model_events": int(
+                previous_observed_model["adopt_power_this_year"].sum()
+            ),
+            "non_exact_lag_rows_excluded": int(summary["adoption_non_exact_lag_rows"]),
+            "non_exact_lag_events_excluded": int(summary["adoption_non_exact_lag_events"]),
+            "lag_gap_counts": summary["adoption_lag_gap_counts"],
+            "event_lag_gap_counts": summary["adoption_event_lag_gap_counts"],
+            "sparse_event_diagnostics": diagnostics,
             "lag_drop_first_rows": int(summary["adoption_model_drop_first_rows"]),
             "lag_drop_additional_missing_rows": int(
                 summary["adoption_model_drop_additional_missing_rows"]
@@ -594,7 +768,7 @@ def main():
                 "type": "discrete_time_logit_hazard",
                 "reported_scale": "average_marginal_effect",
                 "uncertainty_method": "cluster_robust_marginal_effect",
-                "predictors_lagged_one_year": True,
+                "predictors_lagged_exact_one_year": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
                     "lag_age_10_20": float(model.params["age_10-20 yrs"]),
@@ -635,6 +809,29 @@ def main():
                 "events": int(len(pathway_audit)),
                 "counts": pathway_counts,
             },
+            "specification_sensitivity": [
+                {
+                    "label": result["label"],
+                    "n": int(result["model"].nobs),
+                    "events": int(result["diagnostics"]["events"]),
+                    "parameters": int(result["diagnostics"]["parameters"]),
+                    "events_per_parameter": float(
+                        result["diagnostics"]["events_per_parameter"]
+                    ),
+                    "sign_pattern_matches_main": sign_pattern_matches(
+                        result["marginal_effects"]
+                    ),
+                    "average_marginal_effects": {
+                        row["variable"]: {
+                            "ame": float(row["ame"]),
+                            "se": float(row["se"]),
+                            "pvalue": float(row["pvalue"]),
+                        }
+                        for _, row in result["marginal_effects"].iterrows()
+                    },
+                }
+                for result in [previous_observed_result, *robustness_results]
+            ],
         },
     )
     print(f"Manifest: {manifest_path}")
