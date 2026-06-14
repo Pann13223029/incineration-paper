@@ -43,6 +43,7 @@ data/raw
   -> code/scripts/05_panel_regression.py
   -> code/scripts/06_robustness.py
   -> code/scripts/06a_data_quality_sensitivity.py
+  -> code/scripts/06b_identifier_gap_audit.py
   -> output/*
   -> code/scripts/08_verify_claims.py
   -> output/claim_verification.md
@@ -78,6 +79,7 @@ Current synced files:
 - `regression_results.md`
 - `robustness_results.md`
 - `data_quality_sensitivity.md`
+- `identifier_gap_audit.md`
 - `claim_evidence_map.md`
 - `claim_verification.md`
 - `panel_summary.md`
@@ -124,7 +126,9 @@ CI excludes platform-sensitive rendered figure binaries and the tracked share PD
 Reviewer-sensitive caveats are currently concentrated in:
 
 - `output/data_quality_sensitivity.md`
+- `output/identifier_gap_audit.md`
 - `paper/evidence/current/data_quality_sensitivity.md`
+- `paper/evidence/current/identifier_gap_audit.md`
 - `paper/supplement/supplement.md`
 
 ## Current Evidence Snapshot

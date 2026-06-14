@@ -22,6 +22,7 @@ Evidence spine:
 - `output/adoption_results.md`: prior-year age effects range from −2.31 to −1.59 percentage points relative to age 0-10.
 - `output/adoption_results.md`: prior-year capacity effect is +0.40 percentage points per 100 t/day.
 - `output/adoption_results.md` event-rate tables: event rates collapse after age 10 and rise sharply across capacity quartiles.
+- `output/identifier_gap_audit.md`: exact one-fiscal-year lags are the main adoption frame; previous-observed-coded-row estimates are sensitivity evidence only.
 
 ## Claim 3: Capital-reset-like modernization is empirically prominent, but not uniquely identified
 
@@ -41,6 +42,7 @@ Evidence spine:
 - `output/claim_verification.md`: within/total ratio is 0.1499, with 0.1795 in the early coded window (FY2005–FY2009) and 0.0956 in the later coded window (FY2013–FY2024).
 - `output/robustness_results.md`: sign pattern remains stable across the reported robustness set.
 - `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.
+- `output/identifier_gap_audit.md`: the canonical generator regression frame is an identifiable coded-generator panel, not a complete census of all operating generator rows.
 
 ## Claim 5: The paper supports planning diagnostics, not an exclusive mechanism claim
 

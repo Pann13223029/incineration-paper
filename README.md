@@ -50,7 +50,7 @@ Do not make the manuscript a second source of empirical truth. Paper prose stays
 | Need | Use |
 |:--|:--|
 | Current sample counts and model facts | [`output/sample_definition.md`](output/sample_definition.md), [`output/adoption_results.md`](output/adoption_results.md), [`output/regression_results.md`](output/regression_results.md) |
-| Robustness and data-quality checks | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
+| Robustness and data-quality checks | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md), [`output/identifier_gap_audit.md`](output/identifier_gap_audit.md) |
 | Claim synchronization status | [`output/claim_verification.md`](output/claim_verification.md) |
 | Claim-to-evidence bridge | [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
 | Active paper manuscript | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |

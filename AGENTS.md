@@ -11,7 +11,7 @@ This is a paper-first derivative repo seeded from the defended thesis workspace.
 | Need | Canonical place | Rule |
 |:--|:--|:--|
 | Current sample and model facts | `output/sample_definition.md`, `output/adoption_results.md`, `output/regression_results.md` | Verify here before repeating numbers. |
-| Robustness and sensitivity facts | `output/robustness_results.md`, `output/data_quality_sensitivity.md` | Use these for reviewer-risk and caveat language. |
+| Robustness and sensitivity facts | `output/robustness_results.md`, `output/data_quality_sensitivity.md`, `output/identifier_gap_audit.md` | Use these for reviewer-risk and caveat language. |
 | Claim synchronization | `output/claim_verification.md`, `output/claim_evidence_map.md` | Run `npm run claims:verify` after claim wording changes. |
 | Empirical design logic | `code/scripts/panel_utils.py` | Inspect before changing model/sample descriptions. |
 | Active paper prose | `paper/manuscript/paper.md` | Main article-writing target. |
@@ -64,6 +64,7 @@ Keep these visible when discussing robustness:
 
 - Duplicate official facility codes are addressed through `output/data_quality_sensitivity.md`.
 - Heating-value noise is treated as a control issue and sensitivity-checked in `output/data_quality_sensitivity.md`.
+- FY2010-FY2012 official-code gaps and exact-lag exclusions are audited in `output/identifier_gap_audit.md`.
 - `output/claim_verification.md` verifies registered snippets and stale-pattern guards, not every possible manuscript sentence.
 - The paper models electricity generation cleanly; heat recovery/district heating is future work unless new data are added.
 
