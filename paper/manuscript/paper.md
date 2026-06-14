@@ -196,15 +196,17 @@ year. Technically, it is an exact one-fiscal-year lagged discrete-time logit
 hazard estimated on 10,823 observations across 1,911 facilities and 98 retained
 events. Predictors are prior-year age band and prior-year design capacity, with
 year fixed effects, prefecture fixed effects, and facility-clustered standard
-errors. This is an observed-transition model, not a complete structural model of
-all possible modernization pathways. The design follows grouped event-history
-logic: each coded facility-year contributes to the risk set until first event
-occurrence (Allison, 1982; Beck et al., 1998). That distinction matters because
-the paper is not estimating a continuous engineering retrofit process. It
-estimates the probability that a facility first records entry into power
-generation in the next fiscal year, conditional on still being at risk. The
-lagged predictor structure ensures that age band and capacity are measured
-before the observed event rather than on the event row itself.
+errors. The exact-year restriction is important because official facility codes
+are missing in FY2010-FY2012; broader previous-observed-coded-row estimates are
+reported only as sensitivity evidence. This is an observed-transition model, not
+a complete structural model of all possible modernization pathways. The design
+follows grouped event-history logic: each coded facility-year contributes to the
+risk set until first event occurrence (Allison, 1982; Beck et al., 1998). That
+distinction matters because the paper is not estimating a continuous engineering
+retrofit process. It estimates the probability that a facility first records
+entry into power generation in the next fiscal year, conditional on still being
+at risk. The lagged predictor structure ensures that age band and capacity are
+measured before the observed event rather than on the event row itself.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports power generation in
 fiscal year \(t\), conditional on still being in the at-risk set \(R_{it}=1\).
@@ -363,24 +365,23 @@ set, annual event rates collapse after age 10 and rise sharply across capacity
 quartiles. Facilities aged 0-10 years account for 102 first-adoption events,
 while the three older age bands together account for only 39. By capacity, the
 largest quartile accounts for 99 first-adoption events, whereas the smallest
-quartile records only 1. The timing of first adoption is also clustered, with
-109 of 141 observed first adoptions occurring in FY2013-FY2019, so the pattern
-should be read as an observed administrative transition pattern rather than as a
-separately identified policy shock or reporting change; the main hazard includes
-year fixed effects.
+quartile records only 1. First adoption is also clustered in time: 109 of 141
+observed first adoptions occur in FY2013-FY2019. That clustering should be read
+as an observed administrative transition pattern rather than as a separately
+identified policy shock or reporting change; the main hazard includes year fixed
+effects.
 
 The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
 The percentages below describe changes in the annual probability of first
-reporting generation, not changes in engineering efficiency.
-Relative to 0-10 year facilities, plants aged 10-20 years are about 1.82
-percentage points less likely to record transition in the next fiscal year,
-plants aged 20-30 years are about 2.31 percentage points less likely, and plants
-aged 30 years or more are about 1.59 percentage points less likely. Each
-additional 100 t/day of prior-year design capacity raises annual transition
-probability by about 0.40 percentage points. The sign pattern is stable in the
-alternative event-model checks reported in the supplement, including the broader
-previous-observed-coded-row sensitivity.
+reporting generation, not changes in engineering efficiency. Relative to 0-10
+year facilities, plants aged 10-20 years are about 1.82 percentage points less
+likely to record transition in the next fiscal year. Plants aged 20-30 years are
+about 2.31 percentage points less likely, and plants aged 30 years or more are
+about 1.59 percentage points less likely. Each additional 100 t/day of prior-year
+design capacity raises annual transition probability by about 0.40 percentage
+points. The sign pattern is stable in the alternative event-model checks reported
+in the supplement, including the broader previous-observed-coded-row sensitivity.
 
 These effects should be read within the coded at-risk frame, not as a model of
 all modernization activity in the Japanese fleet. Even within that narrower
@@ -518,30 +519,26 @@ as percentage changes in electricity recovered per tonne.*
 
 ### 4.3 Why the two results belong together
 
-Read together, the two margins change the modernization story. Put simply, some
-facilities still need to enter energy recovery, while others already generate
-but remain far apart in performance. The
-adoption results show that entry into generation is already selective before
-conditional generator performance is considered, while the electricity-recovery
-results show that large performance gaps inside the generating segment are not easily erased
-through within-facility movement alone. A one-average-fleet model would flatten
-those margins into a single modernization narrative and would therefore
-understate both the selectivity of entry and the persistence of cross-facility
-performance differences. The point is not that the two samples form one strict
-causal chain, but that they identify different constraints within the same
-fleet. One concerns who gets into generation at all; the other concerns how far
+Read together, the two margins change the modernization story. Some facilities
+still need to enter energy recovery, while others already generate but remain far
+apart in performance. The adoption results show selective entry before generator
+performance is considered. The electricity-recovery results show that large gaps
+inside the generating segment are not easily erased through within-facility
+movement alone. A one-average-fleet model would flatten those margins into a
+single modernization narrative and understate both the selectivity of entry and
+the persistence of cross-facility performance differences. The point is not that
+the two samples form one strict causal chain. It is that they identify different
+constraints within the same fleet: who gets into generation, and how far
 operating generators can move once they are already there.
 
 ## 5. Discussion
 
 The paper's main interpretive claim is methodological: in this fleet, entry
-into generation and performance after entry are different fleet problems.
-Modeling them separately shows that the non-generating energy-recovery segment
-and the mature generating segment are constrained in different ways. This matters
-because municipal fleets often contain both non-generators and mature generators
-at the same time. If those segments are averaged together, the analyst sees only
-a muted fleet mean rather than the combination of selective entry and persistent
-hierarchy that structures the system.
+into generation and performance after entry are different problems. Modeling them
+separately prevents the non-generating segment and the mature generating segment
+from being collapsed into one muted fleet mean. That separation reveals the
+combination of selective entry and persistent hierarchy that structures the
+system.
 
 The substantive interpretation is correspondingly two-part. On the adoption
 margin, the data do not support broad late conversion among old small plants.
