@@ -22,8 +22,10 @@ more fully utilized ones, while between-facility heterogeneity dominates
 within-facility movement. An aggregate view therefore understates both the
 selectivity of entry and the persistence of performance hierarchy. These
 patterns are descriptive within the linked samples, not causal estimates of a
-single modernization mechanism. For municipal fleet planning, non-generators
-and mature generators should not be managed as one average segment.
+single modernization mechanism. The contribution is not that age and scale are
+surprising correlates, but that the same fleet shows them on two different
+margins. For municipal fleet planning, non-generators and mature generators
+should not be managed as one average segment.
 
 **Keywords:** waste incineration; waste-to-energy; Japan; energy recovery;
 facility panel; transition
@@ -89,7 +91,10 @@ same administrative fleet shows those advantages on two different margins:
 younger and larger facilities are overrepresented in observed entry into
 generation, while operating generators remain stratified after entry. That
 two-margin structure is what an aggregate fleet mean or generator-only study
-would miss.
+would miss. It turns a familiar expectation into a sharper diagnostic: the
+question is not only whether newer and larger plants perform better, but whether
+the fleet's entry problem and post-entry performance problem are actually the
+same problem.
 
 ![Figure 1. Analytical design separating the source panel into entry and generator-performance margins before interpreting both margins together.](../figures/figure1_two_part_framework.png)
 
@@ -388,7 +393,7 @@ or the substantive interpretation. These checks are reported as disclosure and
 robustness evidence, not as an attempt to remove all administrative uncertainty
 from the source panel.
 
-The two layers belong in one paper because they answer sequential parts of the
+The two layers belong in one paper because they answer complementary parts of the
 same modernization problem. The adoption layer identifies which facilities
 appear to enter the generating regime. The electricity-recovery layer identifies
 whether large performance gaps remain once facilities are already inside that
@@ -601,9 +606,9 @@ inside the generating segment are not easily erased through within-facility
 movement alone. A one-average-fleet model would flatten those margins into a
 single modernization narrative and understate both the selectivity of entry and
 the persistence of cross-facility performance differences. The point is not that
-the two samples form one strict causal chain. It is that they identify different
-constraints within the same fleet: who gets into generation, and how far
-operating generators can move once they are already there.
+the two samples form one strict causal chain. It is that they locate different
+observable constraints within the same fleet: who gets into generation, and how
+far operating generators can move once they are already there.
 
 ## 5. Discussion
 
@@ -626,7 +631,9 @@ points more toward selective entry into the generating regime and persistent
 generator hierarchy than toward easy convergence once entry has occurred.
 
 This makes the paper useful as a planning diagnostic rather than as an
-intervention ranking. Table 4 translates the empirical patterns into defensible
+intervention ranking. The practical value is triage: deciding which part of the
+fleet needs an entry-side asset question and which part needs a generator-side
+performance question. Table 4 translates the empirical patterns into defensible
 planning questions while keeping the claim boundaries explicit.
 
 **Table 4. Planning diagnostic implied by the two-margin evidence**
@@ -671,6 +678,13 @@ segment risks hiding the difference between entry-side asset decisions, which
 are lumpy and governance-heavy, and generator performance assessment, which is
 more incremental and operational.
 
+This distinction also explains why the result is more than a restatement that
+newer or larger facilities perform better. If both margins were one common
+process, a single fleet-average modernization story would be adequate. The
+evidence instead points to two diagnostic starting points: observed entry into
+generation is selective before performance is measured, and performance remains
+structured after entry has already occurred.
+
 The broader policy context points in the same direction. Comparative waste
 policy studies and European framework discussions both treat waste-to-energy as
 valuable only when embedded inside a wider hierarchy that preserves prevention,
@@ -711,10 +725,11 @@ to between-facility differences. Read together, those margins show why an
 aggregate fleet view can misstate the modernization bottleneck. The paper does
 not identify one unique pathway or intervention hierarchy, but it does show why
 municipal fleet studies gain by separating adoption from conditional
-performance. For planners, the first question is whether renewal,
-consolidation, or continued non-generation is justified for a facility outside
-electricity recovery; the second is whether an existing generator has realistic
-room for operational or capital improvement.
+performance. The practical implication is not simply to add generation
+everywhere or optimize all current generators in the same way. For planners, the
+first question is whether renewal, consolidation, or continued non-generation is
+justified for a facility outside electricity recovery; the second is whether an
+existing generator has realistic room for operational or capital improvement.
 
 ## Acknowledgements
 
