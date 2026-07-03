@@ -53,7 +53,7 @@ Corresponding author: \href{mailto:ph23p2dl@apu.ac.jp}{ph23p2dl@apu.ac.jp}\par
 \vspace{0.45em}
 
 \begin{abstract}
-Japan relies heavily on municipal waste incineration, yet by FY2024 only 41.1\% of facilities in the panel are flagged as power-generating. This creates a two-margin modernization problem. Facilities outside electricity recovery face an entry margin, while existing generators face a conditional-performance margin. Fleet-average studies blur those margins, and generator-only studies miss the entry margin altogether. Using Ministry of the Environment data for FY2005--FY2024, this paper estimates both margins in one national facility panel. It asks whether first observed entry into generation is associated with prior-year age and capacity, how electricity recovered per tonne is associated with observed facility and operating conditions among identifiable generators, and whether those two margins support one average-fleet modernization interpretation. Entry is selective rather than diffuse: facilities older than ten years are less likely to record transition in the next fiscal year, while larger facilities are more likely to do so. Among operating generators, electricity recovery intensity is lower at older plants and higher at larger, more fully utilized ones, while between-facility heterogeneity dominates within-facility movement. An aggregate view therefore understates both the selectivity of entry and the persistence of performance hierarchy. These patterns are descriptive within the linked samples, not causal estimates of a single modernization mechanism. For municipal fleet planning, non-generators and mature generators should not be managed as one average segment.
+Japan relies heavily on municipal waste incineration, yet by fiscal year (FY) 2024 only 41.1\% of facilities in the panel are flagged as power-generating. This creates a two-margin modernization problem. Facilities outside electricity recovery face an entry margin, while existing generators face a conditional-performance margin. Fleet-average studies blur those margins, and generator-only studies miss the entry margin altogether. Using Ministry of the Environment data for FY2005--FY2024, this paper estimates both margins in one national facility panel. It asks whether first observed entry into generation is associated with prior-year age and capacity, how electricity recovered per tonne is associated with observed facility and operating conditions among identifiable generators, and whether those two margins support one average-fleet modernization interpretation. Entry is selective rather than diffuse: facilities older than ten years are less likely to record transition in the next fiscal year, while larger facilities are more likely to do so. Among operating generators, electricity recovery intensity is lower at older plants and higher at larger, more fully utilized ones, while between-facility heterogeneity dominates within-facility movement. An aggregate view therefore understates both the selectivity of entry and the persistence of performance hierarchy. These patterns are descriptive within the linked samples, not causal estimates of a single modernization mechanism. For municipal fleet planning, non-generators and mature generators should not be managed as one average segment.
 \end{abstract}
 
 \vspace{0.2em}
@@ -62,13 +62,13 @@ Japan relies heavily on municipal waste incineration, yet by FY2024 only 41.1\% 
 
 \section{Introduction}
 
-Japan operates one of the world's most incineration-dependent municipal waste systems, yet many facilities still burn waste without generating electricity from the heat they produce (Ministry of the Environment Japan, 2022; Uno, 2015; Tabata \& Tsai, 2016; Sakai et al., 2011). This is not a marginal technical detail: in FY2024, 41.1\% of facilities in the panel are flagged as power-generating, leaving most facilities outside electricity recovery. For decades, Japanese municipal waste governance has relied on thermal treatment for hygienic disposal, volume reduction, and local waste autonomy, while limited landfill space and strict environmental controls pushed municipalities toward sophisticated incineration infrastructure (Brunner \& Rechberger, 2015; Sakai et al., 2011). Sectoral planning now treats the remaining electricity-generation gap as part of the waste sector's decarbonization challenge (Yamada et al., 2023; Greenhouse Gas Inventory Office of Japan \& Ministry of the Environment Japan, 2024). The transition problem is therefore not whether Japan uses incineration. It is whether observed entry into electricity recovery is patterned across facilities and how electricity recovery intensity varies once generation is present.
+Japan operates one of the world's most incineration-dependent municipal waste systems, yet many facilities still burn waste without generating electricity from the heat they produce (Ministry of the Environment Japan, 2022; Uno, 2015; Tabata \& Tsai, 2016; Sakai et al., 2011). In fiscal year (FY) 2024, 41.1\% of facilities in the panel are flagged as power-generating, leaving most facilities outside electricity recovery. This is not a marginal technical detail. For decades, Japanese municipal waste governance has relied on thermal treatment for hygienic disposal, volume reduction, and local waste autonomy, while limited landfill space and strict environmental controls pushed municipalities toward sophisticated incineration infrastructure (Brunner \& Rechberger, 2015; Sakai et al., 2011). Sectoral planning now treats the remaining electricity-generation gap as part of the waste sector's decarbonization challenge (Yamada et al., 2023; Greenhouse Gas Inventory Office of Japan \& Ministry of the Environment Japan, 2024). The transition problem is therefore not whether Japan uses incineration. It is whether observed entry into electricity recovery is patterned across facilities and how electricity recovery intensity varies once generation is present.
 
 Aggregate fleet summaries flatten two distinct questions. One is extensive: which facilities record observed transition into power generation at all? The other is intensive: among plants that already generate, which facilities achieve high electricity recovery per tonne? The system can therefore look uniformly slow in the mean while combining selective entry at one end of the fleet with persistent performance hierarchy at the other.
 
 \subsection*{Research questions}
 
-This paper asks three descriptive, sample-bounded research questions:
+This paper asks three descriptive, sample-bounded research questions. In the list, RQ denotes research question:
 
 \begin{description}
 \item[RQ1: Entry margin.] Among coded facilities first observed without power generation, which prior-year age and capacity profiles are associated with first observed reporting of power generation in the following fiscal year?
@@ -124,9 +124,9 @@ Formally, let $A_{it}=1$ if facility $i$ first reports power generation in fisca
 \end{aligned}
 \end{equation}
 
-The omitted age group is 0--10 years. $\gamma_t$ absorbs common fiscal-year differences, $\delta_p$ absorbs prefecture-level context, and $\text{Capacity100}$ measures design capacity in 100 t/day units. Table 2 reports average marginal effects in percentage points, not log-odds coefficients. A value of -1.82 percentage points therefore means that the annual probability of first reporting generation is 1.82 percentage points lower than the 0--10 year reference group, conditional on the model covariates.
+Here, $i$ indexes facilities, $t$ indexes fiscal years, and $I(\cdot)$ is an indicator equal to 1 when the stated condition is true. The omitted age group is 0--10 years. $\gamma_t$ absorbs common fiscal-year differences, $\delta_p$ absorbs prefecture-level context, and $\text{Capacity100}$ measures design capacity in 100 tonnes per day (t/day) units. Table 2 reports average marginal effects (AMEs) in percentage points (pp), not log-odds coefficients. A value of -1.82 pp therefore means that the annual probability of first reporting generation is 1.82 percentage points lower than the 0--10 year reference group, conditional on the model covariates.
 
-The second frame is the canonical generator frame. It contains operating facilities with positive throughput and positive power output, after standard cleaning and electricity-recovery bounding. The operating-generation sample contains 6,660 rows before identifier and regression cleaning. Of those, 907 rows lack official facility codes and are excluded from the canonical regression frame, leaving 5,683 observations across 1,016 facilities. The dependent variable is log electricity recovered per tonne processed. Main predictors are facility age, design capacity, capacity utilization, waste heating value, and a grid-emission control. In simpler terms, the outcome is electricity recovered per tonne of waste. The raw ratio is MWh generated divided by tonnes processed, clipped to 0.01--0.80 MWh/t, and then log-transformed so that a few unusual administrative records do not dominate the comparison. Capacity utilization is also capped at 1.0. The paper uses this measure as electricity recovery intensity, not as a full thermodynamic efficiency measure.
+The second frame is the canonical generator frame. It contains operating facilities with positive throughput and positive power output, after standard cleaning and electricity-recovery bounding. The operating-generation sample contains 6,660 rows before identifier and regression cleaning. Of those, 907 rows lack official facility codes and are excluded from the canonical regression frame, leaving 5,683 observations across 1,016 facilities. The dependent variable is log electricity recovered per tonne processed. Main predictors are facility age, design capacity, capacity utilization, waste heating value, and a grid-emission factor control. In simpler terms, the outcome is electricity recovered per tonne of waste. The raw ratio is megawatt-hours (MWh) generated divided by tonnes processed, clipped to 0.01--0.80 megawatt-hours per tonne (MWh/t), and then log-transformed so that a few unusual administrative records do not dominate the comparison. Capacity utilization is also capped at 1.0. The paper uses this measure as electricity recovery intensity, not as a full thermodynamic efficiency measure.
 
 Let $q_{it}$ be the clipped electricity recovery ratio and let $y_{it}=\log(q_{it})$. The compact model is:
 
@@ -135,13 +135,13 @@ y_{it}
 = \alpha + X_{it}'\beta + \gamma_t + u_i + \varepsilon_{it},
 \end{equation}
 
-where $X_{it}$ contains facility age, design capacity in 100 t/day units, capped capacity utilization, heating value, and the grid-emission factor. The four reported models are nested descriptive versions of this equation. Model 1 omits both $\gamma_t$ and $u_i$ and compares facilities overall with pooled OLS. Model 2 includes fiscal-year fixed effects $\gamma_t$, which absorb year-specific shocks common to the fleet. Model 3 includes a facility-specific random intercept $u_i$, which summarizes persistent facility-level differences. Model 4 includes both year fixed effects and the random intercept. All four models use facility-clustered standard errors to avoid treating repeated observations from the same facility as fully independent (Wooldridge, 2010).
+where $X_{it}$ contains facility age, design capacity in 100 t/day units, capped capacity utilization, heating value, and the grid-emission factor (EF). The EF is measured as kilograms of carbon dioxide per kilowatt-hour (kg-CO$_2$/kWh). The four reported models are nested descriptive versions of this equation. Model 1 omits both $\gamma_t$ and $u_i$ and compares facilities overall with pooled ordinary least squares (OLS). Model 2 includes fiscal-year fixed effects (FE) $\gamma_t$, which absorb year-specific shocks common to the fleet. Model 3 includes a facility-specific random intercept $u_i$, reported as a random-effects (RE) panel specification, which summarizes persistent facility-level differences. Model 4 includes both year FE and the random intercept. All four models use facility-clustered standard errors to avoid treating repeated observations from the same facility as fully independent (Wooldridge, 2010).
 
 Because the dependent variable is logged, small coefficients can be read approximately as percentage changes in electricity recovered per tonne. For example, the pooled age coefficient of -0.0279 implies about 2.8\% lower electricity recovered per tonne for each additional facility year, conditional on the listed variables. The pooled capacity coefficient of 0.0874 implies about 9.1\% higher electricity recovered per tonne for each additional 100 t/day of design capacity. The random-effects models are used descriptively; they do not prove that unobserved facility traits are unrelated to age, capacity, technology, or municipal context.
 
 The electricity-recovery results should therefore be read as conditional patterns within the canonical regression frame, not as estimates for the entire generating fleet. This frame is intentionally narrower than the operating-generator universe because the argument depends on facility-level comparison over time. Rows without official facility codes cannot support that comparison. The frame is better understood as the canonical identifiable generator sample than as a census of all generation activity. The supplement compares included and uncoded operating-generator rows; the uncoded rows are concentrated in FY2010--FY2012, so period comparisons are treated as coded-window diagnostics rather than as a clean Fukushima-era identification design. The paper also uses a bounded electricity-recovery metric because the empirical question is not boiler thermodynamics in isolation, but administrative performance in electricity recovered per tonne processed. That puts the paper closer to applied energy-recovery studies than to plant-level engineering optimization alone (Grosso et al., 2010; M\"{u}nster \& Meibom, 2010).
 
-Two administrative-data checks are reported in the supplement. First, a small set of official facility codes appears more than once within the same fiscal year, so a composite-ID sensitivity appends facility names to affected duplicate codes. Second, heating value is treated as a noisy control and is checked under plausible-value restrictions. Neither sensitivity changes the main sign pattern or the substantive interpretation. These checks are reported as disclosure and robustness evidence, not as an attempt to remove all administrative uncertainty from the source panel.
+Two administrative-data checks are reported in the supplement. First, a small set of official facility codes appears more than once within the same fiscal year, so a composite identifier (ID) sensitivity appends facility names to affected duplicate codes. Second, heating value is treated as a noisy control and is checked under plausible-value restrictions. Neither sensitivity changes the main sign pattern or the substantive interpretation. These checks are reported as disclosure and robustness evidence, not as an attempt to remove all administrative uncertainty from the source panel.
 
 The two layers belong in one paper because they answer sequential parts of the same modernization problem. The adoption layer identifies which facilities appear to enter the generating regime. The electricity-recovery layer identifies whether large performance gaps remain once facilities are already inside that regime. Without the first layer, the paper would reduce transition to generator performance alone. Without the second, it would say who enters generation but not whether major electricity-recovery differences remain inside the generating segment. The two samples are linked but non-identical, so they should not be read as one causal pathway. They are instead the extensive-margin gate and the conditional-performance layer of the same modernization problem.
 
@@ -166,7 +166,7 @@ Synthesis & Two linked but non-identical analytical frames & Would one average-f
 \bottomrule
 \end{tabularx}
 \normalsize
-\caption*{\footnotesize Note: the adoption margin is estimated with a lagged discrete-time hazard. The electricity-recovery margin is estimated with descriptive pooled, year-FE, and RE panel specifications.}
+\caption*{\footnotesize Note: the adoption margin is estimated with a lagged discrete-time hazard. The electricity-recovery margin is estimated with descriptive pooled, year fixed-effects (year-FE), and random-effects (RE) panel specifications.}
 \end{table}
 
 \section{Results}
@@ -192,13 +192,14 @@ That distinction keeps the adoption result from becoming a story of technologica
 \begin{table}[t]
 \centering
 \caption{Main lagged hazard results for observed transition into generation}
-\begin{tabular}{lrr}
+\small
+\begin{tabularx}{\textwidth}{X R{3.2cm} R{2.5cm}}
 \toprule
-Variable & AME (pp) & SE (pp) \\
+Variable & Average marginal effect (pp) & Standard error (pp) \\
 \midrule
-Prior-year age 10--20 yrs (vs 0--10) & -1.82 & 0.29 \\
-Prior-year age 20--30 yrs (vs 0--10) & -2.31 & 0.51 \\
-Prior-year age 30+ yrs (vs 0--10) & -1.59 & 0.43 \\
+Prior-year age 10--20 years (versus 0--10) & -1.82 & 0.29 \\
+Prior-year age 20--30 years (versus 0--10) & -2.31 & 0.51 \\
+Prior-year age 30+ years (versus 0--10) & -1.59 & 0.43 \\
 Prior-year capacity (per 100 t/day) & 0.40 & 0.12 \\
 \midrule
 \multicolumn{3}{l}{\textit{Model summary}} \\
@@ -207,8 +208,9 @@ Facilities & \multicolumn{2}{r}{1,911} \\
 First-adoption events & \multicolumn{2}{r}{98} \\
 Pseudo-R-squared & \multicolumn{2}{r}{0.2341} \\
 \bottomrule
-\end{tabular}
-\caption*{\footnotesize Note: entries are average marginal effects in percentage points from the main exact one-fiscal-year lagged logit hazard with year and prefecture fixed effects and facility-clustered standard errors.}
+\end{tabularx}
+\normalsize
+\caption*{\footnotesize Note: entries are average marginal effects in percentage points (pp) from the main exact one-fiscal-year lagged logit hazard with year and prefecture fixed effects and facility-clustered standard errors.}
 \end{table}
 
 \subsection{Electricity recovery within generation is strongly structured}
@@ -255,7 +257,7 @@ R-squared & 0.2470 & 0.3721 & 0.1647 & 0.3076 \\
 \bottomrule
 \end{tabular}}
 \normalsize
-\caption*{\footnotesize Note: standard errors are clustered by facility and reported in parentheses. Three asterisks denote $p<0.01$. Coefficients are reported as structured conditional associations rather than as strict structural parameters. Because the dependent variable is logged, small coefficients can be read approximately as percentage changes in electricity recovered per tonne.}
+\caption*{\footnotesize Note: OLS means ordinary least squares, FE means fixed effects, RE means random effects, EF means emissions factor, MJ/kg means megajoules per kilogram, and kg-CO$_2$/kWh means kilograms of carbon dioxide per kilowatt-hour. Standard errors are clustered by facility and reported in parentheses. Three asterisks denote $p<0.01$. Coefficients are reported as structured conditional associations rather than as strict structural parameters. Because the dependent variable is logged, small coefficients can be read approximately as percentage changes in electricity recovered per tonne.}
 \end{table}
 
 \subsection{Why the two results belong together}
@@ -292,7 +294,7 @@ The author thanks Prof. Han Ji for supervision and critical feedback during the 
 
 This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
 
-\section*{CRediT Authorship Contribution Statement}
+\section*{Contributor Roles Taxonomy (CRediT) Authorship Contribution Statement}
 
 Pann Phetra: Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Visualization, Writing -- original draft, Writing -- review \& editing.
 
@@ -308,7 +310,7 @@ This study uses publicly released administrative facility data and does not invo
 
 The facility-level source data are derived from the Ministry of the Environment Japan General Waste Treatment Survey, which is publicly released by the Ministry of the Environment. The cleaned analysis outputs, figure-generation scripts, manuscript figures, and reproducible paper workspace can be made available by the author on reasonable request, subject to any redistribution limits attached to the source administrative files.
 
-\section*{Generative AI and AI-Assisted Technologies Statement}
+\section*{Generative Artificial Intelligence (AI) and AI-Assisted Technologies Statement}
 
 During the preparation of this manuscript, the author used OpenAI Codex and Anthropic Claude to support drafting, language revision, and organizational planning. These tools were not used as authors, did not generate or verify the underlying data, and did not replace author review. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the manuscript.
 
