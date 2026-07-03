@@ -570,6 +570,19 @@ modest relative to the cross-sectional hierarchy. Read together, the evidence
 points more toward selective entry into the generating regime and persistent
 generator hierarchy than toward easy convergence once entry has occurred.
 
+This makes the paper useful as a planning diagnostic rather than as an
+intervention ranking. Table 4 translates the empirical patterns into defensible
+planning questions while keeping the claim boundaries explicit.
+
+**Table 4. Planning diagnostic implied by the two-margin evidence**
+
+| Empirical pattern | Planning use | Boundary condition |
+|:--|:--|:--|
+| Younger/larger entry | Screen non-generators by age, scale, and replacement timing before assuming a simple retrofit path | Older or smaller plants are not proven unable to upgrade |
+| Mixed event pathways | Check asset histories before treating adoption as one retrofit mechanism | The audit does not distinguish replacement, refurbishment, and reporting change with certainty |
+| Structured generator performance | Compare generators with similar age, scale, and utilization before judging improvement room | Coefficients are conditional associations, not causal effects |
+| Low within-facility movement | Separate incremental operating improvements from capital-renewal or consolidation decisions | Plant-specific operational gains remain possible |
+
 The interpretation has clear limits. The pathway audit does not prove that
 replacement is the unique pathway of modernization, and the regressions do not
 provide strict causal estimates of vintage lock-in or clean estimates for all
