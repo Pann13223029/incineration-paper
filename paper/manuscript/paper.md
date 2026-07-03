@@ -57,14 +57,14 @@ persistent performance hierarchy at the other.
 
 ### Research questions
 
-This paper asks three descriptive, sample-bounded research questions. In the
-table, RQ denotes research question:
+This paper asks two descriptive empirical questions and one interpretive
+synthesis question. In the table, RQ denotes research question:
 
 | RQ | Margin | Question |
 |:--|:--|:--|
 | RQ1 | Entry margin | Among coded facilities first observed without power generation, which prior-year age and capacity profiles are associated with first observed reporting of power generation in the following fiscal year? |
 | RQ2 | Generator-performance margin | Among identifiable operating generators, how is electricity recovered per tonne associated with facility age, design capacity, utilization, heating value, and common fiscal-year conditions? |
-| RQ3 | Synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
+| RQ3 | Interpretive synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
 
 The contribution is not a causal estimate of retrofit effects or a technical
 optimization model. It is a linked facility-panel decomposition that shows why
@@ -82,6 +82,14 @@ persistent generator hierarchy. For municipal planning, that distinction
 changes the first diagnostic step. Facilities outside electricity recovery and
 mature generators should be evaluated as different asset-management questions
 before they are summarized as one fleet.
+
+A natural expectation is that younger and larger plants will have advantages.
+The contribution is not that age and scale matter in isolation. It is that the
+same administrative fleet shows those advantages on two different margins:
+younger and larger facilities are overrepresented in observed entry into
+generation, while operating generators remain stratified after entry. That
+two-margin structure is what an aggregate fleet mean or generator-only study
+would miss.
 
 ![Figure 1. Analytical design separating the source panel into entry and generator-performance margins before interpreting both margins together.](../figures/figure1_two_part_framework.png)
 
@@ -147,9 +155,9 @@ non-generating facilities enter generation in the first place.
 
 The present paper therefore uses those comparator papers as a method-positioning
 map rather than as templates to copy. The table below makes the adaptation logic
-explicit for supervisor review.
+explicit.
 
-**Comparator-adaptation map for professor review**
+**Comparator adaptation of research logic**
 
 | Source family | Borrowed logic | Japan-specific adaptation | Not claimed here |
 |:--|:--|:--|:--|
@@ -221,13 +229,13 @@ interpretation is adequate. This makes the framework similar in spirit to
 plant-level optimization and performance papers, but distinct in its
 Japan-specific two-margin diagnostic focus.
 
-**Method bridge from research questions to models**
+**Research-question-to-model bridge**
 
 | Research question | Empirical frame | Main model | What it can show | What it cannot show |
 |:--|:--|:--|:--|:--|
 | RQ1: entry | Coded facilities first observed without generation | Exact one-fiscal-year lagged logit hazard with year fixed effects | Which prior-year age and capacity profiles are associated with first reporting generation | A causal retrofit effect, a full capital-history mechanism, or unrestricted fleet-wide modernization |
 | RQ2: generator performance | Identifiable operating generators with positive throughput and power output | Logged MWh/t panel regressions using pooled, year-FE, RE, and year-FE + RE specifications | Whether electricity recovered per tonne is structured by age, scale, utilization, heating value, and common year conditions | Full thermodynamic efficiency or the causal effect of changing age, scale, utilization, or technology |
-| RQ3: synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
+| RQ3: interpretive synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
 
 The first frame is the coded adoption frame. It includes facilities first
 observed without power generation and follows them until they either record
@@ -292,6 +300,14 @@ than the 0-10 year reference group, conditional on the model covariates. The
 prefecture fixed-effects variant is reported in the supplement as a sensitivity
 check rather than as the primary estimate.
 
+Age and capacity are therefore treated as observable pre-event facility
+profiles, not isolated causal mechanisms. They may also proxy for unobserved
+municipal finance, procurement timing, consolidation, routing arrangements,
+technology vintage, or renewal planning. The adoption model is useful because
+those profiles describe which facilities are most likely to appear in observed
+entry; it cannot determine which institutional or engineering channel produced
+that association.
+
 The second frame is the canonical generator frame. It contains operating
 facilities with positive throughput and positive power output, after standard
 cleaning and electricity-recovery bounding. The operating-generation sample contains
@@ -329,6 +345,12 @@ facility-level differences. Model 4 includes both year FE and the random
 intercept. All four models use facility-clustered standard errors to avoid
 treating repeated observations from the same facility as fully independent
 (Wooldridge, 2010).
+
+The random-effects specifications are not used because they solve all
+unobserved-facility concerns. They are used because the paper's intensive-margin
+question is descriptive cross-facility structure, while a pure facility
+fixed-effects interpretation would rely on limited within-facility movement and
+would identify a different question.
 
 Because the dependent variable is logged, small coefficients can be read
 approximately as percentage changes in electricity recovered per tonne. For

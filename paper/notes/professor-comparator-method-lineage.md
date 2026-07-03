@@ -82,7 +82,7 @@ what research logic was adapted, and why the Japan design is similar in spirit
 but not a copy. If later targeting a journal, the comparator-adaptation prose can
 be compressed again after the supervisor has confirmed the framing.
 
-The main manuscript now includes two professor-facing bridge maps:
+The main manuscript now includes two review-facing bridge maps:
 
 1. A comparator-adaptation map showing what is borrowed from Cui et al. (2026),
    Liu et al. (2025), Han et al. (2025), Chen et al. (2012), Yeh (2020), Grosso
@@ -93,7 +93,8 @@ The main manuscript now includes two professor-facing bridge maps:
 
 Those bridge maps are intentionally explanatory. They are meant to help the
 professor audit the intellectual foundation before any later journal-style
-compression.
+compression. Their manuscript labels are neutral so they can remain usable in
+peer-review mode.
 
 The paper does not copy one single paper. It combines three research families:
 
