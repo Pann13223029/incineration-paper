@@ -386,12 +386,15 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     """
     Estimate a discrete-time first-adoption hazard with lagged predictors.
 
-    The main specification uses a clustered discrete-time logit with built-in
-    marginal effects. A cloglog version is retained as a robustness check.
+    The main specification uses a parsimonious clustered discrete-time logit
+    with year fixed effects. The saturated year + prefecture fixed-effects
+    model is retained as sensitivity evidence because the event count is modest.
     """
     result = fit_reported_logit_spec(
         adoption_model.copy(),
-        label="Main exact-year logit: year FE + prefecture FE",
+        label="Main exact-year logit: year FE only",
+        include_year_fe=True,
+        include_pref_fe=False,
     )
     reg = result["reg"]
     model = result["model"]
@@ -565,10 +568,12 @@ def write_results(
         f.write("## Adoption Hazard Model\n\n")
         f.write(
             "Main specification: exact one-fiscal-year lagged discrete-time logit hazard "
-            "with prior-year age band and prior-year design capacity, plus year "
-            "fixed effects, prefecture fixed effects, and facility-clustered "
-            "standard errors. Reported effects are average marginal effects in "
-            "percentage points. Baseline prior-year age band: 0-10 years.\n\n"
+            "with prior-year age band and prior-year design capacity, year fixed "
+            "effects, and facility-clustered standard errors. The more saturated "
+            "year + prefecture fixed-effects model is retained as sensitivity "
+            "evidence because first-adoption events are sparse. Reported effects "
+            "are average marginal effects in percentage points. Baseline "
+            "prior-year age band: 0-10 years.\n\n"
         )
         f.write(model_table.to_markdown(index=False))
         f.write(
@@ -613,10 +618,11 @@ def write_results(
         f.write(pd.DataFrame(sensitivity_rows).to_markdown(index=False))
         f.write(
             "\n\n"
-            "*Interpretation: the exact-year model is the main specification because it preserves "
-            "annual transition timing. The broader previous-observed-coded-row specification is "
-            "reported only as a sensitivity check because official facility identifiers are missing "
-            "for FY2010-FY2012.*\n\n"
+            "*Interpretation: the exact-year year fixed-effects model is the main "
+            "specification because it preserves annual transition timing while "
+            "reducing sparse-event pressure. The saturated exact-year year + "
+            "prefecture fixed-effects model and the broader previous-observed-coded-row "
+            "model are reported as sensitivity checks.*\n\n"
         )
 
         f.write("## Transition Pathway Audit\n\n")
@@ -680,9 +686,9 @@ def main():
     robustness_results = [
         fit_reported_logit_spec(
             adoption_model,
-            label="Exact-year: year FE only",
+            label="Exact-year: year FE + prefecture FE",
             include_year_fe=True,
-            include_pref_fe=False,
+            include_pref_fe=True,
         ),
         fit_reported_logit_spec(
             adoption_model,
@@ -774,6 +780,8 @@ def main():
                 "reported_scale": "average_marginal_effect",
                 "uncertainty_method": "cluster_robust_marginal_effect",
                 "predictors_lagged_exact_one_year": True,
+                "fixed_effects": ["fiscal_year"],
+                "saturated_year_prefecture_fe_retained_as_sensitivity": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
                     "lag_age_10_20": manifest_float(model.params["age_10-20 yrs"]),

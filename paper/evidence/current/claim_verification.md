@@ -5,7 +5,7 @@ Repo-level check that paper-facing claims stay synchronized with canonical outpu
 - Core manifest Python: 3.12.12
 - Full panel: 23,599 observations across 2,948 facilities
 - Adoption frame: risk set 13,770 / 2,035; model 10,823 / 1,911 / 98 events
-- Adoption effects: age 1.6–2.3 pp less likely; capacity +0.40 pp per 100 t/day
+- Adoption effects: age 1.2–1.9 pp less likely; capacity +0.45 pp per 100 t/day
 - Pathway audit: 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved
 - Regression frame: 5,683 observations across 1,016 facilities; within/total ratio 0.1499 (0.1795 early coded, 0.0956 later coded)
 

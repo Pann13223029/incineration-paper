@@ -168,18 +168,21 @@ $$
 + \beta_2 I(\text{Age}_{i,t-1}=20\text{-}30)
 + \beta_3 I(\text{Age}_{i,t-1}\geq 30)
 + \beta_4 \text{Capacity100}_{i,t-1}
-+ \gamma_t + \delta_p
++ \gamma_t
 \right].
 $$
 
 The omitted age category is 0-10 years. \(\gamma_t\) denotes fiscal-year fixed
-effects and \(\delta_p\) denotes prefecture fixed effects. Capacity is measured
-in 100 t/day units. Standard errors are clustered by facility. The table reports
-average marginal effects in percentage points because those are easier to read
-than log-odds coefficients. For example, an average marginal effect of -1.82
-percentage points means that the annual probability of first reporting
-generation is 1.82 percentage points lower than in the omitted 0-10 year age
-group, conditional on the included variables and fixed effects.
+effects. Capacity is measured in 100 t/day units. Standard errors are clustered
+by facility. The table reports average marginal effects in percentage points
+because those are easier to read than log-odds coefficients. For example, an
+average marginal effect of -1.67 percentage points means that the annual
+probability of first reporting generation is 1.67 percentage points lower than
+in the omitted 0-10 year age group, conditional on the included variables and
+year fixed effects. A saturated year-plus-prefecture fixed-effects model is
+reported as sensitivity evidence rather than as the primary estimate. This
+keeps the primary model at 18 parameters and 5.44 events per parameter, instead
+of 64 parameters and 1.53 events per parameter in the saturated sensitivity.
 
 The adoption equation should not be read as a physical retrofit model. The
 dependent variable is observed entry into reported generation in the
@@ -250,14 +253,17 @@ that one estimator identifies a structural causal effect.
 ### S5.1 Adoption robustness
 
 The main adoption result is estimated as an exact one-fiscal-year lagged
-discrete-time logit hazard with year and prefecture fixed effects plus
-facility-clustered standard errors. The broader previous-observed-coded-row
-model is retained only as sensitivity evidence because official facility codes
-are missing for FY2010-FY2012. Several robustness variants preserve the main
-sign pattern:
+discrete-time logit hazard with year fixed effects plus facility-clustered
+standard errors. The saturated year-plus-prefecture fixed-effects model is
+retained as sensitivity evidence because first-adoption events are sparse: it
+has 64 estimated parameters and 1.53 events per parameter, compared with 18
+estimated parameters and 5.44 events per parameter in the primary model. The
+broader previous-observed-coded-row model is also retained only as sensitivity
+evidence because official facility codes are missing for FY2010-FY2012. Several
+robustness variants preserve the main sign pattern:
 
 - previous-observed-coded-row logit
-- exact-year logit with year fixed effects only
+- saturated exact-year logit with year and prefecture fixed effects
 - exact-year logit with prefecture fixed effects only
 - exact-year logit with age and capacity only
 - lagged complementary log-log
@@ -306,15 +312,15 @@ adoption and efficiency checks.
 
 | Variable | Exact-year official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.82 | 0.29 | -1.79 | 0.29 |
-| Prior-year age 20-30 yrs | -2.31 | 0.51 | -2.19 | 0.50 |
-| Prior-year age 30+ yrs | -1.59 | 0.43 | -1.52 | 0.42 |
-| Prior-year capacity per 100 t/day | 0.40 | 0.12 | 0.42 | 0.13 |
+| Prior-year age 10-20 yrs | -1.67 | 0.25 | -1.66 | 0.25 |
+| Prior-year age 20-30 yrs | -1.94 | 0.39 | -1.89 | 0.39 |
+| Prior-year age 30+ yrs | -1.24 | 0.38 | -1.22 | 0.39 |
+| Prior-year capacity per 100 t/day | 0.45 | 0.15 | 0.46 | 0.16 |
 
 | ID rule | Observations | Facilities | Events | Pseudo-R2 |
 |:--|--:|--:|--:|--:|
-| Official code | 10,823 | 1,911 | 98 | 0.2341 |
-| Composite sensitivity | 10,850 | 1,931 | 99 | 0.2265 |
+| Official code | 10,823 | 1,911 | 98 | 0.1829 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1777 |
 
 **Panel B. Efficiency sensitivity**
 

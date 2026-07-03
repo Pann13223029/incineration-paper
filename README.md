@@ -22,12 +22,12 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The exact one-fiscal-year lagged adoption model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Relative to prior-year age 0-10, older facilities are 1.6–2.3 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.40 percentage points per 100 t/day. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024.
+The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The exact one-fiscal-year lagged adoption model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Relative to prior-year age 0-10, older facilities are 1.2–1.9 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.45 percentage points per 100 t/day. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024.
 
 | Headline | Current value |
 |:--|:--|
-| Adoption age effect | −2.31 to −1.59 percentage points vs prior-year age 0–10 |
-| Adoption capacity effect | +0.40 percentage points per 100 t/day of prior-year capacity |
+| Adoption age effect | −1.94 to −1.24 percentage points vs prior-year age 0–10 |
+| Adoption capacity effect | +0.45 percentage points per 100 t/day of prior-year capacity |
 | Pathway audit of adoption events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
 | Within/total variance ratio | 0.1499 (pooled), 0.1795 (early coded), 0.0956 (later coded) |
 

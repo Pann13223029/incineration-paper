@@ -19,8 +19,8 @@ Paper claim: among coded facilities first observed without generation, younger a
 
 Evidence spine:
 - `output/adoption_results.md`: lagged logit hazard on 10,823 facility-years across 1,911 facilities and 98 retained events.
-- `output/adoption_results.md`: prior-year age effects range from −2.31 to −1.59 percentage points relative to age 0-10.
-- `output/adoption_results.md`: prior-year capacity effect is +0.40 percentage points per 100 t/day.
+- `output/adoption_results.md`: prior-year age effects range from −1.94 to −1.24 percentage points relative to age 0-10.
+- `output/adoption_results.md`: prior-year capacity effect is +0.45 percentage points per 100 t/day.
 - `output/adoption_results.md` event-rate tables: event rates collapse after age 10 and rise sharply across capacity quartiles.
 - `output/identifier_gap_audit.md`: exact one-fiscal-year lags are the main adoption frame; previous-observed-coded-row estimates are sensitivity evidence only.
 

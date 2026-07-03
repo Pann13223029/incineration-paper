@@ -40,34 +40,34 @@ This stage models the observed first transition into power generation among code
 
 ## Adoption Hazard Model
 
-Main specification: exact one-fiscal-year lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, plus year fixed effects, prefecture fixed effects, and facility-clustered standard errors. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
+Main specification: exact one-fiscal-year lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, year fixed effects, and facility-clustered standard errors. The more saturated year + prefecture fixed-effects model is retained as sensitivity evidence because first-adoption events are sparse. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
 
 | Variable                            | AME (pp)   | SE (pp)   |
 |:------------------------------------|:-----------|:----------|
-| Prior-year age 10-20 yrs (vs 0-10)  | -1.82***   | (0.29)    |
-| Prior-year age 20-30 yrs (vs 0-10)  | -2.31***   | (0.51)    |
-| Prior-year age 30+ yrs (vs 0-10)    | -1.59***   | (0.43)    |
-| Prior-year capacity (per 100 t/day) | 0.40**     | (0.12)    |
+| Prior-year age 10-20 yrs (vs 0-10)  | -1.67***   | (0.25)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -1.94***   | (0.39)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -1.24**    | (0.38)    |
+| Prior-year capacity (per 100 t/day) | 0.45**     | (0.15)    |
 
 - Observations: 10,823
 - Facilities: 1,911
 - First-adoption events: 98
-- Events per parameter: 1.53 (98 events / 64 parameters)
+- Events per parameter: 5.44 (98 events / 18 parameters)
 - Zero-event fiscal-year levels in main frame: 1 of 14
 - Zero-event prefecture levels in main frame: 8 of 47
-- Pseudo-R-squared (deviance-based): 0.2341
-- Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.407; LPM coef. 1.32 pp).
+- Pseudo-R-squared (deviance-based): 0.1829
+- Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.424; LPM coef. 1.39 pp).
 
 ### Adoption specification sensitivity
 
 | Specification                                        | N      |   Events |   Parameters |   Events/parameter |   Age 10-20 AME (pp) |   Age 20-30 AME (pp) |   Age 30+ AME (pp) |   Capacity AME (pp) | Sign pattern   |
 |:-----------------------------------------------------|:-------|---------:|-------------:|-------------------:|---------------------:|---------------------:|-------------------:|--------------------:|:---------------|
 | Previous observed coded row: year FE + prefecture FE | 11,717 |      140 |           66 |               2.12 |                -1.76 |                -1.72 |              -1.13 |                0.5  | yes            |
-| Exact-year: year FE only                             | 10,823 |       98 |           18 |               5.44 |                -1.67 |                -1.94 |              -1.24 |                0.45 | yes            |
+| Exact-year: year FE + prefecture FE                  | 10,823 |       98 |           64 |               1.53 |                -1.82 |                -2.31 |              -1.59 |                0.4  | yes            |
 | Exact-year: prefecture FE only                       | 10,823 |       98 |           51 |               1.92 |                -1.39 |                -1.18 |              -0.58 |                0.35 | yes            |
 | Exact-year: age and capacity only                    | 10,823 |       98 |            5 |              19.6  |                -1.34 |                -1.1  |              -0.48 |                0.4  | yes            |
 
-*Interpretation: the exact-year model is the main specification because it preserves annual transition timing. The broader previous-observed-coded-row specification is reported only as a sensitivity check because official facility identifiers are missing for FY2010-FY2012.*
+*Interpretation: the exact-year year fixed-effects model is the main specification because it preserves annual transition timing while reducing sparse-event pressure. The saturated exact-year year + prefecture fixed-effects model and the broader previous-observed-coded-row model are reported as sensitivity checks.*
 
 ## Transition Pathway Audit
 

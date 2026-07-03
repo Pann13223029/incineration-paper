@@ -197,18 +197,23 @@ non-generating in one year first reports generation in the following fiscal
 year. Technically, it is an exact one-fiscal-year lagged discrete-time logit
 hazard estimated on 10,823 observations across 1,911 facilities and 98 retained
 events. Predictors are prior-year age band and prior-year design capacity, with
-year fixed effects, prefecture fixed effects, and facility-clustered standard
-errors. The exact-year restriction is important because official facility codes
-are missing in FY2010-FY2012; broader previous-observed-coded-row estimates are
-reported only as sensitivity evidence. This is an observed-transition model, not
-a complete structural model of all possible modernization pathways. The design
-follows grouped event-history logic: each coded facility-year contributes to the
-risk set until first event occurrence (Allison, 1982; Beck et al., 1998). That
-distinction matters because the paper is not estimating a continuous engineering
-retrofit process. It estimates the probability that a facility first records
-entry into power generation in the next fiscal year, conditional on still being
-at risk. The lagged predictor structure ensures that age band and capacity are
-measured before the observed event rather than on the event row itself.
+year fixed effects and facility-clustered standard errors. A more saturated
+year-plus-prefecture fixed-effects model is retained as sensitivity evidence
+rather than used as the main specification because it would estimate 64
+parameters with 98 retained events, or 1.53 events per parameter. The primary
+year fixed-effects model estimates 18 parameters, or 5.44 events per parameter. The
+exact-year restriction is important because official
+facility codes are missing in FY2010-FY2012; broader previous-observed-coded-row
+estimates are also reported only as sensitivity evidence. This is an
+observed-transition model, not a complete structural model of all possible
+modernization pathways. The design follows grouped event-history logic: each
+coded facility-year contributes to the risk set until first event occurrence
+(Allison, 1982; Beck et al., 1998). That distinction matters because the paper
+is not estimating a continuous engineering retrofit process. It estimates the
+probability that a facility first records entry into power generation in the next
+fiscal year, conditional on still being at risk. The lagged predictor structure
+ensures that age band and capacity are measured before the observed event rather
+than on the event row itself.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports power generation in
 fiscal year \(t\), conditional on still being in the at-risk set \(R_{it}=1\).
@@ -223,19 +228,20 @@ $$
 + \beta_2 I(\text{Age}_{i,t-1}=20\text{-}30)
 + \beta_3 I(\text{Age}_{i,t-1}\geq 30)
 + \beta_4 \text{Capacity100}_{i,t-1}
-+ \gamma_t + \delta_p
++ \gamma_t
 \right].
 $$
 
 Here, \(i\) indexes facilities, \(t\) indexes fiscal years, and \(I(\cdot)\) is
 an indicator equal to 1 when the stated condition is true. The omitted age group
-is 0-10 years. \(\gamma_t\) absorbs common fiscal-year differences,
-\(\delta_p\) absorbs prefecture-level context, and \(\text{Capacity100}\)
-measures design capacity in 100 tonnes per day (t/day) units. Table 2 reports
-average marginal effects (AMEs) in percentage points (pp), not log-odds
-coefficients. A value of -1.82 pp therefore means that the annual probability of
-first reporting generation is 1.82 percentage points lower than the 0-10 year
-reference group, conditional on the model covariates.
+is 0-10 years. \(\gamma_t\) absorbs common fiscal-year differences, and
+\(\text{Capacity100}\) measures design capacity in 100 tonnes per day (t/day)
+units. Table 2 reports average marginal effects (AMEs) in percentage points
+(pp), not log-odds coefficients. A value of -1.67 pp therefore means that the
+annual probability of first reporting generation is 1.67 percentage points lower
+than the 0-10 year reference group, conditional on the model covariates. The
+prefecture fixed-effects variant is reported in the supplement as a sensitivity
+check rather than as the primary estimate.
 
 The second frame is the canonical generator frame. It contains operating
 facilities with positive throughput and positive power output, after standard
@@ -383,13 +389,14 @@ The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
 The percentages below describe changes in the annual probability of first
 reporting generation, not changes in engineering efficiency. Relative to 0-10
-year facilities, plants aged 10-20 years are about 1.82 percentage points less
+year facilities, plants aged 10-20 years are about 1.67 percentage points less
 likely to record transition in the next fiscal year. Plants aged 20-30 years are
-about 2.31 percentage points less likely, and plants aged 30 years or more are
-about 1.59 percentage points less likely. Each additional 100 t/day of prior-year
-design capacity raises annual transition probability by about 0.40 percentage
+about 1.94 percentage points less likely, and plants aged 30 years or more are
+about 1.24 percentage points less likely. Each additional 100 t/day of prior-year
+design capacity raises annual transition probability by about 0.45 percentage
 points. The sign pattern is stable in the alternative event-model checks reported
-in the supplement, including the broader previous-observed-coded-row sensitivity.
+in the supplement, including the saturated year-plus-prefecture fixed-effects
+model and the broader previous-observed-coded-row sensitivity.
 
 These effects should be read within the coded at-risk frame, not as a model of
 all modernization activity in the Japanese fleet. Even within that narrower
@@ -427,21 +434,22 @@ is selective from the start.
 
 | Variable | Average marginal effect (pp) | Standard error (pp) |
 |:--|--:|--:|
-| Prior-year age 10-20 years (versus 0-10) | -1.82 | 0.29 |
-| Prior-year age 20-30 years (versus 0-10) | -2.31 | 0.51 |
-| Prior-year age 30+ years (versus 0-10) | -1.59 | 0.43 |
-| Prior-year capacity (per 100 t/day) | 0.40 | 0.12 |
+| Prior-year age 10-20 years (versus 0-10) | -1.67 | 0.25 |
+| Prior-year age 20-30 years (versus 0-10) | -1.94 | 0.39 |
+| Prior-year age 30+ years (versus 0-10) | -1.24 | 0.38 |
+| Prior-year capacity (per 100 t/day) | 0.45 | 0.15 |
 
 | Model summary | Value |
 |:--|--:|
 | Observations | 10,823 |
 | Facilities | 1,911 |
 | First-adoption events | 98 |
-| Pseudo-R-squared | 0.2341 |
+| Pseudo-R-squared | 0.1829 |
 
 *Note: entries are average marginal effects in percentage points (pp) from the
-main exact one-fiscal-year lagged logit hazard with year and prefecture fixed
-effects and facility-clustered standard errors.*
+main exact one-fiscal-year lagged logit hazard with year fixed effects and
+facility-clustered standard errors. The saturated year-plus-prefecture
+fixed-effects model is retained as sensitivity evidence.*
 
 ### 4.2 Electricity recovery within generation is strongly structured
 

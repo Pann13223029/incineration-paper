@@ -134,7 +134,11 @@ def frame_bundle(panel: pd.DataFrame) -> dict[str, pd.DataFrame]:
 
 def run_hazard_summary(adoption_model: pd.DataFrame) -> dict[str, Any]:
     """Fit the main adoption hazard and return reported AMEs in percentage points."""
-    x, y = adoption_mod.build_design_matrix(adoption_model)
+    x, y = adoption_mod.build_design_matrix(
+        adoption_model,
+        include_year_fe=True,
+        include_pref_fe=False,
+    )
     model = adoption_mod.fit_logit_hazard(x, y, adoption_model["analysis_facility_id"])
     ame = adoption_mod.compute_logit_average_marginal_effects(model)
 

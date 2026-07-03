@@ -61,15 +61,15 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 | Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.82 | 0.29 | -1.79 | 0.29 |
-| Prior-year age 20-30 yrs | -2.31 | 0.51 | -2.19 | 0.50 |
-| Prior-year age 30+ yrs | -1.59 | 0.43 | -1.52 | 0.42 |
-| Prior-year capacity per 100 t/day | 0.40 | 0.12 | 0.42 | 0.13 |
+| Prior-year age 10-20 yrs | -1.67 | 0.25 | -1.66 | 0.25 |
+| Prior-year age 20-30 yrs | -1.94 | 0.39 | -1.89 | 0.39 |
+| Prior-year age 30+ yrs | -1.24 | 0.38 | -1.22 | 0.39 |
+| Prior-year capacity per 100 t/day | 0.45 | 0.15 | 0.46 | 0.16 |
 
 | ID rule | Observations | Facilities | Events | Pseudo-R2 |
 |:--|--:|--:|--:|--:|
-| Official code | 10,823 | 1,911 | 98 | 0.2341 |
-| Composite sensitivity | 10,850 | 1,931 | 99 | 0.2265 |
+| Official code | 10,823 | 1,911 | 98 | 0.1829 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1777 |
 
 ## Composite-ID Efficiency Sensitivity
 
