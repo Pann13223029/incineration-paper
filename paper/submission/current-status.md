@@ -9,7 +9,8 @@ This paper workspace is a private side project derived from the defended thesis 
 | Private GitHub repo | `https://github.com/Pann13223029/incineration-paper` |
 | Frozen baseline tag | `wm-near-submission-20260421` |
 | Target journal track | `Waste Management` |
-| Manuscript | Near-submission draft |
+| Manuscript | Professor-review-ready near-submission draft |
+| Current review mode | Professor comprehension first; peer-review-safe wording preserved |
 | Main figures | 3 |
 | Main-text tables | 4 formal tables, plus 2 review-facing bridge maps |
 | Supplement | Present and updated with data-quality, identifier, and event-timing caveats |
@@ -30,12 +31,16 @@ The current repo includes:
   main manuscript
 - review-facing comparator-adaptation and method-to-RQ bridge maps in the
   main manuscript
+- explicit two-margin contribution wording clarifying that the novelty is not
+  simply that age and scale matter, but that entry and post-entry performance
+  show distinct fleet constraints
 - reader-facing regression guide explaining AMEs, log coefficients, fixed
   effects, random effects, and clustered standard errors
 - supervisor-facing comparator and method-lineage packet at
   `paper/notes/professor-comparator-method-lineage.md`
 - explicit facility-clustered standard-error language for the efficiency models
 - safer policy wording around asset-renewal screening and capital-side triage
+- planning interpretation framed as triage rather than intervention ranking
 - synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`
 - supplement language documenting the sensitivity checks, inclusion audit, and event-timing caveat
 - claim verification passing locally and in GitHub Actions
@@ -45,6 +50,8 @@ The current repo includes:
 
 - resuming paper work without rebuilding the structure
 - explaining the article version of the thesis contribution
+- giving a professor the methodological foundation and comparator lineage
+  without making the manuscript sound like a private supervision note
 - preserving a stable private paper track after thesis completion
 - keeping reviewer-sensitive caveats visible before submission
 - preventing older, stronger renewal wording from being accidentally revived in future edits
@@ -86,7 +93,9 @@ If the edit is purely stylistic and does not touch evidence or claims, `analysis
 
 ## Next Real Decisions
 
-1. Whether to do a final human editorial pass for readability and journal tone.
-2. Whether to expand or compress the supplement for the actual target journal.
-3. Whether to revise the AI disclosure statement for the actual submission context.
-4. Whether to start a true journal-submission workflow from this private baseline.
+1. Whether the professor agrees that the two-margin diagnostic is the right
+   central contribution.
+2. Whether to do a final human editorial pass for readability and journal tone.
+3. Whether to expand or compress the supplement for the actual target journal.
+4. Whether to revise the AI disclosure statement for the actual submission context.
+5. Whether to start a true journal-submission workflow from this private baseline.
