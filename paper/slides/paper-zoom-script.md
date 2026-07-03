@@ -189,7 +189,7 @@ If the audience challenges the obviousness of the result, use this sentence: the
 
 The pathway audit helps avoid overclaiming. This is a manual or rule-based check of what kind of transition each first-entry event seems to represent.
 
-Eighty-two observed first-entry events look reset- or rebuild-like. Thirty-eight look consistent with continuity or in-place upgrade. Twenty are placeholder or forward-dated entries.
+Fifty observed first-entry events are reset- or rebuild-like adjacent-year cases. Thirty-six look consistent with continuity or in-place upgrade. Twelve are placeholder or forward-dated entries, 42 are timing-ambiguous non-adjacent coded-row events, and one remains unresolved.
 
 The safe interpretation is that capital-side modernization is present, but the paper does not prove replacement is the only pathway. In simpler terms: many cases look like major renewal, but some may be upgrades of existing plants.
 

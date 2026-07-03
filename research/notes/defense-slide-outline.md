@@ -85,24 +85,25 @@ Use this as a speaking outline, not as a content dump. Each slide should have on
 
 ## Slide 4. Pathway audit and calibration
 
-**Title:** The observed modernization wave is mostly capital-reset-like
+**Title:** The observed pathway audit is mixed but capital-intensive
 
 **Core message:** The event-level audit strengthens the policy interpretation without pretending to identify one unique mechanism.
 
 **Keep on slide**
 
-- Reset/rebuild-like: `82`
-- Continuity/in-place-upgrade-like: `38`
-- Forward-dated/placeholder: `20`
+- Reset/rebuild-like adjacent-year: `50`
+- Continuity/in-place-upgrade adjacent-year: `36`
+- Forward-dated/placeholder: `12`
+- Timing-ambiguous non-adjacent: `42`
 - Unresolved: `1`
 
 **Visual**
 
-- One stacked bar or four-category bar chart using [adoption_pathway_audit.csv](/Users/openclaw/incineration-thesis/output/adoption_pathway_audit.csv:1)
+- One stacked bar or multi-category bar chart using [adoption_pathway_audit.csv](/Users/openclaw/incineration-paper/output/adoption_pathway_audit.csv:1)
 
 **Say aloud**
 
-- This supports “capital-side modernization is empirically prominent.”
+- This supports “capital-side modernization is visible in the observed transition wave.”
 - It does **not** justify “replacement uniquely identified” or “retrofit never happens.”
 
 ---

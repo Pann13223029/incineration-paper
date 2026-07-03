@@ -331,9 +331,11 @@ It is that I show, with a reproducible two-part design, where transition is actu
 
 <div class="note-card">
   <ul>
-    <li>Reset/rebuild-like: `82`</li>
-    <li>Continuity/in-place upgrade: `38`</li>
-    <li>Forward-dated/placeholder: `20`</li>
+    <li>Reset/rebuild-like adjacent-year: `50`</li>
+    <li>Continuity/in-place upgrade adjacent-year: `36`</li>
+    <li>Forward-dated/placeholder: `12`</li>
+    <li>Timing-ambiguous non-adjacent: `42`</li>
+    <li>Unresolved: `1`</li>
   </ul>
 </div>
 

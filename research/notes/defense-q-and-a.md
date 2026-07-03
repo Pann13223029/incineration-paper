@@ -48,7 +48,7 @@ No. By itself it is descriptive. What the thesis argues is that the low within-t
 
 ### 9. Do you prove that replacement is the dominant mechanism?
 
-No. The pathway audit is rule-based and conservative. It shows that the largest observed bucket in the panel is reset/rebuild-like (82 of 141 events), with 38 continuity-type upgrades and 20 unresolved forward-dated or placeholder entries. That supports "capital-side modernization is empirically prominent," not "replacement uniquely identified."
+No. The pathway audit is rule-based and conservative. In the current paper-facing split, 50 events are reset/rebuild-like adjacent-year cases, 36 are continuity-type adjacent-year upgrades, 12 are forward-dated or placeholder entries, 42 are timing-ambiguous non-adjacent coded-row events, and 1 is unresolved. That supports "capital-intensive pathways are visible," not "replacement is uniquely identified."
 
 ### 10. Then what exactly does the pathway audit add?
 
@@ -56,7 +56,7 @@ It prevents the policy section from outrunning the data. Without it, the adoptio
 
 ### 11. So can retrofit still matter?
 
-Yes. The thesis explicitly leaves room for selective retrofit and in-place upgrading, and the audit contains 38 continuity-type events consistent with that. The defended claim is comparative: retrofit exists, but the observed transition wave is not dominated by diffuse late-life conversion of old small plants.
+Yes. The thesis explicitly leaves room for selective retrofit and in-place upgrading, and the current paper-facing audit contains 36 continuity-type adjacent-year events consistent with that. The defended claim is comparative: retrofit exists, but the observed transition wave is not dominated by diffuse late-life conversion of old small plants.
 
 ---
 

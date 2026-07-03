@@ -145,33 +145,27 @@ scale (Cui et al., 2026; Liu et al., 2025; Han et al., 2025). Those studies
 help define the intensive-margin question. They do not directly answer which
 non-generating facilities enter generation in the first place.
 
-The present paper therefore adapts those comparator papers at the level of
-research logic, not by copying their full technical design. From Cui et al.
-(2026), the paper takes the idea that waste-incineration facilities form a
-hierarchy rather than a set of interchangeable plants; it does not take the
-optimization model or claim to rank Japanese plants on the same technical
-frontier. From Liu et al. (2025), the paper takes the warning that waste-energy
-systems should be judged by effectiveness rather than expansion alone; it adapts
-that warning into a split between entry into generation and performance after
-entry. From Han et al. (2025), the paper takes the broader resource-recovery
-framing, while leaving pollutant-control technology outside the empirical design
-because the Japanese administrative panel does not contain comparable
-plant-level emissions-control variables. From Chen et al. (2012) and Yeh
-(2020), the paper takes the facility-level performance orientation; it does not
-use data envelopment analysis because the goal is not to estimate an efficiency
-frontier, but to make the entry/performance split visible in a national facility
-panel. From Grosso et al. (2010) and Münster and Meibom (2010), the paper takes
-the idea that energy recovery should be interpreted within a wider energy-system
-context; it adapts that idea through electricity recovered per tonne and
-grid-emission-factor controls rather than a full energy-system model.
+The present paper therefore uses those comparator papers as a method-positioning
+map rather than as templates to copy. The table below makes the adaptation logic
+explicit for supervisor review.
+
+**Comparator-adaptation map for professor review**
+
+| Source family | Borrowed logic | Japan-specific adaptation | Not claimed here |
+|:--|:--|:--|:--|
+| Cui et al. (2026) | Incinerators form a performance hierarchy, not a set of interchangeable plants | The Japan panel is read through facility heterogeneity and persistent hierarchy | No optimization frontier or ranking of Japanese plants on the same technical frontier |
+| Liu et al. (2025) | Waste-energy systems should be judged by effectiveness, not expansion alone | Effectiveness is split into entry into generation and performance after entry | No China-style waste-energy-carbon development model |
+| Han et al. (2025) | Resource recovery and sustainability depend on upgrade pathways, not incineration alone | The paper keeps resource-recovery framing while using variables available in the Japanese administrative panel | No pollutant-control technology model because comparable plant-level variables are unavailable |
+| Chen et al. (2012) and Yeh (2020) | Facility-level incinerator performance can be compared empirically after operation begins | The generator frame models electricity recovered per tonne across identifiable plants | No data envelopment analysis frontier or electricity-revenue inefficiency model |
+| Grosso et al. (2010) and Münster and Meibom (2010) | Energy recovery should be interpreted in a wider energy-system context | The paper uses MWh/t and a grid-emission-factor control as applied performance context | No full R1 efficiency calculation or energy-system optimization model |
 
 This matters for interpretation because the paper is not trying to be a weaker
-version of any one comparator. Its foundation is instead a deliberate
-combination: facility heterogeneity from the high-profile incineration
-literature, transition timing from event-history methods, and conditional
-performance comparison from panel analysis. The originality claim is modest but
-clear: applying that combination to Japan shows why non-generators and operating
-generators should be read as two linked but different modernization margins.
+version of any one comparator. Its foundation is a deliberate combination:
+facility heterogeneity from the high-profile incineration literature, transition
+timing from event-history methods, and conditional performance comparison from
+panel analysis. The originality claim is modest but clear: applying that
+combination to Japan shows why non-generators and operating generators should be
+read as two linked but different modernization margins.
 
 The lock-in literature adds a different expectation. Infrastructure performance
 may be shaped by durable design choices, inherited scale, and institutional
@@ -227,12 +221,25 @@ interpretation is adequate. This makes the framework similar in spirit to
 plant-level optimization and performance papers, but distinct in its
 Japan-specific two-margin diagnostic focus.
 
+**Method bridge from research questions to models**
+
+| Research question | Empirical frame | Main model | What it can show | What it cannot show |
+|:--|:--|:--|:--|:--|
+| RQ1: entry | Coded facilities first observed without generation | Exact one-fiscal-year lagged logit hazard with year fixed effects | Which prior-year age and capacity profiles are associated with first reporting generation | A causal retrofit effect, a full capital-history mechanism, or unrestricted fleet-wide modernization |
+| RQ2: generator performance | Identifiable operating generators with positive throughput and power output | Logged MWh/t panel regressions using pooled, year-FE, RE, and year-FE + RE specifications | Whether electricity recovered per tonne is structured by age, scale, utilization, heating value, and common year conditions | Full thermodynamic efficiency or the causal effect of changing age, scale, utilization, or technology |
+| RQ3: synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
+
 The first frame is the coded adoption frame. It includes facilities first
 observed without power generation and follows them until they either record
 observed transition into generation or remain non-generating in the panel
 window. After excluding left-censored facilities already generating in their
 first observed year, the adoption risk set contains 13,770 facility-years across
 2,035 facilities, with 141 observed first-adoption events.
+That 141-event count is the descriptive adoption universe used for event-rate
+summaries and the pathway audit. The main hazard model below uses a stricter
+exact one-fiscal-year lagged subset with 98 retained events; the 42
+timing-ambiguous non-adjacent events and 1 unresolved event remain in pathway
+and sensitivity evidence rather than being forced into the headline hazard.
 
 In practical terms, the adoption model asks whether a facility that was still
 non-generating in one year first reports generation in the following fiscal
@@ -361,44 +368,22 @@ from the source panel.
 
 The two layers belong in one paper because they answer sequential parts of the
 same modernization problem. The adoption layer identifies which facilities
-appear to enter the generating regime. The electricity-recovery layer identifies whether
-large performance gaps remain once facilities are already inside that regime.
-Without the first layer, the paper would reduce transition to generator
+appear to enter the generating regime. The electricity-recovery layer identifies
+whether large performance gaps remain once facilities are already inside that
+regime. Without the first layer, the paper would reduce transition to generator
 performance alone. Without the second, it would say who enters generation but
-not whether major electricity-recovery differences remain inside the generating segment.
-The two samples are linked but non-identical, so they should not be read as one
-causal pathway. They are instead the extensive-margin gate and the
-conditional-performance layer of the same modernization problem.
+not whether major electricity-recovery differences remain inside the generating
+segment.
 
-This linked design also clarifies what the paper is not trying to do. It is not
-estimating a single structural law of fleet modernization, and it is not asking
-whether one estimator dominates all others in abstract econometric terms.
-Instead, it asks what can be learned when a municipal fleet is partitioned into
-the margin where generation first appears and the margin where generating plants
-continue to differ. That framing matters for interpretation. If the extensive
-margin looks selective while the intensive margin remains hierarchical, then the
-relevant practical conclusion is not that the fleet is uniformly lagging. It is
-that different parts of the fleet face different modernization tasks.
-
-The main identification limits are explicit. The design is a diagnostic fleet
-decomposition, not a policy-effect estimator. In the adoption layer, the paper
-models observed transition within the coded risk set, not unrestricted
-fleet-wide modernization. In the electricity-recovery layer, age is closely tied
-to time and within-facility movement is limited, so the defended interpretation
-is one of structured conditional association rather than strict causal
-identification. The estimates describe conditional associations within the coded
-adoption frame and canonical identifiable generator frame; they do not identify
-physical retrofit mechanisms, policy effects, or the causal effect of changing
-age, scale, utilization, or technology.
-
-The paper also does not claim that the low within-facility variance ratio
-resolves all fixed-effects concerns. It uses that variance structure to explain
-why cross-facility descriptive comparison remains substantively useful for the
-question at hand. This is where the paper differs from a methods-first estimator
-comparison. The question is not whether fixed effects can be forced in, but
-whether cross-facility description remains informative under explicit sample
-limits. The answer defended here is yes: the variance structure and stable sign
-pattern make the descriptive models useful, but not structural.
+The design is diagnostic rather than structural. It models observed transition
+within the coded risk set, not unrestricted fleet-wide modernization, and it
+models conditional generator performance within the canonical identifiable
+generator frame, not a causal effect of changing age, scale, utilization, or
+technology. The low within-facility variance ratio is used only to explain why
+cross-facility descriptive comparison remains informative; it does not resolve
+all fixed-effects concerns or turn the random-effects models into causal
+estimates. The defended claim is therefore narrower: under explicit sample
+limits, the two frames reveal different bottlenecks in the same fleet.
 
 **Table 1. Linked analytical framework**
 
@@ -426,6 +411,10 @@ observed first adoptions occur in FY2013-FY2019. That clustering should be read
 as an observed administrative transition pattern rather than as a separately
 identified policy shock or reporting change; the main hazard includes year fixed
 effects.
+The descriptive event-rate and pathway statements use all 141 observed
+first-adoption events in the coded adoption frame. Table 2 reports the stricter
+exact-year hazard model, which retains 98 events after requiring an exact
+one-fiscal-year lag and complete model covariates.
 
 The discrete-time logit hazard summarizes the same pattern in average marginal
 effects.
@@ -491,7 +480,9 @@ is selective from the start.
 *Note: entries are average marginal effects in percentage points (pp) from the
 main exact one-fiscal-year lagged logit hazard with year fixed effects and
 facility-clustered standard errors. The saturated year-plus-prefecture
-fixed-effects model is retained as sensitivity evidence.*
+fixed-effects model is retained as sensitivity evidence. The 98 events in this
+table are the exact-year hazard subset; the full descriptive adoption audit
+contains 141 observed first-adoption events.*
 
 ### 4.2 Electricity recovery within generation is strongly structured
 

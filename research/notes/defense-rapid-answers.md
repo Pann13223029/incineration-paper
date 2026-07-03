@@ -42,7 +42,7 @@ No. The pathway audit shows reset/rebuild-like events are the largest observed b
 
 ### So can retrofit still matter?
 
-Yes. The audit contains 38 continuity-type events consistent with in-place upgrading. The claim is comparative, not absolute: retrofit exists, but it is not the largest observed pattern in this panel.
+Yes. The current paper-facing audit contains 36 continuity-type adjacent-year events consistent with in-place upgrading. The claim is comparative, not absolute: retrofit exists, but the observed transition wave is not broad diffuse late-life catch-up.
 
 ### Are you saying operations do not matter?
 

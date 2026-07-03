@@ -11,7 +11,7 @@ This paper workspace is a private side project derived from the defended thesis 
 | Target journal track | `Waste Management` |
 | Manuscript | Near-submission draft |
 | Main figures | 3 |
-| Main-text tables | 3 |
+| Main-text tables | 4 formal tables, plus 2 professor-facing bridge maps |
 | Supplement | Present and updated with data-quality, identifier, and event-timing caveats |
 | Title page, highlights, cover letter | Present |
 | Evidence sync | Managed by `npm run paper:sync` |
@@ -27,6 +27,8 @@ The current repo includes:
 - event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
 - quantified FY2024 power-generation share of 41.1% in the abstract and introduction
 - explicit adoption-hazard and electricity-recovery regression equations in the
+  main manuscript
+- professor-facing comparator-adaptation and method-to-RQ bridge maps in the
   main manuscript
 - reader-facing regression guide explaining AMEs, log coefficients, fixed
   effects, random effects, and clustered standard errors

@@ -41,13 +41,13 @@
 - Each additional 100 t/day of prior-year design capacity raises annual transition probability by about 0.5 percentage points.
 - The coded panel therefore does not show widespread late conversion among old small plants.
 
-### 2. The observed modernization pathway is usually capital-reset-like, but not exclusively so
+### 2. The observed modernization pathway is mixed, with visible capital-reset-like cases
 
-- A conservative event-level audit classifies 82 of 141 observed transitions as reset/rebuild-like.
-- 38 transitions preserve continuity consistent with in-place upgrading.
-- 20 entries are forward-dated or placeholder cases and are left unresolved rather than forced into a stronger mechanism claim.
+- A conservative event-level audit classifies 50 observed transitions as reset/rebuild-like adjacent-year cases.
+- 36 transitions preserve continuity consistent with in-place upgrading.
+- 12 entries are forward-dated or placeholder cases, 42 are timing-ambiguous non-adjacent coded-row events, and 1 remains unresolved rather than being forced into a stronger mechanism claim.
 
-This supports a calibrated claim: capital-side modernization is empirically prominent in the observed transition wave, but the thesis does **not** claim that replacement is the only pathway or that retrofit never occurs.
+This supports a calibrated claim: capital-side modernization is visible in the observed transition wave, but the thesis does **not** claim that replacement is the only pathway or that retrofit never occurs.
 
 ### 3. Conditional on generation, efficiency is strongly structured by age, scale, and utilization
 

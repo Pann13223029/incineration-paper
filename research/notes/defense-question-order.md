@@ -42,11 +42,11 @@ Priority sequence for viva or committee prep. Rehearse from the top down. The go
 
 ### 6. Does the pathway audit prove replacement?
 
-**Target answer:** No. It shows that reset/rebuild-like events are the largest observed bucket in the panel, but it does not cleanly distinguish replacement, new build, and major refurbishment inside that bucket.
+**Target answer:** No. In the current paper-facing split, reset/rebuild-like adjacent-year events are visible, but timing-ambiguous non-adjacent events are kept separate. The audit does not cleanly distinguish replacement, new build, and major refurbishment.
 
 ### 7. So can retrofit still matter?
 
-**Target answer:** Yes. The audit contains 38 continuity-type transitions consistent with in-place upgrading. The claim is comparative, not absolute: retrofit exists, but the observed transition wave is not dominated by diffuse late-life conversion of old small plants.
+**Target answer:** Yes. The current paper-facing audit contains 36 continuity-type adjacent-year transitions consistent with in-place upgrading. The claim is comparative, not absolute: retrofit exists, but the observed transition wave is not dominated by diffuse late-life conversion of old small plants.
 
 ### 8. Are you saying operations do not matter?
 

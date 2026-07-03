@@ -56,20 +56,20 @@ def add_panel(
     rows: list[tuple[str, str]],
 ) -> None:
     ax.add_patch(Rectangle((x, y), w, h, facecolor="white", edgecolor=RULE, linewidth=1.0))
-    header_h = 0.075
+    header_h = 0.082
     ax.add_patch(Rectangle((x, y + h - header_h), w, header_h, facecolor=HEADER, edgecolor=RULE, linewidth=1.0))
-    add_text(ax, x + 0.018, y + h - 0.022, title, size=11.3, weight="bold")
+    add_text(ax, x + 0.018, y + h - 0.024, title, size=12.2, weight="bold")
 
     body_h = h - header_h
     row_h = body_h / len(rows)
-    label_w = 0.105
+    label_w = 0.112
     for idx, (label, body) in enumerate(rows):
         row_top = y + h - header_h - idx * row_h
         row_bottom = row_top - row_h
         if idx:
             ax.plot([x, x + w], [row_top, row_top], color="#c3c8ce", linewidth=0.65)
-        add_text(ax, x + 0.018, row_top - 0.018, label, size=8.8, weight="bold", color=MUTED)
-        add_text(ax, x + label_w, row_top - 0.018, body, size=8.6)
+        add_text(ax, x + 0.018, row_top - 0.02, label, size=9.5, weight="bold", color=MUTED)
+        add_text(ax, x + label_w, row_top - 0.02, body, size=9.4)
         if idx == len(rows) - 1:
             ax.plot([x, x + w], [row_bottom, row_bottom], color=RULE, linewidth=1.0)
 
@@ -77,13 +77,13 @@ def add_panel(
 def add_source_panel(ax) -> None:
     x, y, w, h = 0.12, 0.81, 0.76, 0.125
     ax.add_patch(Rectangle((x, y), w, h, facecolor=FILL, edgecolor=RULE, linewidth=1.0))
-    add_text(ax, x + 0.025, y + h - 0.03, "Source panel", size=11.5, weight="bold")
+    add_text(ax, x + 0.025, y + h - 0.03, "Source panel", size=12.2, weight="bold")
     add_text(
         ax,
         x + 0.19,
         y + h - 0.03,
         "Ministry of the Environment General Waste Treatment Survey\nFY2005-FY2024 | 23,599 facility-year rows",
-        size=9.5,
+        size=10.2,
     )
 
 
@@ -126,23 +126,23 @@ def build() -> None:
         0.29,
         0.42,
         0.44,
-        "A. Adoption frame: entry margin",
+        "A. Entry frame",
         [
             (
-                "Sample",
-                "Coded at-risk facilities first observed\nwithout power generation\n13,770 facility-years | 2,035 facilities | 141 events",
+                "Question",
+                "Who first reports\npower generation?",
             ),
             (
-                "Estimand",
-                "First observed reporting of power\ngeneration in the following fiscal year",
+                "Sample",
+                "At-risk non-generators\n13,770 rows | 2,035 facilities | 141 events",
             ),
             (
                 "Model",
-                "Lagged discrete-time logit hazard\nwith year and prefecture fixed effects",
+                "Exact-year lagged logit\n10,823 rows | 98 retained events",
             ),
             (
-                "Role",
-                "Identifies selective observed entry,\nnot a causal retrofit mechanism",
+                "Claim",
+                "Selective entry,\nnot a causal retrofit effect",
             ),
         ],
     )
@@ -153,37 +153,37 @@ def build() -> None:
         0.29,
         0.42,
         0.44,
-        "B. Generator frame: performance margin",
+        "B. Generator frame",
         [
             (
-                "Sample",
-                "Operating generators with positive\nthroughput and power output\n5,683 observations | 1,016 facilities",
+                "Question",
+                "How much electricity\nis recovered per tonne?",
             ),
             (
-                "Outcome",
-                "Electricity recovered per tonne\nclipped and logged MWh/t",
+                "Sample",
+                "Identifiable operating generators\n5,683 rows | 1,016 facilities",
             ),
             (
                 "Model",
-                "Pooled, year-FE, and random-effects\npanel specifications",
+                "Logged MWh/t panel regressions\npooled, year-FE, RE, year-FE + RE",
             ),
             (
-                "Role",
-                "Describes structured performance\nhierarchy within generators",
+                "Claim",
+                "Structured performance\nhierarchy within generators",
             ),
         ],
     )
 
     x, y, w, h = 0.15, 0.09, 0.70, 0.12
     ax.add_patch(Rectangle((x, y), w, h, facecolor=FILL, edgecolor=RULE, linewidth=1.0))
-    add_text(ax, x + 0.025, y + h - 0.028, "Synthesis", size=11.2, weight="bold")
+    add_text(ax, x + 0.025, y + h - 0.03, "Synthesis", size=12.0, weight="bold")
     add_text(
         ax,
         x + 0.16,
         y + h - 0.026,
-        "The same national fleet is interpreted through two linked but non-identical margins;\n"
-        "one average-fleet estimate would conflate entry with post-entry performance.",
-        size=9.0,
+        "One national fleet, two linked margins.\n"
+        "An average-fleet view would conflate entry with post-entry performance.",
+        size=9.8,
     )
 
     fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight")

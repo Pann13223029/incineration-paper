@@ -138,6 +138,7 @@ These lines are intentionally present because `code/scripts/08_verify_claims.py`
 - Full panel: (23,599 observations, 2,948 unique facilities, FY2005–FY2024)
 - Adoption risk set: (13,770 facility-years, 2,035 facilities, 141 observed first-adoption events)
 - Main adoption model: 10,823 facility-years across 1,911 facilities and 98 events
+- Count distinction: 141 is the descriptive adoption universe for event-rate summaries and pathway auditing; 98 is the stricter exact one-fiscal-year lagged hazard subset.
 - Adoption age pattern: facilities older than 10 years are 1.2–1.9 percentage points less likely to transition into generation.
 - Adoption capacity pattern: prior-year capacity raises transition probability by about 0.45 percentage points per 100 t/day.
 - Pathway audit: 50 observed transitions as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved.

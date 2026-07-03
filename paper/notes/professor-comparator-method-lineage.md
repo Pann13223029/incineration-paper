@@ -82,6 +82,19 @@ what research logic was adapted, and why the Japan design is similar in spirit
 but not a copy. If later targeting a journal, the comparator-adaptation prose can
 be compressed again after the supervisor has confirmed the framing.
 
+The main manuscript now includes two professor-facing bridge maps:
+
+1. A comparator-adaptation map showing what is borrowed from Cui et al. (2026),
+   Liu et al. (2025), Han et al. (2025), Chen et al. (2012), Yeh (2020), Grosso
+   et al. (2010), and Münster and Meibom (2010), plus what the paper does not
+   claim.
+2. A method bridge linking RQ1, RQ2, and RQ3 to the exact-year adoption hazard,
+   generator-performance panel regressions, and two-margin synthesis.
+
+Those bridge maps are intentionally explanatory. They are meant to help the
+professor audit the intellectual foundation before any later journal-style
+compression.
+
 The paper does not copy one single paper. It combines three research families:
 
 1. Waste-to-energy performance and efficiency studies.
