@@ -145,6 +145,34 @@ scale (Cui et al., 2026; Liu et al., 2025; Han et al., 2025). Those studies
 help define the intensive-margin question. They do not directly answer which
 non-generating facilities enter generation in the first place.
 
+The present paper therefore adapts those comparator papers at the level of
+research logic, not by copying their full technical design. From Cui et al.
+(2026), the paper takes the idea that waste-incineration facilities form a
+hierarchy rather than a set of interchangeable plants; it does not take the
+optimization model or claim to rank Japanese plants on the same technical
+frontier. From Liu et al. (2025), the paper takes the warning that waste-energy
+systems should be judged by effectiveness rather than expansion alone; it adapts
+that warning into a split between entry into generation and performance after
+entry. From Han et al. (2025), the paper takes the broader resource-recovery
+framing, while leaving pollutant-control technology outside the empirical design
+because the Japanese administrative panel does not contain comparable
+plant-level emissions-control variables. From Chen et al. (2012) and Yeh
+(2020), the paper takes the facility-level performance orientation; it does not
+use data envelopment analysis because the goal is not to estimate an efficiency
+frontier, but to make the entry/performance split visible in a national facility
+panel. From Grosso et al. (2010) and Münster and Meibom (2010), the paper takes
+the idea that energy recovery should be interpreted within a wider energy-system
+context; it adapts that idea through electricity recovered per tonne and
+grid-emission-factor controls rather than a full energy-system model.
+
+This matters for interpretation because the paper is not trying to be a weaker
+version of any one comparator. Its foundation is instead a deliberate
+combination: facility heterogeneity from the high-profile incineration
+literature, transition timing from event-history methods, and conditional
+performance comparison from panel analysis. The originality claim is modest but
+clear: applying that combination to Japan shows why non-generators and operating
+generators should be read as two linked but different modernization margins.
+
 The lock-in literature adds a different expectation. Infrastructure performance
 may be shaped by durable design choices, inherited scale, and institutional
 arrangements rather than by frequent late-life reversals at mature facilities

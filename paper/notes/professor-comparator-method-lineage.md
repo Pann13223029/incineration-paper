@@ -73,6 +73,15 @@ was corrected to the Crossref title. No additional citation was needed for the
 new methods-positioning paragraph because it reuses already-cited method and
 facility-performance sources.
 
+## 2026-07-03 Professor-Facing Manuscript Orientation
+
+The current manuscript is intentionally allowed to be more explanatory than a
+compressed journal submission. The immediate goal is to help a professor see the
+foundation behind the paper: which high-profile and method papers inspired it,
+what research logic was adapted, and why the Japan design is similar in spirit
+but not a copy. If later targeting a journal, the comparator-adaptation prose can
+be compressed again after the supervisor has confirmed the framing.
+
 The paper does not copy one single paper. It combines three research families:
 
 1. Waste-to-energy performance and efficiency studies.
