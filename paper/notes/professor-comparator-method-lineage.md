@@ -1,6 +1,6 @@
 # Professor Comparator And Method-Lineage Packet
 
-Last updated: 2026-06-14
+Last updated: 2026-07-03
 
 ## Purpose
 
@@ -37,6 +37,41 @@ This strengthens the paper's integrity position. The paper is still inspired by
 high-profile facility-level waste-incineration papers, but its empirical claims
 now rest on a stricter Japan-specific administrative-panel design rather than a
 loose analogy to those papers.
+
+## 2026-07-03 Sparse-Event Adoption Specification Note
+
+A later methods pass tightened the main adoption model again. The exact-year
+frame has 98 retained first-adoption events. A saturated model with both fiscal
+year and prefecture fixed effects estimates 64 parameters, or 1.53 events per
+parameter. That model is now retained as sensitivity evidence rather than used
+as the primary estimate.
+
+The main manuscript now uses a more parsimonious exact-year logit hazard with
+fiscal-year fixed effects and facility-clustered standard errors as the primary
+adoption model. This specification estimates 18 parameters, or 5.44 events per
+parameter, while preserving annual transition timing. The professor-facing
+interpretation should therefore be:
+
+> The paper borrows established discrete-time event-history logic, but it keeps
+> the main adoption model parsimonious because the event count is modest. The
+> more saturated year-plus-prefecture model supports robustness of the sign
+> pattern, not the headline estimate.
+
+## 2026-07-03 Citation-Fit Check
+
+A citation-fit pass checked whether the main manuscript's method and comparator
+citations support the claims placed near them. The main local finding was that
+all core method claims have nearby references: Allison (1982) and Beck et al.
+(1998) support the discrete-time event-history layer, Chen et al. (2012) and
+Yeh (2020) support facility-level incinerator performance comparison, and
+Wooldridge (2010) supports the panel-regression framing.
+
+The recent high-profile comparator DOIs were also checked against Crossref:
+Cui et al. (2026), Liu et al. (2025), and Han et al. (2025) resolve to the
+expected Nature-family articles. The Münster and Meibom (2010) reference title
+was corrected to the Crossref title. No additional citation was needed for the
+new methods-positioning paragraph because it reuses already-cited method and
+facility-performance sources.
 
 The paper does not copy one single paper. It combines three research families:
 
@@ -144,7 +179,7 @@ analytical split.
 | Chen et al. (2012) | Journal of Environmental Management | Network DEA for Taiwan incinerators | Incinerators can be compared as multi-activity facilities | We use regression and panel structure, not DEA |
 | Yeh (2020) | Waste Management | Dynamic DEA/electricity revenue inefficiency | Electricity-related incinerator performance can be decomposed | We use MWh/t, not electricity revenue inefficiency |
 | Grosso et al. (2010) | Waste Management | Energy-recovery performance criteria | Energy recovery is a meaningful performance dimension | We use administrative MWh/t, not a full R1-style engineering efficiency standard |
-| Munster and Meibom (2010) | Waste Management | Energy-system consequences of waste-to-energy | WTE performance depends on energy-system context | We control for grid emissions but do not run an energy-system optimization model |
+| Münster and Meibom (2010) | Waste Management | Energy-system consequences of waste-to-energy | WTE performance depends on energy-system context | We control for grid emissions but do not run an energy-system optimization model |
 
 ### C. Closest Japan/System-Context Papers
 
@@ -1197,9 +1232,9 @@ Pann
   recovery from waste incineration, in the light of the new Waste Framework
   Directive. Waste Management, 30(7), 1238-1243.
   https://doi.org/10.1016/j.wasman.2010.02.036
-- Munster, M., and Meibom, P. (2010). Long-term affected energy products of
-  waste to energy, a consequential approach. Waste Management, 30(12),
-  2510-2519.
+- Münster, M., and Meibom, P. (2010). Long-term affected energy production of
+  waste to energy technologies identified by use of energy system analysis.
+  Waste Management, 30(12), 2510-2519.
   https://doi.org/10.1016/j.wasman.2010.04.015
 
 ### Japan Context

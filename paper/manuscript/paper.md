@@ -138,7 +138,7 @@ example, evaluate operating incinerators by decomposing waste-treatment,
 electricity-generation, or revenue performance within existing plants (Chen et
 al., 2012; Yeh, 2020). Other work focuses on energy-recovery criteria, plant
 scale, heat use, and the system consequences of different waste-to-energy
-configurations (Grosso et al., 2010; Munster & Meibom, 2010). Recent Chinese
+configurations (Grosso et al., 2010; Münster & Meibom, 2010). Recent Chinese
 plant-level work is also highly informative about performance differentials
 inside the generating segment and the effectiveness of upgrading strategies at
 scale (Cui et al., 2026; Liu et al., 2025; Han et al., 2025). Those studies
@@ -185,6 +185,20 @@ The two samples differ because the questions differ: non-generators reveal who
 enters electricity recovery, while generators reveal performance differences
 after entry.
 
+The design intentionally combines established empirical building blocks rather
+than inventing a new estimator. The adoption layer follows discrete-time
+event-history logic for a binary transition observed in annual administrative
+data (Allison, 1982; Beck et al., 1998). The generator layer follows
+facility-level performance studies that compare operating incinerators after
+entry, while using panel regressions to summarize persistent cross-facility
+structure (Chen et al., 2012; Yeh, 2020; Wooldridge, 2010). What is different
+here is the way those pieces are linked: the paper first models observed entry
+into generation, then separately models electricity recovered per tonne among
+identifiable generators, and only then asks whether a single average-fleet
+interpretation is adequate. This makes the framework similar in spirit to
+plant-level optimization and performance papers, but distinct in its
+Japan-specific two-margin diagnostic focus.
+
 The first frame is the coded adoption frame. It includes facilities first
 observed without power generation and follows them until they either record
 observed transition into generation or remain non-generating in the panel
@@ -201,9 +215,9 @@ year fixed effects and facility-clustered standard errors. A more saturated
 year-plus-prefecture fixed-effects model is retained as sensitivity evidence
 rather than used as the main specification because it would estimate 64
 parameters with 98 retained events, or 1.53 events per parameter. The primary
-year fixed-effects model estimates 18 parameters, or 5.44 events per parameter. The
-exact-year restriction is important because official
-facility codes are missing in FY2010-FY2012; broader previous-observed-coded-row
+year fixed-effects model estimates 18 parameters, or 5.44 events per parameter.
+The exact-year restriction is important because official facility codes are
+missing in FY2010-FY2012; broader previous-observed-coded-row
 estimates are also reported only as sensitivity evidence. This is an
 observed-transition model, not a complete structural model of all possible
 modernization pathways. The design follows grouped event-history logic: each
@@ -305,7 +319,7 @@ a bounded electricity-recovery metric because the empirical question is not
 boiler thermodynamics in isolation, but administrative performance in
 electricity recovered per tonne processed. That puts the paper closer to applied
 energy-recovery studies than to plant-level engineering optimization alone
-(Grosso et al., 2010; Munster & Meibom, 2010).
+(Grosso et al., 2010; Münster & Meibom, 2010).
 
 Two administrative-data checks are reported in the supplement. First, a small
 set of official facility codes appears more than once within the same fiscal
@@ -630,7 +644,7 @@ generates, but what kind of generator it is and how much improvement remains
 inside that segment. Waste-to-energy performance is judged against both an
 internal engineering standard and the emissions profile of the broader energy
 system, including the avoided-emissions logic built into carbon accounting
-(Astrup et al., 2009; Munster & Meibom, 2010). In Japan's current
+(Astrup et al., 2009; Münster & Meibom, 2010). In Japan's current
 decarbonization setting, where national inventories and scenario work track
 sectoral emissions and energy mix changes, the two-part design is useful
 because it keeps those questions separate (Greenhouse Gas Inventory Office of
@@ -776,8 +790,9 @@ Summary report FY2021*. Environmental Management Bureau, Ministry of the
 Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html
 (accessed 18 April 2026).
 
-Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste
-to energy, a consequential approach. *Waste Management*, *30*(12), 2510-2519.
+Münster, M., & Meibom, P. (2010). Long-term affected energy production of waste
+to energy technologies identified by use of energy system analysis.
+*Waste Management*, *30*(12), 2510-2519.
 https://doi.org/10.1016/j.wasman.2010.04.015
 
 Rausch, A. (2006). The Heisei Dai Gappei: A case study for understanding the
