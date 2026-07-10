@@ -12,7 +12,7 @@ Use this order if you are new to the repo:
 
 1. Read the active manuscript: [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
 2. Check the current status: [`paper/submission/current-status.md`](paper/submission/current-status.md).
-3. Check the claim discipline: [`paper/notes/claim-stack.md`](paper/notes/claim-stack.md).
+3. Check the claim discipline: [`paper/notes/positioning/claim-stack.md`](paper/notes/positioning/claim-stack.md).
 4. Check the evidence map: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
 5. Open the current PDF with the [browser-compatible viewer](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf).
 6. If the browser viewer is unavailable, [download the PDF directly from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) or read the [Markdown manuscript](paper/manuscript/paper.md).
@@ -21,7 +21,7 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 ## Current Evidence Anchors
 
-These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
+These facts are generated from the canonical pipeline and checked by `code/analysis/08_verify_claims.py`.
 
 The evidence base covers 23,599 rows and 2,948 coded facilities. The broad entry risk set contains 13,770 facility-years, 2,035 facilities, and 141 observed events; the exact-year model retains 10,823 rows, 1,911 facilities, and 98 events. 40 of those events have zero or missing prior-year throughput. A required active-conversion model therefore uses 9,215 rows, 1,663 facilities, and 58 events. Prior-year capacity is robust across the two frames (+0.45 and +0.44 percentage points per 100 t/day), while broad age effects of −1.41, −1.45, and −0.83 percentage points attenuate to −0.67, −0.56, and −0.29. The event is operationally meaningful: 135 of 141 entrants report positive output by the following year. The canonical generator frame contains 5,683 rows across 1,016 facilities. Its primary year- and technology-adjusted model reports −0.0329 for age/vintage, +0.1103 for capacity, and +0.7600 for utilization. Adjacent-year within-year ranks correlate at 0.9325 across 4,368 exact pairs. A 389-row post-entry trajectory shows entrants near the middle of the contemporaneous generator distribution on average, with represented events declining from 125 at event time zero to 71 at time three.
 
@@ -38,15 +38,16 @@ The evidence base covers 23,599 rows and 2,948 coded facilities. The broad entry
 
 ## Repository Logic
 
-![Paper conversion flow](docs/figures/readme_paper_flow.svg)
+![Repository layers](docs/figures/readme_paper_layers.svg)
 
-The repo has three layers:
+The repo has four ownership layers:
 
 | Layer | Role | Main paths |
 |:--|:--|:--|
-| Evidence core | Source data, processing, model outputs, and claim verification | [`data/`](data/), [`code/`](code/), [`output/`](output/) |
+| Evidence core | Source data, processing, model outputs, and claim verification | [`data/`](data/), [`code/analysis/`](code/analysis/), [`output/`](output/) |
 | Active paper layer | Manuscript, supplement, figures, submission assets, and paper-facing evidence snapshots | [`paper/`](paper/) |
-| Reference thesis layer | Defended thesis source and legacy supervision/defense materials | [`thesis/`](thesis/), [`research/`](research/) |
+| Publication tooling | Evidence synchronization, manuscript export, PDF builds, and presentation export | [`code/publishing/`](code/publishing/) |
+| Archived thesis layer | Defended thesis source, supervision materials, and historical automation | [`legacy/`](legacy/) |
 
 Do not make the manuscript a second source of empirical truth. Paper prose stays downstream of `output/*`.
 
@@ -59,6 +60,8 @@ Do not make the manuscript a second source of empirical truth. Paper prose stays
 | Claim synchronization status | [`output/claim_verification.md`](output/claim_verification.md) |
 | Claim-to-evidence bridge | [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
 | Active paper manuscript | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
+| Analysis implementation | [`code/analysis/`](code/analysis/) |
+| Publication and export implementation | [`code/publishing/`](code/publishing/) |
 | Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) · [Download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
 
 ## Reproducible Setup
@@ -86,6 +89,7 @@ Use the lightest workflow that matches the change.
 
 | Change type | Required action |
 |:--|:--|
+| Path, folder, or navigation change | Run `npm run repo:check`. |
 | Prose-only paper edit | Edit `paper/manuscript/paper.md`; rebuild artifacts if you need updated share files. |
 | Claim wording edit with current numbers | Run `npm run claims:verify`. |
 | Evidence or model change | Run `npm run analysis:rebuild`, then `npm run paper:sync`, then `npm run claims:verify`. |
@@ -95,6 +99,7 @@ Use the lightest workflow that matches the change.
 ## Commands
 
 ```bash
+npm run repo:check
 npm run paper:check
 npm run paper:sync
 npm run claims:verify
@@ -107,6 +112,7 @@ Command meanings:
 
 | Command | Meaning |
 |:--|:--|
+| `repo:check` | Validates required ownership paths, retired-path absence, and tracked Markdown links. |
 | `paper:check` | Confirms required paper evidence artifacts exist in `output/`. |
 | `paper:sync` | Copies current canonical evidence into `paper/evidence/current/`. |
 | `claims:verify` | Checks important claims and stale-pattern guards in active paper-facing repo docs. |
@@ -142,7 +148,7 @@ incineration-paper/
 |
 |-- paper/
 |   |-- manuscript/                    # active paper draft and LaTeX source
-|   |-- notes/                         # claim stack, paper budget, reviewer rubric
+|   |-- notes/                         # planning, positioning, and review workspaces
 |   |-- references/                    # citation plan and selected references
 |   |-- journals/                      # target-journal strategy
 |   |-- supplement/                    # supplement text and outline
@@ -151,12 +157,16 @@ incineration-paper/
 |   |-- submission/                    # local submission package artifacts
 |   +-- share/                         # tracked cross-device reading PDF
 |
-|-- code/                              # empirical and export pipeline
+|-- code/
+|   |-- analysis/                      # canonical empirical pipeline and verifier
+|   +-- publishing/                    # evidence sync, exports, PDF, and slides
 |-- data/                              # raw and processed data
 |-- output/                            # canonical generated artifacts
-|-- thesis/                            # defended thesis baseline
-|-- research/                          # legacy thesis review / defense / packet artifacts
 |-- docs/figures/                      # README-facing diagrams
+|-- legacy/
+|   |-- thesis/                        # defended thesis baseline
+|   |-- research/                      # historical review, defense, and packet assets
+|   +-- scripts/                       # historical thesis workflow automation
 |
 |-- README.md
 |-- ARCHITECTURE.md
@@ -170,4 +180,5 @@ incineration-paper/
 - `origin` is the active paper repo: `https://github.com/Pann13223029/incineration-paper.git`.
 - `thesis-origin` points back to the thesis baseline and should not receive paper commits.
 - Keep source-of-truth numbers in generated `output/*` files.
-- Update `README.md`, `ARCHITECTURE.md`, and `AGENTS.md` when workflow boundaries change.
+- Keep `legacy/` reference-only unless a task explicitly targets the defended thesis workflow.
+- Update `README.md`, `ARCHITECTURE.md`, `AGENTS.md`, `code/README.md`, and `paper/README.md` when workflow boundaries change.

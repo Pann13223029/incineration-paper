@@ -8,19 +8,19 @@ __pycache__/
 node_modules/
 npm-debug.log*
 
-# Thesis build artifacts
-thesis/*.aux
-thesis/*.log
-thesis/*.out
-thesis/*.pdf
-thesis/*.toc
-research/slides/dist/
+# Legacy thesis build artifacts
+legacy/thesis/*.aux
+legacy/thesis/*.log
+legacy/thesis/*.out
+legacy/thesis/*.pdf
+legacy/thesis/*.toc
+legacy/research/slides/dist/
 paper/slides/dist/
-research/packets/dist/
-research/packets/latest-supervisor-handoff
-research/checkpoints/dist/
-research/checkpoints/latest-sendable
-research/review-rounds/dist/
+legacy/research/packets/dist/
+legacy/research/packets/latest-supervisor-handoff
+legacy/research/checkpoints/dist/
+legacy/research/checkpoints/latest-sendable
+legacy/research/review-rounds/dist/
 output/fig01_establishing_shot.png
 output/fig02_heterogeneity_shot.png
 output/checkpoint_delta.md

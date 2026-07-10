@@ -62,7 +62,7 @@ The current repo includes:
   concerns about adoption events, random effects, uncoded rows, heating value,
   and planning implications
 - supervisor-facing comparator and method-lineage packet at
-  `paper/notes/professor-comparator-method-lineage.md`
+  `paper/notes/positioning/professor-comparator-method-lineage.md`
 - explicit facility-clustered standard-error language for the electricity-recovery models
 - safer policy wording around asset-renewal screening and capital-side triage
 - planning interpretation framed as triage rather than intervention ranking
@@ -105,7 +105,7 @@ Then review:
 2. `paper/supplement/supplement.md`
 3. `paper/submission/submission-checklist.md`
 4. `paper/references/selected-references.md`
-5. `paper/notes/professor-comparator-method-lineage.md`
+5. `paper/notes/positioning/professor-comparator-method-lineage.md`
 
 After editing, refresh artifacts:
 

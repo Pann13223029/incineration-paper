@@ -45,17 +45,20 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+      - name: Validate repository layout
+        run: npm run repo:check
+
       - name: Rebuild canonical analysis outputs
-        run: .venv/bin/python code/scripts/07_rebuild_analysis.py
+        run: .venv/bin/python code/analysis/07_rebuild_analysis.py
 
       - name: Refresh paper-facing evidence copies
         run: npm run paper:sync
 
       - name: Export cross-platform submission manuscript artifacts
-        run: python3 code/scripts/21_export_paper_submission.py --no-docx --no-pdf
+        run: python3 code/publishing/21_export_paper_submission.py --no-docx --no-pdf
 
       - name: Build LaTeX manuscript PDF
-        run: .venv/bin/python code/scripts/22_build_paper_latex.py
+        run: .venv/bin/python code/publishing/22_build_paper_latex.py
 
       - name: Ensure tracked outputs are up to date
         run: |

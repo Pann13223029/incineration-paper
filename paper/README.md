@@ -19,11 +19,11 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | Read or edit the paper | [`manuscript/paper.md`](manuscript/paper.md) |
 | Check final PDF source | [`manuscript/paper.tex`](manuscript/paper.tex) |
 | Check current submission state | [`submission/current-status.md`](submission/current-status.md) |
-| Check paper claim discipline | [`notes/claim-stack.md`](notes/claim-stack.md) |
-| Prepare the next empirical revision and defense | [`notes/defense-red-team-revision-map.md`](notes/defense-red-team-revision-map.md) |
-| Explain comparator papers and method lineage to supervisor | [`notes/professor-comparator-method-lineage.md`](notes/professor-comparator-method-lineage.md) |
-| Check thesis-to-paper conversion logic | [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md) |
-| Check reviewer risks | [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md) |
+| Check paper claim discipline | [`notes/positioning/claim-stack.md`](notes/positioning/claim-stack.md) |
+| Prepare the next empirical revision and defense | [`notes/review/defense-red-team-revision-map.md`](notes/review/defense-red-team-revision-map.md) |
+| Explain comparator papers and method lineage to supervisor | [`notes/positioning/professor-comparator-method-lineage.md`](notes/positioning/professor-comparator-method-lineage.md) |
+| Check thesis-to-paper conversion logic | [`notes/positioning/thesis-to-paper-map.md`](notes/positioning/thesis-to-paper-map.md) |
+| Check reviewer risks | [`notes/review/reviewer-rubric.md`](notes/review/reviewer-rubric.md) |
 | Check supplement, abbreviation guide, and reviewer-response map | [`supplement/supplement.md`](supplement/supplement.md) |
 | Check synced evidence | [`evidence/`](evidence/) |
 | Present the paper in a Zoom meeting | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
@@ -35,7 +35,9 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | `manuscript/` | Active paper prose and LaTeX source. |
 | `figures/` | Paper figure scripts and rendered figure files. |
 | `tables/` | Paper-facing table drafts and extracted result tables. |
-| `notes/` | Claim stack, structure checks, paper budget, and reviewer rubric. |
+| `notes/planning/` | Draft budgets, section checklists, and writing constraints. |
+| `notes/positioning/` | Claim architecture, comparator lineage, and thesis-to-paper logic. |
+| `notes/review/` | Editorial rubrics and red-team revision maps. |
 | `references/` | Selected references and citation plan. |
 | `slides/` | Paper-focused Zoom briefing deck, full speaker script, and presentation theme. |
 | `supplement/` | Supplement text and supplement planning. |

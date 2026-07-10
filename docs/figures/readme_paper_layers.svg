@@ -1,28 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
-  <title id="title">Paper repo layers</title>
-  <desc id="desc">Diagram showing the active paper layer, canonical evidence layer, and reference thesis layer of the paper-focused repository.</desc>
-  <rect x="0" y="0" width="1200" height="620" fill="#fbfaf7"/>
-  <rect x="24" y="24" width="1152" height="572" rx="22" fill="#ffffff" stroke="#d7d1c7" stroke-width="2"/>
-  <text x="60" y="74" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#1f2937">How This Repo Is Organized</text>
-  <text x="60" y="110" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">The paper lives on top of the thesis evidence base. The old thesis machinery stays available, but only as reference.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">Paper repository ownership layers</title>
+  <desc id="desc">Four horizontal bands distinguish the active paper, canonical evidence, publication tooling, and archived thesis layers.</desc>
+  <rect width="1200" height="640" fill="#fbfaf7"/>
+  <rect x="24" y="24" width="1152" height="592" rx="22" fill="#ffffff" stroke="#d7d1c7" stroke-width="2"/>
+  <text x="60" y="70" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" fill="#1f2937">Repository Ownership Map</text>
+  <text x="60" y="104" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">Each layer has one responsibility. Stable evidence and reader-facing paths stay separate from tooling and history.</text>
 
-  <rect x="80" y="160" width="1040" height="120" rx="20" fill="#eef2f9" stroke="#5373a6" stroke-width="2"/>
-  <text x="110" y="205" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700" fill="#284c7a">Active Paper Layer</text>
-  <text x="110" y="242" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" fill="#374151">paper/manuscript/  •  paper/notes/  •  paper/journals/  •  paper/supplement/  •  paper/evidence/</text>
-  <text x="110" y="268" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">This is where the article gets written, narrowed, and targeted to journals.</text>
+  <rect x="80" y="134" width="1040" height="98" rx="18" fill="#eef2f9" stroke="#5373a6" stroke-width="2"/>
+  <text x="110" y="172" font-family="'Helvetica Neue', Arial, sans-serif" font-size="25" font-weight="700" fill="#284c7a">Active Paper</text>
+  <text x="110" y="202" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#374151">paper/manuscript  •  figures  •  supplement  •  slides  •  submission  •  notes</text>
+  <text x="930" y="175" text-anchor="end" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#4b5563">edit for argument and exposition</text>
 
-  <rect x="80" y="312" width="1040" height="120" rx="20" fill="#eef4f1" stroke="#4d7c6a" stroke-width="2"/>
-  <text x="110" y="357" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700" fill="#1f5c4d">Canonical Evidence Layer</text>
-  <text x="110" y="394" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" fill="#374151">code/  •  data/  •  output/</text>
-  <text x="110" y="420" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">These files remain the source of truth for results, sample definitions, and model outputs.</text>
+  <rect x="80" y="252" width="1040" height="98" rx="18" fill="#eef4f1" stroke="#4d7c6a" stroke-width="2"/>
+  <text x="110" y="290" font-family="'Helvetica Neue', Arial, sans-serif" font-size="25" font-weight="700" fill="#1f5c4d">Canonical Evidence</text>
+  <text x="110" y="320" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#374151">data  •  code/analysis  •  output</text>
+  <text x="930" y="293" text-anchor="end" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#4b5563">source of truth for empirical claims</text>
 
-  <rect x="80" y="464" width="1040" height="100" rx="20" fill="#f4efe7" stroke="#b38f5a" stroke-width="2"/>
-  <text x="110" y="509" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700" fill="#7c4a17">Reference Thesis Layer</text>
-  <text x="110" y="544" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" fill="#374151">thesis/  •  research/</text>
-  <text x="360" y="544" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4b5563">kept for traceability, supervisor history, and defense context</text>
+  <rect x="80" y="370" width="1040" height="98" rx="18" fill="#f7f2e8" stroke="#a57a32" stroke-width="2"/>
+  <text x="110" y="408" font-family="'Helvetica Neue', Arial, sans-serif" font-size="25" font-weight="700" fill="#79531d">Publication Tooling</text>
+  <text x="110" y="438" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#374151">code/publishing  •  paper/evidence/current  •  paper/share</text>
+  <text x="930" y="411" text-anchor="end" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#4b5563">build and distribute, never redefine evidence</text>
 
-  <path d="M600 280 L600 312" stroke="#6b7280" stroke-width="3" fill="none"/>
-  <polygon points="600,312 593,298 607,298" fill="#6b7280"/>
-  <path d="M600 432 L600 464" stroke="#6b7280" stroke-width="3" fill="none"/>
-  <polygon points="600,464 593,450 607,450" fill="#6b7280"/>
+  <rect x="80" y="488" width="1040" height="86" rx="18" fill="#f4efeb" stroke="#8f6a55" stroke-width="2"/>
+  <text x="110" y="524" font-family="'Helvetica Neue', Arial, sans-serif" font-size="25" font-weight="700" fill="#6f4936">Archived Thesis</text>
+  <text x="110" y="553" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#374151">legacy/thesis  •  legacy/research  •  legacy/scripts</text>
+  <text x="930" y="527" text-anchor="end" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#4b5563">reference-only unless explicitly targeted</text>
+
+  <path d="M600 232 V252 M600 350 V370 M600 468 V488" stroke="#7b8490" stroke-width="2.5" stroke-dasharray="4 5"/>
 </svg>

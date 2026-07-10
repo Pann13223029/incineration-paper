@@ -27,11 +27,11 @@ Twenty annual Excel workbooks downloaded from the MOE portal, one per fiscal
 year from FY2005 through FY2024. File format is `.xls` through FY2013 and
 `.xlsx` from FY2014 onward, reflecting the MOE's own change in publication
 format. Column positions, header rows, and Japanese/English labelling vary
-year-to-year; `code/scripts/02_parse_facility_panel.py` auto-detects these
+year-to-year; `code/analysis/02_parse_facility_panel.py` auto-detects these
 per-file and normalises them into a single schema.
 
 Files are reproduced verbatim from the MOE portal. To re-download from scratch,
-run `code/scripts/01_download_facility_data.py`.
+run `code/analysis/01_download_facility_data.py`.
 
 ### `processed/incineration_panel.csv`
 
@@ -66,18 +66,18 @@ service-area maps and MOE regional classifications.
 ## Reproduction
 
 Everything in `processed/` can be regenerated from `raw/facility_annual/` via
-the numbered scripts in `code/scripts/`. The processed files are included here
+the numbered scripts in `code/analysis/`. The processed files are included here
 so that readers can reproduce the regression results and tables in
 `paper/manuscript/paper.md` without needing to re-run the parsing pipeline, which
 involves year-specific column detection heuristics.
 
 ```bash
 # From raw Excel to final regression output:
-python code/scripts/02_parse_facility_panel.py     # raw -> incineration_panel.csv
-python code/scripts/03_grid_emission_factors.py    # + grid factors -> enriched
-python code/scripts/05a_power_adoption.py          # capacity entry and exit hazards
-python code/scripts/05_panel_regression.py         # main 4 specifications
-python code/scripts/06_robustness.py               # robustness specifications
+python code/analysis/02_parse_facility_panel.py     # raw -> incineration_panel.csv
+python code/analysis/03_grid_emission_factors.py    # + grid factors -> enriched
+python code/analysis/05a_power_adoption.py          # capacity entry and exit hazards
+python code/analysis/05_panel_regression.py         # generator-performance models
+python code/analysis/06_robustness.py               # robustness specifications
 ```
 
 ## Attribution

@@ -44,7 +44,7 @@ Paper claim: the pathway audit supports a calibrated mechanism claim, not a proo
 Evidence spine:
 - `output/adoption_results.md`: pathway audit counts 50 reset/rebuild-like, 36 continuity/in-place-upgrade-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved.
 - `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, timing ambiguity, and unresolved placeholder cases.
-- `paper/notes/claim-stack.md`: the claim stack keeps mechanism language calibrated.
+- `paper/notes/positioning/claim-stack.md`: the claim stack keeps mechanism language calibrated.
 
 ## Claim 5: Conditional generator performance is structured after observed-technology adjustment
 
@@ -72,4 +72,4 @@ Evidence spine:
 1. Start with `paper/manuscript/paper.md` for the active narrative.
 2. Use `output/claim_verification.md` to confirm the current wording matches the generated artifacts.
 3. Use this file to see which exact output anchors each paper claim.
-4. Use `paper/supplement/supplement.md` and `paper/notes/claim-stack.md` to keep the scope disciplined during review.
+4. Use `paper/supplement/supplement.md` and `paper/notes/positioning/claim-stack.md` to keep the scope disciplined during review.
