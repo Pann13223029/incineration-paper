@@ -167,8 +167,11 @@
             "se": 0.00202732
           }
         },
+        "duration_coefficient": null,
+        "duration_pvalue": null,
         "events": 140,
         "events_per_parameter": 2.12121,
+        "includes_duration": false,
         "label": "Previous observed coded row: year FE + prefecture FE",
         "n": 11717,
         "parameters": 66,
@@ -197,11 +200,47 @@
             "se": 0.00121904
           }
         },
+        "duration_coefficient": null,
+        "duration_pvalue": null,
         "events": 98,
         "events_per_parameter": 1.53125,
+        "includes_duration": false,
         "label": "Exact-year: year FE + prefecture FE",
         "n": 10823,
         "parameters": 64,
+        "sign_pattern_matches_main": true
+      },
+      {
+        "average_marginal_effects": {
+          "age_10-20 yrs": {
+            "ame": -0.0146753,
+            "pvalue": 2.60367e-11,
+            "se": 0.00220104
+          },
+          "age_20-30 yrs": {
+            "ame": -0.015503,
+            "pvalue": 7.06371e-06,
+            "se": 0.00345143
+          },
+          "age_30+ yrs": {
+            "ame": -0.00902232,
+            "pvalue": 0.0104527,
+            "se": 0.00352368
+          },
+          "lag_capacity_100t": {
+            "ame": 0.00447782,
+            "pvalue": 0.00336019,
+            "se": 0.00152685
+          }
+        },
+        "duration_coefficient": -1.32897,
+        "duration_pvalue": 0.0098719,
+        "events": 98,
+        "events_per_parameter": 5.15789,
+        "includes_duration": true,
+        "label": "Exact-year: year FE + duration term",
+        "n": 10823,
+        "parameters": 19,
         "sign_pattern_matches_main": true
       },
       {
@@ -227,8 +266,11 @@
             "se": 0.00108364
           }
         },
+        "duration_coefficient": null,
+        "duration_pvalue": null,
         "events": 98,
         "events_per_parameter": 1.92157,
+        "includes_duration": false,
         "label": "Exact-year: prefecture FE only",
         "n": 10823,
         "parameters": 51,
@@ -257,8 +299,11 @@
             "se": 0.00138205
           }
         },
+        "duration_coefficient": null,
+        "duration_pvalue": null,
         "events": 98,
         "events_per_parameter": 19.6,
+        "includes_duration": false,
         "label": "Exact-year: age and capacity only",
         "n": 10823,
         "parameters": 5,

@@ -12,6 +12,7 @@ Specifications:
 6. Large capacity tercile (pooled OLS)
 7. Raw DV pooled OLS
 8. Raw DV OLS with year FE
+9. Within-between correlated-RE-style OLS with year FE
 """
 
 from __future__ import annotations
@@ -96,6 +97,76 @@ def run_ols(data, label, dv="log_efficiency", include_year_fe=False):
     return result
 
 
+def run_within_between_ols(data, label, dv="log_efficiency", include_year_fe=True):
+    """
+    Run a within-between sensitivity that separates facility means from deviations.
+
+    This is a reviewer-shield model rather than a new headline estimator. It
+    asks whether the cross-facility structure behind the main random-effects
+    reading remains visible after adding facility-level means and within-facility
+    deviations for the same covariates.
+    """
+    reg = data[[dv, "analysis_facility_id", "fiscal_year"] + CORE_IVS].dropna().copy()
+    if len(reg) < 50:
+        print(f"  {label}: too few observations ({len(reg)}), skipping")
+        return None
+
+    means = reg.groupby("analysis_facility_id")[CORE_IVS].transform("mean")
+    x_parts = []
+    for var in CORE_IVS:
+        reg[f"{var}_within"] = reg[var] - means[var]
+        reg[f"{var}_between"] = means[var]
+        x_parts.extend([f"{var}_within", f"{var}_between"])
+
+    X = reg[x_parts].copy()
+    if include_year_fe:
+        year_dummies = pd.get_dummies(
+            reg["fiscal_year"],
+            prefix="fy",
+            drop_first=True,
+            dtype=float,
+        )
+        X = pd.concat([X, year_dummies], axis=1)
+    X = sm.add_constant(X)
+
+    model = sm.OLS(reg[dv], X).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": reg["analysis_facility_id"]},
+    )
+
+    result = {
+        "label": label,
+        "n": int(model.nobs),
+        "facilities": int(reg["analysis_facility_id"].nunique()),
+        "r2": float(model.rsquared),
+        "dv": dv,
+        "year_fe": include_year_fe,
+        "model_family": "within_between",
+    }
+    for var in CORE_IVS[:3]:
+        between = f"{var}_between"
+        within = f"{var}_within"
+        result[f"{var}_coef"] = float(model.params[between])
+        result[f"{var}_p"] = float(model.pvalues[between])
+        result[f"{var}_between_coef"] = float(model.params[between])
+        result[f"{var}_between_p"] = float(model.pvalues[between])
+        result[f"{var}_within_coef"] = float(model.params[within])
+        result[f"{var}_within_p"] = float(model.pvalues[within])
+
+    print(f"\n  {label} (N={result['n']:,}, facilities={result['facilities']:,}, R²={result['r2']:.3f})")
+    for var in CORE_IVS[:3]:
+        b = result[f"{var}_between_coef"]
+        bp = result[f"{var}_between_p"]
+        w = result[f"{var}_within_coef"]
+        wp = result[f"{var}_within_p"]
+        print(
+            f"    {var:<28} between={b:>8.4f}{significance_stars(bp):>3} "
+            f"within={w:>8.4f}{significance_stars(wp):>3}"
+        )
+
+    return result
+
+
 def main():
     frame = load_regression_frame()
     results = []
@@ -137,6 +208,18 @@ def main():
         result = run_ols(frame, label, dv="energy_efficiency_mwh_per_t", include_year_fe=year_fe)
         if result:
             results.append(result)
+
+    print("\n" + "=" * 60)
+    print("TEST 4: Within-Between Correlated-RE-Style Sensitivity")
+    print("=" * 60)
+    result = run_within_between_ols(
+        frame,
+        "R9: Within-between sensitivity with year FE",
+        dv="log_efficiency",
+        include_year_fe=True,
+    )
+    if result:
+        results.append(result)
 
     df_results = pd.DataFrame(results)
     core_vars = [
@@ -182,6 +265,37 @@ def main():
                 p = row[f"{var}_p"]
                 f.write(f" {coef:.4f}{significance_stars(p)} |")
             f.write("\n")
+
+        wb_rows = [
+            row for _, row in df_results.iterrows()
+            if row.get("model_family") == "within_between"
+        ]
+        if wb_rows:
+            f.write(
+                "\n## Within-between sensitivity\n\n"
+                "The within-between sensitivity separates facility-level means "
+                "from within-facility deviations. It is reported as a reviewer "
+                "shield for the descriptive random-effects interpretation, not as "
+                "a replacement for the main models.\n\n"
+            )
+            f.write("| Variable | Between-facility coefficient | Within-facility coefficient |\n")
+            f.write("|:---|---:|---:|\n")
+            row = wb_rows[0]
+            for var in core_vars:
+                bcoef = row[f"{var}_between_coef"]
+                bp = row[f"{var}_between_p"]
+                wcoef = row[f"{var}_within_coef"]
+                wp = row[f"{var}_within_p"]
+                f.write(
+                    f"| {var} | {bcoef:.4f}{significance_stars(bp)} | "
+                    f"{wcoef:.4f}{significance_stars(wp)} |\n"
+                )
+            f.write(
+                "\n*Interpretation: the between-facility columns preserve the "
+                "cross-facility structure emphasized in the main paper, while the "
+                "within-facility columns show how limited within-panel movement "
+                "maps onto the same variables.*\n"
+            )
 
     print(f"\n  Saved: {path}")
 

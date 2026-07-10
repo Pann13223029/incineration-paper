@@ -58,12 +58,15 @@ Main specification: exact one-fiscal-year lagged discrete-time logit hazard with
 - Pseudo-R-squared (deviance-based): 0.1829
 - Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.424; LPM coef. 1.39 pp).
 
+- Duration robustness: adding elapsed at-risk duration in 10-year units to the exact-year year-FE hazard preserves the expected age and capacity sign pattern. The duration coefficient is -1.329** (p=0.00987).
+
 ### Adoption specification sensitivity
 
 | Specification                                        | N      |   Events |   Parameters |   Events/parameter |   Age 10-20 AME (pp) |   Age 20-30 AME (pp) |   Age 30+ AME (pp) |   Capacity AME (pp) | Sign pattern   |
 |:-----------------------------------------------------|:-------|---------:|-------------:|-------------------:|---------------------:|---------------------:|-------------------:|--------------------:|:---------------|
 | Previous observed coded row: year FE + prefecture FE | 11,717 |      140 |           66 |               2.12 |                -1.76 |                -1.72 |              -1.13 |                0.5  | yes            |
 | Exact-year: year FE + prefecture FE                  | 10,823 |       98 |           64 |               1.53 |                -1.82 |                -2.31 |              -1.59 |                0.4  | yes            |
+| Exact-year: year FE + duration term                  | 10,823 |       98 |           19 |               5.16 |                -1.47 |                -1.55 |              -0.9  |                0.45 | yes            |
 | Exact-year: prefecture FE only                       | 10,823 |       98 |           51 |               1.92 |                -1.39 |                -1.18 |              -0.58 |                0.35 | yes            |
 | Exact-year: age and capacity only                    | 10,823 |       98 |            5 |              19.6  |                -1.34 |                -1.1  |              -0.48 |                0.4  | yes            |
 

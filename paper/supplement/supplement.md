@@ -48,11 +48,12 @@ cannot identify.
 | Observed adoption may not equal a directly observed physical retrofit. | The paper uses `observed transition into generation` language and treats the pathway audit as descriptive support, not mechanism proof. |
 | Left-censored generators can distort adoption estimates. | Facilities already generating in their first observed year are excluded from the adoption risk set. |
 | Official-code gaps can turn prior-year lags into previous-observed-row lags. | The main adoption model now keeps only exact one-fiscal-year lags; the broader previous-observed-coded-row model is reported only as sensitivity evidence. |
-| Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and efficiency signs remain stable. |
+| Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and electricity-recovery signs remain stable. |
 | Heating value is noisy in administrative files. | Heating value is treated as a control, not an engineering outcome; plausible-value restrictions leave the core coefficients stable. |
-| The generator frame excludes uncoded operating rows. | The main text defines the efficiency sample as the canonical identifiable generator frame, and this supplement compares coded and uncoded operating-generator rows. |
+| The generator frame excludes uncoded operating rows. | The main text defines the electricity-recovery sample as the canonical identifiable generator frame, and this supplement compares coded and uncoded operating-generator rows. |
 | Age effects could be confounded with durable facility characteristics. | The paper interprets coefficients as structured conditional associations and uses the variance structure to justify descriptive cross-facility comparison, not causal vintage isolation. |
 | Adoption events are temporally clustered. | The paper reports the clustering and uses year fixed effects; it does not interpret the timing as a uniquely identified policy shock or reporting change. |
+| Adoption risk may vary with time already spent at risk. | A duration-augmented exact-year hazard preserves the expected age and capacity sign pattern. |
 
 The result is a narrower but more defensible claim: the linked samples show
 selective observed entry into generation and structured conditional performance
@@ -97,7 +98,7 @@ the coded at-risk frame, not an unrestricted fleet-wide modernization model.
 - Canonical regression observations: 5,683
 - Canonical regression facilities: 1,016
 - Fiscal years covered: FY2005-FY2024
-- Within/total variance ratio of pooled log-efficiency: 0.1499
+- Within/total variance ratio of pooled log electricity-recovery intensity: 0.1499
 - Early coded-window ratio (FY2005-FY2009): 0.1795
 - Later coded-window ratio (FY2013-FY2024): 0.0956
 
@@ -111,7 +112,7 @@ The operating-generator sample contains 6,660 rows with positive throughput and
 positive electricity output. The canonical regression frame requires official
 facility codes and complete model covariates, leaving 5,683 rows.
 
-| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Mean bounded efficiency (MWh/t) | Mean age |
+| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Mean bounded electricity recovery (MWh/t) | Mean age |
 |:--|--:|--:|:--|--:|--:|--:|
 | Official facility code present | 5,753 | 1,018 | FY2005-FY2024 | 332.1 | 0.330 | 15.0 |
 | Official facility code missing | 907 | 316 | FY2008-FY2012 | 359.0 | 0.296 | 13.4 |
@@ -314,13 +315,20 @@ robustness variants preserve the main sign pattern:
 Across these variants, older facilities remain less likely to record observed
 transition and larger facilities remain more likely to do so.
 
+The additional duration check adds elapsed at-risk duration, measured in 10-year
+units, to the exact-year year fixed-effects hazard. This keeps the expected sign
+pattern: age 10-20 is -1.47 pp, age 20-30 is -1.55 pp, age 30+ is -0.90 pp,
+and prior-year capacity is +0.45 pp per 100 t/day. The duration coefficient is
+-1.329 (p = 0.0099). This is interpreted as a sensitivity check for duration
+dependence, not as a separate theory of why facilities wait to enter generation.
+
 The robustness checks are interpreted as sign-pattern checks. They are not used
 to claim that the adoption estimates are policy effects or that the event path
 is uniquely identified as replacement, refurbishment, or new construction.
 
-### S5.2 Efficiency estimator note
+### S5.2 Electricity-recovery estimator note
 
-The main efficiency results are presented through four compact specifications:
+The main electricity-recovery results are presented through four compact specifications:
 
 - pooled OLS
 - year fixed effects
@@ -336,6 +344,14 @@ heterogeneity that is substantively central to the paper's question. The paper
 therefore reports models that preserve cross-facility structure while
 explicitly avoiding causal language about vintage or policy effects.
 
+The within-between sensitivity adds another check on this choice. It separates
+facility-level means from within-facility deviations and includes year fixed
+effects. The between-facility component remains aligned with the main paper:
+facility age is negative (-0.0358), capacity is positive (+0.1110), and
+utilization is positive (+0.8707). Within-facility deviations also retain the
+same signs for the three core variables, but they are not used as the main
+interpretive basis because within-panel movement is limited.
+
 ### S5.3 Identifier and heating-value sensitivity
 
 The administrative source contains a small number of same-year duplicate
@@ -343,7 +359,7 @@ official facility codes. This is a data-structure issue rather than a hidden
 result change, so the paper keeps the official-code specification as the main
 analysis and reports a composite-ID sensitivity. The sensitivity appends
 facility names to affected duplicate official codes and reruns the core
-adoption and efficiency checks.
+adoption and electricity-recovery checks.
 
 - Official codes with at least one same-year duplicate: 39
 - Source rows using those affected official codes: 444
@@ -364,7 +380,7 @@ adoption and efficiency checks.
 | Official code | 10,823 | 1,911 | 98 | 0.1829 |
 | Composite sensitivity | 10,850 | 1,931 | 99 | 0.1777 |
 
-**Panel B. Efficiency sensitivity**
+**Panel B. Electricity-recovery sensitivity**
 
 | Specification | Variable | Official coef. | Composite coef. |
 |:--|:--|--:|--:|
@@ -382,7 +398,7 @@ stricter 3-25 MJ/kg interval, leaves the age, capacity, and utilization
 coefficients substantively unchanged. The detailed generated report is
 available at `paper/evidence/current/data_quality_sensitivity.md`.
 
-The implication for review is limited but important: the main efficiency
+The implication for review is limited but important: the main electricity-recovery
 patterns do not rely on treating every heating-value record as a clean
 engineering measurement.
 
@@ -433,8 +449,8 @@ intensive-margin regressions.
 
 | Variable                       |    N |    Mean |   Median |      SD |    Min |      Max |
 |:-------------------------------|-----:|--------:|---------:|--------:|-------:|---------:|
-| Efficiency (MWh/t, winsorized) | 5683 |   0.330 |    0.332 |   0.149 |  0.010 |    0.800 |
-| log(Efficiency)                | 5683 |  -1.265 |   -1.102 |   0.675 | -4.605 |   -0.223 |
+| Electricity recovery (MWh/t, bounded) | 5683 |   0.330 |    0.332 |   0.149 |  0.010 |    0.800 |
+| log(Electricity recovery)             | 5683 |  -1.265 |   -1.102 |   0.675 | -4.605 |   -0.223 |
 | Facility age (years)           | 5683 |  14.955 |   15.000 |   9.626 |  0.000 |   47.000 |
 | Capacity (t/day)               | 5683 | 330.882 |  280.000 | 226.213 | 20.000 | 1800.000 |
 | Capacity utilization           | 5683 |   0.600 |    0.610 |   0.135 |  0.013 |    1.000 |

@@ -72,6 +72,7 @@ ADOPTION_COLUMNS = [
 
 ADOPTION_MODEL_COLUMNS = [
     *ADOPTION_COLUMNS,
+    "risk_duration_years",
     "lag_fiscal_year",
     "lag_gap_years",
     "exact_one_year_lag",
@@ -273,6 +274,7 @@ def build_adoption_model_frame(
 
     model = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
     group = model.groupby("analysis_facility_id", sort=False)
+    model["risk_duration_years"] = group.cumcount() + 1
     model["lag_fiscal_year"] = group["fiscal_year"].shift(1)
     model["lag_gap_years"] = model["fiscal_year"] - model["lag_fiscal_year"]
     model["exact_one_year_lag"] = model["lag_gap_years"].eq(1)

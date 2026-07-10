@@ -41,12 +41,18 @@ The current repo includes:
   effects, random effects, and clustered standard errors
 - stronger methods-defense wording explaining parsimony in the sparse adoption
   hazard and the descriptive purpose of the OLS/year-FE/RE model ladder
+- official MOE/e-Stat source citation updated to the FY2024 survey release and
+  statistics code `00650101`
+- adoption-hazard duration robustness added to guard against time-at-risk
+  dependence
+- within-between electricity-recovery sensitivity added to separate
+  cross-facility means from within-facility deviations
 - supplement abbreviation guide and reviewer-response map for predictable
   concerns about adoption events, random effects, uncoded rows, heating value,
   and planning implications
 - supervisor-facing comparator and method-lineage packet at
   `paper/notes/professor-comparator-method-lineage.md`
-- explicit facility-clustered standard-error language for the efficiency models
+- explicit facility-clustered standard-error language for the electricity-recovery models
 - safer policy wording around asset-renewal screening and capital-side triage
 - planning interpretation framed as triage rather than intervention ranking
 - synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`

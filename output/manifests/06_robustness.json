@@ -137,6 +137,33 @@
         "n": 5683,
         "r2": 0.5192181,
         "year_fe": true
+      },
+      {
+        "capacity_100t_between_coef": 0.1110371,
+        "capacity_100t_between_p": 9.665822e-35,
+        "capacity_100t_coef": 0.1110371,
+        "capacity_100t_p": 9.665822e-35,
+        "capacity_100t_within_coef": 0.02187453,
+        "capacity_100t_within_p": 0.006506835,
+        "capacity_utilization_capped_between_coef": 0.8707479,
+        "capacity_utilization_capped_between_p": 8.825918e-07,
+        "capacity_utilization_capped_coef": 0.8707479,
+        "capacity_utilization_capped_p": 8.825918e-07,
+        "capacity_utilization_capped_within_coef": 0.5096076,
+        "capacity_utilization_capped_within_p": 1.416162e-06,
+        "dv": "log_efficiency",
+        "facilities": 1016,
+        "facility_age_years_between_coef": -0.03579758,
+        "facility_age_years_between_p": 3.989028e-45,
+        "facility_age_years_coef": -0.03579758,
+        "facility_age_years_p": 3.989028e-45,
+        "facility_age_years_within_coef": -0.03133813,
+        "facility_age_years_within_p": 3.257134e-28,
+        "label": "R9: Within-between sensitivity with year FE",
+        "model_family": "within_between",
+        "n": 5683,
+        "r2": 0.3824977,
+        "year_fe": true
       }
     ]
   },

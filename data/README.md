@@ -1,7 +1,7 @@
 # Data
 
 This directory contains the raw inputs and processed panels that reproduce the
-regression results in `thesis/thesis.tex`.
+paper-facing regression and robustness results.
 
 ## Source
 
@@ -13,6 +13,9 @@ or contracted to Japanese municipalities.
 - **Publisher:** Environmental Management Bureau, Ministry of the Environment, Japan
 - **Portal:** <https://www.env.go.jp/recycle/waste_tech/ippan/>
 - **e-Stat mirror:** <https://www.e-stat.go.jp/en/statistics/00650101>
+- **Current paper citation:** Ministry of the Environment Japan (2026) for the
+  FY2024 General Waste Treatment Survey results, with e-Stat statistics code
+  `00650101` as the official statistics portal reference.
 - **Licence:** Public Japanese government statistics, reproducible with attribution.
   Cite as `MOEJ (YYYY)` following APA 7 conventions; see the thesis bibliography.
 
@@ -64,7 +67,7 @@ service-area maps and MOE regional classifications.
 Everything in `processed/` can be regenerated from `raw/facility_annual/` via
 the numbered scripts in `code/scripts/`. The processed files are included here
 so that readers can reproduce the regression results and tables in
-`thesis/thesis.tex` without needing to re-run the parsing pipeline, which
+`paper/manuscript/paper.md` without needing to re-run the parsing pipeline, which
 involves year-specific column detection heuristics.
 
 ```bash
@@ -72,15 +75,11 @@ involves year-specific column detection heuristics.
 python code/scripts/02_parse_facility_panel.py     # raw -> incineration_panel.csv
 python code/scripts/03_grid_emission_factors.py    # + grid factors -> enriched
 python code/scripts/05_panel_regression.py         # main 4 specifications
-python code/scripts/06_robustness.py               # 8 robustness specifications
+python code/scripts/06_robustness.py               # robustness specifications
 ```
 
 ## Attribution
 
-When using these data, please cite both the MOE survey directly and this
-thesis. Suggested citation for the thesis:
-
-> Phetra, P. (2026). *Carbon Lock-in or Circular Transition? Heterogeneity in
-> Japan's Waste Incineration Fleet and Net-Zero Compatibility* [Bachelor's
-> thesis]. Ritsumeikan Asia Pacific University, College of Sustainability and
-> Tourism.
+When using these data, cite the MOE survey directly. If referring to this
+derived analysis workspace, cite the paper/manuscript that uses the processed
+panel.

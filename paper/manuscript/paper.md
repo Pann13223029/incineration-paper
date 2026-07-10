@@ -34,7 +34,7 @@ facility panel; transition
 
 Japan operates one of the world's most incineration-dependent municipal waste
 systems, yet many facilities still burn waste without generating electricity
-from the heat they produce (Ministry of the Environment Japan, 2022; Uno, 2015;
+from the heat they produce (Ministry of the Environment Japan, 2026; Uno, 2015;
 Tabata & Tsai, 2016; Sakai et al., 2011). In fiscal year (FY) 2024, 41.1% of
 facilities in the panel are flagged as power-generating, leaving most facilities
 outside electricity recovery. This is not a marginal technical detail. For
@@ -60,13 +60,14 @@ persistent performance hierarchy at the other.
 ### Research questions
 
 This paper asks two descriptive empirical questions and one interpretive
-synthesis question. In the table, RQ denotes research question:
+synthesis question. In the table, RQ denotes research question; the synthesis
+row states how the two empirical results are read together:
 
 | RQ | Margin | Question |
 |:--|:--|:--|
 | RQ1 | Entry margin | Among coded facilities first observed without power generation, which prior-year age and capacity profiles are associated with first observed reporting of power generation in the following fiscal year? |
 | RQ2 | Generator-performance margin | Among identifiable operating generators, how is electricity recovered per tonne associated with facility age, design capacity, utilization, heating value, and common fiscal-year conditions? |
-| RQ3 | Interpretive synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
+| Synthesis | Interpretive synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
 
 The contribution is not a causal estimate of retrofit effects or a technical
 optimization model. It is a linked facility-panel decomposition that shows why
@@ -205,10 +206,11 @@ to expose those blind spots without treating them as one average process.
 ## 3. Data and Design
 
 The analysis uses the Ministry of the Environment's General Waste Treatment
-Survey for FY2005-FY2024 (Ministry of the Environment Japan, 2022). From 23,599
-facility-year rows, the coded frame retains 19,827 observations across 2,948
-identifiable facilities. The paper then separates two linked samples because one
-sample cannot answer both parts of the transition problem. Those frames are not
+Survey for FY2005-FY2024 (Ministry of the Environment Japan, 2026; e-Stat,
+n.d.). From 23,599 facility-year rows, the coded frame retains 19,827
+observations across 2,948 identifiable facilities. The paper then separates two
+linked samples because one sample cannot answer both parts of the transition
+problem. Those frames are not
 only data filters. They are the analytic structure that keeps observed entry
 into generation separate from conditional performance after entry. The survey is
 useful for this purpose because it covers both generating and non-generating
@@ -250,7 +252,7 @@ same estimator.
 |:--|:--|:--|:--|:--|
 | RQ1: entry | Coded facilities first observed without generation | Exact one-fiscal-year lagged logit hazard with year fixed effects | Which prior-year age and capacity profiles are associated with first reporting generation | A causal retrofit effect, a full capital-history mechanism, or unrestricted fleet-wide modernization |
 | RQ2: generator performance | Identifiable operating generators with positive throughput and power output | Logged MWh/t panel regressions using pooled, year-FE, RE, and year-FE + RE specifications | Whether electricity recovered per tonne is structured by age, scale, utilization, heating value, and common year conditions | Full thermodynamic efficiency or the causal effect of changing age, scale, utilization, or technology |
-| RQ3: interpretive synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
+| Synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
 
 The first frame is the coded adoption frame. It includes facilities first
 observed without power generation and follows them until they either record
@@ -290,6 +292,9 @@ retrofit process. It estimates the probability that a facility first records
 entry into power generation in the next fiscal year, conditional on still being
 at risk. The lagged predictor structure ensures that age band and capacity are
 measured before the observed event rather than on the event row itself.
+As an additional guard against duration dependence, the supplement reports an
+exact-year year fixed-effects hazard that adds elapsed at-risk duration. The
+age and capacity sign pattern remains unchanged in that sensitivity.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports power generation in
 fiscal year \(t\), conditional on still being in the at-risk set \(R_{it}=1\).
@@ -376,6 +381,9 @@ while a pure facility fixed-effects interpretation would rely on limited
 within-facility movement and would identify a different question. In particular,
 facility fixed effects would absorb much of the durable plant scale, design,
 and vintage structure that the paper is trying to describe.
+The supplement therefore adds a within-between sensitivity that separates
+facility-level means from within-facility deviations; it is a robustness shield
+for the descriptive interpretation, not a replacement for the main models.
 
 Because the dependent variable is logged, small coefficients can be read
 approximately as percentage changes in electricity recovered per tonne. For
@@ -474,7 +482,8 @@ about 1.24 percentage points less likely. Each additional 100 t/day of prior-yea
 design capacity raises annual transition probability by about 0.45 percentage
 points. The sign pattern is stable in the alternative event-model checks reported
 in the supplement, including the saturated year-plus-prefecture fixed-effects
-model and the broader previous-observed-coded-row sensitivity.
+model, the broader previous-observed-coded-row sensitivity, and the exact-year
+duration-augmented hazard.
 
 These effects should be read within the coded at-risk frame, not as a model of
 all modernization activity in the Japanese fleet. Even within that narrower
@@ -535,7 +544,8 @@ contains 141 observed first-adoption events.*
 
 Within the canonical regression frame, the main message is that generators
 mostly differ from one another rather than repeatedly changing position over
-time. The within-to-total variance ratio of pooled log-efficiency is 0.1499,
+time. The within-to-total variance ratio of pooled log electricity-recovery
+intensity is 0.1499,
 meaning that most variation is between facilities rather than within facilities
 over time. The ratio remains low in both the early coded window and later coded
 window, falling from 0.1795 in FY2005-FY2009 to 0.0956 in FY2013-FY2024. This
@@ -559,7 +569,9 @@ scale and operational intensity matter for output performance (Chen et al.,
 2012; Yeh, 2020; Grosso et al., 2010). What this paper adds is the linked
 comparison to the non-generating segment: the same fleet that shows selective
 entry at one margin also shows a stable hierarchy among mature generators at
-the other.
+the other. The supplemental within-between sensitivity preserves the same
+directional pattern in the cross-facility component: between-facility age is
+negative, while between-facility capacity and utilization are positive.
 
 ![Figure 3. Mean electricity recovery intensity declines across generator age groups, while the within-to-total variance ratio stays low in the full coded sample and early/later coded windows.](../figures/figure3_efficiency_structure.png)
 
@@ -655,6 +667,10 @@ intervention ranking. The practical value is triage: deciding which part of the
 fleet needs an entry-side asset question and which part needs a generator-side
 performance question. Table 4 translates the empirical patterns into defensible
 planning questions while keeping the claim boundaries explicit.
+In practical terms, the design gives planners a screening sequence: first decide
+whether a facility is an entry-side asset problem or an already-generating
+performance problem, then decide which more detailed engineering, governance, or
+capital-history review is worth pursuing.
 
 **Table 4. Planning diagnostic implied by the two-margin evidence**
 
@@ -831,6 +847,11 @@ measurement for incineration plants using multi-activity network data
 envelopment analysis: The case of Taiwan. *Journal of Environmental
 Management*, *93*(1), 95-103. https://doi.org/10.1016/j.jenvman.2011.08.011
 
+e-Stat. (n.d.). *Nation Survey on the State of Discharge and Treatment of
+Municipal Solid Waste* (Statistics code 00650101). Portal Site of Official
+Statistics of Japan. https://www.e-stat.go.jp/en/statistics/00650101 (accessed
+10 July 2026).
+
 European Commission. (2017). *The role of waste-to-energy in the circular
 economy* (COM(2017) 34 final). European Commission.
 https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52017DC0034
@@ -861,10 +882,10 @@ V. W.-C. (2025). Refocusing on effectiveness over expansion in urban
 waste-energy-carbon development in China. *Nature Energy*, *10*, 215-225.
 https://doi.org/10.1038/s41560-024-01683-8
 
-Ministry of the Environment Japan. (2022). *General waste treatment survey:
-Summary report FY2021*. Environmental Management Bureau, Ministry of the
-Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html
-(accessed 18 April 2026).
+Ministry of the Environment Japan. (2026). *General Waste Treatment Survey
+results: FY2024 municipal solid waste treatment survey*. Environmental
+Management Bureau, Ministry of the Environment Japan.
+https://www.env.go.jp/recycle/waste_tech/ippan/ (accessed 10 July 2026).
 
 Münster, M., & Meibom, P. (2010). Long-term affected energy production of waste
 to energy technologies identified by use of energy system analysis.

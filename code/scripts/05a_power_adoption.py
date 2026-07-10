@@ -123,6 +123,7 @@ def build_design_matrix(
     *,
     include_year_fe: bool = True,
     include_pref_fe: bool = True,
+    include_duration: bool = False,
 ) -> tuple[pd.DataFrame, pd.Series]:
     """Build the shared design matrix used by the adoption estimators."""
     age_dummies = pd.get_dummies(
@@ -132,6 +133,10 @@ def build_design_matrix(
         dtype=float,
     )
     parts = [age_dummies, reg[["lag_capacity_100t"]]]
+    if include_duration:
+        duration = reg[["risk_duration_years"]].copy()
+        duration["risk_duration_years"] = duration["risk_duration_years"] / 10.0
+        parts.append(duration.rename(columns={"risk_duration_years": "risk_duration_10yr"}))
     if include_year_fe:
         parts.append(
             pd.get_dummies(
@@ -319,12 +324,14 @@ def fit_reported_logit_spec(
     label: str,
     include_year_fe: bool = True,
     include_pref_fe: bool = True,
+    include_duration: bool = False,
 ) -> dict[str, object]:
     """Fit one reported logit specification and return compact diagnostics."""
     X, y = build_design_matrix(
         reg,
         include_year_fe=include_year_fe,
         include_pref_fe=include_pref_fe,
+        include_duration=include_duration,
     )
     model = fit_logit_hazard(X, y, groups=reg["analysis_facility_id"])
     marginal_effects = compute_logit_average_marginal_effects(model)
@@ -336,6 +343,7 @@ def fit_reported_logit_spec(
         "marginal_effects": marginal_effects,
         "pseudo_r2": model_pseudo_r2(model),
         "diagnostics": sparse_event_diagnostics(reg, X),
+        "includes_duration": include_duration,
     }
 
 
@@ -595,6 +603,22 @@ def write_results(
             f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}; "
             f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp).\n\n"
         )
+        duration_results = [
+            result for result in [previous_observed_result, *robustness_results]
+            if result.get("includes_duration")
+        ]
+        if duration_results:
+            duration_result = duration_results[0]
+            duration_model = duration_result["model"]
+            duration_coef = float(duration_model.params["risk_duration_10yr"])
+            duration_p = float(duration_model.pvalues["risk_duration_10yr"])
+            f.write(
+                "- Duration robustness: adding elapsed at-risk duration in 10-year "
+                "units to the exact-year year-FE hazard preserves the expected age "
+                "and capacity sign pattern. The duration coefficient is "
+                f"{duration_coef:.3f}{significance_stars(duration_p)} "
+                f"(p={duration_p:.3g}).\n\n"
+            )
 
         f.write("### Adoption specification sensitivity\n\n")
         sensitivity_rows = []
@@ -689,6 +713,13 @@ def main():
             label="Exact-year: year FE + prefecture FE",
             include_year_fe=True,
             include_pref_fe=True,
+        ),
+        fit_reported_logit_spec(
+            adoption_model,
+            label="Exact-year: year FE + duration term",
+            include_year_fe=True,
+            include_pref_fe=False,
+            include_duration=True,
         ),
         fit_reported_logit_spec(
             adoption_model,
@@ -833,6 +864,17 @@ def main():
                     ),
                     "sign_pattern_matches_main": sign_pattern_matches(
                         result["marginal_effects"]
+                    ),
+                    "includes_duration": bool(result.get("includes_duration", False)),
+                    "duration_coefficient": (
+                        manifest_float(result["model"].params["risk_duration_10yr"])
+                        if result.get("includes_duration")
+                        else None
+                    ),
+                    "duration_pvalue": (
+                        manifest_float(result["model"].pvalues["risk_duration_10yr"])
+                        if result.get("includes_duration")
+                        else None
                     ),
                     "average_marginal_effects": {
                         row["variable"]: {
