@@ -20,6 +20,7 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | Check final PDF source | [`manuscript/paper.tex`](manuscript/paper.tex) |
 | Check current submission state | [`submission/current-status.md`](submission/current-status.md) |
 | Check paper claim discipline | [`notes/claim-stack.md`](notes/claim-stack.md) |
+| Prepare the next empirical revision and defense | [`notes/defense-red-team-revision-map.md`](notes/defense-red-team-revision-map.md) |
 | Explain comparator papers and method lineage to supervisor | [`notes/professor-comparator-method-lineage.md`](notes/professor-comparator-method-lineage.md) |
 | Check thesis-to-paper conversion logic | [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md) |
 | Check reviewer risks | [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md) |
