@@ -390,10 +390,11 @@ def phase3_decision(df):
     decision.append(f"Within/total variance ratio of log-efficiency: {ratio:.3f}.")
 
     decision.append(
-        "DECISION: Keep pooled OLS, year-FE OLS, and random effects as the primary "
-        "specifications. Facility age remains mechanically linked to year, so two-way "
-        "FE is not the clean identifying design for the thesis question even when the "
-        "within/total ratio is non-zero."
+        "DECISION: Use year- and observed-technology-adjusted OLS as the primary "
+        "cross-facility specification; retain pooled, year-indicator, and random-effects "
+        "models as a supplemental estimator ladder. Facility age remains mechanically "
+        "linked to year, so a two-way facility-FE model answers a different question and "
+        "does not isolate a causal aging effect."
     )
 
     for line in decision:

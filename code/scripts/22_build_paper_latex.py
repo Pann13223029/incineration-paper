@@ -30,6 +30,7 @@ SHARE_PDF = SHARE_DIR / "waste-management-manuscript-latex.pdf"
 FIGURE1_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure1_two_part_framework.py"
 FIGURE2_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure2_selective_transition.py"
 FIGURE3_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure3_efficiency_structure.py"
+FIGURE4_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure4_post_entry_trajectories.py"
 
 
 def tectonic_binary() -> str:
@@ -44,7 +45,7 @@ def tectonic_binary() -> str:
     raise SystemExit("Tectonic not found; cannot compile the LaTeX manuscript.")
 
 def build_figures() -> None:
-    for script in (FIGURE1_SCRIPT, FIGURE2_SCRIPT, FIGURE3_SCRIPT):
+    for script in (FIGURE1_SCRIPT, FIGURE2_SCRIPT, FIGURE3_SCRIPT, FIGURE4_SCRIPT):
         if not script.exists():
             raise SystemExit(f"Figure build script not found: {script}")
         subprocess.run([sys.executable, str(script)], check=True)

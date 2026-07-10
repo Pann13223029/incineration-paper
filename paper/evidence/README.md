@@ -25,6 +25,7 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 - `adoption_pathway_audit.csv`
 - `figure2_transition_effects.csv`
 - `post_adoption_bridge.csv`
+- `post_adoption_trajectories.csv`
 - `figure3_persistence.csv`
 
 ## Rule

@@ -138,11 +138,11 @@ def build() -> None:
             ),
             (
                 "Model",
-                "Exact-year lagged logit\n10,823 rows | 98 retained events",
+                "Year + elapsed-duration logit\nbroad: 10,823/98 | active: 9,215/58",
             ),
             (
                 "Claim",
-                "Selective capacity entry;\noutput bridge and exit diagnostic",
+                "Scale robust across frames;\nage pattern depends on risk set",
             ),
         ],
     )
@@ -165,11 +165,11 @@ def build() -> None:
             ),
             (
                 "Model",
-                "Logged MWh/t panel regressions\npooled, year indicators, RE, combined",
+                "Logged MWh/t OLS\nyear + observed technology controls",
             ),
             (
                 "Claim",
-                "Structured performance\nhierarchy within generators",
+                "Structured age/vintage, scale,\nand utilization associations",
             ),
         ],
     )
@@ -181,8 +181,8 @@ def build() -> None:
         ax,
         x + 0.16,
         y + h - 0.026,
-        "One national fleet, two linked margins connected by observed output.\n"
-        "An average-fleet view would conflate capacity entry with performance.",
+        "One fleet, linked outcomes: asset entry, active conversion, and post-entry position.\n"
+        "A fleet average would conflate distinct estimands and decision points.",
         size=9.8,
     )
 

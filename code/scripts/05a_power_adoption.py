@@ -82,15 +82,15 @@ def load_adoption_data():
     return panel, adoption, adoption_model, previous_observed_model, pathway_audit, summary
 
 
-def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Summarize event rates by age band and capacity quartile."""
+def event_tables(adoption_model: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Summarize exact-lag event rates using pre-event facility profiles."""
     age_table = (
-        adoption.groupby("age_band", observed=True)
+        adoption_model.groupby("lag_age_band", observed=True)
         .agg(
             risk_obs=("adopt_power_this_year", "size"),
             first_adoptions=("adopt_power_this_year", "sum"),
             annual_event_rate=("adopt_power_this_year", "mean"),
-            mean_capacity_t_day=("capacity_t_day", "mean"),
+            mean_capacity_t_day=("lag_capacity_t_day", "mean"),
         )
         .reindex(AGE_BAND_LABELS)
         .reset_index()
@@ -98,9 +98,9 @@ def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     age_table["annual_event_rate_pct"] = age_table["annual_event_rate"] * 100
     age_table = age_table.drop(columns=["annual_event_rate"])
 
-    cap = adoption.dropna(subset=["capacity_t_day"]).copy()
+    cap = adoption_model.dropna(subset=["lag_capacity_t_day"]).copy()
     cap["capacity_quartile"] = pd.qcut(
-        cap["capacity_t_day"],
+        cap["lag_capacity_t_day"],
         4,
         labels=["Q1 (smallest)", "Q2", "Q3", "Q4 (largest)"],
     )
@@ -110,7 +110,7 @@ def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
             risk_obs=("adopt_power_this_year", "size"),
             first_adoptions=("adopt_power_this_year", "sum"),
             annual_event_rate=("adopt_power_this_year", "mean"),
-            mean_capacity_t_day=("capacity_t_day", "mean"),
+            mean_capacity_t_day=("lag_capacity_t_day", "mean"),
         )
         .reset_index()
     )
@@ -202,7 +202,15 @@ def fit_log_capacity_sensitivity(reg: pd.DataFrame) -> dict[str, object]:
         drop_first=True,
         dtype=float,
     )
-    X = sm.add_constant(pd.concat([age_dummies, log_capacity, year_dummies], axis=1))
+    elapsed_duration = (reg["elapsed_at_risk_years"] / 10.0).rename(
+        "elapsed_at_risk_10yr"
+    )
+    X = sm.add_constant(
+        pd.concat(
+            [age_dummies, log_capacity, elapsed_duration, year_dummies],
+            axis=1,
+        )
+    )
     y = reg["adopt_power_this_year"].astype(float)
     model = fit_logit_hazard(X, y, groups=reg["analysis_facility_id"])
     return {
@@ -214,6 +222,25 @@ def fit_log_capacity_sensitivity(reg: pd.DataFrame) -> dict[str, object]:
         "capacity_pvalue": float(model.pvalues["log1p_capacity_t_day"]),
         "age_signs_negative": all(float(model.params[var]) < 0 for var in AGE_VARIABLES),
     }
+
+
+def build_same_year_incumbent_means(
+    regression: pd.DataFrame,
+    events: pd.DataFrame,
+) -> pd.Series:
+    """Return annual means for generators incumbent before each observed cohort."""
+    incumbent_rows = regression.merge(
+        events[["analysis_facility_id", "event_year"]],
+        on="analysis_facility_id",
+        how="left",
+    )
+    incumbent_rows = incumbent_rows[
+        incumbent_rows["event_year"].isna()
+        | incumbent_rows["fiscal_year"].gt(incumbent_rows["event_year"])
+    ]
+    return incumbent_rows.groupby("fiscal_year")[
+        "energy_efficiency_mwh_per_t"
+    ].mean()
 
 
 def build_post_adoption_bridge(
@@ -298,14 +325,7 @@ def build_post_adoption_bridge(
         .groupby("analysis_facility_id", as_index=False)
         .first()
     )
-    incumbents = regression.merge(events, on="analysis_facility_id", how="left")
-    incumbents = incumbents[
-        incumbents["event_year"].isna()
-        | incumbents["fiscal_year"].lt(incumbents["event_year"])
-    ]
-    incumbent_year_means = incumbents.groupby("fiscal_year")[
-        "energy_efficiency_mwh_per_t"
-    ].mean()
+    incumbent_year_means = build_same_year_incumbent_means(regression, events)
     first_post["same_year_incumbent_mean"] = first_post["fiscal_year"].map(
         incumbent_year_means
     )
@@ -337,14 +357,147 @@ def build_post_adoption_bridge(
     return event_time, summary
 
 
+def build_post_adoption_trajectories(
+    panel: pd.DataFrame,
+    adoption: pd.DataFrame,
+    pathway_audit: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, int | float]]:
+    """Describe entrant performance and rank for the first four event-time years."""
+    adoption_aug = adoption.sort_values(
+        ["analysis_facility_id", "fiscal_year"]
+    ).copy()
+    group = adoption_aug.groupby("analysis_facility_id", sort=False)
+    adoption_aug["lag_fiscal_year"] = group["fiscal_year"].shift(1)
+    adoption_aug["lag_throughput_t_year"] = group["throughput_t_year"].shift(1)
+    events = adoption_aug.loc[
+        adoption_aug["adopt_power_this_year"].eq(1),
+        [
+            "analysis_facility_id",
+            "fiscal_year",
+            "lag_fiscal_year",
+            "lag_throughput_t_year",
+        ],
+    ].rename(columns={"fiscal_year": "event_year"})
+    events["exact_prior_year"] = events["event_year"].sub(
+        events["lag_fiscal_year"]
+    ).eq(1)
+    events["prior_operating_status"] = np.select(
+        [
+            events["exact_prior_year"]
+            & events["lag_throughput_t_year"].gt(0),
+            events["exact_prior_year"],
+        ],
+        ["Operating prior year", "Zero/missing prior throughput"],
+        default="No exact prior-year row",
+    )
+    pathway = pathway_audit[
+        ["analysis_facility_id", "fiscal_year", "pathway_category"]
+    ].rename(columns={"fiscal_year": "event_year"})
+    events = events.merge(
+        pathway,
+        on=["analysis_facility_id", "event_year"],
+        how="left",
+    )
+
+    regression = build_regression_frame(panel)
+    regression["within_year_rank_pct"] = regression.groupby("fiscal_year")[
+        "log_efficiency"
+    ].rank(method="average", pct=True)
+    trajectories = events.merge(regression, on="analysis_facility_id", how="left")
+    trajectories["event_time"] = trajectories["fiscal_year"] - trajectories["event_year"]
+    trajectories = trajectories[trajectories["event_time"].between(0, 3)].copy()
+
+    incumbent_means = build_same_year_incumbent_means(regression, events)
+    trajectories["incumbent_mean_mwh_t"] = trajectories["fiscal_year"].map(
+        incumbent_means
+    )
+    trajectories["entrant_minus_incumbent_mwh_t"] = (
+        trajectories["energy_efficiency_mwh_per_t"]
+        - trajectories["incumbent_mean_mwh_t"]
+    )
+
+    def summarize(grouped: pd.core.groupby.DataFrameGroupBy, series: str) -> pd.DataFrame:
+        table = grouped.agg(
+            rows=("analysis_facility_id", "size"),
+            events=("analysis_facility_id", "nunique"),
+            mean_mwh_t=("energy_efficiency_mwh_per_t", "mean"),
+            sd_mwh_t=("energy_efficiency_mwh_per_t", "std"),
+            mean_rank_pct=("within_year_rank_pct", "mean"),
+            sd_rank_pct=("within_year_rank_pct", "std"),
+            mean_incumbent_mwh_t=("incumbent_mean_mwh_t", "mean"),
+            mean_difference_mwh_t=("entrant_minus_incumbent_mwh_t", "mean"),
+        ).reset_index()
+        table["se_mwh_t"] = table["sd_mwh_t"] / np.sqrt(table["rows"])
+        table["se_rank_pct"] = table["sd_rank_pct"] / np.sqrt(table["rows"])
+        table["series"] = series
+        return table.drop(columns=["sd_mwh_t", "sd_rank_pct"])
+
+    overall = summarize(trajectories.groupby("event_time"), "All entrants")
+    by_status = summarize(
+        trajectories.groupby(["event_time", "prior_operating_status"]),
+        "Prior operating status",
+    )
+    by_pathway = summarize(
+        trajectories.loc[trajectories["event_time"].eq(0)].groupby(
+            ["event_time", "pathway_category"]
+        ),
+        "Pathway at entry",
+    )
+    table = pd.concat(
+        [overall, by_status, by_pathway],
+        ignore_index=True,
+        sort=False,
+    )
+    ordered = [
+        "series",
+        "prior_operating_status",
+        "pathway_category",
+        "event_time",
+        "rows",
+        "events",
+        "mean_mwh_t",
+        "se_mwh_t",
+        "mean_rank_pct",
+        "se_rank_pct",
+        "mean_incumbent_mwh_t",
+        "mean_difference_mwh_t",
+    ]
+    table = table.reindex(columns=ordered)
+    summary = {
+        "trajectory_rows": int(len(trajectories)),
+        "events_represented": int(trajectories["analysis_facility_id"].nunique()),
+        "event_time_zero_mean_rank_pct": float(
+            trajectories.loc[trajectories["event_time"].eq(0), "within_year_rank_pct"].mean()
+        ),
+        "event_time_three_mean_rank_pct": float(
+            trajectories.loc[trajectories["event_time"].eq(3), "within_year_rank_pct"].mean()
+        ),
+        "event_time_zero_mean_difference_mwh_t": float(
+            trajectories.loc[
+                trajectories["event_time"].eq(0),
+                "entrant_minus_incumbent_mwh_t",
+            ].mean()
+        ),
+        "event_time_three_mean_difference_mwh_t": float(
+            trajectories.loc[
+                trajectories["event_time"].eq(3),
+                "entrant_minus_incumbent_mwh_t",
+            ].mean()
+        ),
+    }
+    return table, summary
+
+
 def write_transition_figure_data(
     capacity_result: dict[str, object],
+    active_conversion_result: dict[str, object],
     exit_result: dict[str, object],
 ) -> str:
     """Write the model-derived point and interval data used by Figure 2."""
     rows = []
     for outcome, result in [
-        ("Capacity entry", capacity_result),
+        ("Broad asset entry", capacity_result),
+        ("Active conversion", active_conversion_result),
         ("Panel exit", exit_result),
     ]:
         for row in result["marginal_effects"].itertuples(index=False):
@@ -373,6 +526,7 @@ def build_design_matrix(
     include_year_fe: bool = True,
     include_pref_fe: bool = True,
     include_duration: bool = False,
+    include_technology: bool = False,
 ) -> tuple[pd.DataFrame, pd.Series]:
     """Build the shared design matrix used by the adoption estimators."""
     age_dummies = pd.get_dummies(
@@ -383,9 +537,20 @@ def build_design_matrix(
     )
     parts = [age_dummies, reg[["lag_capacity_100t"]]]
     if include_duration:
-        duration = reg[["risk_duration_years"]].copy()
-        duration["risk_duration_years"] = duration["risk_duration_years"] / 10.0
-        parts.append(duration.rename(columns={"risk_duration_years": "risk_duration_10yr"}))
+        duration = (reg["elapsed_at_risk_years"] / 10.0).rename(
+            "elapsed_at_risk_10yr"
+        )
+        parts.append(duration)
+    if include_technology:
+        parts.append(
+            reg[
+                [
+                    "lag_continuous_operation",
+                    "lag_gasification_melting",
+                    "lag_n_furnaces",
+                ]
+            ]
+        )
     if include_year_fe:
         parts.append(
             pd.get_dummies(
@@ -574,13 +739,24 @@ def fit_reported_logit_spec(
     include_year_fe: bool = True,
     include_pref_fe: bool = True,
     include_duration: bool = False,
+    include_technology: bool = False,
 ) -> dict[str, object]:
     """Fit one reported logit specification and return compact diagnostics."""
+    reg = reg.copy()
+    if include_technology:
+        reg = reg.dropna(
+            subset=[
+                "lag_continuous_operation",
+                "lag_gasification_melting",
+                "lag_n_furnaces",
+            ]
+        ).copy()
     X, y = build_design_matrix(
         reg,
         include_year_fe=include_year_fe,
         include_pref_fe=include_pref_fe,
         include_duration=include_duration,
+        include_technology=include_technology,
     )
     model = fit_logit_hazard(X, y, groups=reg["analysis_facility_id"])
     marginal_effects = compute_logit_average_marginal_effects(model)
@@ -593,6 +769,7 @@ def fit_reported_logit_spec(
         "pseudo_r2": model_pseudo_r2(model),
         "diagnostics": sparse_event_diagnostics(reg, X),
         "includes_duration": include_duration,
+        "includes_technology": include_technology,
     }
 
 
@@ -644,14 +821,16 @@ def run_adoption_hazard(adoption_model: pd.DataFrame):
     Estimate a discrete-time first-adoption hazard with lagged predictors.
 
     The main specification uses a parsimonious clustered discrete-time logit
-    with year fixed effects. The saturated year + prefecture fixed-effects
-    model is retained as sensitivity evidence because the event count is modest.
+    with year fixed effects and true elapsed at-risk duration. The saturated
+    year + prefecture fixed-effects model is retained as sensitivity evidence
+    because the event count is modest.
     """
     result = fit_reported_logit_spec(
         adoption_model.copy(),
-        label="Main exact-year logit: year FE only",
+        label="Main coded-asset entry: exact-year, year FE + elapsed duration",
         include_year_fe=True,
         include_pref_fe=False,
+        include_duration=True,
     )
     reg = result["reg"]
     model = result["model"]
@@ -724,14 +903,45 @@ def write_results(
             }
         )
     model_table = pd.DataFrame(model_rows)
+    active_result = transition_diagnostics["active_conversion_result"]
+    active_rows = []
+    for variable in REPORTED_VARIABLES:
+        row = active_result["marginal_effects"].loc[
+            active_result["marginal_effects"]["variable"] == variable
+        ].iloc[0]
+        active_rows.append(
+            {
+                "Variable": AGE_LABEL_MAP[variable],
+                "AME (pp)": f"{row['ame'] * 100:.2f}{significance_stars(float(row['pvalue']))}",
+                "SE (pp)": f"({row['se'] * 100:.2f})",
+                "p-value": f"{row['pvalue']:.4g}",
+            }
+        )
+    active_table = pd.DataFrame(active_rows)
+    technology_result = transition_diagnostics["technology_result"]
+    technology_rows = []
+    for variable in REPORTED_VARIABLES:
+        row = technology_result["marginal_effects"].loc[
+            technology_result["marginal_effects"]["variable"] == variable
+        ].iloc[0]
+        technology_rows.append(
+            {
+                "Variable": AGE_LABEL_MAP[variable],
+                "AME (pp)": f"{row['ame'] * 100:.2f}{significance_stars(float(row['pvalue']))}",
+                "SE (pp)": f"({row['se'] * 100:.2f})",
+            }
+        )
+    technology_table = pd.DataFrame(technology_rows)
 
     with open(path, "w", encoding="utf-8") as f:
         f.write("# Extensive-Margin Results: Installed-Generation-Capacity Entry\n\n")
         f.write(
             "This stage models first observed reporting of positive installed "
             "power-generation capacity among coded facilities first observed without "
-            "it, separating the entry margin from conditional generator "
-            "performance.\n\n"
+            "it. The primary estimand is broad coded-asset entry, which can include "
+            "commissioning, rebuild, inactive, and in-place pathways. A separate "
+            "positive-prior-throughput sensitivity targets conversion among operating "
+            "non-generators.\n\n"
         )
         f.write("## Risk Set\n\n")
         f.write(
@@ -789,15 +999,24 @@ def write_results(
             f"{summary['adoption_model_drop_additional_missing_rows']:,} "
             f"({summary['adoption_model_drop_additional_missing_facilities']:,} facilities)\n\n"
         )
+        f.write(
+            f"- Exact-lag events with zero or missing prior-year throughput: "
+            f"{summary['adoption_nonpositive_prior_throughput_events']:,} of "
+            f"{summary['adoption_model_events']:,}\n"
+        )
+        f.write(
+            f"- Exact-lag rows where elapsed fiscal duration differs from observed-row "
+            f"count: {summary['adoption_duration_row_count_mismatch']:,}\n\n"
+        )
 
-        f.write("## Event Rates by Facility Age Band\n\n")
+        f.write("## Exact-Lag Event Rates By Prior-Year Facility Age Band\n\n")
         f.write(
             age_table.assign(
                 mean_capacity_t_day=lambda df: df["mean_capacity_t_day"].map(lambda x: f"{x:.1f}"),
                 annual_event_rate_pct=lambda df: df["annual_event_rate_pct"].map(lambda x: f"{x:.2f}"),
             ).rename(
                 columns={
-                    "age_band": "Age band",
+                    "lag_age_band": "Prior-year age band",
                     "risk_obs": "Risk-set obs",
                     "first_adoptions": "Capacity-entry events",
                     "mean_capacity_t_day": "Mean capacity (t/day)",
@@ -807,14 +1026,14 @@ def write_results(
         )
         f.write("\n\n")
 
-        f.write("## Event Rates by Capacity Quartile\n\n")
+        f.write("## Exact-Lag Event Rates By Prior-Year Capacity Quartile\n\n")
         f.write(
             cap_table.assign(
                 mean_capacity_t_day=lambda df: df["mean_capacity_t_day"].map(lambda x: f"{x:.1f}"),
                 annual_event_rate_pct=lambda df: df["annual_event_rate_pct"].map(lambda x: f"{x:.2f}"),
             ).rename(
                 columns={
-                    "capacity_quartile": "Capacity quartile",
+                    "capacity_quartile": "Prior-year capacity quartile",
                     "risk_obs": "Risk-set obs",
                     "first_adoptions": "Capacity-entry events",
                     "mean_capacity_t_day": "Mean capacity (t/day)",
@@ -828,7 +1047,8 @@ def write_results(
         f.write(
             "Main specification: exact one-fiscal-year lagged discrete-time logit hazard "
             "with prior-year age band and prior-year design capacity, fiscal-year "
-            "indicators, and facility-clustered standard errors. The more saturated "
+            "indicators, true elapsed at-risk duration, and facility-clustered standard "
+            "errors. The more saturated "
             "year + prefecture fixed-effects model is retained as sensitivity "
             "evidence because entry events are sparse. Reported effects "
             "are average marginal effects in percentage points. Baseline "
@@ -854,22 +1074,42 @@ def write_results(
             f"positive in both (cloglog coef. {cloglog_robustness.params['lag_capacity_100t']:.3f}; "
             f"LPM coef. {lpm_robustness.params['lag_capacity_100t'] * 100:.2f} pp).\n\n"
         )
-        duration_results = [
-            result for result in [previous_observed_result, *robustness_results]
-            if result.get("includes_duration")
-        ]
-        if duration_results:
-            duration_result = duration_results[0]
-            duration_model = duration_result["model"]
-            duration_coef = float(duration_model.params["risk_duration_10yr"])
-            duration_p = float(duration_model.pvalues["risk_duration_10yr"])
-            f.write(
-                "- Duration robustness: adding elapsed at-risk duration in 10-year "
-                "units to the exact-year year-FE hazard preserves the expected age "
-                "and capacity sign pattern. The duration coefficient is "
-                f"{duration_coef:.3f}{significance_stars(duration_p)} "
-                f"(p={duration_p:.3g}).\n\n"
-            )
+        duration_coef = float(model.params["elapsed_at_risk_10yr"])
+        duration_p = float(model.pvalues["elapsed_at_risk_10yr"])
+        f.write(
+            "- Elapsed-duration term: actual fiscal years since first at-risk "
+            "observation, in 10-year units. The coefficient is "
+            f"{duration_coef:.3f}{significance_stars(duration_p)} "
+            f"(p={duration_p:.3g}). This is distinct from the number of observed "
+            "coded rows.\n\n"
+        )
+
+        f.write("## Operating Non-Generator Conversion Sensitivity\n\n")
+        f.write(
+            "This frame requires positive throughput in the prior fiscal year. It "
+            "therefore removes commissioning or inactive rows that do not represent "
+            "an operating non-generator immediately before observed capacity entry. "
+            f"The model contains {len(active_result['reg']):,} facility-years across "
+            f"{active_result['reg']['analysis_facility_id'].nunique():,} facilities "
+            f"and {int(active_result['reg']['adopt_power_this_year'].sum()):,} events. "
+            "It uses the same year indicators, elapsed-duration term, and clustered "
+            "uncertainty as the primary asset-entry model.\n\n"
+        )
+        f.write(active_table.to_markdown(index=False))
+        f.write(
+            "\n\n*Interpretation: scale selectivity is evaluated across both frames. "
+            "Age effects are reported as frame-specific rather than treated as a "
+            "universal retrofit gradient.*\n\n"
+        )
+
+        f.write("## Prior-Technology Sensitivity\n\n")
+        f.write(
+            "A secondary coded-asset model adds prior-year continuous-operation "
+            "status, gasification/melting status, and number of furnaces. It is a "
+            "configuration sensitivity rather than the sparse-event headline model.\n\n"
+        )
+        f.write(technology_table.to_markdown(index=False))
+        f.write("\n\n")
 
         f.write("### Adoption specification sensitivity\n\n")
         sensitivity_rows = []
@@ -893,9 +1133,10 @@ def write_results(
         f.write(pd.DataFrame(sensitivity_rows).to_markdown(index=False))
         f.write(
             "\n\n"
-            "*Interpretation: the exact-year year fixed-effects model is the main "
-            "specification because it preserves annual transition timing while "
-            "reducing sparse-event pressure. The saturated exact-year year + "
+            "*Interpretation: the exact-year year-indicator model with true elapsed "
+            "duration is the main specification because it preserves calendar timing "
+            "and time-at-risk while limiting sparse-event pressure. The saturated "
+            "exact-year year + "
             "prefecture fixed-effects model and the broader previous-observed-coded-row "
             "model are reported as sensitivity checks.*\n\n"
         )
@@ -1005,6 +1246,57 @@ def write_results(
         )
         f.write("\n\n")
 
+        trajectory_table = transition_diagnostics["post_adoption_trajectory_table"]
+        trajectory_summary = transition_diagnostics[
+            "post_adoption_trajectory_summary"
+        ]
+        overall_trajectory = trajectory_table[
+            trajectory_table["series"].eq("All entrants")
+        ].copy()
+        f.write("### Early post-entry performance trajectory\n\n")
+        f.write(
+            f"The trajectory diagnostic contains {trajectory_summary['trajectory_rows']:,} "
+            f"generator observations across {trajectory_summary['events_represented']:,} "
+            "entry events. Within-year percentile rank is reported so that entrants "
+            "are compared with generators observed under the same fiscal-year "
+            "conditions. The diagnostic is descriptive and does not estimate an "
+            "entry treatment effect.\n\n"
+        )
+        f.write(
+            overall_trajectory.assign(
+                event_time=lambda df: df["event_time"].astype(int),
+                mean_mwh_t=lambda df: df["mean_mwh_t"].map(lambda x: f"{x:.3f}"),
+                mean_rank_pct=lambda df: df["mean_rank_pct"].map(
+                    lambda x: f"{x * 100:.1f}"
+                ),
+                mean_incumbent_mwh_t=lambda df: df["mean_incumbent_mwh_t"].map(
+                    lambda x: f"{x:.3f}"
+                ),
+                mean_difference_mwh_t=lambda df: df["mean_difference_mwh_t"].map(
+                    lambda x: f"{x:+.3f}"
+                ),
+            )[
+                [
+                    "event_time",
+                    "events",
+                    "mean_mwh_t",
+                    "mean_rank_pct",
+                    "mean_incumbent_mwh_t",
+                    "mean_difference_mwh_t",
+                ]
+            ].rename(
+                columns={
+                    "event_time": "Years from entry",
+                    "events": "Events represented",
+                    "mean_mwh_t": "Entrant mean MWh/t",
+                    "mean_rank_pct": "Mean within-year percentile",
+                    "mean_incumbent_mwh_t": "Same-year incumbent mean",
+                    "mean_difference_mwh_t": "Entrant minus incumbent",
+                }
+            ).to_markdown(index=False)
+        )
+        f.write("\n\n")
+
         f.write("## Transition Pathway Audit\n\n")
         f.write(
             "A conservative event-level audit classifies each observed adoption "
@@ -1037,9 +1329,10 @@ def write_results(
         f.write(event_years.rename("Capacity-entry events").to_markdown())
         f.write(
             "\n\n"
-            "*Interpretation: first reporting of positive installed generation capacity is more common "
-            "among facilities that were younger and larger in the previous fiscal year "
-            "under the exact-year model. The pathway audit suggests that capital-side "
+            "*Interpretation: the exact-lag models distinguish broad coded-asset entry "
+            "from conversion among operating non-generators. Scale selectivity is "
+            "reported across both frames, while age patterns are interpreted against "
+            "their stated risk-set definition. The pathway audit suggests that capital-side "
             "modernization is empirically present in adjacent-year events, but the evidence "
             "is not reducible to one identified mechanism such as replacement alone.*\n"
         )
@@ -1047,7 +1340,7 @@ def write_results(
 
 def main():
     panel, adoption, adoption_model, previous_observed_model, pathway_audit, summary = load_adoption_data()
-    age_table, cap_table = event_tables(adoption)
+    age_table, cap_table = event_tables(adoption_model)
     main_result = run_adoption_hazard(adoption_model)
     model = main_result["model"]
     reg = main_result["reg"]
@@ -1063,6 +1356,24 @@ def main():
         previous_observed_model,
         label="Previous observed coded row: year FE + prefecture FE",
     )
+    active_conversion_frame = adoption_model[
+        adoption_model["lag_throughput_t_year"].gt(0)
+    ].copy()
+    active_conversion_result = fit_reported_logit_spec(
+        active_conversion_frame,
+        label="Operating non-generator conversion: year FE + elapsed duration",
+        include_year_fe=True,
+        include_pref_fe=False,
+        include_duration=True,
+    )
+    technology_result = fit_reported_logit_spec(
+        adoption_model,
+        label="Coded-asset entry: duration + prior technology controls",
+        include_year_fe=True,
+        include_pref_fe=False,
+        include_duration=True,
+        include_technology=True,
+    )
     robustness_results = [
         fit_reported_logit_spec(
             adoption_model,
@@ -1072,10 +1383,9 @@ def main():
         ),
         fit_reported_logit_spec(
             adoption_model,
-            label="Exact-year: year FE + duration term",
+            label="Exact-year: year FE only",
             include_year_fe=True,
             include_pref_fe=False,
-            include_duration=True,
         ),
         fit_reported_logit_spec(
             adoption_model,
@@ -1093,9 +1403,10 @@ def main():
     positive_output_adoption, positive_output_model = build_positive_output_sensitivity(panel)
     positive_output_result = fit_reported_logit_spec(
         positive_output_model,
-        label="Exact-year positive-output event: year FE",
+        label="Exact-year positive-output event: year FE + elapsed duration",
         include_year_fe=True,
         include_pref_fe=False,
+        include_duration=True,
     )
     exit_frame = build_panel_exit_frame(adoption)
     exit_universe = summarize_panel_exit_universe(adoption)
@@ -1112,19 +1423,39 @@ def main():
     ].clip(upper=capacity_p99)
     p99_capacity_result = fit_reported_logit_spec(
         p99_capacity_frame,
-        label="Exact-year: capacity capped at p99 + year FE",
+        label="Exact-year: p99 capacity + year FE + elapsed duration",
         include_year_fe=True,
         include_pref_fe=False,
+        include_duration=True,
     )
     log_capacity_result = fit_log_capacity_sensitivity(adoption_model)
     post_adoption_table, post_adoption_summary = build_post_adoption_bridge(panel, adoption)
-    figure2_path = write_transition_figure_data(main_result, exit_result)
+    post_adoption_trajectory_table, post_adoption_trajectory_summary = (
+        build_post_adoption_trajectories(panel, adoption, pathway_audit)
+    )
+    figure2_path = write_transition_figure_data(
+        main_result,
+        active_conversion_result,
+        exit_result,
+    )
     post_adoption_path = os.path.join(OUTPUT_DIR, "post_adoption_bridge.csv")
     post_adoption_table.to_csv(post_adoption_path, index=False, float_format="%.10g")
+    post_adoption_trajectory_path = os.path.join(
+        OUTPUT_DIR,
+        "post_adoption_trajectories.csv",
+    )
+    post_adoption_trajectory_table.to_csv(
+        post_adoption_trajectory_path,
+        index=False,
+        float_format="%.10g",
+    )
     transition_diagnostics = {
         "positive_output_adoption": positive_output_adoption,
         "positive_output_model": positive_output_model,
         "positive_output_result": positive_output_result,
+        "active_conversion_frame": active_conversion_frame,
+        "active_conversion_result": active_conversion_result,
+        "technology_result": technology_result,
         "exit_frame": exit_frame,
         "exit_universe": exit_universe,
         "exit_result": exit_result,
@@ -1133,6 +1464,8 @@ def main():
         "log_capacity_result": log_capacity_result,
         "post_adoption_table": post_adoption_table,
         "post_adoption_summary": post_adoption_summary,
+        "post_adoption_trajectory_table": post_adoption_trajectory_table,
+        "post_adoption_trajectory_summary": post_adoption_trajectory_summary,
     }
     pathway_summary = pathway_summary_table(pathway_audit)
 
@@ -1161,6 +1494,7 @@ def main():
     print(f"Saved: {audit_path}")
     print(f"Saved: {figure2_path}")
     print(f"Saved: {post_adoption_path}")
+    print(f"Saved: {post_adoption_trajectory_path}")
 
     marginal_effect_meta = {
         row["variable"]: {
@@ -1183,6 +1517,7 @@ def main():
             "output/adoption_pathway_audit.csv",
             "output/figure2_transition_effects.csv",
             "output/post_adoption_bridge.csv",
+            "output/post_adoption_trajectories.csv",
         ],
         metadata={
             "risk_set_obs": int(len(adoption)),
@@ -1192,6 +1527,12 @@ def main():
             "model_obs": int(len(reg)),
             "model_facilities": int(reg["analysis_facility_id"].nunique()),
             "model_events": int(reg["adopt_power_this_year"].sum()),
+            "model_events_zero_or_missing_prior_throughput": int(
+                summary["adoption_nonpositive_prior_throughput_events"]
+            ),
+            "elapsed_duration_row_count_mismatch": int(
+                summary["adoption_duration_row_count_mismatch"]
+            ),
             "previous_observed_model_obs": int(len(previous_observed_model)),
             "previous_observed_model_facilities": int(
                 previous_observed_model["analysis_facility_id"].nunique()
@@ -1217,6 +1558,7 @@ def main():
                 "uncertainty_method": "cluster_robust_marginal_effect",
                 "predictors_lagged_exact_one_year": True,
                 "fixed_effects": ["fiscal_year"],
+                "elapsed_at_risk_duration": True,
                 "saturated_year_prefecture_fe_retained_as_sensitivity": True,
                 "baseline_prior_year_age_band": "0-10 yrs",
                 "coefficients": {
@@ -1233,6 +1575,43 @@ def main():
                 },
                 "average_marginal_effects": marginal_effect_meta,
                 "pseudo_r_squared": manifest_float(pseudo_r2),
+            },
+            "active_operating_conversion_sensitivity": {
+                "definition": "positive prior-year throughput",
+                "model_obs": int(len(active_conversion_result["reg"])),
+                "model_facilities": int(
+                    active_conversion_result["reg"]["analysis_facility_id"].nunique()
+                ),
+                "model_events": int(
+                    active_conversion_result["reg"]["adopt_power_this_year"].sum()
+                ),
+                "average_marginal_effects": {
+                    row["variable"]: {
+                        "ame": manifest_float(row["ame"]),
+                        "se": manifest_float(row["se"]),
+                        "pvalue": manifest_float(row["pvalue"]),
+                    }
+                    for _, row in active_conversion_result["marginal_effects"].iterrows()
+                },
+            },
+            "technology_adjusted_entry_sensitivity": {
+                "controls": [
+                    "prior continuous-operation indicator",
+                    "prior gasification/melting indicator",
+                    "prior number of furnaces",
+                ],
+                "model_obs": int(len(technology_result["reg"])),
+                "model_events": int(
+                    technology_result["reg"]["adopt_power_this_year"].sum()
+                ),
+                "average_marginal_effects": {
+                    row["variable"]: {
+                        "ame": manifest_float(row["ame"]),
+                        "se": manifest_float(row["se"]),
+                        "pvalue": manifest_float(row["pvalue"]),
+                    }
+                    for _, row in technology_result["marginal_effects"].iterrows()
+                },
             },
             "cloglog_robustness": {
                 "type": "discrete_time_cloglog",
@@ -1314,6 +1693,10 @@ def main():
                 key: manifest_float(value) if isinstance(value, float) else int(value)
                 for key, value in post_adoption_summary.items()
             },
+            "post_adoption_trajectories": {
+                key: manifest_float(value) if isinstance(value, float) else int(value)
+                for key, value in post_adoption_trajectory_summary.items()
+            },
             "specification_sensitivity": [
                 {
                     "label": result["label"],
@@ -1327,13 +1710,20 @@ def main():
                         result["marginal_effects"]
                     ),
                     "includes_duration": bool(result.get("includes_duration", False)),
+                    "includes_technology": bool(
+                        result.get("includes_technology", False)
+                    ),
                     "duration_coefficient": (
-                        manifest_float(result["model"].params["risk_duration_10yr"])
+                        manifest_float(
+                            result["model"].params["elapsed_at_risk_10yr"]
+                        )
                         if result.get("includes_duration")
                         else None
                     ),
                     "duration_pvalue": (
-                        manifest_float(result["model"].pvalues["risk_duration_10yr"])
+                        manifest_float(
+                            result["model"].pvalues["elapsed_at_risk_10yr"]
+                        )
                         if result.get("includes_duration")
                         else None
                     ),

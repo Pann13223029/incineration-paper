@@ -13,7 +13,7 @@
   ],
   "metadata": {
     "failed_checks": 0,
-    "passed_checks": 14,
+    "passed_checks": 21,
     "source_manifest_python": [
       "3.12.12"
     ]

@@ -6,14 +6,14 @@ Use this script with `paper/share/paper-zoom-briefing.pdf`. The deck has 20 live
 
 Reset the audience with this sentence:
 
-> The paper is not asking whether young and large plants have advantages. It asks whether modernization spreads broadly through the lagging fleet or remains selective and bounded.
+> The paper tests where scale and age patterns survive: across all coded assets, among active non-generators, and after facilities enter generation.
 
 The audience should leave understanding four things:
 
 - Why the topic matters: incineration creates heat, but energy recovery is uneven.
 - What the paper argues: one fleet average hides two different questions.
 - Why the method matters: risk-set framing and generator-only comparison prevent the two questions from being mixed.
-- What feedback is needed: whether the two-bottleneck explanation is strong enough and which limitation or future-work path matters most.
+- What feedback is needed: whether the two-margin framing and broad-versus-active distinction are convincing, and which future-work path matters most.
 
 ## Audience Calibration
 
@@ -21,7 +21,7 @@ Use the same slides, but adjust the speaking depth:
 
 - Default to no prior knowledge. Explain the practical problem first, then define technical terms only when they become necessary.
 - If the audience has prior knowledge of waste management or energy policy, move faster through slides 2-4 and spend more time on slides 5-9, because the design choice is the main defensibility point.
-- If the audience knows Japanese energy policy, mention that the 2011 split is around the Great East Japan Earthquake and Fukushima Daiichi nuclear accident, but avoid turning the presentation into a Fukushima policy talk.
+- If the audience knows Japanese energy policy, explain that FY2010-FY2012 official codes are missing; the early/later coded windows overlap the Fukushima period but do not identify a Fukushima effect.
 - If the audience is statistically trained, describe the models as diagnostic panel regressions and robustness checks, not causal identification.
 - If time is short, keep the core route: slides 1-4, 6-9, 10-11, 13-15, 18-20.
 
@@ -32,7 +32,7 @@ Use these plain-language translations whenever the audience looks uncertain:
 - Waste incineration: burning municipal waste in a controlled facility.
 - Energy recovery: using heat from incineration to make useful electricity.
 - Fleet: the whole group of facilities being studied, not one plant.
-- Entry: a facility first starts reporting electricity generation in the observed data.
+- Entry: a facility first reports positive installed generation capacity in the observed data.
 - Generator: a facility that reports electricity generation.
 - MWh/t: megawatt-hours of electricity per tonne of waste processed; in plain terms, electricity output per amount of waste.
 - Throughput: how much waste a facility processes.
@@ -55,7 +55,7 @@ Use these plain-language translations whenever the audience looks uncertain:
 
 Thank you for joining. This is a paper briefing, not a full thesis defense. The formal paper title is on the slide, but the plain-language version is simpler: where does energy recovery stall inside Japan's waste-incineration fleet?
 
-I will explain the problem, the data, the method, the two main results, and the limits of the claim. The main goal is to test whether the paper's two-bottleneck story is clear and defensible.
+I will explain the problem, the data, the method, the two main results, and the limits of the claim. The main goal is to test whether the two-margin story and the broad-versus-active entry distinction are clear and defensible.
 
 Transition: I will start with why this matters, then move quickly into how the data are structured.
 
@@ -65,7 +65,7 @@ Japan relies heavily on municipal waste incineration. In plain language, that me
 
 Burning waste creates heat. Some facilities use that heat to generate electricity. Others burn waste but do not recover electricity from the heat.
 
-In FY2024, only 41.1 percent of panel facilities are flagged as power-generating. That means the same waste-treatment process can either recover useful power or miss that opportunity.
+In FY2024, the official national summary reports that 415 of 991 facilities, or 41.9 percent, generated electricity. The reconstructed analytical panel has a slightly different denominator, so I use 41.9 percent for national context.
 
 The paper asks where useful electricity recovery appears inside the existing fleet.
 
@@ -75,9 +75,9 @@ If the audience already knows Japan relies heavily on incineration, do not dwell
 
 This slide is important because the result could sound too obvious if phrased badly.
 
-I am not asking the listener to be surprised that young and large plants have advantages. That part is expected.
+I am not asking the listener to be surprised that scale or technology vintage may matter. The stronger question is whether those associations survive when I change the candidate population.
 
-The stronger question is whether energy-recovery modernization spreads broadly through older and smaller lagging facilities, or whether it mostly appears where conditions are already favorable.
+The paper distinguishes broad asset entry from conversion among plants that were actually operating in the prior year, then asks where entrants sit in the generator distribution.
 
 Transition: That leads to the paper's structure: one fleet, but two questions.
 
@@ -85,7 +85,7 @@ Transition: That leads to the paper's structure: one fleet, but two questions.
 
 The main idea is that one fleet average hides two different bottlenecks. By "fleet," I mean the whole group of municipal incineration facilities in the data.
 
-First, which plants start generating electricity? That is the entry bottleneck. "Entry" means a plant first starts reporting electricity generation in the observed data.
+First, which facilities first report positive installed generation capacity? That is the entry margin. Capacity reporting usually maps to output, but the event itself is not a verified retrofit date.
 
 Second, among generators, who produces more electricity per tonne? That is the performance bottleneck. "MWh per tonne" means electricity output per amount of waste processed.
 
@@ -97,7 +97,7 @@ Transition: To do that, the data need to be split carefully rather than pushed i
 
 The data source is Japan's Ministry of the Environment General Waste Treatment Survey. This is administrative data, meaning it comes from official facility reporting rather than from interviews or a small case study.
 
-The panel covers FY2005 to FY2024 and uses facility-level municipal waste-treatment records. A panel means repeated observations over time. The main fields are power-generation status, electricity output, throughput, facility age, design capacity, fiscal year, prefecture, heating value, and grid-emission context.
+The panel covers FY2005 to FY2024 and uses facility-level municipal waste-treatment records. A panel means repeated observations over time. The main fields are installed generation capacity, electricity output, throughput, facility age, design capacity, fiscal year, heating value, furnace type, operating mode, facility type, and furnace count.
 
 If needed, define two terms here. Throughput means how much waste the facility processes. Capacity means how much waste the facility is designed to process.
 
@@ -111,11 +111,11 @@ The full analytical starting point is 23,599 facility-year rows. One facility-ye
 
 Within the coded full-fleet frame, there are 2,948 identifiable facilities.
 
-The start-generating frame has 13,770 at-risk facility-years across facilities first observed without generation. It contains 141 first-entry events.
+The broad entry frame has 13,770 at-risk facility-years and 141 observed events. The exact-year model retains 98 events. Because 40 of those follow zero or missing prior-year throughput, I also estimate an active-conversion frame with 9,215 rows and 58 events.
 
 The generator-output frame has 5,683 observations among identifiable operating generators.
 
-This split is methodological, but the idea is simple. The first frame studies crossing into electricity generation. The second frame studies output intensity after a facility is already inside generation.
+This split is methodological, but the idea is simple. The first comparison studies broad asset entry, the second narrows entry to active plants, and the generator frame studies output intensity after entry.
 
 Transition: The split prevents the analysis from mixing adoption with performance.
 
@@ -123,7 +123,7 @@ Transition: The split prevents the analysis from mixing adoption with performanc
 
 The two samples are linked but not identical. A sample is just the group of observations used to answer a particular question.
 
-For the start-generating question, the sample is facilities first observed without generation. The outcome is first report of power generation.
+For the entry question, the sample is facilities first observed without positive installed capacity. The outcome is first positive capacity, with a narrower model for facilities processing waste in the prior year.
 
 For the generator-output question, the sample is already-operating generators. The outcome is electricity generated per tonne processed.
 
@@ -137,11 +137,11 @@ The first method is a risk-set design. The plain meaning of "risk set" is: which
 
 Only non-generators can first start generating. Facilities already generating in their first observed year are left-censored for this question.
 
-The model asks for the probability of first generation in a given year using prior-year age and prior-year capacity, plus year and prefecture controls. This matters because it describes the facility before first entry, not after entry.
+The model asks for the probability of first installed capacity in a given year using prior-year age and capacity, fiscal-year indicators, and actual elapsed fiscal time at risk. This matters because it describes the facility before entry and handles gaps in observed facility codes correctly.
 
 In plain language, the model asks: among facilities still outside power generation, who first reports generation in the next fiscal year?
 
-Do not overexplain the model. The important point is timing: predictors are measured before entry.
+The broad model can include commissioning, rebuild, or inactive-asset pathways. The active model requires positive throughput in the previous fiscal year. Do not overexplain the equation; emphasize that these are different candidate populations.
 
 ## Slide 9: Method: Output Among Generators
 
@@ -149,41 +149,43 @@ The second method is a generator-only comparison. In plain language, after looki
 
 The outcome is electricity recovered per tonne processed. This focuses on output intensity, not just whether a plant has any power generation.
 
-The models compare age, scale, utilization, heating value, grid context, and year structure. For a non-technical audience, you do not need to name every model. Say: I check the result using several reasonable statistical setups.
+The primary model compares age/vintage, scale, utilization, and heating value within common fiscal years while adjusting for furnace type, operating mode, facility type, and furnace count.
 
-If the audience is technical, add: I check pooled OLS, year fixed effects, random effects, and year fixed effects plus random effects.
+If the audience is technical, add: the primary specification is year- and technology-adjusted OLS with facility-clustered standard errors; pooled and random-effects models are a supplemental estimator ladder.
 
-The interpretation is diagnostic, not causal. The critical question is whether operating generators converge enough to erase inherited facility differences.
+The interpretation is diagnostic, not causal. Age is an age/vintage comparison across plants in the same year, not the effect of making one plant older.
 
 For a technical audience, add: the robustness checks ask whether the age, scale, and utilization pattern survives alternative model structures.
 
-## Slide 10: Result 1: Entry Clusters in Young, Large Facilities
+## Slide 10: Result 1: Scale Is Robust; Age Depends on the Frame
 
-The first result is selective entry.
+Figure 2 shows three outcomes side by side. In the broad asset-entry model,
+capacity has a +0.45 percentage-point average marginal effect per 100 tonnes per
+day. In the active-conversion model, it is +0.44. Scale selectivity is therefore
+the stable entry result.
 
-The figure shows that facilities first starting electricity generation are mostly young and large.
+The broad age differences are -1.41, -1.45, and -0.83 percentage points relative
+to ages zero to ten. In the active frame they shrink to -0.67, -0.56, and -0.29.
+Only the first active age difference is clearly distinguishable from zero.
 
-Out of 141 observed first-entry events, 102 come from facilities aged 0 to 10 years, and 99 are in the largest capacity quartile.
+Transition: The next slide explains why changing the candidate population changes
+the age story.
 
-For a non-specialist audience, translate this as: new electricity generation does not appear everywhere equally. It appears mainly among plants that already have favorable conditions.
+## Slide 11: Interpretation: The Risk Set Changes the Story
 
-Transition: The next slide explains why this is not merely the obvious point that newer plants are better.
+Forty of the 98 broad exact-year events follow zero or missing prior-year
+throughput. These can include commissioning, rebuild, inactive-asset, or
+reporting pathways rather than conversion of a plant that was actively processing
+waste one year earlier.
 
-## Slide 11: Interpretation: Not Broad Fleet Catch-Up
+This is the contribution beyond common sense. Scale remains important across
+both populations, but the statement that older operating plants rarely convert
+is too strong. The age gradient partly reflects which pathways are admitted to
+the broad risk set.
 
-This slide explains why the result is more than common sense.
-
-Young facilities have a much higher annual event rate: 5.94 percent for age 0 to 10. "Annual event rate" means how often facilities in that group newly start reporting generation in a given year.
-
-Facilities age 30 or more have an annual event rate of only 0.27 percent. On the capacity side, the smallest quartile has an annual event rate of 0.03 percent, while the largest quartile has 3.11 percent. A quartile is one-fourth of the facilities after sorting them by size.
-
-The smallest capacity quartile records only one first-entry event, while the largest quartile records 99.
-
-So the evidence does not look like broad late-life catch-up across the whole fleet. It looks like selective modernization.
-
-The key wording for the meeting is: this is not "new plants are better"; it is "catch-up is not broad across lagging plants."
-
-If the audience challenges the obviousness of the result, use this sentence: the expected part is age and scale advantage; the contribution is showing that the lagging fleet does not broadly catch up on the entry margin.
+Use this sentence if challenged: the paper does not merely report an age
+advantage; it demonstrates that the age result is population-dependent while the
+scale result is robust.
 
 ## Slide 12: Entry Pathways: Modernization, Not One Mechanism
 
@@ -205,29 +207,40 @@ The point is not that older plants can never improve. The point is that simply e
 
 Transition: The next slide checks whether performance gaps are mostly within the same facilities over time, or mostly between different facilities.
 
-## Slide 14: Interpretation: Performance Gaps Persist
+## Slide 14: Interpretation: Ranks Persist Across Coded Years
 
 The within-to-total variance ratio is 0.1499 in the full sample. That phrase sounds technical, so translate it immediately: only about 15 percent of output variation is movement within the same facility over time. Most variation is between different facilities.
 
-The 2011 split needs one sentence of context. The split is around the Great East Japan Earthquake and Fukushima Daiichi nuclear accident, which changed Japan's energy-system context after 2011. In this deck, the comparison is FY2005 to FY2011 versus FY2012 to FY2024.
+Official facility codes are missing in FY2010 to FY2012. The paper therefore
+compares an early coded window, FY2005 to FY2009, with a later coded window,
+FY2013 to FY2024. The within-to-total ratio falls from 0.1795 to 0.0956.
 
-The post-2011 ratio is lower, at 0.0956. That means the same basic pattern remains after the Fukushima-era energy-system shock: most variation still sits between facilities.
+This gap overlaps the period around the Great East Japan Earthquake and Fukushima
+Daiichi accident, but it is not a pre/post Fukushima treatment design. The code
+gap prevents that causal interpretation.
 
-Be careful with the wording. This is not a causal claim that Fukushima caused the pattern. It is a robustness and context check showing that the performance-gap story is not limited to only one period.
-
-The audience-facing version is: becoming a generator is not the finish line; performance remains structurally uneven.
+The more direct persistence check is the adjacent-year within-year rank
+correlation: 0.9325 across 4,368 exact pairs. This shows stable observed ranking,
+not an upper bound on how much an intervention could improve a plant.
 
 ## Slide 15: Stress Tests: The Pattern Survives
 
 This slide shows why the pattern is not just a fragile coding artifact. A robustness check means repeating the analysis in reasonable alternative ways to see whether the main pattern survives.
 
-For adoption, I checked composite facility identifiers and alternative adoption models. In plain language: I checked whether the result depends on how facilities are linked or how the entry model is specified. The age penalties and positive capacity pattern remain.
+For entry, I checked composite identifiers, alternative links, capacity forms,
+prior technology, and the active-conversion risk set. Scale remains positive;
+the age result is deliberately reported as risk-set-dependent.
 
-For generator output, I checked period splits around the 2011 Fukushima context, size groups, raw-outcome checks, and heating-value restrictions. Age remains negative, while capacity and utilization remain positive.
+For generator output, the primary model adjusts for observed technology. I also
+check unclipped MWh per tonne, a thermal-conversion proxy, reported generation
+efficiency, and exact-adjacent-year lagged predictors. Age/vintage remains
+negative, while capacity and utilization remain positive.
 
 These checks do not make the estimates causal, but they make the diagnostic pattern more credible.
 
-If the audience knows the Fukushima context, say: the paper is not identifying a Fukushima treatment effect; the split is used to see whether the generator-performance pattern survives a major energy-system breakpoint.
+If the audience knows the Fukushima context, say: the missing-code years mean the
+paper cannot identify a Fukushima treatment effect; early and later coded windows
+are descriptive robustness checks only.
 
 ## Slide 16: Data Limits: Disclosed and Tested
 
@@ -243,23 +256,27 @@ These limitations discipline the claim. The paper maps bottlenecks and stress-te
 
 Transition: These limits matter because they shape what kind of decision logic the paper can support.
 
-## Slide 17: Why the Split Matters for Decisions
+## Slide 17: What Happens After Entry?
 
-If the two bottlenecks are different, planning questions should also differ.
+The post-entry trajectory is the bridge between the two analyses. At event time
+zero, 125 entrants average 0.324 MWh per tonne versus 0.329 among same-year
+incumbents. Their mean same-year percentile is 51.5. Through event time three,
+the average percentile remains close to the middle of the distribution.
 
-For non-generators, ask whether the plant can start recovering electricity. For generators, ask whether the plant can recover more electricity from the same waste.
+This does not estimate an entry effect. Follow-up declines from 125 events to 71,
+and the prior-operating groups differ. The safe conclusion is that entry usually
+leads to measurable operation but does not guarantee a frontier position.
 
-Renewal, starting generation, and generator optimization are not the same task.
+## Slide 18: Contribution: Clear Empirical Boundaries
 
-For a policy-aware audience, emphasize that this is not a single policy recommendation. It is a diagnostic that separates where different interventions might be needed.
+The weak claim is that newer and larger plants have advantages. The stronger
+claim is that the evidence has useful boundaries: scale selectivity survives
+both entry frames, the age gradient depends on the risk set, and entry does not
+automatically place a facility at the top of the generator distribution.
 
-## Slide 18: Contribution: Two Bottlenecks in One Fleet
-
-The weak claim is: newer and larger plants generate more. That sounds plausible, but it is not enough for a paper.
-
-The defensible claim is: the fleet has two bottlenecks. Starting generation is selective, and generator output remains uneven after entry.
-
-That is the paper's contribution: mapping where the bottleneck sits.
+For planning, broad asset entry, active conversion, and post-entry performance
+should be treated as separate diagnostic questions before choosing an
+intervention.
 
 Transition: The current paper maps the bottlenecks. The next research step would test mechanisms.
 
@@ -275,8 +292,8 @@ Do not overpromise here. Present these as next research paths, not completed res
 
 ## Slide 20: Discussion Questions
 
-The paper's message is: first ask who starts generating electricity, then ask who generates well after starting.
+The paper's message is: distinguish broad asset entry from active conversion, then evaluate performance after generation begins.
 
 The feedback I need is targeted.
 
-Is the two-bottleneck explanation strong enough as the paper's central contribution? Which limitation most needs to become a robustness check? Which future-work path is most publishable: capital renewal, governance, lifecycle accounting, or comparative fleet evidence?
+Is the three-outcome framing convincing? Is the broad-versus-active entry distinction clear enough? Which future-work path is most publishable: capital renewal, governance, lifecycle accounting, or comparative fleet evidence?

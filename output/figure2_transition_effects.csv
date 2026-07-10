@@ -1,8 +1,12 @@
 outcome,variable,label,ame_pp,se_pp,ci_low_pp,ci_high_pp,pvalue
-Capacity entry,age_10-20 yrs,Prior-year age 10-20 yrs (vs 0-10),-1.6676345,0.24744576,-2.1526282,-1.1826408,1.5904818e-11
-Capacity entry,age_20-30 yrs,Prior-year age 20-30 yrs (vs 0-10),-1.9357111,0.38945912,-2.699051,-1.1723712,6.6864951e-07
-Capacity entry,age_30+ yrs,Prior-year age 30+ yrs (vs 0-10),-1.2367498,0.3761491,-1.974002,-0.49949758,0.0010092893
-Capacity entry,lag_capacity_100t,Prior-year capacity (per 100 t/day),0.4536838,0.15441973,0.15102113,0.75634647,0.0033034643
+Broad asset entry,age_10-20 yrs,Prior-year age 10-20 yrs (vs 0-10),-1.4149494,0.21422993,-1.8348401,-0.99505879,3.9800893e-11
+Broad asset entry,age_20-30 yrs,Prior-year age 20-30 yrs (vs 0-10),-1.4499798,0.33266955,-2.1020121,-0.79794744,1.3088587e-05
+Broad asset entry,age_30+ yrs,Prior-year age 30+ yrs (vs 0-10),-0.82571936,0.34620591,-1.5042829,-0.14715577,0.017076674
+Broad asset entry,lag_capacity_100t,Prior-year capacity (per 100 t/day),0.44605871,0.1533797,0.14543449,0.74668293,0.0036351687
+Active conversion,age_10-20 yrs,Prior-year age 10-20 yrs (vs 0-10),-0.66848616,0.20745021,-1.0750886,-0.26188375,0.001271245
+Active conversion,age_20-30 yrs,Prior-year age 20-30 yrs (vs 0-10),-0.56343206,0.30465753,-1.1605608,0.033696693,0.064400819
+Active conversion,age_30+ yrs,Prior-year age 30+ yrs (vs 0-10),-0.29205637,0.29926778,-0.87862121,0.29450848,0.32911246
+Active conversion,lag_capacity_100t,Prior-year capacity (per 100 t/day),0.43758099,0.085265087,0.27046142,0.60470056,2.866694e-07
 Panel exit,age_10-20 yrs,Prior-year age 10-20 yrs (vs 0-10),-0.41984763,0.53631866,-1.4710322,0.63133695,0.43372553
 Panel exit,age_20-30 yrs,Prior-year age 20-30 yrs (vs 0-10),0.17573725,0.57059718,-0.94263322,1.2941077,0.75809124
 Panel exit,age_30+ yrs,Prior-year age 30+ yrs (vs 0-10),2.6037213,0.85457681,0.92875072,4.2786918,0.0023129457

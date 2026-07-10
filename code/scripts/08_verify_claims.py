@@ -107,8 +107,14 @@ def build_canonical_metrics() -> dict:
 
     age_group_summary = regression_manifest["metadata"]["age_group_summary"]
     positive_output = adoption_manifest["metadata"]["positive_output_event_sensitivity"]
+    active_conversion = adoption_manifest["metadata"][
+        "active_operating_conversion_sensitivity"
+    ]
     panel_exit = adoption_manifest["metadata"]["panel_exit_diagnostic"]
     post_entry = adoption_manifest["metadata"]["post_adoption_bridge"]
+    post_trajectory = adoption_manifest["metadata"]["post_adoption_trajectories"]
+    primary_model = regression_manifest["metadata"]["primary_model"]
+    engineering_validation = robustness_manifest["metadata"]["engineering_validation"]
     rank_persistence = regression_manifest["metadata"]["rank_persistence"]
     robustness_specs = robustness_manifest["metadata"]["specifications"]
     pathway_counts = adoption_manifest["metadata"]["pathway_audit"]["counts"]
@@ -137,6 +143,15 @@ def build_canonical_metrics() -> dict:
         "model_obs": adoption_manifest["metadata"]["model_obs"],
         "model_facilities": adoption_manifest["metadata"]["model_facilities"],
         "model_events": adoption_manifest["metadata"]["model_events"],
+        "zero_prior_throughput_events": adoption_manifest["metadata"][
+            "model_events_zero_or_missing_prior_throughput"
+        ],
+        "duration_row_count_mismatch": adoption_manifest["metadata"][
+            "elapsed_duration_row_count_mismatch"
+        ],
+        "model_pseudo_r2": adoption_manifest["metadata"]["model"][
+            "pseudo_r_squared"
+        ],
         "lag_drop_first_rows": adoption_manifest["metadata"]["lag_drop_first_rows"],
         "lag_drop_additional_missing_rows": adoption_manifest["metadata"][
             "lag_drop_additional_missing_rows"
@@ -164,6 +179,21 @@ def build_canonical_metrics() -> dict:
             ]["ame"],
             2,
         ),
+        "broad_age_ames_2dp": tuple(
+            fmt_signed_pp(age_ames[key]["ame"], 2)
+            for key in ("age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs")
+        ),
+        "active_model_obs": active_conversion["model_obs"],
+        "active_model_facilities": active_conversion["model_facilities"],
+        "active_model_events": active_conversion["model_events"],
+        "active_age_ames_2dp": tuple(
+            fmt_signed_pp(active_conversion["average_marginal_effects"][key]["ame"], 2)
+            for key in ("age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs")
+        ),
+        "active_capacity_pp_2dp": fmt_signed_pp(
+            active_conversion["average_marginal_effects"]["lag_capacity_100t"]["ame"],
+            2,
+        ),
         "positive_output_model_events": positive_output["model_events"],
         "positive_output_capacity_pp_2dp": fmt_signed_pp(
             positive_output["average_marginal_effects"]["lag_capacity_100t"]["ame"],
@@ -187,6 +217,12 @@ def build_canonical_metrics() -> dict:
         "post_entry_generator_within_three": post_entry[
             "events_in_generator_frame_within_three_years"
         ],
+        "trajectory_rows": post_trajectory["trajectory_rows"],
+        "trajectory_events": post_trajectory["events_represented"],
+        "trajectory_t0_rank_pct": post_trajectory["event_time_zero_mean_rank_pct"]
+        * 100,
+        "trajectory_t3_rank_pct": post_trajectory["event_time_three_mean_rank_pct"]
+        * 100,
         "pathway_reset": pathway_counts["Reset / rebuild-like transition"],
         "pathway_continuity": pathway_counts["In-place upgrade / continuity transition"],
         "pathway_placeholder": pathway_counts["Forward-dated / placeholder entry"],
@@ -196,6 +232,16 @@ def build_canonical_metrics() -> dict:
         "pathway_unresolved": pathway_counts["Unresolved / insufficient continuity"],
         "regression_obs": regression_manifest["metadata"]["regression_obs"],
         "regression_facilities": regression_manifest["metadata"]["regression_facilities"],
+        "primary_age": primary_model["coefficients"]["facility_age_years"],
+        "primary_capacity": primary_model["coefficients"]["capacity_100t"],
+        "primary_utilization": primary_model["coefficients"][
+            "capacity_utilization_capped"
+        ],
+        "primary_r2": primary_model["rsquared"],
+        "engineering_rows": engineering_validation["plausible_rows"],
+        "engineering_outcome_correlation": engineering_validation[
+            "thermal_reported_log_correlation"
+        ],
         "within_total_ratio": regression_manifest["metadata"]["within_total_ratio"],
         "early_ratio": regression_manifest["metadata"].get(
             "early_coded_within_total_ratio",
@@ -240,34 +286,58 @@ def make_claim_registry(metrics: dict) -> list[dict]:
             "targets": [
                 (
                     README_PATH,
-                    f"23,599 observations across 2,948 facilities",
+                    f"{fmt_int(metrics['full_panel_obs'])} rows and "
+                    f"{fmt_int(metrics['full_panel_facilities'])} coded facilities",
                 ),
                 (
                     README_PATH,
                     (
-                        f"{fmt_int(metrics['risk_set_obs'])} facility-years across "
-                        f"{fmt_int(metrics['risk_set_facilities'])} facilities, with "
-                        f"{fmt_int(metrics['events'])} installed-capacity entry events"
+                        f"{fmt_int(metrics['risk_set_obs'])} facility-years, "
+                        f"{fmt_int(metrics['risk_set_facilities'])} facilities, and "
+                        f"{fmt_int(metrics['events'])} observed events"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"{fmt_int(metrics['model_obs'])} facility-years across "
-                        f"{fmt_int(metrics['model_facilities'])} facilities and "
-                        f"{fmt_int(metrics['model_events'])} retained events"
+                        f"{fmt_int(metrics['model_obs'])} rows, "
+                        f"{fmt_int(metrics['model_facilities'])} facilities, and "
+                        f"{fmt_int(metrics['model_events'])} events"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"{metrics['adoption_age_range_1dp'][0]}–"
-                        f"{metrics['adoption_age_range_1dp'][1]} percentage points less likely"
+                        f"{fmt_int(metrics['zero_prior_throughput_events'])} of those events "
+                        "have zero or missing prior-year throughput"
                     ),
                 ),
                 (
                     README_PATH,
-                    f"{metrics['adoption_capacity_pp_2dp']} percentage points",
+                    (
+                        f"{fmt_int(metrics['active_model_obs'])} rows, "
+                        f"{fmt_int(metrics['active_model_facilities'])} facilities, and "
+                        f"{fmt_int(metrics['active_model_events'])} events"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"({metrics['adoption_capacity_pp_2dp']} and "
+                        f"{metrics['active_capacity_pp_2dp']} percentage points per 100 t/day)"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        "broad age effects of "
+                        f"{metrics['broad_age_ames_2dp'][0]}, "
+                        f"{metrics['broad_age_ames_2dp'][1]}, and "
+                        f"{metrics['broad_age_ames_2dp'][2]} percentage points attenuate to "
+                        f"{metrics['active_age_ames_2dp'][0]}, "
+                        f"{metrics['active_age_ames_2dp'][1]}, and "
+                        f"{metrics['active_age_ames_2dp'][2]}"
+                    ),
                 ),
                 (
                     README_PATH,
@@ -279,59 +349,29 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     README_PATH,
                     (
-                        f"{fmt_int(metrics['panel_exit_before_end'])} of "
-                        f"{fmt_int(metrics['panel_exit_nonadopters'])} non-entrants "
-                        f"({metrics['panel_exit_before_end_pct']:.1f}%) are last observed before FY2024"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{metrics['pathway_reset']} as reset/rebuild-like, "
-                        f"{metrics['pathway_continuity']} as continuity/in-place-upgrade-like, "
-                        f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
-                        f"{metrics['pathway_timing_ambiguous']} as timing-ambiguous non-adjacent coded-row events, "
-                        f"and {metrics['pathway_unresolved']} as unresolved"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['regression_obs'])} facility-years across "
+                        f"{fmt_int(metrics['regression_obs'])} rows across "
                         f"{fmt_int(metrics['regression_facilities'])} facilities"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"{metrics['main_age_range'][0]} to {metrics['main_age_range'][1]}"
+                        f"{fmt_signed_decimal(metrics['primary_age'], 4)} for age/vintage, "
+                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)} for capacity, and "
+                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} for utilization"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"{metrics['main_capacity_range'][0]} to {metrics['main_capacity_range'][1]}"
+                        f"{metrics['pooled_rank_correlation']:.4f} across "
+                        f"{fmt_int(metrics['rank_pairs'])} exact pairs"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"{metrics['main_util_range'][0]} to {metrics['main_util_range'][1]}"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{metrics['within_total_ratio']:.4f}, falling from "
-                        f"{metrics['early_ratio']:.4f} in {metrics['early_window_label']} to "
-                        f"{metrics['later_ratio']:.4f} in {metrics['later_window_label']}"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['rank_pairs'])} exact adjacent-year pairs "
-                        f"is {metrics['pooled_rank_correlation']:.4f}"
+                        f"{fmt_int(metrics['trajectory_rows'])}-row post-entry trajectory"
                     ),
                 ),
             ],
@@ -342,15 +382,41 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     README_PATH,
                     (
-                        f"| Capacity-entry age effect | {metrics['adoption_age_range_2dp'][0]} to "
-                        f"{metrics['adoption_age_range_2dp'][1]} percentage points vs prior-year age 0–10 |"
+                        f"| Broad asset-entry age AMEs | {metrics['broad_age_ames_2dp'][0]}, "
+                        f"{metrics['broad_age_ames_2dp'][1]}, and "
+                        f"{metrics['broad_age_ames_2dp'][2]} pp vs prior-year age 0–10 |"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"| Capacity-entry scale effect | {metrics['adoption_capacity_pp_2dp']} percentage points "
-                        "per 100 t/day of prior-year capacity |"
+                        f"| Active-conversion age AMEs | {metrics['active_age_ames_2dp'][0]}, "
+                        f"{metrics['active_age_ames_2dp'][1]}, and "
+                        f"{metrics['active_age_ames_2dp'][2]} pp; latter two not conventionally significant |"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"| Entry scale AME | {metrics['adoption_capacity_pp_2dp']} pp broad and "
+                        f"{metrics['active_capacity_pp_2dp']} pp active per 100 t/day |"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        "| Primary generator model | Age/vintage "
+                        f"{fmt_signed_decimal(metrics['primary_age'], 4)}; capacity "
+                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}; utilization "
+                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} |"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"| Early post-entry position | Mean same-year percentile "
+                        f"{metrics['trajectory_t0_rank_pct']:.1f} at event time zero and "
+                        f"{metrics['trajectory_t3_rank_pct']:.1f} at time three |"
                     ),
                 ),
                 (
@@ -407,13 +473,36 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"{metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} "
-                        "percentage points less likely to report installed-capacity entry"
+                        f"{fmt_int(metrics['zero_prior_throughput_events'])} of "
+                        f"{fmt_int(metrics['model_events'])} exact-year events have zero or missing "
+                        "prior-year throughput"
                     ),
                 ),
                 (
                     ARCHITECTURE_PATH,
-                    f"about {metrics['adoption_capacity_pp_2dp'].replace('+', '')} percentage points",
+                    (
+                        f"{fmt_int(metrics['active_model_obs'])} rows, "
+                        f"{fmt_int(metrics['active_model_facilities'])} facilities, and "
+                        f"{fmt_int(metrics['active_model_events'])} events"
+                    ),
+                ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"broad age AMEs are {metrics['broad_age_ames_2dp'][0]}, "
+                        f"{metrics['broad_age_ames_2dp'][1]}, and "
+                        f"{metrics['broad_age_ames_2dp'][2]} pp; active-conversion AMEs "
+                        f"attenuate to {metrics['active_age_ames_2dp'][0]}, "
+                        f"{metrics['active_age_ames_2dp'][1]}, and "
+                        f"{metrics['active_age_ames_2dp'][2]} pp"
+                    ),
+                ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"{metrics['adoption_capacity_pp_2dp'].replace('+', '')} pp in the broad frame and "
+                        f"{metrics['active_capacity_pp_2dp'].replace('+', '')} pp in the active frame"
+                    ),
                 ),
                 (
                     ARCHITECTURE_PATH,
@@ -439,6 +528,21 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                         f"{fmt_int(metrics['rank_pairs'])} exact adjacent-year pairs"
                     ),
                 ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, capacity "
+                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}, and utilization "
+                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)}"
+                    ),
+                ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"{fmt_int(metrics['trajectory_rows'])} observations across "
+                        f"{fmt_int(metrics['trajectory_events'])} events"
+                    ),
+                ),
             ],
         },
         {
@@ -447,36 +551,33 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     ARCHITECTURE_PATH,
                     (
-                        "| Capacity-entry hazard, prior-year age bands | Facilities older than 10 years are "
-                        f"{metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely than 0–10-year facilities "
-                        "to report positive installed capacity in the next fiscal year | p < 0.05 in every reported age-band coefficient |"
+                        f"| Broad entry hazard, prior-year age bands | "
+                        f"{metrics['broad_age_ames_2dp'][0]}, {metrics['broad_age_ames_2dp'][1]}, "
+                        f"and {metrics['broad_age_ames_2dp'][2]} pp versus ages 0–10 | All p < 0.05 |"
                     ),
                 ),
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"| Capacity-entry hazard, prior-year capacity | {metrics['adoption_capacity_pp_2dp']} pp per 100 t/day | p < 0.05 |"
+                        f"| Active-conversion age bands | {metrics['active_age_ames_2dp'][0]}, "
+                        f"{metrics['active_age_ames_2dp'][1]}, and "
+                        f"{metrics['active_age_ames_2dp'][2]} pp | Only ages 10–20 have p < 0.01 |"
                     ),
                 ),
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"| Facility age effect | {metrics['main_age_range'][0]} to {metrics['main_age_range'][1]} "
-                        "in the four main specifications | p < 0.001 in every reported main specification |"
+                        f"| Entry capacity | {metrics['adoption_capacity_pp_2dp']} pp broad; "
+                        f"{metrics['active_capacity_pp_2dp']} pp active per 100 t/day | Both p < 0.01 |"
                     ),
                 ),
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"| Design capacity effect | {metrics['main_capacity_range'][0]} to {metrics['main_capacity_range'][1]} "
-                        "in the four main specifications | Positive in every main specification |"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"| Capacity utilization effect | {metrics['main_util_range'][0]} to {metrics['main_util_range'][1]} "
-                        "in the four main specifications | Positive in every main specification |"
+                        "| Primary generator model | Age/vintage "
+                        f"{fmt_signed_decimal(metrics['primary_age'], 4)}; capacity "
+                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}; utilization "
+                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} | All p < 0.001 |"
                     ),
                 ),
             ],
@@ -539,6 +640,48 @@ def make_forbidden_patterns() -> list[dict]:
             "path": SUPPLEMENT_PATH,
             "pattern": "grid-emission factor",
             "reason": "The supplement must not describe the interpolated grid factor as a core covariate.",
+        },
+        {
+            "id": "stale_universal_age_headline_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "younger and larger facilities",
+            "reason": "The revised headline must distinguish robust scale selectivity from the frame-dependent age pattern.",
+        },
+        {
+            "id": "stale_universal_age_headline_tex",
+            "path": MANUSCRIPT_TEX_PATH,
+            "pattern": "younger and larger facilities",
+            "reason": "The LaTeX manuscript must preserve the broad-versus-active entry distinction.",
+        },
+        {
+            "id": "stale_entry_pseudo_r2_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "0.1829",
+            "reason": "The duration-adjusted broad entry model has pseudo-R2 0.1920.",
+        },
+        {
+            "id": "stale_entry_pseudo_r2_tex",
+            "path": MANUSCRIPT_TEX_PATH,
+            "pattern": "0.1829",
+            "reason": "The duration-adjusted broad entry model has pseudo-R2 0.1920.",
+        },
+        {
+            "id": "stale_persistence_overclaim_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "not easily erased",
+            "reason": "Observed rank persistence does not bound attainable intervention gains.",
+        },
+        {
+            "id": "stale_official_share_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "only 41.1%",
+            "reason": "National context must use the official FY2024 share of 41.9%; 41.1% is analytical only.",
+        },
+        {
+            "id": "stale_official_share_tex",
+            "path": MANUSCRIPT_TEX_PATH,
+            "pattern": "only 41.1\\%",
+            "reason": "National context must use the official FY2024 share of 41.9%; 41.1% is analytical only.",
         },
     ]
 
@@ -629,8 +772,15 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
             f"model {fmt_int(metrics['model_obs'])} / {fmt_int(metrics['model_facilities'])} / {fmt_int(metrics['model_events'])} events"
         ),
         (
-            f"- Capacity-entry effects: age {metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely; "
-            f"capacity {metrics['adoption_capacity_pp_2dp']} pp per 100 t/day"
+            f"- Active-conversion frame: {fmt_int(metrics['active_model_obs'])} / "
+            f"{fmt_int(metrics['active_model_facilities'])} / "
+            f"{fmt_int(metrics['active_model_events'])} events"
+        ),
+        (
+            f"- Entry effects: capacity {metrics['adoption_capacity_pp_2dp']} pp broad and "
+            f"{metrics['active_capacity_pp_2dp']} pp active; broad age "
+            f"{'/'.join(metrics['broad_age_ames_2dp'])} pp versus active age "
+            f"{'/'.join(metrics['active_age_ames_2dp'])} pp"
         ),
         (
             f"- Pathway audit: {metrics['pathway_reset']} reset/rebuild-like, "
@@ -644,6 +794,16 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
             f"{fmt_int(metrics['regression_facilities'])} facilities; within/total ratio "
             f"{metrics['within_total_ratio']:.4f} ({metrics['early_ratio']:.4f} early coded, "
             f"{metrics['later_ratio']:.4f} later coded)"
+        ),
+        (
+            f"- Primary generator model: age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, "
+            f"capacity {fmt_signed_decimal(metrics['primary_capacity'], 4)}, "
+            f"utilization {fmt_signed_decimal(metrics['primary_utilization'], 4)}; "
+            f"R2 {metrics['primary_r2']:.4f}"
+        ),
+        (
+            f"- Post-entry trajectory: {fmt_int(metrics['trajectory_rows'])} rows across "
+            f"{fmt_int(metrics['trajectory_events'])} events"
         ),
         "",
         f"## Result: {'PASS' if not failures else 'FAIL'}",
@@ -699,24 +859,27 @@ def write_claim_map(metrics: dict) -> None:
         f"- `output/regression_results.md`: canonical generator frame of {fmt_int(metrics['regression_obs'])} facility-years across {fmt_int(metrics['regression_facilities'])} facilities.",
         "- `paper/manuscript/paper.md` Sections 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
         "",
-        "## Claim 2: Installed-capacity entry is selective rather than diffuse",
+        "## Claim 2: Entry is scale-selective while its age pattern depends on the risk set",
         "",
-        "Paper claim: among coded facilities first observed without installed generation capacity, younger and larger facilities are more likely to first report positive capacity.",
+        "Paper claim: prior-year scale predicts entry in both the broad asset and active-conversion frames, while the broad age gradient attenuates when positive prior-year throughput is required.",
         "",
         "Evidence spine:",
         f"- `output/adoption_results.md`: lagged logit hazard on {fmt_int(metrics['model_obs'])} facility-years across {fmt_int(metrics['model_facilities'])} facilities and {fmt_int(metrics['model_events'])} retained events.",
-        f"- `output/adoption_results.md`: prior-year age effects range from {metrics['adoption_age_range_2dp'][0]} to {metrics['adoption_age_range_2dp'][1]} percentage points relative to age 0-10.",
-        f"- `output/adoption_results.md`: prior-year capacity effect is {metrics['adoption_capacity_pp_2dp']} percentage points per 100 t/day.",
-        "- `output/adoption_results.md` event-rate tables: event rates collapse after age 10 and rise sharply across capacity quartiles.",
+        f"- `output/adoption_results.md`: {fmt_int(metrics['zero_prior_throughput_events'])} of {fmt_int(metrics['model_events'])} exact-year events have zero or missing prior-year throughput.",
+        f"- `output/adoption_results.md`: active conversion uses {fmt_int(metrics['active_model_obs'])} rows, {fmt_int(metrics['active_model_facilities'])} facilities, and {fmt_int(metrics['active_model_events'])} events.",
+        f"- `output/adoption_results.md`: capacity is {metrics['adoption_capacity_pp_2dp']} pp broad and {metrics['active_capacity_pp_2dp']} pp active per 100 t/day.",
+        f"- `output/adoption_results.md`: broad age AMEs {'/'.join(metrics['broad_age_ames_2dp'])} pp attenuate to {'/'.join(metrics['active_age_ames_2dp'])} pp.",
+        "- `output/adoption_results.md` event-rate tables use exact-lag prior-year profiles and show strongly increasing rates across capacity quartiles.",
         "- `output/identifier_gap_audit.md`: exact one-fiscal-year lags are the main adoption frame; previous-observed-coded-row estimates are sensitivity evidence only.",
         f"- `output/adoption_results.md`: the positive-output alternative retains {fmt_int(metrics['positive_output_model_events'])} exact-year events and a {metrics['positive_output_capacity_pp_2dp']} percentage-point capacity AME.",
         "",
-        "## Claim 3: Capacity entry usually maps to observed operation, while panel exit is a competing path",
+        "## Claim 3: Capacity entry maps to operation but not automatically to superior performance",
         "",
-        "Paper claim: the capacity event is usually followed by positive output, but non-entry cannot be treated as continuous observation through FY2024.",
+        "Paper claim: capacity entry is usually followed by positive output, entrants begin near the middle of the same-year generator distribution on average, and non-entry cannot be treated as continuous observation through FY2024.",
         "",
         "Evidence spine:",
         f"- `output/post_adoption_bridge.csv`: {fmt_int(metrics['post_entry_positive_by_one'])} of {fmt_int(metrics['events'])} entrants report positive output by the following year; {fmt_int(metrics['post_entry_generator_within_three'])} enter the canonical generator frame within three years.",
+        f"- `output/post_adoption_trajectories.csv`: {fmt_int(metrics['trajectory_rows'])} observations across {fmt_int(metrics['trajectory_events'])} events; mean same-year percentile is {metrics['trajectory_t0_rank_pct']:.1f} at event time zero and {metrics['trajectory_t3_rank_pct']:.1f} at time three.",
         f"- `output/adoption_results.md`: {fmt_int(metrics['panel_exit_before_end'])} of {fmt_int(metrics['panel_exit_nonadopters'])} non-entrants ({metrics['panel_exit_before_end_pct']:.1f}%) are last observed before FY2024.",
         f"- `output/figure2_transition_effects.csv`: age 30+ panel-exit AME {metrics['panel_exit_age30_pp_2dp']} pp and capacity AME {metrics['panel_exit_capacity_pp_2dp']} pp per 100 t/day.",
         "",
@@ -729,15 +892,15 @@ def write_claim_map(metrics: dict) -> None:
         "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, timing ambiguity, and unresolved placeholder cases.",
         "- `paper/notes/claim-stack.md`: the claim stack keeps mechanism language calibrated.",
         "",
-        "## Claim 5: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement",
+        "## Claim 5: Conditional generator performance is structured after observed-technology adjustment",
         "",
-        "Paper claim: within the generator sample, age, scale, and utilization matter strongly, while most observed variation remains between facilities rather than within facilities over time.",
+        "Paper claim: within common fiscal years, gross MWh/t is lower at older-vintage plants and higher at larger, more utilized plants after adjustment for observed technology configuration.",
         "",
         "Evidence spine:",
-        "- `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.",
+        f"- `output/regression_results.md`: primary coefficients are age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, capacity {fmt_signed_decimal(metrics['primary_capacity'], 4)}, and utilization {fmt_signed_decimal(metrics['primary_utilization'], 4)}.",
         f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['early_ratio']:.4f} in the early coded window ({metrics['early_window_label']}) and {metrics['later_ratio']:.4f} in the later coded window ({metrics['later_window_label']}).",
         f"- `output/figure3_persistence.csv`: pooled adjacent-year within-year rank correlation is {metrics['pooled_rank_correlation']:.4f} across {fmt_int(metrics['rank_pairs'])} exact pairs.",
-        "- `output/robustness_results.md`: sign pattern remains stable across the reported robustness set.",
+        f"- `output/robustness_results.md`: engineering validation uses {fmt_int(metrics['engineering_rows'])} plausible rows; logged thermal conversion and reported efficiency correlate at {metrics['engineering_outcome_correlation']:.4f} and preserve the focal signs.",
         "- `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.",
         "- `output/identifier_gap_audit.md`: the canonical generator regression frame is an identifiable coded-generator panel, not a complete census of all operating generator rows.",
         "",
@@ -746,7 +909,7 @@ def write_claim_map(metrics: dict) -> None:
         "Paper claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.",
         "",
         "Evidence spine:",
-        "- `output/adoption_results.md`: installed-capacity entry is concentrated among younger and larger facilities, while older/smaller facilities are more likely to exit the coded panel.",
+        "- `output/adoption_results.md`: scale selectivity survives both risk sets, age is frame-dependent, and older/smaller facilities are more likely to exit the coded panel.",
         "- `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.",
         "- `paper/supplement/supplement.md`: the supplement explicitly records the data-quality caveats and identification limits.",
         "",

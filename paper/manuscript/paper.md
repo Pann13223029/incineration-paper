@@ -2,27 +2,29 @@
 
 ## Abstract
 
-Japan relies heavily on municipal waste incineration, yet by fiscal year (FY)
-2024 only 41.1% of facilities in the panel are flagged as power-generating.
-Fleet-average studies blur the entry of facilities into electricity recovery
-with performance among existing generators. Using Ministry of the Environment
-data for FY2005-FY2024, this paper estimates both margins in one national
-facility panel. The entry event is first observed reporting of positive
-installed generation capacity. Facilities older than ten years are less likely
-to record this event in the next fiscal year, while larger facilities are more
-likely to do so. The definition maps closely to operation: 135 of 141 entrants
-report positive electricity output by the following year. A separate diagnostic
-shows that older non-entrants are more likely to disappear from the coded panel,
-although panel exit is not verified closure. Among identifiable operating
-generators, bounded gross electricity generation per tonne is lower at older
-plants and higher at larger, more fully utilized plants. Between-facility
-heterogeneity dominates within-facility movement, and adjacent-year performance
-ranks correlate at 0.93. These linked patterns are descriptive, not causal
-estimates of one modernization mechanism. They show that installed-capacity
-entry, administrative attrition, and generator performance are distinct
-observed outcomes. Municipal fleet planning should therefore not manage
-facilities outside electricity recovery and mature generators as one average
-segment.
+Japan relies heavily on municipal waste incineration, but only 415 of 991
+facilities (41.9%) generated electricity in fiscal year (FY) 2024 according to
+the official national summary. Fleet averages blur two different margins:
+entry into electricity recovery and performance among facilities that already
+generate. Using Ministry of the Environment facility records for
+FY2005-FY2024, this paper examines both margins in one linked national panel.
+The entry event is first observed reporting of positive installed generation
+capacity. In a broad coded-asset risk set, larger prior-year capacity predicts
+entry and facilities older than ten years have lower adjusted entry
+probabilities than the 0-10-year reference group. Requiring positive prior-year
+throughput leaves the positive scale association intact but substantially
+attenuates the age gradient. This distinction matters because 40 of 98 exact-
+year events follow zero or missing prior-year throughput and may represent
+commissioning, rebuild, or inactive-asset pathways rather than conversion of an
+operating plant. Among identifiable operating generators, year- and technology-
+adjusted gross electricity generation per tonne is lower at older-vintage
+facilities and higher at larger, more fully utilized facilities. Adjacent-year
+performance ranks correlate at 0.93, while entrants occupy approximately the
+middle of the same-year generator distribution during their first four observed
+years. These are descriptive associations, not causal effects of retrofit,
+aging, or entry. They show that asset entry, active-plant conversion,
+administrative attrition, and post-entry performance are related but distinct
+fleet outcomes that should not be managed as one average segment.
 
 **Keywords:** waste incineration; waste-to-energy; Japan; energy recovery;
 facility panel; transition
@@ -32,9 +34,11 @@ facility panel; transition
 Japan operates one of the world's most incineration-dependent municipal waste
 systems, yet many facilities still burn waste without generating electricity
 from the heat they produce (Ministry of the Environment Japan, 2026; Uno, 2015;
-Tabata & Tsai, 2016; Sakai et al., 2011). In fiscal year (FY) 2024, 41.1% of
-facilities in the panel are flagged as power-generating, leaving most facilities
-outside electricity recovery. This is not a marginal technical detail. For
+Tabata & Tsai, 2016; Sakai et al., 2011). In fiscal year (FY) 2024, the official
+national summary reports that 415 of 991 incineration facilities, or 41.9%,
+generated electricity (Ministry of the Environment Japan, 2026). Most
+facilities therefore remained outside electricity generation. This is not a
+marginal technical detail. For
 decades, Japanese municipal waste governance has relied on thermal treatment for
 hygienic disposal, volume reduction, and local waste autonomy, while limited
 landfill space and strict environmental controls pushed municipalities toward
@@ -62,8 +66,8 @@ row states how the two empirical results are read together:
 
 | RQ | Margin | Question |
 |:--|:--|:--|
-| RQ1 | Entry margin | Among coded facilities first observed without installed power-generation capacity, which prior-year age and capacity profiles are associated with first observed reporting of positive installed generation capacity in the following fiscal year? |
-| RQ2 | Generator-performance margin | Among identifiable operating generators, how is electricity recovered per tonne associated with facility age, design capacity, utilization, heating value, and common fiscal-year conditions? |
+| RQ1 | Entry margin | Among coded facilities first observed without installed power-generation capacity, which prior-year age and capacity profiles are associated with first reporting positive capacity in the following fiscal year, and how do those associations change when the risk set is restricted to facilities with positive prior-year throughput? |
+| RQ2 | Generator-performance margin | Among identifiable operating generators, how is gross electricity generated per tonne associated with facility age/vintage, design capacity, utilization, heating value, and observed technology configuration within common fiscal years? |
 | Synthesis | Interpretive synthesis | Taken together, do the observed entry pattern and generator-frame performance associations support one average-fleet modernization interpretation, or do they indicate distinct adoption and performance problems within the same incineration system? |
 
 The contribution is not a causal estimate of retrofit effects or a technical
@@ -72,27 +76,30 @@ observed entry into installed generation capacity and conditional generator perf
 modeled separately before being interpreted together. The paper uses two linked
 samples: one follows facilities without installed generation capacity until they
 first report positive capacity, and the other compares identifiable operating
-generators over time. In the first sample, observed transition is selective
-toward younger and larger facilities. In the second, electricity recovery
-intensity is strongly structured by age, scale, and utilization, while
-within-facility movement remains limited relative to between-facility
-heterogeneity. The same fleet can therefore look merely slow in aggregate while
-containing two different problems: selective entry into generation and
-persistent generator hierarchy. For municipal planning, that distinction
+generators over time. The first sample further distinguishes broad coded-asset
+entry from conversion among facilities that were demonstrably operating in the
+prior year. Scale selectivity appears in both entry frames, whereas the age
+gradient is pronounced in the broad asset frame but weaker in the active-
+conversion frame. In the second sample, electricity recovery intensity is
+strongly structured by age/vintage, scale, and utilization, while within-
+facility movement remains limited relative to between-facility heterogeneity.
+The same fleet can therefore look merely slow in aggregate while containing
+different problems: entry into generation, conversion of active plants, and
+uneven performance after entry. For municipal planning, that distinction
 changes the first diagnostic step. Facilities outside electricity recovery and
 mature generators should be evaluated as different asset-management questions
 before they are summarized as one fleet.
 
-A natural expectation is that younger and larger plants will have advantages.
-The contribution is not that age and scale matter in isolation. It is that the
-same administrative fleet shows those advantages on two different margins:
-younger and larger facilities are overrepresented in installed-capacity entry,
-while operating generators remain stratified after entry. That
-two-margin structure is what an aggregate fleet mean or generator-only study
-would miss. It turns a familiar expectation into a sharper diagnostic: the
-question is not only whether newer and larger plants perform better, but whether
-the fleet's entry problem and post-entry performance problem are actually the
-same problem.
+A natural expectation is that larger and newer facilities will have advantages.
+The analysis does not present that expectation as a discovery by itself. It
+tests where the apparent advantage appears, whether it survives changes in the
+risk-set definition, and whether entry is followed by convergence within the
+generator distribution. The robust result at the entry margin is scale
+selectivity. The age result is conditional on whether the model describes all
+coded assets or operating non-generators specifically. After entry, generators
+remain stratified, but recent entrants begin near the middle of the same-year
+distribution rather than at an obvious performance frontier. That sequence is
+what an aggregate fleet mean or generator-only study would miss.
 
 ![Figure 1. Analytical design separating the source panel into entry and generator-performance margins before interpreting both margins together.](../figures/figure1_two_part_framework.png)
 
@@ -129,10 +136,18 @@ margins in one linked municipal-fleet design.
 Work on waste-to-energy systems often documents national trajectories,
 technology choices, or lifecycle implications of thermal treatment (Astrup et
 al., 2009; Astrup et al., 2015; Brunner & Rechberger, 2015; Sun et al., 2018).
-Japan-specific work has mostly emphasized technology upgrading, heat-use
-constraints, and sectoral decarbonization
-scenarios rather than facility-level transition modeling (Uno, 2015; Tabata &
-Tsai, 2016; Yamada et al., 2023). Policy-facing work reaches a similar
+Japan-specific work has emphasized technology upgrading, heat-use constraints,
+and sectoral decarbonization scenarios (Uno, 2015; Tabata & Tsai, 2016; Yamada
+et al., 2023). Two closer empirical comparators clarify the remaining gap.
+Sasao (2018) analyzes heat and electricity production at 635 Japanese waste-to-
+energy plants over FY2007-FY2015 using random-effects Tobit models and a broad
+set of policy, technology, and demographic correlates. Shino (2019) evaluates
+Japanese incinerator power-generation performance and supports electricity
+generation per unit waste input as an observable performance measure while
+showing why thermal-efficiency interpretation depends on calorific-value data.
+Neither study follows the annual first-reporting transition from no installed
+capacity into positive capacity and then links that transition to early post-
+entry position in the generator distribution. Policy-facing work reaches a similar
 conclusion from a different angle: waste-to-energy is treated as useful only
 when embedded in a wider waste hierarchy and resource-recovery strategy rather
 than as a stand-alone justification for thermal treatment (European Commission,
@@ -166,17 +181,22 @@ explicit.
 |:--|:--|:--|:--|
 | Cui et al. (2026) | Incinerators form a performance hierarchy, not a set of interchangeable plants | The Japan panel is read through facility heterogeneity and persistent hierarchy | No optimization frontier or ranking of Japanese plants on the same technical frontier |
 | Liu et al. (2025) | Waste-energy systems should be judged by effectiveness, not expansion alone | Effectiveness is split into entry into generation and performance after entry | No China-style waste-energy-carbon development model |
-| Han et al. (2025) | Resource recovery and sustainability depend on upgrade pathways, not incineration alone | The paper keeps resource-recovery framing while using variables available in the Japanese administrative panel | No pollutant-control technology model because comparable plant-level variables are unavailable |
+| Sasao (2018) | Japanese plant-level heat and electricity outcomes can be related to policy, technology, and local context in panel data | The present paper retains facility-level panel comparison but changes the first outcome to annual entry into installed generation capacity and separates it from post-entry MWh/t | No Tobit production function and no claim that the available policy covariates identify entry mechanisms |
+| Shino (2019) | Electricity generation per unit waste input is a useful observable performance indicator; thermal interpretation requires attention to heating value | Gross MWh/t is the primary operational outcome, with a heating-value-based conversion proxy and reported efficiency used as convergent validation | No claim that gross MWh/t equals net export, overall energy recovery, or a complete thermodynamic efficiency measure |
+| Han et al. (2025) | Resource recovery and sustainability depend on upgrade pathways, not incineration alone | The generator model adjusts for available furnace type, operating mode, facility type, and furnace count | No pollutant-control technology model because comparable plant-level control variables are unavailable |
 | Chen et al. (2012) and Yeh (2020) | Facility-level incinerator performance can be compared empirically after operation begins | The generator frame models electricity recovered per tonne across identifiable plants | No data envelopment analysis frontier or electricity-revenue inefficiency model |
 | Grosso et al. (2010) and Münster and Meibom (2010) | Energy recovery should be interpreted in a wider energy-system context | The paper uses gross electricity generation per tonne as an applied recovery measure | No full R1 efficiency calculation, net-export measure, lifecycle balance, or energy-system optimization model |
 
 This matters for interpretation because the paper is not trying to be a weaker
 version of any one comparator. Its foundation is a deliberate combination:
-facility heterogeneity from the high-profile incineration literature, transition
-timing from event-history methods, and conditional performance comparison from
-panel analysis. The originality claim is modest but clear: applying that
-combination to Japan shows why non-generators and operating generators should be
-read as two linked but different modernization margins.
+facility heterogeneity from high-profile incineration studies, transition timing
+from event-history methods, and conditional performance comparison from prior
+Japanese and international plant-level analyses. The originality claim is
+modest but clear: the paper changes the unit of inquiry from production among
+plants already observed with energy recovery to first observed entry among
+non-generators, then reconnects entrants to their early generator performance.
+This is an adaptation of established methods to a different estimand, not a
+claim to have invented logit hazards or panel performance regression.
 
 The lock-in literature adds a different expectation. Infrastructure performance
 may be shaped by durable design choices, inherited scale, and institutional
@@ -220,6 +240,15 @@ The two samples differ because the questions differ: non-generators reveal who
 enters electricity recovery, while generators reveal performance differences
 after entry.
 
+The official FY2024 summary and the reconstructed analytical panel should not be
+treated as interchangeable denominators. The official publication reports 415
+electricity-generating facilities among 991 incineration facilities (41.9%). In
+the row-level analytical reconstruction, 417 of 1,014 FY2024 rows have positive
+installed generation capacity (41.1%). The difference reflects reconstruction
+and classification boundaries in the facility-level files. The official 41.9%
+is used for national context; the 41.1% analytical share is reported only as a
+reproducibility diagnostic and is not presented as the official statistic.
+
 The design intentionally combines established empirical building blocks rather
 than inventing a new estimator. The adoption layer follows discrete-time
 event-history logic for a binary transition observed in annual administrative
@@ -249,8 +278,8 @@ same estimator.
 
 | Research question | Empirical frame | Main model | What it can show | What it cannot show |
 |:--|:--|:--|:--|:--|
-| RQ1: entry | Coded facilities first observed without positive installed generation capacity | Exact one-fiscal-year lagged logit hazard with fiscal-year indicators | Which prior-year age and capacity profiles are associated with first reporting positive installed generation capacity | A causal retrofit effect, a verified first operating date, a full capital-history mechanism, or unrestricted fleet-wide modernization |
-| RQ2: generator performance | Identifiable operating generators with positive throughput and power output | Logged MWh/t panel regressions using pooled, year-indicator, RE, and year-indicator + RE specifications | Whether gross electricity generated per tonne is structured by age, scale, utilization, heating value, and common year conditions | Net electricity export, full thermodynamic efficiency, or the causal effect of changing age, scale, utilization, or technology |
+| RQ1: entry | Broad coded-asset risk set; active-operation restriction as a required sensitivity | Exact one-fiscal-year lagged logit hazard with fiscal-year indicators and actual elapsed time at risk | Which prior-year age and capacity profiles are associated with first reporting positive installed capacity, and which associations survive when prior throughput must be positive | A causal retrofit effect, a verified first operating date, a full capital-history mechanism, or unrestricted fleet-wide modernization |
+| RQ2: generator performance | Identifiable operating generators with positive throughput and power output | Year- and technology-adjusted OLS for logged bounded MWh/t, with facility-clustered uncertainty | How generator performance differs across age/vintage, scale, utilization, heating value, and observed technology profiles within common fiscal years | Net electricity export, complete thermodynamic efficiency, a facility fixed-effects estimate, or the causal effect of changing a plant attribute |
 | Synthesis | The two linked but non-identical frames read together | Joint interpretation of entry and generator-performance evidence | Whether one average-fleet interpretation hides two different bottlenecks | A strict causal chain from adoption into generation to later generator performance |
 
 The first frame is the coded installed-capacity entry frame. A facility is
@@ -266,35 +295,33 @@ exact one-fiscal-year lagged subset with 98 retained events; the 42
 timing-ambiguous non-adjacent events and 1 unresolved event remain in pathway
 and sensitivity evidence rather than being forced into the headline hazard.
 
-In practical terms, the entry model asks whether a facility that still reported
-no installed generation capacity in one year first reports positive capacity in
-the following fiscal year. Technically, it is an exact one-fiscal-year lagged discrete-time logit
-hazard estimated on 10,823 observations across 1,911 facilities and 98 retained
-events. Predictors are prior-year age band and prior-year design capacity, with
-fiscal-year indicators and facility-clustered standard errors. The year
-indicators absorb common fiscal-year conditions, while clustered standard errors
-recognize that repeated rows from the same facility are not independent draws.
-A more saturated year-plus-prefecture fixed-effects model is retained as
-sensitivity evidence rather than used as the main specification because it would
-estimate 64 parameters with 98 retained events, or 1.53 events per parameter.
-The primary year-indicator model estimates 18 parameters, or 5.44 events per
-parameter. This is a parsimony choice: the headline model favors a smaller,
-auditable event-history specification over a sparse specification that absorbs
-more geographic detail but leaves little event information per parameter. The
-exact-year restriction is important because official facility codes are missing
-in FY2010-FY2012; broader previous-observed-coded-row estimates are also
-reported only as sensitivity evidence. This is an observed-transition model, not
-a complete structural model of all possible modernization pathways. The design
-follows grouped event-history logic: each coded facility-year contributes to the
-risk set until first event occurrence (Allison, 1982; Beck et al., 1998). That
-distinction matters because the paper is not estimating a continuous engineering
-retrofit process. It estimates the probability that a facility first records
-positive installed generation capacity in the next fiscal year, conditional on still being
-at risk. The lagged predictor structure ensures that age band and capacity are
-measured before the observed event rather than on the event row itself.
-As an additional guard against duration dependence, the supplement reports an
-exact-year year fixed-effects hazard that adds elapsed at-risk duration. The
-age and capacity sign pattern remains unchanged in that sensitivity.
+In practical terms, the entry model asks whether a facility that reported no
+installed generation capacity in one fiscal year first reports positive
+capacity in the next. Technically, it is an exact one-fiscal-year lagged,
+discrete-time logit hazard estimated on 10,823 observations across 1,911
+facilities and 98 retained events. Predictors are prior-year age band and design
+capacity, fiscal-year indicators, and actual elapsed fiscal time since the
+facility first entered the at-risk set. Facility-clustered standard errors
+recognize that repeated observations from the same facility are not independent
+draws. Elapsed time is measured from fiscal-year values rather than by counting
+observed rows. This matters because missing official facility codes create gaps:
+for 4,055 exact-lag observations, elapsed fiscal duration differs from the number
+of observed coded rows.
+
+The main model estimates 19 parameters, or 5.16 events per parameter. A more
+saturated year-plus-prefecture fixed-effects model is retained as sensitivity
+evidence because it estimates 64 parameters with 98 events, or 1.53 events per
+parameter. The headline model therefore favors a smaller, auditable event-
+history specification over a geographically saturated model with severe sparse-
+event pressure. The exact-year restriction is also important because official
+facility codes are missing in FY2010-FY2012; estimates using the previous
+observed coded row are reported as sensitivity evidence rather than interpreted
+as exact annual transitions. The design follows grouped event-history logic:
+each coded facility-year contributes to the risk set until first event occurrence
+(Allison, 1982; Beck et al., 1998). This is an observed-transition model, not a
+continuous engineering model or a complete account of modernization pathways.
+The lagged predictor structure ensures that facility profiles are measured
+before the observed event rather than on the event row itself.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports positive installed
 power-generation capacity in fiscal year \(t\), conditional on still being in
@@ -309,6 +336,7 @@ $$
 + \beta_2 I(\text{Age}_{i,t-1}=20\text{-}30)
 + \beta_3 I(\text{Age}_{i,t-1}\geq 30)
 + \beta_4 \text{Capacity100}_{i,t-1}
++ \delta D_{it}
 + \gamma_t
 \right].
 $$
@@ -316,30 +344,48 @@ $$
 Here, \(i\) indexes facilities, \(t\) indexes fiscal years, and \(I(\cdot)\) is
 an indicator equal to 1 when the stated condition is true. The omitted age group
 is 0-10 years. \(\gamma_t\) is a set of fiscal-year indicators that absorbs
-conditions common to all observed facilities in each year, and
+conditions common to all observed facilities in each year,
 \(\text{Capacity100}\) measures design capacity in 100 tonnes per day (t/day)
+units, and \(D_{it}\) is actual elapsed at-risk duration in ten-fiscal-year
 units. Table 2 reports average marginal effects (AMEs) in percentage points
-(pp), not log-odds coefficients. A value of -1.67 pp therefore means that the
-annual probability of first reporting positive installed capacity is 1.67 percentage points lower
-than the 0-10 year reference group, conditional on the model covariates. The
-prefecture fixed-effects variant is reported in the supplement as a sensitivity
-check rather than as the primary estimate.
+(pp), not log-odds coefficients. For example, the broad-frame AME of -1.41 pp
+for ages 10-20 means that the model-averaged annual entry probability is 1.41
+percentage points lower than for the 0-10-year reference group, holding the
+listed profiles and time terms at their observed values. The +0.45 pp capacity
+AME is the corresponding average change associated with 100 additional t/day.
+Neither number is a causal retrofit effect.
 
 Age and capacity are therefore treated as observable pre-event facility
 profiles, not isolated causal mechanisms. They may also proxy for unobserved
 municipal finance, procurement timing, consolidation, routing arrangements,
 technology vintage, or renewal planning. The adoption model is useful because
 those profiles describe which facilities are most likely to appear in observed
-installed-capacity entry; it cannot determine which institutional or engineering channel produced
-that association.
+installed-capacity entry; it cannot determine which institutional or engineering
+channel produced that association. Age deserves particular caution because a
+reported starting-year reset can make a rebuilt or recommissioned asset appear
+young. The model therefore uses the prior-year profile and does not describe an
+event by its potentially reset event-year age.
 
-Three diagnostics bound this event definition. First, an alternative hazard
+The broad model is an asset-entry estimand, not automatically an operating-plant
+retrofit estimand. Of the 98 exact-year events, 40 have zero or missing
+throughput in the prior fiscal year. They may include commissioning, rebuild,
+inactive-asset, or reporting pathways. A required active-operation sensitivity
+therefore restricts the risk set to positive prior-year throughput. It contains
+9,215 facility-years across 1,663 facilities and 58 events and uses the same year
+indicators, elapsed-duration term, and clustered uncertainty. Comparing the two
+frames is part of the interpretation: an association that appears only in the
+broad frame should not be generalized to conversion among operating non-
+generators.
+
+Four diagnostics bound this event definition. First, an alternative hazard
 defines entry by positive electricity output rather than installed capacity; it
 retains 146 exact-year events and preserves the negative age and positive scale
-pattern. Second, a post-entry bridge checks whether capacity entrants become
+pattern. Second, a prior-technology sensitivity adds continuous-operation
+status, gasification/melting status, and furnace count. Third, a post-entry
+bridge checks whether capacity entrants become
 operating generators: 128 of 141 report positive output in the event year, 135
 by the following year, and 138 within the observed event-to-three-year window.
-Third, a competing-outcome diagnostic models final disappearance from the coded
+Fourth, a competing-outcome diagnostic models final disappearance from the coded
 panel before FY2024. It is labelled panel exit rather than closure because code
 changes, consolidation, and reporting loss cannot be ruled out.
 
@@ -350,7 +396,9 @@ cleaning and electricity-recovery bounding. The operating-generation sample cont
 official facility codes and are excluded from the canonical regression frame,
 leaving 5,683 observations across 1,016 facilities. The dependent variable is
 log gross electricity generated per tonne processed. Main predictors are
-facility age, design capacity, capacity utilization, and waste heating value.
+facility age, design capacity, capacity utilization, and waste heating value;
+the primary model also adjusts for normalized furnace type, operating mode,
+facility type, and number of furnaces.
 The raw ratio divides reported electricity generation in megawatt-hours (MWh)
 by reported waste throughput in tonnes. It is clipped to 0.01-0.80 MWh/t and
 then log-transformed so that a few unusual administrative records do not
@@ -362,56 +410,54 @@ efficiency. An unclipped-log sensitivity uses the positive raw MWh/t ratio
 directly and preserves the main coefficient pattern.
 
 Let \(q_{it}\) be the clipped electricity recovery ratio and let
-\(y_{it}=\log(q_{it})\). The compact model is:
+\(y_{it}=\log(q_{it})\). The primary RQ2 model is:
 
 $$
 y_{it}
-= \alpha + X_{it}'\beta + \gamma_t + u_i + \varepsilon_{it},
+= \alpha + X_{it}'\beta + Z_{it}'\theta + \gamma_t + \varepsilon_{it},
 $$
 
 where \(X_{it}\) contains facility age, design capacity in 100 t/day units,
-capped capacity utilization, and heating value. The four reported models are
-nested descriptive versions of this equation. Model 1 omits both \(\gamma_t\)
-and \(u_i\) and compares facilities
-overall with pooled ordinary least squares (OLS). Model 2 includes fiscal-year
-indicators \(\gamma_t\), which absorb year-specific shocks common to the
-fleet. Model 3 includes a facility-specific random intercept \(u_i\), reported
-as a random-effects (RE) panel specification, which summarizes persistent
-facility-level differences. Model 4 includes both year indicators and the random
-intercept. All four models use facility-clustered standard errors to avoid
-treating repeated observations from the same facility as fully independent
-(Wooldridge, 2010).
+capped capacity utilization, and heating value; \(Z_{it}\) contains the observed
+technology-configuration controls. Fiscal-year indicators \(\gamma_t\) absorb
+conditions common to the observed fleet in each year. Ordinary least squares
+(OLS) is used because RQ2 asks for a transparent, year-adjusted cross-facility
+comparison, not a causal within-facility effect. Standard errors are clustered
+by facility (Wooldridge, 2010).
 
-The model sequence is meant as a transparent ladder, not as model shopping.
-Pooled OLS asks whether generators differ in a simple conditional comparison.
-Year indicators ask whether the same signs remain after removing common fiscal-year
-conditions. RE asks how the associations look when persistent facility-level
-differences are represented directly. The random-effects specifications are not
-used because they solve all unobserved-facility concerns. They are used because
-the paper's intensive-margin question is descriptive cross-facility structure,
-while a pure facility fixed-effects interpretation would rely on limited
-within-facility movement and would identify a different question. In particular,
-facility fixed effects are not estimated in the main table and would absorb much
-of the durable plant scale, design,
-and vintage structure that the paper is trying to describe.
-The supplement therefore adds a within-between sensitivity that separates
-facility-level means from within-facility deviations; it is a robustness shield
-for the descriptive interpretation, not a replacement for the main models.
+Facility age is calculated from fiscal year and reported starting year. Once
+fiscal-year indicators are included, its coefficient primarily contrasts
+facilities of different age and technology vintage observed in the same year.
+It cannot isolate biological-style aging from design vintage, durable technology,
+maintenance history, or governance. The paper therefore labels it an
+age/vintage association and does not interpret the coefficient as the effect of
+making one plant one year older. Similarly, capacity and technology are durable
+facility attributes that may be correlated with unobserved municipal choices.
+
+A supplemental estimator ladder reports pooled OLS, OLS with year indicators,
+random effects (RE), and year-indicator plus RE models. These variants show how
+the associations behave under different representations of common-year and
+persistent facility heterogeneity; they do not make RE exogeneity assumptions
+credible by repetition. A within-between sensitivity separates facility-level
+means from within-facility deviations. It is retained as a diagnostic, not a
+replacement estimand, because age is mechanically related to calendar time and
+because a facility fixed-effects model would absorb much of the durable scale
+and vintage structure that RQ2 is explicitly designed to describe.
+
 As a direct persistence check, the analysis also computes each facility's
 percentile rank in MWh/t within each fiscal year and correlates ranks across
 adjacent years. This quantity asks whether a relatively high-performing plant
 usually remains relatively high-performing one year later without assuming that
 the exact MWh/t level is unchanged.
 
-Because the dependent variable is logged, small coefficients can be read
-approximately as percentage changes in electricity recovered per tonne. For
-example, the pooled age coefficient of -0.0277 implies about 2.7% lower
-electricity recovered per tonne for each additional facility year, conditional
-on the listed variables. The pooled capacity coefficient of 0.0853 implies
-about 8.9% higher electricity recovered per tonne for each additional 100 t/day
-of design capacity. The random-effects models are used descriptively; they do
-not prove that unobserved facility traits are unrelated to age, capacity,
-technology, or municipal context.
+Because the dependent variable is logged, small coefficients can be read as
+approximate proportional differences. In the primary model, the age/vintage
+coefficient of -0.0329 corresponds to approximately 3.2% lower gross MWh/t per
+additional age year in a conditional cross-facility comparison. The capacity
+coefficient of 0.1103 corresponds to approximately 11.7% higher gross MWh/t per
+additional 100 t/day using \(100[\exp(0.1103)-1]\). These are model-based
+comparisons, not forecasts of the gain from changing one facility's age or
+capacity.
 
 The electricity-recovery results should therefore be read as conditional patterns within
 the canonical regression frame, not as estimates for the entire generating
@@ -427,17 +473,23 @@ a bounded electricity-recovery metric because the empirical question is not
 boiler thermodynamics in isolation, but administrative performance in
 electricity recovered per tonne processed. That puts the paper closer to applied
 energy-recovery studies than to plant-level engineering optimization alone
-(Grosso et al., 2010; Münster & Meibom, 2010).
+(Grosso et al., 2010; Münster & Meibom, 2010; Shino, 2019).
 
 Two administrative-data checks are reported in the supplement. First, a small
 set of official facility codes appears more than once within the same fiscal
 year, so a composite identifier (ID) sensitivity appends facility names to
 affected duplicate codes. Second, heating value is treated as a noisy control
-and is checked under
-plausible-value restrictions. Neither sensitivity changes the main sign pattern
-or the substantive interpretation. These checks are reported as disclosure and
-robustness evidence, not as an attempt to remove all administrative uncertainty
-from the source panel.
+and is checked under plausible-value restrictions. The resulting validation
+frame contains 4,971 rows. Two convergent outcomes are modeled with year and
+technology controls: a gross thermal-conversion proxy, calculated as gross
+MWh/t times 3.6 divided by heating value in MJ/kg, and the survey's reported
+generation-efficiency measure. Their logged values correlate at 0.8636 and both
+preserve the negative age/vintage and positive scale and utilization
+associations. An exact-adjacent-year model using lagged predictors also preserves
+the pattern. These are robustness checks, not independent experiments: both
+engineering outcomes derive from related administrative fields. The checks are
+reported as disclosure and convergent validation rather than as an attempt to
+remove all uncertainty from the source panel.
 
 Generative AI tools were used during code development and review to suggest
 implementations, test cases, documentation structure, and reproducibility
@@ -448,69 +500,78 @@ interpretations, and revisions. The tools did not autonomously acquire, alter,
 or validate the underlying administrative data.
 
 The two layers belong in one paper because they answer complementary parts of the
-same modernization problem. The adoption layer identifies which facilities
-appear to enter the generating regime. The electricity-recovery layer identifies
-whether large performance gaps remain once facilities are already inside that
-regime. Without the first layer, the paper would reduce transition to generator
-performance alone. Without the second, it would say who enters generation but
-not whether major electricity-recovery differences remain inside the generating
-segment.
+same modernization problem. The adoption layer identifies which coded assets
+appear to enter the generating regime and tests whether the result changes when
+attention is limited to active non-generators. The electricity-recovery layer
+identifies whether performance differences remain once facilities are inside
+that regime. Without the first layer, the paper would reduce transition to
+generator performance alone. Without the second, it would say who enters
+generation but not where entrants sit in the later performance distribution.
 
 The design is diagnostic rather than structural. It models observed transition
 within the coded risk set, not unrestricted fleet-wide modernization, and it
 models conditional generator performance within the canonical identifiable
 generator frame, not a causal effect of changing age, scale, utilization, or
-technology. The low within-facility variance ratio is used only to explain why
-cross-facility descriptive comparison remains informative; it does not resolve
-all fixed-effects concerns or turn the random-effects models into causal
-estimates. The defended claim is therefore narrower: under explicit sample
-limits, the two frames reveal different bottlenecks in the same fleet.
+technology. The low within-facility variance ratio is used only to describe the
+data structure; it does not resolve omitted-variable concerns or turn any model
+into a causal estimate. The defended claim is therefore narrower: under explicit
+sample limits, the frames reveal different observed margins in the same fleet.
 
 **Table 1. Linked analytical framework**
 
 | Margin | Linked sample | Empirical question | Paper role |
 |:--|:--|:--|:--|
-| Installed-capacity entry margin | Coded at-risk frame: 13,770 facility-years, 2,035 facilities, 141 observed entry events | Which facilities first report positive installed generation capacity? | Shows whether installed-capacity entry is selective rather than diffuse |
+| Installed-capacity entry margin | Broad coded risk set: 13,770 facility-years, 2,035 facilities, 141 observed events; exact-year model: 10,823 rows and 98 events | Which prior-year profiles predict broad coded-asset entry? | Identifies robust scale selectivity and a broad-frame age gradient |
+| Active-conversion sensitivity | Positive-prior-throughput exact-year frame: 9,215 rows, 1,663 facilities, 58 events | Do entry associations persist among facilities demonstrably operating one year earlier? | Shows that scale persists while the age gradient attenuates |
 | Electricity-recovery margin | Canonical generator frame: 5,683 observations across 1,016 operating generators | How does gross electricity generated per tonne vary once generation already exists? | Shows whether mature generator performance remains structured |
 | Synthesis | Two linked but non-identical analytical frames | Would one average-fleet view misstate the modernization bottleneck? | Shows why entry and mature performance should not be read as one average process |
 
-*Note: the entry margin is estimated with a lagged discrete-time hazard. The
-electricity-recovery margin is estimated with descriptive pooled,
-fiscal-year-indicator, and random-effects (RE) panel specifications. The year
-indicators are not facility fixed effects.*
+*Note: entry is estimated with lagged discrete-time hazards. Generator
+performance is estimated primarily with year- and technology-adjusted OLS;
+pooled, year-indicator, and random-effects (RE) variants are supplementary. The
+year indicators are not facility fixed effects.*
 
 ## 4. Results
 
 ### 4.1 Installed-capacity entry is selective rather than diffuse
 
-The entry results show a strongly selective pattern. In the risk set, annual
-event rates collapse after age 10 and rise sharply across capacity quartiles.
-Facilities aged 0-10 years account for 102 of 141 installed-capacity entry
-events, while the three older bands together account for 39. The largest
-capacity quartile accounts for 99 events, whereas the smallest records only 1.
-Events are also clustered in time: 109 occur in FY2013-FY2019. That clustering
-is an administrative-panel feature, not an identified policy shock or reporting
-change; the main hazard includes fiscal-year indicators. Descriptive rates and
-the pathway audit use all 141 events, whereas the main exact-year hazard retains
-98 events after requiring a one-fiscal-year lag and complete covariates.
+The most stable entry result is scale selectivity. In the exact-year risk set,
+annual event rates rise from 0.15% in the smallest prior-year capacity quartile
+to 2.49% in the largest; the largest quartile contains 62 of the 98 modeled
+events. Raw prior-year age rates are less simple: 1.97% at ages 0-10, 0.18% at
+10-20, 0.72% at 20-30, and 1.68% at 30 or more. The older raw rate partly
+reflects the broad asset risk set and should not be read as an adjusted or active-
+conversion effect. Events are also clustered in time: 109 of all 141 events
+occur in FY2013-FY2019. This is reported as an administrative-panel feature, not
+an identified policy shock; the hazard includes fiscal-year indicators.
 
-The hazard estimates summarize the same pattern as average marginal effects.
-Relative to 0-10-year facilities, those aged 10-20 years are 1.67 percentage
-points (pp) less likely to record installed-capacity entry in the next fiscal
-year. The corresponding differences are -1.94 pp for ages 20-30 and -1.24 pp
-for ages 30 or more. Each additional 100 t/day of prior-year design capacity is
-associated with a 0.45 pp higher annual entry probability. These quantities
-refer to reporting positive installed capacity, not changes in electricity
-output or engineering efficiency.
+In the broad coded-asset model, adjusted age-band AMEs are negative relative to
+the 0-10-year reference: -1.41 percentage points (pp) at ages 10-20, -1.45 pp at
+20-30, and -0.83 pp at 30 or more. Each additional 100 t/day of prior-year
+design capacity is associated with a +0.45 pp annual entry probability. The
+model contains actual elapsed at-risk duration and has a deviance-based pseudo-
+R-squared of 0.1920. These quantities refer to first reporting positive
+installed capacity, not to changes in electricity output or engineering
+efficiency.
 
-The sign pattern is stable across alternative event and capacity definitions.
-Using first positive electricity output as the event produces age effects of
--3.06 to -2.72 pp and a capacity effect of +0.67 pp per 100 t/day. The saturated
-year-plus-prefecture model, broader previous-observed-row frame,
-duration-augmented hazard, p99 capacity cap, and log-capacity specification also
-preserve negative age and positive scale associations. This agreement reduces
-concern that the headline result is created solely by the installed-capacity
-field or one influential capacity tail.
+The active-operation sensitivity changes the interpretation of age but not
+scale. After requiring positive prior-year throughput, the capacity AME remains
++0.44 pp and is precisely estimated. The age differences shrink to -0.67 pp,
+-0.56 pp, and -0.29 pp; only the first is conventionally significant at the 1%
+level, the second has p=0.064, and the oldest group has p=0.329. The defensible
+headline is therefore not that operating older plants universally fail to
+convert. It is that entry is consistently scale-selective, while the age
+gradient depends on whether the estimand includes commissioning, rebuild, or
+inactive-asset pathways.
+
+Other checks preserve the central distinction. Adding prior observed technology
+profiles to the broad model leaves the capacity AME positive (+0.34 pp) and the
+broad-frame age AMEs negative. Defining the event by first positive electricity
+output also preserves negative age and positive capacity associations. The
+saturated year-plus-prefecture model, broader previous-observed-row frame, p99
+capacity cap, and log-capacity form do not reverse the scale result. These checks
+reduce concern that scale selectivity is created by one capacity tail or by the
+installed-capacity field alone; they do not make the event mechanism causal.
 
 The pathway audit bounds rather than identifies mechanism. Of 141 events, 50
 are reset- or rebuild-like adjacent-year events, 36 are adjacent-year
@@ -532,31 +593,32 @@ closure because identifier change, consolidation, and reporting loss remain
 possible. It nevertheless shows why every non-entrant cannot be assumed to
 remain continuously observed and operating through FY2024.
 
-![Figure 2. Average marginal effects and facility-clustered 95% confidence intervals for first reporting positive installed generation capacity and final coded-panel exit. Both hazards use exact one-fiscal-year lagged predictors and fiscal-year indicators; panel exit is not equivalent to verified closure.](../figures/figure2_selective_transition.png)
+![Figure 2. Average marginal effects and facility-clustered 95% confidence intervals for broad coded-asset entry, active conversion requiring positive prior-year throughput, and final coded-panel exit. Entry hazards use exact one-fiscal-year lags, fiscal-year indicators, and actual elapsed at-risk duration. Panel exit is not equivalent to verified closure.](../figures/figure2_selective_transition.png)
 
-**Table 2. Main lagged hazard results for installed-capacity entry and coded-panel exit**
+**Table 2. Lagged hazard results for broad entry, active conversion, and coded-panel exit**
 
-| Variable | Capacity-entry AME (pp) | Panel-exit AME (pp) |
+| Variable | Broad asset-entry AME (pp) | Active-conversion AME (pp) | Panel-exit AME (pp) |
+|:--|--:|--:|--:|
+| Prior-year age 10-20 years (versus 0-10) | -1.41 (0.21) | -0.67 (0.21) | -0.42 (0.54) |
+| Prior-year age 20-30 years (versus 0-10) | -1.45 (0.33) | -0.56 (0.30) | 0.18 (0.57) |
+| Prior-year age 30+ years (versus 0-10) | -0.83 (0.35) | -0.29 (0.30) | 2.60 (0.85) |
+| Prior-year capacity (per 100 t/day) | 0.45 (0.15) | 0.44 (0.09) | -1.63 (0.32) |
+
+| Model summary | Broad asset entry | Active conversion |
 |:--|--:|--:|
-| Prior-year age 10-20 years (versus 0-10) | -1.67 (0.25) | -0.42 (0.54) |
-| Prior-year age 20-30 years (versus 0-10) | -1.94 (0.39) | 0.18 (0.57) |
-| Prior-year age 30+ years (versus 0-10) | -1.24 (0.38) | 2.60 (0.85) |
-| Prior-year capacity (per 100 t/day) | 0.45 (0.15) | -1.63 (0.32) |
+| Observations | 10,823 | 9,215 |
+| Facilities | 1,911 | 1,663 |
+| Installed-capacity entry events | 98 | 58 |
+| Pseudo-R-squared | 0.1920 | Not used for comparison |
 
-| Capacity-entry model summary | Value |
-|:--|--:|
-| Observations | 10,823 |
-| Facilities | 1,911 |
-| Installed-capacity entry events | 98 |
-| Pseudo-R-squared | 0.1829 |
-
-*Note: entries are AMEs in pp, with standard errors in parentheses, from exact
-one-fiscal-year lagged logit hazards with fiscal-year indicators and
-facility-clustered standard errors. The capacity-entry column is the main model.
-Its 98 events are the exact-year subset; the descriptive audit contains 141.
-The panel-exit diagnostic uses 12,108 facility-years, 2,022 facilities, and
-1,285 final coded-panel exits before FY2024. Exit is an administrative-panel
-outcome, not verified physical closure.*
+*Note: entries are AMEs in pp, with facility-clustered standard errors in
+parentheses. The first two columns are exact one-fiscal-year lagged logit hazards
+with fiscal-year indicators and actual elapsed at-risk duration. The active-
+conversion column additionally requires positive prior-year throughput. The 98
+broad events are the exact-year subset; the descriptive audit contains 141. The
+panel-exit diagnostic uses 12,108 facility-years, 2,022 facilities, and 1,285
+final coded-panel exits before FY2024. Exit is an administrative-panel outcome,
+not verified physical closure.*
 
 ### 4.2 Electricity recovery within generation is strongly structured
 
@@ -577,34 +639,38 @@ performance, not that operations never change or that vintage has been causally
 isolated from technology, governance, maintenance, or other durable plant
 characteristics.
 
-The coefficient patterns point in the same direction. Electricity recovery
-intensity is consistently lower at older facilities and higher at larger and
-more fully utilized ones. The
-magnitudes differ across models, but the sign pattern is stable. The emphasis is
-therefore on structured conditional association rather than on a causal estimate
-of what would happen if a plant's age, capacity, or utilization were changed by
-policy. This is consistent with earlier facility-level work showing that energy
-recovery performance is uneven across operating incinerators and that plant
-scale and operational intensity matter for output performance (Chen et al.,
-2012; Yeh, 2020; Grosso et al., 2010). What this paper adds is the linked
-comparison to the non-generating segment: the same fleet that shows selective
-entry at one margin also shows a stable hierarchy among mature generators at
-the other. The supplemental within-between sensitivity preserves the same
-directional pattern in the cross-facility component: between-facility age is
-negative, while between-facility capacity and utilization are positive.
+The primary coefficient patterns point in the same direction. Within common
+fiscal years and conditional on observed furnace type, operating mode, facility
+type, and furnace count, gross electricity recovery is lower at older-vintage
+facilities and higher at larger and more fully utilized facilities. The
+age/vintage coefficient is -0.0329, the capacity coefficient is +0.1103 per 100
+t/day, and the utilization coefficient is +0.7600. Heating value is not
+statistically distinguishable from zero in this specification. The base model
+without technology controls yields nearly the same coefficients, while the
+added controls increase R-squared from 0.3699 to 0.3830.
+
+The emphasis is on structured conditional association rather than on a forecast
+of what would happen if policy changed one plant's age, capacity, or utilization.
+This is consistent with earlier facility-level work showing that energy-recovery
+performance is uneven across operating incinerators and that plant scale and
+operational intensity matter for output performance (Chen et al., 2012; Sasao,
+2018; Shino, 2019; Yeh, 2020; Grosso et al., 2010). The supplemental within-
+between analysis preserves the same direction in the cross-facility component:
+between-facility age/vintage is negative, while between-facility capacity and
+utilization are positive.
 
 ![Figure 3. Mean bounded gross electricity generation per tonne by facility-age group with facility-clustered 95% confidence intervals, and adjacent-year within-year percentile-rank correlations.](../figures/figure3_efficiency_structure.png)
 
 The electricity-recovery margin therefore looks structured rather than static.
-Facilities vary through utilization and operating conditions, but age and scale
-hierarchies remain strong in the observed data. This is where the paper
+Facilities vary through utilization and operating conditions, but age/vintage
+and scale differences remain strong in the observed data. This is where the paper
 diverges from a simple engineering-upgrade narrative. Recent large-scale Chinese
 studies show that substantial gains can still be unlocked through technology
 upgrades, pollutant control, waste classification, and load-rate improvements,
 but they do so within already-generating systems rather than at the point of
 first entry (Liu et al., 2025; Han et al., 2025). The present results are
-consistent with persistent generator hierarchy rather than natural convergence
-after entry.
+consistent with a persistent observed generator ranking rather than automatic
+convergence after entry.
 
 This is why the intensive margin cannot be inferred from the entry margin alone.
 A facility can report installed capacity and produce electricity while still
@@ -621,53 +687,78 @@ of the same problem. The linked result makes both shortcuts inadequate. The flee
 divided between a segment that still struggles to enter generation and a segment
 where entry has occurred but performance remains uneven and structured.
 
-**Table 3. Core electricity-recovery specifications in the canonical generator frame**
+**Table 3. Primary electricity-recovery specifications in the canonical generator frame**
 
-| Variable | Model 1 Pooled OLS | Model 2 Year indicators | Model 3 RE | Model 4 Year indicators + RE |
-|:--|--:|--:|--:|--:|
-| Facility age (years) | -0.0277*** | -0.0348*** | -0.0136*** | -0.0332*** |
-|  | (0.0022) | (0.0023) | (0.0025) | (0.0021) |
-| Capacity (100 t/day) | 0.0853*** | 0.1051*** | 0.0340*** | 0.0522*** |
-|  | (0.0083) | (0.0087) | (0.0084) | (0.0096) |
-| Capacity utilization | 0.7462*** | 0.7760*** | 0.5801*** | 0.5434*** |
-|  | (0.1417) | (0.1351) | (0.1086) | (0.0939) |
-| Heating value (MJ/kg) | 0.0008 | 0.0033 | -0.0001 | 0.0012 |
-|  | (0.0023) | (0.0021) | (0.0013) | (0.0010) |
-| Observations | 5,683 | 5,683 | 5,683 | 5,683 |
-| Facilities | 1,016 | 1,016 | 1,016 | 1,016 |
-| R-squared | 0.2453 | 0.3699 | 0.1148 | 0.3074 |
+| Variable | Base year-adjusted OLS | Primary year + technology OLS |
+|:--|--:|--:|
+| Facility age/vintage (years) | -0.0348 (0.0023) | -0.0329 (0.0023) |
+| Capacity (100 t/day) | 0.1051 (0.0087) | 0.1103 (0.0101) |
+| Capacity utilization | 0.7760 (0.1351) | 0.7600 (0.1319) |
+| Heating value (MJ/kg) | 0.0033 (0.0021) | 0.0032 (0.0020) |
+| Fiscal-year indicators | Yes | Yes |
+| Technology-configuration controls | No | Yes |
+| Observations | 5,683 | 5,683 |
+| Facilities | 1,016 | 1,016 |
+| R-squared | 0.3699 | 0.3830 |
 
-*Note: OLS means ordinary least squares, RE means random effects, and MJ/kg means
-megajoules per kilogram. “Year indicators” are fiscal-year dummy variables, not
-facility fixed effects. Standard errors are clustered by facility and reported
-in parentheses. Three asterisks denote p < 0.01. Coefficients are conditional
-associations rather than structural causal parameters. Because the dependent
-variable is logged, small coefficients approximate percentage changes in gross
-electricity generated per tonne.*
+*Note: OLS means ordinary least squares and MJ/kg means megajoules per kilogram.
+Technology controls are normalized furnace type, operating mode, facility type,
+and number of furnaces. Standard errors are clustered by facility and reported
+in parentheses. In both columns, age, capacity, and utilization have p < 0.001;
+heating value has p > 0.10. Fiscal-year indicators are not facility fixed
+effects. Coefficients are conditional associations rather than structural
+causal parameters. The pooled and random-effects estimator ladder is reported in
+the supplement.*
+
+Engineering-oriented outcome checks support, but do not independently prove,
+the same pattern. In the 4,971-row plausible-value frame, models of the thermal-
+conversion proxy and reported generation efficiency retain negative age/vintage
+and positive capacity and utilization coefficients after year and technology
+adjustment. The two logged validation outcomes correlate at 0.8636 because they
+are constructed from related survey fields. An exact-adjacent-year model using
+lagged predictors also preserves all three signs. These checks show that the main
+result is not unique to the clipping rule or same-year MWh/t specification; they
+do not identify an engineering intervention effect.
 
 ### 4.3 Why the two results belong together
 
-Read together, the two margins change the modernization story. Some facilities
-still need to enter energy recovery, while others already generate but remain far
-apart in performance. The adoption results show selective entry before generator
-performance is considered. The electricity-recovery results show that large gaps
-inside the generating segment are not easily erased through within-facility
-movement alone. A one-average-fleet model would flatten those margins into a
-single modernization narrative and understate both the selectivity of entry and
-the persistence of cross-facility performance differences. The point is not that
-the two samples form one strict causal chain. It is that they locate different
-observable constraints within the same fleet: who gets into generation, and how
-far operating generators can move once they are already there.
+Read together, the two margins change the modernization story without forming a
+strict causal chain. The entry analysis shows robust scale selectivity and a
+risk-set-dependent age pattern. The generator analysis shows durable cross-
+facility performance structure after entry. A one-average-fleet model would
+obscure where each observation sits: outside generation, newly entering, or
+already generating. The evidence does not establish how far a particular
+facility could move under an intervention.
 
-The post-entry bridge makes that connection observable without claiming a causal
-sequence. Of the 141 installed-capacity entrants, 137 appear in the canonical
-operating-generator frame within three years. At their first appearance, mean
-gross electricity generation is 0.328 MWh/t, almost identical to the 0.328 MWh/t
-same-year mean among incumbent generators. Only three entrants reverse the
-capacity flag in an observed next year. Installed-capacity entry is therefore
-usually followed by measurable operation and broadly incumbent-level average
-output intensity, but it does not guarantee a superior position within the
-persistent generator hierarchy.
+The post-entry trajectory makes the empirical connection observable. Of 141
+installed-capacity entrants, 137 appear in the canonical operating-generator
+frame within three years, contributing 389 event-time observations. At event
+time zero, 125 observed entrants average 0.324 MWh/t versus 0.329 MWh/t among
+same-year incumbent generators, and their mean within-year percentile is 51.5.
+Here, an incumbent is a generator with no observed entry event or with an event
+in an earlier fiscal year.
+At event times one, two, and three, mean entrant percentiles are 54.8, 52.1, and
+52.9. The corresponding entrant-minus-incumbent mean differences are +0.009,
+-0.010, and -0.001 MWh/t. On average, entrants therefore appear near the middle
+of the contemporaneous generator distribution rather than entering at either an
+obvious frontier or a persistent bottom position.
+
+The trajectory is descriptive and increasingly selected. Events represented
+fall from 125 at event time zero to 71 at event time three, and confidence
+intervals widen. Entrants that were operating in the prior year begin below the
+median generator rank, whereas entrants with zero/missing prior throughput or no
+exact prior-year row begin higher. The pathway audit likewise places in-place
+continuity entrants below reset/rebuild-like entrants at event time zero. These
+subgroup contrasts are clues that commissioning and in-place conversion are not
+interchangeable pathways, but they are not causal estimates: the groups are
+small, selected, and defined from administrative continuity rules.
+
+![Figure 4. Early post-entry performance. Panel A compares entrants with same-year incumbent generators in gross MWh/t. Panel B reports entrants' mean within-year generator percentile by prior operating status. Points show means and bars show 95% confidence intervals; event counts decline over time.](../figures/figure4_post_entry_trajectories.png)
+
+Only three entrants reverse the capacity flag in an observed next year, and 135
+of 141 report positive output by the following year. Installed-capacity entry is
+therefore usually followed by measurable operation, but neither the event nor
+the trajectory proves that entry itself causes a facility's subsequent rank.
 
 The panel-exit diagnostic completes the interpretation on the other side. Some
 facilities observed without capacity enter, some remain observed without entry,
@@ -679,26 +770,32 @@ entry as the same outcome as subsequent performance.
 
 ## 5. Discussion
 
-The paper's main interpretive claim is methodological: in this fleet,
-installed-capacity entry and performance after entry are different problems. Modeling them
-separately prevents the non-generating segment and the mature generating segment
-from being collapsed into one muted fleet mean. That separation reveals the
-combination of selective entry and persistent hierarchy that structures the
-system.
+The paper's main interpretive claim is methodological and empirical: broad asset
+entry, conversion of an operating non-generator, and performance after entry
+are not interchangeable outcomes. Modeling them separately prevents a national
+fleet share from being mistaken for a single modernization process. It also
+reveals where an apparently intuitive result is robust and where it is not.
 
-The substantive interpretation is correspondingly two-part. On the entry
-margin, the data do not support broad late conversion among old small plants.
-Observed transition within the coded at-risk frame is concentrated among younger
-and larger facilities, and the pathway audit is more consistent with a
-capital-intensive event mix than with diffuse late-life catch-up. On the
-electricity-recovery margin, age, scale, and utilization still matter strongly
-within the canonical regression frame, while within-facility movement remains
-modest relative to the cross-sectional hierarchy. Read together, the evidence
-points more toward selective entry into installed generation capacity and
-persistent generator hierarchy than toward easy convergence once entry has
-occurred. The post-entry bridge supports continuity between the samples, while
-the panel-exit model shows that disappearance is a competing observed outcome
-for older non-generators.
+On the entry margin, larger prior-year design capacity predicts first reporting
+of generation capacity in both the broad asset frame and the positive-prior-
+throughput frame. The broad model also shows lower adjusted entry among older
+age bands, but that gradient attenuates sharply among operating non-generators.
+This is substantively important: 40 of 98 exact-year events do not follow
+positive prior-year throughput, so commissioning, rebuild, and inactive-asset
+pathways materially shape the broad result. On the generator margin,
+age/vintage, scale, and utilization remain associated with gross MWh/t after
+common-year and observed-technology adjustment, and adjacent-year ranks are
+highly correlated. The post-entry trajectory adds a third observation: entrants
+appear near the middle of the same-year generator distribution on average, not
+at an automatic performance frontier. Panel exit remains a competing observed
+administrative outcome, especially for the oldest non-generating assets.
+
+This is why the contribution is not merely the common-sense statement that new
+or large plants perform better. The analysis tests that expectation against
+alternative populations and outcomes. It finds a stable scale pattern, a frame-
+sensitive age pattern, and no automatic post-entry ranking advantage. Those
+boundaries are more informative for future causal or engineering work than a
+single fleet-average association.
 
 This makes the paper useful as a planning diagnostic rather than as an
 intervention ranking. The practical value is triage: deciding which part of the
@@ -714,34 +811,37 @@ capital-history review is worth pursuing.
 
 | Empirical pattern | Planning use | Boundary condition |
 |:--|:--|:--|
-| Younger/larger entry | Screen non-generators by age, scale, and replacement timing before assuming a simple retrofit path | Older or smaller plants are not proven unable to upgrade |
+| Scale-selective entry in both risk sets | Examine whether small non-generators have sufficient waste supply and system scale before assuming an electricity-recovery project is comparable to a large-plant project | The association does not prove that increasing capacity would cause entry |
+| Broad-frame age gradient attenuates among active plants | Separate commissioning/rebuild cases from conversion of an operating plant before using age to screen options | Older operating plants are not proven unable to convert |
 | Mixed event pathways | Check asset histories before treating adoption as one retrofit mechanism | The audit does not distinguish replacement, refurbishment, and reporting change with certainty |
 | Older/smaller panel exit | Verify closure, recoding, consolidation, or reporting status before interpreting continued non-entry | Administrative disappearance is not verified physical closure |
 | Structured generator performance | Compare generators with similar age, scale, and utilization before judging improvement room | Coefficients are conditional associations, not causal effects |
-| Persistent adjacent-year ranks | Separate incremental operating improvements from capital-renewal or consolidation decisions | High rank persistence does not prove operational gains are impossible |
+| Entrants begin near the middle of the generator distribution | Evaluate entry and later operational performance as separate milestones | The event-time trajectory is selected and does not estimate an entry effect |
 
-The interpretation has clear limits. The pathway audit does not prove that
-replacement is the unique pathway of modernization, and the regressions do not
-provide strict causal estimates of vintage lock-in or clean estimates for all
-operating generators in Japan. Alternative interpretations remain possible,
-including reporting compression, unobserved retrofit histories, unmeasured
-governance differences, and institutional constraints that limit operational
-responses. Installed capacity may not describe usable capacity, gross output
-does not equal net electricity export, heat recovery is not measured, and final
-panel exit is not verified closure. The defended claim is therefore narrower: the data support a
-selective observed-entry pattern and persistent generator performance hierarchy,
-not a uniquely identified mechanism or a full causal hierarchy. The supplement is
-used to make those limits auditable: it records the pathway rules, identifier
-sensitivity, heating-value restrictions, and estimator variants rather than
-leaving those judgments implicit.
+The interpretation has clear limits. The 58-event active-conversion model is
+sparse, and changing the risk set changes both the estimand and the population;
+the attenuation is not a formal test that the broad and active coefficients are
+equal. The pathway audit cannot prove replacement, refurbishment, or
+commissioning as a unique mechanism. The generator regression adjusts for
+observed technology configuration but not municipal finance, contracting,
+maintenance quality, waste composition, or complete retrofit history. Installed
+capacity may not describe usable capacity, gross output does not equal net
+electricity export, heat recovery is not measured, and panel exit is not verified
+closure. Post-entry follow-up declines from 125 events at time zero to 71 at time
+three, so the trajectory is vulnerable to selective observation. The defended
+claim is therefore narrower: scale-selective observed entry, a frame-dependent
+age association, and structured post-entry performance are documented outcomes,
+not a uniquely identified mechanism or intervention hierarchy. The supplement
+makes these limits auditable through pathway rules, identifier checks, outcome
+validation, and estimator variants.
 
 The results do not identify the best intervention for any individual
 municipality. They indicate that planning assessments should first distinguish
 facilities outside electricity recovery from operating generators, because the
-observable constraints differ across those two groups. For the non-generating
-energy-recovery segment, especially older non-generators and small plants, the
-evidence supports diagnostic screening for whether renewal, consolidation, or
-continued non-generation is plausible. For the already-generating segment, the
+observable constraints differ across those groups. For non-generators, the
+evidence supports checking scale, prior operation, and capital history before
+deciding whether renewal, consolidation, conversion, or continued non-generation
+is plausible. For the already-generating segment, the
 evidence supports a different diagnostic question: whether an existing generator
 has realistic room for operational or capital improvement within its observed
 age, scale, and utilization context.
@@ -755,12 +855,11 @@ segment risks hiding the difference between entry-side asset decisions, which
 are lumpy and governance-heavy, and generator performance assessment, which is
 more incremental and operational.
 
-This distinction also explains why the result is more than a restatement that
-newer or larger facilities perform better. If both margins were one common
-process, a single fleet-average modernization story would be adequate. The
-evidence instead points to two diagnostic starting points: installed-capacity
-entry is selective before performance is measured, and performance remains
-structured after entry has already occurred.
+If entry and performance were one common process, a single fleet-average
+modernization story would be adequate. The evidence instead points to three
+diagnostic starting points: whether the record represents an asset entry or an
+active conversion, whether scale makes the project structurally comparable, and
+how performance should be evaluated after generation begins.
 
 The analytical split is potentially transferable beyond Japan, but the
 coefficients are not. It is most relevant to systems where administrative data
@@ -803,23 +902,20 @@ fleet mean.
 ## 6. Conclusion
 
 In the observed facility panel, Japan's electricity-recovery modernization does
-not appear as one smooth fleet-wide process. Within the coded entry frame,
-first reporting of positive installed generation capacity is selective rather
-than diffuse, while final coded-panel exit is a competing observed outcome.
-Within the
-canonical generator frame, electricity recovery performance remains stratified
-by age, scale, and utilization, with high adjacent-year rank persistence and
-limited within-facility movement relative to between-facility differences. The
-post-entry bridge shows that most capacity entrants soon report positive output,
-without implying that entry causes superior performance. Read together, those margins show why an
-aggregate fleet view can misstate the modernization bottleneck. The paper does
-not identify one unique pathway or intervention hierarchy, but it does show why
-municipal fleet studies gain by separating adoption from conditional
-performance. The practical implication is not simply to add generation
-everywhere or optimize all current generators in the same way. For planners, the
-first question is whether renewal, consolidation, or continued non-generation is
-justified for a facility outside electricity recovery; the second is whether an
-existing generator has realistic room for operational or capital improvement.
+not appear as one smooth fleet-wide process. First reporting of positive
+installed capacity is consistently scale-selective, but its age pattern depends
+on whether the risk set includes all coded assets or only facilities operating in
+the prior year. Final coded-panel exit is a competing administrative outcome.
+Among identifiable generators, gross MWh/t remains associated with age/vintage,
+scale, and utilization after common-year and observed-technology adjustment,
+and adjacent-year ranks are highly correlated. Most capacity entrants soon
+report positive output and, on average, enter near the middle of the same-year
+generator distribution; this does not imply that entry causes their rank. The
+paper does not identify one pathway or best intervention. It shows why fleet
+assessment should first distinguish asset entry from active conversion and then
+evaluate post-entry performance separately. That sequence provides a more
+defensible foundation for later engineering, capital-history, and causal work
+than one blended fleet average.
 
 ## Acknowledgements
 
@@ -963,10 +1059,18 @@ K. (2011). International comparative study of 3R and waste management policy
 developments. *Journal of Material Cycles and Waste Management*, *13*(2),
 86-102. https://doi.org/10.1007/s10163-011-0009-x
 
+Sasao, T. (2018). How does municipal solid waste policy affect heat and
+electricity produced by incinerators? *Detritus*, *2*, 133-141.
+https://doi.org/10.31025/2611-4135/2018.13650
+
 Seto, K. C., Davis, S. J., Mitchell, R. B., Stokes, E. C., Unruh, G., &
 Urge-Vorsatz, D. (2016). Carbon lock-in: Types, causes, and policy
 implications. *Annual Review of Environment and Resources*, *41*(1), 425-452.
 https://doi.org/10.1146/annurev-environ-110615-085934
+
+Shino, Y. (2019). System analysis of MSW incinerator power generation
+performance. *Journal of the Japan Society of Material Cycles and Waste
+Management*, *30*, 113-121. https://doi.org/10.3985/jjsmcwm.30.113
 
 Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving waste
 to energy rate by promoting an integrated municipal solid-waste management

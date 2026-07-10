@@ -45,11 +45,14 @@ def style_axes(ax) -> None:
 
 def model_context(manifest: dict, outcome: str) -> str:
     metadata = manifest["metadata"]
-    if outcome == "Capacity entry":
+    if outcome == "Broad asset entry":
         return (
             f"N = {metadata['model_obs']:,}; "
             f"events = {metadata['model_events']:,}"
         )
+    if outcome == "Active conversion":
+        active = metadata["active_operating_conversion_sensitivity"]
+        return f"N = {active['model_obs']:,}; events = {active['model_events']:,}"
     exit_meta = metadata["panel_exit_diagnostic"]
     return f"N = {exit_meta['model_obs']:,}; exits = {exit_meta['events']:,}"
 
@@ -69,11 +72,12 @@ def build() -> None:
             "axes.labelsize": 10.5,
         }
     )
-    fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.6), dpi=200, sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(13.0, 4.6), dpi=200, sharey=True)
 
     panel_specs = [
-        ("Capacity entry", "A. Installed-capacity entry", "#35689a", "o"),
-        ("Panel exit", "B. Final exit from coded panel", "#b06532", "s"),
+        ("Broad asset entry", "A. Broad asset entry", "#35689a", "o"),
+        ("Active conversion", "B. Active conversion", "#2f7d68", "D"),
+        ("Panel exit", "C. Final coded-panel exit", "#b06532", "s"),
     ]
     y = np.arange(len(VARIABLE_ORDER))
     for ax, (outcome, title, color, marker) in zip(axes, panel_specs):
@@ -127,8 +131,9 @@ def build() -> None:
 
     axes[0].invert_yaxis()
     axes[0].set_xlim(-3.0, 1.2)
-    axes[1].set_xlim(-2.8, 4.8)
-    fig.tight_layout(w_pad=2.2)
+    axes[1].set_xlim(-1.5, 0.9)
+    axes[2].set_xlim(-2.8, 4.8)
+    fig.tight_layout(w_pad=1.6)
     fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight", facecolor="white")
     fig.savefig(PDF_OUT, bbox_inches="tight", facecolor="white")
     plt.close(fig)

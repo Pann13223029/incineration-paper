@@ -61,15 +61,15 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 | Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.67 | 0.25 | -1.66 | 0.25 |
-| Prior-year age 20-30 yrs | -1.94 | 0.39 | -1.89 | 0.39 |
-| Prior-year age 30+ yrs | -1.24 | 0.38 | -1.22 | 0.39 |
+| Prior-year age 10-20 yrs | -1.41 | 0.21 | -1.43 | 0.21 |
+| Prior-year age 20-30 yrs | -1.45 | 0.33 | -1.45 | 0.33 |
+| Prior-year age 30+ yrs | -0.83 | 0.35 | -0.85 | 0.35 |
 | Prior-year capacity per 100 t/day | 0.45 | 0.15 | 0.46 | 0.16 |
 
 | ID rule | Observations | Facilities | Events | Pseudo-R2 |
 |:--|--:|--:|--:|--:|
-| Official code | 10,823 | 1,911 | 98 | 0.1829 |
-| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1777 |
+| Official code | 10,823 | 1,911 | 98 | 0.1920 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1862 |
 
 ## Composite-ID Efficiency Sensitivity
 
@@ -96,4 +96,4 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 ## Interpretation
 
-The duplicate-code issue is a real data-structure concern and should be disclosed or appendix-tested. The sensitivity checks do not overturn the headline claims: adoption remains selective toward younger and larger facilities, while efficiency remains lower with age and higher with scale and utilization. Heating-value noise is likewise not driving the core age, scale, and utilization patterns because those coefficients are stable after plausible-value restrictions.
+The duplicate-code issue is a real data-structure concern and should be disclosed or appendix-tested. The sensitivity checks do not overturn the broad-frame results: the age AMEs remain negative and entry remains scale-selective. Generator performance remains lower with age/vintage and higher with scale and utilization. Heating-value noise is likewise not driving those generator associations because the coefficients are stable after plausible-value restrictions.

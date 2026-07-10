@@ -2,7 +2,7 @@
 
 ## Dominant Headline
 
-Japan's waste-incineration transition is split between **selective observed entry** on the adoption margin and **structured electricity-recovery performance** on the generator margin.
+Japan's waste-incineration transition combines **scale-selective observed entry**, a **risk-set-dependent age pattern**, and **structured post-entry electricity-recovery performance**.
 
 ## Dominant Empirical Novelty
 
@@ -14,10 +14,11 @@ That is the paper's primary originality claim.
 
 ## Core Claims In Order
 
-1. Observed transition into power generation is selective rather than diffuse.
-2. Conditional on generation, electricity recovery intensity is strongly structured by age, scale, and utilization.
-3. Cross-facility heterogeneity dominates within-facility movement over time.
-4. Planning interpretation should distinguish diagnostic screening for facilities outside electricity recovery from performance assessment among operating generators.
+1. Prior-year facility scale positively predicts installed-capacity entry in both the broad coded-asset and active-conversion risk sets.
+2. The broad-frame age gradient attenuates when positive prior-year throughput is required; age is therefore frame-specific rather than a universal operating-plant result.
+3. Conditional on generation, electricity recovery is structured by age/vintage, scale, and utilization after common-year and observed-technology adjustment.
+4. Entrants begin near the middle of the same-year generator distribution on average; entry and later performance are separate milestones.
+5. Planning interpretation should distinguish asset entry, active conversion, and performance among operating generators.
 
 ## Claim Hierarchy
 
@@ -30,15 +31,18 @@ Treat these levels differently in the manuscript.
 
 ### Level 2: Headline substantive findings
 
-- observed transition into generation is selective rather than diffuse
-- conditional generator performance is strongly structured by age,
-  scale, and utilization
+- entry is scale-selective in both risk sets
+- the age association changes materially with the risk-set definition
+- conditional generator performance is structured by age/vintage, scale, and
+  utilization after year and technology adjustment
+- entrants begin near the same-year generator distribution middle on average
 - the paper reports the FY2013-FY2019 event-timing cluster as a data feature,
   not as an identified policy shock
 
 ### Level 3: Supporting interpretive findings
 
-- cross-facility heterogeneity dominates within-facility movement
+- adjacent-year within-year ranks are highly correlated, without bounding
+  attainable plant-specific improvement
 - facilities outside electricity recovery and operating generators require
   different planning diagnostics
 - the canonical generator frame is defensible because the supplement compares
@@ -56,7 +60,7 @@ This broader lesson is a supporting payoff, not the main novelty claim.
 
 Use this sentence or stay very close to it:
 
-- `The estimates describe conditional associations within the coded adoption frame and canonical identifiable generator frame; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
+- `The estimates describe conditional associations within explicitly defined asset-entry, active-conversion, and identifiable-generator frames; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
 
 ## Claims To Avoid
 
@@ -66,6 +70,9 @@ Use this sentence or stay very close to it:
 - Japan automatically generalizes to every country
 - governance effects are directly estimated
 - the FY2013-FY2019 adoption cluster identifies a specific policy shock
+- the broad age gradient applies unchanged to operating-plant conversion
+- rank persistence establishes an upper bound on attainable improvement
+- the selected post-entry trajectory identifies an entry treatment effect
 
 ## Gap Framing Rule
 

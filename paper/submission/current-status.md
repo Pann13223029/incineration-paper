@@ -11,7 +11,7 @@ This paper workspace is a private side project derived from the defended thesis 
 | Target journal track | `Waste Management` |
 | Manuscript | Professor-review-ready near-submission draft |
 | Current review mode | Professor comprehension first; peer-review-safe wording preserved |
-| Main figures | 3 |
+| Main figures | 4 |
 | Main-text tables | 4 formal tables, plus 2 review-facing bridge maps kept for professor-review clarity |
 | Supplement | Present and updated with event-definition, panel-exit, post-entry, persistence, data-quality, and estimator diagnostics |
 | Title page, highlights, cover letter | Present |
@@ -27,10 +27,13 @@ The current repo includes:
 - operating-generator inclusion audit showing 907 uncoded operating-generator rows, concentrated in FY2010-FY2012
 - event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
 - precise main event definition as first positive installed generation capacity
-- positive-output event sensitivity with 146 exact-year events and the same age/scale pattern
+- exact elapsed fiscal duration in the main entry model rather than observed-row count
+- broad asset-entry and positive-prior-throughput active-conversion models shown together
+- 40 of 98 exact-year broad events disclosed as having zero or missing prior-year throughput
+- positive-output event sensitivity with 146 exact-year events
 - post-entry bridge showing 135 of 141 capacity entrants report positive output by the following year and 137 appear in the canonical generator frame within three years
 - competing panel-exit diagnostic covering 1,285 final coded-panel exits without equating administrative disappearance with physical closure
-- quantified FY2024 power-generation share of 41.1% in the abstract and introduction
+- official FY2024 share of 415/991 (41.9%) used for national context, with the analytic-panel 417/1,014 (41.1%) disclosed separately
 - explicit adoption-hazard and electricity-recovery regression equations in the
   main manuscript
 - review-facing comparator-adaptation and method-to-RQ bridge maps in the
@@ -42,16 +45,17 @@ The current repo includes:
   simply that age and scale matter, but that entry and post-entry performance
   show distinct fleet constraints
 - reader-facing regression guide explaining AMEs, log coefficients, fiscal-year
-  indicators, random effects, facility fixed effects as a different estimand, and clustered standard errors
+  indicators, age/vintage interpretation, technology controls, random effects as supplemental evidence, facility fixed effects as a different estimand, and clustered standard errors
 - stronger methods-defense wording explaining parsimony in the sparse adoption
   hazard and the descriptive purpose of the OLS/year-FE/RE model ladder
 - official MOE/e-Stat source citation updated to the FY2024 survey release and
   statistics code `00650101`
-- adoption-hazard duration robustness added to guard against time-at-risk
-  dependence
+- primary year- and technology-adjusted RQ2 model with furnace type, operating mode, facility type, and furnace count
+- thermal-conversion, reported-efficiency, and exact-adjacent-year lagged-predictor validation
 - within-between electricity-recovery sensitivity added to separate
   cross-facility means from within-facility deviations
 - adjacent-year percentile-rank persistence of 0.9325 across 4,368 exact pairs
+- post-entry trajectory with 389 observations across 137 events and explicit follow-up attrition
 - unclipped-log outcome sensitivity and explicit gross MWh/t and utilization definitions
 - interpolated grid emissions factor removed from the core regressions
 - supplement abbreviation guide and reviewer-response map for predictable

@@ -1,6 +1,6 @@
 # Extensive-Margin Results: Installed-Generation-Capacity Entry
 
-This stage models first observed reporting of positive installed power-generation capacity among coded facilities first observed without it, separating the entry margin from conditional generator performance.
+This stage models first observed reporting of positive installed power-generation capacity among coded facilities first observed without it. The primary estimand is broad coded-asset entry, which can include commissioning, rebuild, inactive, and in-place pathways. A separate positive-prior-throughput sensitivity targets conversion among operating non-generators.
 
 ## Risk Set
 
@@ -20,45 +20,72 @@ This stage models first observed reporting of positive installed power-generatio
 - First observed at-risk years dropped because lagged predictors are required: 2,035
 - Additional rows dropped for missing lagged age/capacity: 18 (12 facilities)
 
-## Event Rates by Facility Age Band
+- Exact-lag events with zero or missing prior-year throughput: 40 of 98
+- Exact-lag rows where elapsed fiscal duration differs from observed-row count: 4,055
 
-| Age band   |   Risk-set obs |   Capacity-entry events |   Mean capacity (t/day) |   Annual event rate (%) |
-|:-----------|---------------:|------------------------:|------------------------:|------------------------:|
-| 0-10 yrs   |           1717 |                     102 |                    59.4 |                    5.94 |
-| 10-20 yrs  |           4027 |                      14 |                    65.1 |                    0.35 |
-| 20-30 yrs  |           5071 |                      17 |                    87.1 |                    0.34 |
-| 30+ yrs    |           2933 |                       8 |                   114.2 |                    0.27 |
+## Exact-Lag Event Rates By Prior-Year Facility Age Band
 
-## Event Rates by Capacity Quartile
+| Prior-year age band   |   Risk-set obs |   Capacity-entry events |   Mean capacity (t/day) |   Annual event rate (%) |
+|:----------------------|---------------:|------------------------:|------------------------:|------------------------:|
+| 0-10 yrs              |           1322 |                      26 |                    51.6 |                    1.97 |
+| 10-20 yrs             |           3265 |                       6 |                    65.3 |                    0.18 |
+| 20-30 yrs             |           4037 |                      29 |                    88.1 |                    0.72 |
+| 30+ yrs               |           2199 |                      37 |                   116   |                    1.68 |
 
-| Capacity quartile   |   Risk-set obs |   Capacity-entry events |   Mean capacity (t/day) |   Annual event rate (%) |
-|:--------------------|---------------:|------------------------:|------------------------:|------------------------:|
-| Q1 (smallest)       |           3493 |                       1 |                    10.9 |                    0.03 |
-| Q2                  |           3763 |                       3 |                    41.7 |                    0.08 |
-| Q3                  |           3289 |                      38 |                    92.6 |                    1.16 |
-| Q4 (largest)        |           3186 |                      99 |                   200.7 |                    3.11 |
+## Exact-Lag Event Rates By Prior-Year Capacity Quartile
+
+| Prior-year capacity quartile   |   Risk-set obs |   Capacity-entry events |   Mean capacity (t/day) |   Annual event rate (%) |
+|:-------------------------------|---------------:|------------------------:|------------------------:|------------------------:|
+| Q1 (smallest)                  |           2745 |                       4 |                    11   |                    0.15 |
+| Q2                             |           2985 |                       7 |                    41.7 |                    0.23 |
+| Q3                             |           2601 |                      25 |                    92.5 |                    0.96 |
+| Q4 (largest)                   |           2492 |                      62 |                   199.6 |                    2.49 |
 
 ## Installed-Capacity Entry Hazard Model
 
-Main specification: exact one-fiscal-year lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, fiscal-year indicators, and facility-clustered standard errors. The more saturated year + prefecture fixed-effects model is retained as sensitivity evidence because entry events are sparse. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
+Main specification: exact one-fiscal-year lagged discrete-time logit hazard with prior-year age band and prior-year design capacity, fiscal-year indicators, true elapsed at-risk duration, and facility-clustered standard errors. The more saturated year + prefecture fixed-effects model is retained as sensitivity evidence because entry events are sparse. Reported effects are average marginal effects in percentage points. Baseline prior-year age band: 0-10 years.
 
 | Variable                            | AME (pp)   | SE (pp)   |
 |:------------------------------------|:-----------|:----------|
-| Prior-year age 10-20 yrs (vs 0-10)  | -1.67***   | (0.25)    |
-| Prior-year age 20-30 yrs (vs 0-10)  | -1.94***   | (0.39)    |
-| Prior-year age 30+ yrs (vs 0-10)    | -1.24**    | (0.38)    |
+| Prior-year age 10-20 yrs (vs 0-10)  | -1.41***   | (0.21)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -1.45***   | (0.33)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -0.83*     | (0.35)    |
 | Prior-year capacity (per 100 t/day) | 0.45**     | (0.15)    |
 
 - Observations: 10,823
 - Facilities: 1,911
 - Installed-capacity entry events: 98
-- Events per parameter: 5.44 (98 events / 18 parameters)
+- Events per parameter: 5.16 (98 events / 19 parameters)
 - Zero-event fiscal-year levels in main frame: 1 of 14
 - Zero-event prefecture levels in main frame: 8 of 47
-- Pseudo-R-squared (deviance-based): 0.1829
-- Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.424; LPM coef. 1.39 pp).
+- Pseudo-R-squared (deviance-based): 0.1920
+- Link robustness on the exact-year frame: complementary log-log and linear probability specifications return the same expected sign pattern on all reported terms; capacity remains positive in both (cloglog coef. 0.419; LPM coef. 1.38 pp).
 
-- Duration robustness: adding elapsed at-risk duration in 10-year units to the exact-year year-FE hazard preserves the expected age and capacity sign pattern. The duration coefficient is -1.329** (p=0.00987).
+- Elapsed-duration term: actual fiscal years since first at-risk observation, in 10-year units. The coefficient is -1.134*** (p=0.000634). This is distinct from the number of observed coded rows.
+
+## Operating Non-Generator Conversion Sensitivity
+
+This frame requires positive throughput in the prior fiscal year. It therefore removes commissioning or inactive rows that do not represent an operating non-generator immediately before observed capacity entry. The model contains 9,215 facility-years across 1,663 facilities and 58 events. It uses the same year indicators, elapsed-duration term, and clustered uncertainty as the primary asset-entry model.
+
+| Variable                            | AME (pp)   | SE (pp)   |   p-value |
+|:------------------------------------|:-----------|:----------|----------:|
+| Prior-year age 10-20 yrs (vs 0-10)  | -0.67**    | (0.21)    | 0.001271  |
+| Prior-year age 20-30 yrs (vs 0-10)  | -0.56      | (0.30)    | 0.0644    |
+| Prior-year age 30+ yrs (vs 0-10)    | -0.29      | (0.30)    | 0.3291    |
+| Prior-year capacity (per 100 t/day) | 0.44***    | (0.09)    | 2.867e-07 |
+
+*Interpretation: scale selectivity is evaluated across both frames. Age effects are reported as frame-specific rather than treated as a universal retrofit gradient.*
+
+## Prior-Technology Sensitivity
+
+A secondary coded-asset model adds prior-year continuous-operation status, gasification/melting status, and number of furnaces. It is a configuration sensitivity rather than the sparse-event headline model.
+
+| Variable                            | AME (pp)   | SE (pp)   |
+|:------------------------------------|:-----------|:----------|
+| Prior-year age 10-20 yrs (vs 0-10)  | -1.38***   | (0.20)    |
+| Prior-year age 20-30 yrs (vs 0-10)  | -1.30***   | (0.32)    |
+| Prior-year age 30+ yrs (vs 0-10)    | -0.81*     | (0.32)    |
+| Prior-year capacity (per 100 t/day) | 0.34**     | (0.11)    |
 
 ### Adoption specification sensitivity
 
@@ -66,11 +93,11 @@ Main specification: exact one-fiscal-year lagged discrete-time logit hazard with
 |:-----------------------------------------------------|:-------|---------:|-------------:|-------------------:|---------------------:|---------------------:|-------------------:|--------------------:|:---------------|
 | Previous observed coded row: year FE + prefecture FE | 11,717 |      140 |           66 |               2.12 |                -1.76 |                -1.72 |              -1.13 |                0.5  | yes            |
 | Exact-year: year FE + prefecture FE                  | 10,823 |       98 |           64 |               1.53 |                -1.82 |                -2.31 |              -1.59 |                0.4  | yes            |
-| Exact-year: year FE + duration term                  | 10,823 |       98 |           19 |               5.16 |                -1.47 |                -1.55 |              -0.9  |                0.45 | yes            |
+| Exact-year: year FE only                             | 10,823 |       98 |           18 |               5.44 |                -1.67 |                -1.94 |              -1.24 |                0.45 | yes            |
 | Exact-year: prefecture FE only                       | 10,823 |       98 |           51 |               1.92 |                -1.39 |                -1.18 |              -0.58 |                0.35 | yes            |
 | Exact-year: age and capacity only                    | 10,823 |       98 |            5 |              19.6  |                -1.34 |                -1.1  |              -0.48 |                0.4  | yes            |
 
-*Interpretation: the exact-year year fixed-effects model is the main specification because it preserves annual transition timing while reducing sparse-event pressure. The saturated exact-year year + prefecture fixed-effects model and the broader previous-observed-coded-row model are reported as sensitivity checks.*
+*Interpretation: the exact-year year-indicator model with true elapsed duration is the main specification because it preserves calendar timing and time-at-risk while limiting sparse-event pressure. The saturated exact-year year + prefecture fixed-effects model and the broader previous-observed-coded-row model are reported as sensitivity checks.*
 
 ### Event-definition and capacity functional-form checks
 
@@ -78,12 +105,12 @@ The main event is first observed reporting of positive installed power-generatio
 
 | Variable                            |   Positive-output AME (pp) |   SE (pp) |
 |:------------------------------------|---------------------------:|----------:|
-| Prior-year age 10-20 yrs (vs 0-10)  |                      -3.06 |      0.3  |
-| Prior-year age 20-30 yrs (vs 0-10)  |                      -3.92 |      0.43 |
-| Prior-year age 30+ yrs (vs 0-10)    |                      -2.72 |      0.36 |
-| Prior-year capacity (per 100 t/day) |                       0.67 |      0.15 |
+| Prior-year age 10-20 yrs (vs 0-10)  |                      -2.57 |      0.28 |
+| Prior-year age 20-30 yrs (vs 0-10)  |                      -3.03 |      0.41 |
+| Prior-year age 30+ yrs (vs 0-10)    |                      -2.03 |      0.37 |
+| Prior-year capacity (per 100 t/day) |                       0.64 |      0.15 |
 
-Capacity functional-form checks also preserve the finding. Capping prior-year capacity at its model-frame 99th percentile gives a capacity AME of 0.88 pp per 100 t/day. Replacing linear capacity with log(1 + t/day) produces a positive coefficient of 1.424 (p = 3.49e-15), while all age-band coefficients remain negative. These are leverage and functional-form checks, not new headline specifications.
+Capacity functional-form checks also preserve the finding. Capping prior-year capacity at its model-frame 99th percentile gives a capacity AME of 0.87 pp per 100 t/day. Replacing linear capacity with log(1 + t/day) produces a positive coefficient of 1.414 (p = 4.73e-15), while all age-band coefficients remain negative. These are leverage and functional-form checks, not new headline specifications.
 
 ## Competing Panel-Exit Diagnostic
 
@@ -99,6 +126,17 @@ Of 141 installed-capacity events, 128 record positive electricity output in the 
 |                           1 |              102 |                  102 |        0.338 |          0.366 |
 |                           2 |               91 |                   91 |        0.325 |          0.361 |
 |                           3 |               71 |                   71 |        0.339 |          0.36  |
+
+### Early post-entry performance trajectory
+
+The trajectory diagnostic contains 389 generator observations across 137 entry events. Within-year percentile rank is reported so that entrants are compared with generators observed under the same fiscal-year conditions. The diagnostic is descriptive and does not estimate an entry treatment effect.
+
+|   Years from entry |   Events represented |   Entrant mean MWh/t |   Mean within-year percentile |   Same-year incumbent mean |   Entrant minus incumbent |
+|-------------------:|---------------------:|---------------------:|------------------------------:|---------------------------:|--------------------------:|
+|                  0 |                  125 |                0.324 |                          51.5 |                      0.329 |                    -0.006 |
+|                  1 |                  102 |                0.338 |                          54.8 |                      0.328 |                     0.009 |
+|                  2 |                   91 |                0.325 |                          52.1 |                      0.335 |                    -0.01  |
+|                  3 |                   71 |                0.339 |                          52.9 |                      0.34  |                    -0.001 |
 
 ## Transition Pathway Audit
 
@@ -136,4 +174,4 @@ Rule set: `reset / rebuild-like` requires an observed `year_started` reset or a 
 |          2023 |                       2 |
 |          2024 |                       3 |
 
-*Interpretation: first reporting of positive installed generation capacity is more common among facilities that were younger and larger in the previous fiscal year under the exact-year model. The pathway audit suggests that capital-side modernization is empirically present in adjacent-year events, but the evidence is not reducible to one identified mechanism such as replacement alone.*
+*Interpretation: the exact-lag models distinguish broad coded-asset entry from conversion among operating non-generators. Scale selectivity is reported across both frames, while age patterns are interpreted against their stated risk-set definition. The pathway audit suggests that capital-side modernization is empirically present in adjacent-year events, but the evidence is not reducible to one identified mechanism such as replacement alone.*

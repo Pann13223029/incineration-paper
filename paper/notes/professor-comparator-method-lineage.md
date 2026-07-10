@@ -1,6 +1,6 @@
 # Professor Comparator And Method-Lineage Packet
 
-Last updated: 2026-07-03
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -13,9 +13,10 @@ The short answer is:
 > The paper is inspired substantively by recent facility-level
 > waste-to-energy and incineration-efficiency papers, especially Cui et al.
 > (2026) and Liu et al. (2025), but its actual empirical method is a simpler
-> and more defensible two-margin facility-panel design: a discrete-time
-> adoption hazard for entry into power generation, followed by panel
-> regressions for electricity recovered per tonne among generators.
+> and more defensible two-margin facility-panel design: a discrete-time entry
+> hazard that distinguishes broad asset entry from active conversion, followed
+> by a year- and technology-adjusted comparison of electricity recovered per
+> tonne among generators.
 
 ## 2026-06-14 Method Hardening Note
 
@@ -47,8 +48,8 @@ parameter. That model is now retained as sensitivity evidence rather than used
 as the primary estimate.
 
 The main manuscript now uses a more parsimonious exact-year logit hazard with
-fiscal-year fixed effects and facility-clustered standard errors as the primary
-adoption model. This specification estimates 18 parameters, or 5.44 events per
+fiscal-year indicators, actual elapsed at-risk duration, and facility-clustered
+standard errors as the primary adoption model. This specification estimates 19 parameters, or 5.16 events per
 parameter, while preserving annual transition timing. The professor-facing
 interpretation should therefore be:
 
@@ -56,6 +57,27 @@ interpretation should therefore be:
 > the main adoption model parsimonious because the event count is modest. The
 > more saturated year-plus-prefecture model supports robustness of the sign
 > pattern, not the headline estimate.
+
+## 2026-07-10 Estimand And Technology-Control Revision
+
+The latest red-team pass made three changes that should guide professor review:
+
+1. Broad coded-asset entry is no longer described as equivalent to conversion
+   of an operating plant. Forty of 98 exact-year events have zero or missing
+   prior-year throughput. A required active-conversion model uses 9,215 rows,
+   1,663 facilities, and 58 events.
+2. Scale selectivity survives both frames (+0.45 and +0.44 pp per 100 t/day),
+   while age AMEs attenuate from -1.41/-1.45/-0.83 pp to
+   -0.67/-0.56/-0.29 pp. The headline is robust scale selectivity and a risk-
+   set-dependent age pattern.
+3. RQ2 now has one primary year- and technology-adjusted OLS specification.
+   Furnace type, operating mode, facility type, and furnace count are included;
+   the pooled/RE ladder remains supplementary. Thermal-conversion, reported-
+   efficiency, and lagged-predictor checks preserve the focal signs.
+
+The post-entry bridge now follows entrants through event time three. Entrants
+average near the middle of the same-year generator distribution, with declining
+follow-up. This links the two margins without claiming an entry treatment effect.
 
 ## 2026-07-03 Citation-Fit Check
 
@@ -143,8 +165,8 @@ This is a two-margin paper:
 
 | Margin | Plain question | Method | Main result |
 |:--|:--|:--|:--|
-| Adoption margin | Which plants enter power generation? | Lagged discrete-time logit hazard | Entry is selective toward younger and larger facilities |
-| Performance margin | How well do generators perform after entry? | Panel regressions of logged MWh/t | Electricity recovered per tonne is lower at older plants and higher at larger, more utilized plants |
+| Adoption margin | Which assets enter, and does the answer change for active plants? | Lagged logit hazard with actual elapsed risk duration | Scale is robust; the age gradient attenuates in the active-conversion frame |
+| Performance margin | How do generators differ after entry? | Year- and technology-adjusted OLS of logged MWh/t | Recovery is lower at older-vintage plants and higher at larger, more utilized plants |
 | Synthesis | Does one fleet average hide the bottleneck? | Interpret both margins together | Non-generators and existing generators should not be managed as one average segment |
 
 ### What This Paper Is Inspired By
@@ -161,6 +183,8 @@ The closest inspiration papers are:
 | Chen et al. (2012), Journal of Environmental Management | Shows how facility-level incinerator performance can be studied empirically |
 | Yeh (2020), Waste Management | Shows that electricity-related incinerator performance can be decomposed across facilities |
 | Grosso et al. (2010), Waste Management | Provides energy-recovery-efficiency framing for waste incineration |
+| Sasao (2018), Detritus | Closest Japanese plant-panel comparator for heat and electricity production |
+| Shino (2019), JSMCWM | Supports electricity per waste input and careful thermal interpretation |
 | Allison (1982) and Beck et al. (1998) | Provide the event-history logic behind the adoption model |
 | Wooldridge (2010) | Provides the panel-regression logic behind the performance models |
 
@@ -290,8 +314,8 @@ Representative source:
 
 How our paper uses this line:
 
-- We estimate pooled OLS, year fixed effects, random effects, and year fixed
-  effects plus random effects.
+- The primary model is year- and technology-adjusted OLS; pooled and random-
+  effects variants form a supplemental estimator ladder.
 - We use facility-clustered standard errors.
 - We interpret coefficients as structured conditional associations.
 
@@ -374,7 +398,7 @@ Why this method is appropriate:
 
 What professor may ask:
 
-- Should the model include a separate time-at-risk duration term?
+- Is actual elapsed fiscal duration measured correctly across code gaps?
 - Are year fixed effects sufficient for temporal dependence?
 - Should the main model be logit, complementary log-log, or linear probability?
 - Should the adoption event be called "observed generation entry" rather than
@@ -382,11 +406,12 @@ What professor may ask:
 
 Current answer:
 
-- The current model is defensible as a diagnostic transition model.
-- It uses year fixed effects and lagged predictors.
-- The supplement reports alternative event-model checks.
-- But a duration/time-at-risk robustness check could strengthen the
-  event-history lineage if the professor thinks reviewers will ask for it.
+- The model is a diagnostic transition model with fiscal-year indicators,
+  exact-year lagged predictors, and actual elapsed at-risk duration.
+- Duration is calculated from fiscal years rather than observed-row count.
+- The active-conversion model tests how the result changes when positive prior-
+  year throughput is required.
+- Alternative links and event definitions remain supplementary checks.
 
 ### 4.2 Electricity-Recovery Model
 
@@ -511,9 +536,9 @@ What the professor can help with:
 - Should we explicitly say our paper is a "Japan panel complement" rather than
   an optimization paper?
 - Should we strengthen the comparison between China's facility hierarchy and
-  Japan's selective modernization?
-- Should "bounded responsiveness" be replaced with simpler wording such as
-  "persistent generator hierarchy"?
+  Japan's asset-entry/active-conversion distinction?
+- Is the current phrase "structured electricity-recovery performance" clear
+  enough for a non-specialist reader?
 
 ### 5.2 Liu et al. (2025), Nature Energy
 
@@ -718,9 +743,8 @@ What we take from it:
 What we do differently:
 
 - We use the paper as methodological support, not as a full replication.
-- We currently use year fixed effects and lagged predictors.
-- A possible improvement is a time-at-risk robustness check if the professor
-  thinks reviewers will expect it.
+- We use fiscal-year indicators, exact-year lagged predictors, and actual
+  elapsed time at risk in the main entry model.
 
 ### 5.8 Wooldridge (2010)
 
@@ -788,8 +812,8 @@ The professor can help most by answering these questions.
 1. Should the paper be framed mainly as a Japan waste-management paper?
 2. Should it be framed as a facility-level energy-recovery paper?
 3. Should it be framed as a two-margin fleet-transition paper?
-4. Should the title keep "bounded responsiveness" or use plainer wording such
-   as "persistent generator hierarchy"?
+4. Does the current title accurately signal a descriptive two-margin study
+   without implying causal modernization effects?
 
 Recommended current choice:
 
@@ -805,9 +829,10 @@ Why:
 ### 7.2 Methods Questions
 
 1. Is the adoption model defensible as a discrete-time logit hazard?
-2. Should we add a time-at-risk robustness check?
-3. Should we keep random effects as descriptive or move more emphasis to pooled
-   OLS plus year fixed effects?
+2. Is the broad asset-entry versus active-conversion distinction convincing and
+   sufficiently prominent?
+3. Is year- and technology-adjusted OLS the clearest primary RQ2 specification,
+   with random effects retained only as supplementary evidence?
 4. Should we add a facility fixed-effects sensitivity in the supplement, even
    if it is not the main model?
 5. Should we avoid the word "efficiency" more aggressively and use
@@ -815,14 +840,15 @@ Why:
 
 Recommended current choice:
 
-> Keep the current main models, but consider one extra robustness check:
-> time-at-risk or spell-duration controls in the adoption model.
+> Keep actual elapsed duration in the main entry model, retain both entry risk
+> sets in the main table, and use year- and technology-adjusted OLS as the
+> primary generator model.
 
 Why:
 
-- It would strengthen the event-history lineage.
-- It would not require changing the main argument.
-- It answers a likely methodological reviewer question.
+- It distinguishes asset commissioning/rebuild from active conversion.
+- It prevents the 98-event hazard from being over-saturated.
+- It makes the generator estimand and observed technology adjustment explicit.
 
 ### 7.3 Literature Questions
 
@@ -883,11 +909,11 @@ This is a simple way to explain the paper to the professor.
 ### Method Explanation
 
 > Methodologically, our paper is simpler and more defensible. It uses two
-> linked models. First, a discrete-time logit hazard asks which non-generating
-> facilities first report power generation. Second, panel regressions ask how
-> much electricity per tonne is recovered among operating generators. The
-> adoption model comes from event-history logic, while the performance models
-> come from panel-regression logic.
+> linked models. First, a discrete-time logit hazard distinguishes broad asset
+> entry from conversion among active non-generators. Second, a year- and
+> technology-adjusted regression asks how much electricity per tonne is
+> recovered among operating generators. The first model comes from event-
+> history logic, while the second adapts facility-performance regression.
 
 ### Contribution Explanation
 
@@ -1038,11 +1064,13 @@ These are possible additions, not changes to make blindly.
 
 ### Medium Priority
 
-1. Add a time-at-risk robustness check for adoption.
-2. Add a short facility-fixed-effects sensitivity note for the generator model.
-3. Rename more instances of "efficiency" to "electricity recovery intensity."
-4. Add a supplement table comparing this paper to Cui, Liu, Chen, Yeh, and
-   Grosso.
+1. Obtain verified plant capital histories or municipal finance variables for a
+   future mechanism-focused extension.
+2. Add net export or heat-recovery outcomes if comparable plant data become
+   available.
+3. Rename remaining ambiguous instances of "efficiency" to "electricity
+   recovery intensity."
+4. Extend post-entry follow-up only after diagnosing selected attrition.
 
 ### Low Priority
 
@@ -1145,23 +1173,24 @@ Recommended default:
 
 ### Question 2
 
-Is "selective modernization and bounded responsiveness" a good conceptual
-frame, or should the paper use plainer wording?
+Is "scale-selective entry and structured post-entry performance" a clear
+conceptual frame?
 
 Recommended default:
 
-> Keep "selective modernization"; consider replacing "bounded responsiveness"
-> with "persistent generator hierarchy" if the professor thinks the phrase is
-> too abstract.
+> Use the plainer frame. It distinguishes the robust scale result from the
+> risk-set-dependent age result and avoids implying an estimated bound on
+> responsiveness.
 
 ### Question 3
 
-Does the adoption model need a duration/time-at-risk robustness check?
+Is the main duration/time-at-risk treatment now adequate?
 
 Recommended default:
 
-> Add it if feasible. It is a clean methodological upgrade and should not
-> disrupt the main story.
+> Yes for the present descriptive design: actual elapsed fiscal duration is now
+> included in the main model. The next improvement would be better capital-
+> history data, not another row-count duration proxy.
 
 ### Question 4
 

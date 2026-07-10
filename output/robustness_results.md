@@ -13,6 +13,9 @@ All models use the canonical identifiable generator frame and facility-clustered
 | R7: Unclipped-log DV pooled OLS | 5683 | 1016 | 0.155 | -0.0274*** | 0.0891*** | 0.7526*** |
 | R8: Unclipped-log DV with year indicators | 5683 | 1016 | 0.238 | -0.0346*** | 0.1090*** | 0.7761*** |
 | R9: Within-between sensitivity with year FE | 5683 | 1016 | 0.380 | -0.0359*** | 0.1140*** | 0.8646*** |
+| R10: Thermal-conversion proxy + year/technology controls | 4971 | 934 | 0.449 | -0.0326*** | 0.0768*** | 0.5353*** |
+| R11: Reported generation efficiency + year/technology controls | 4971 | 934 | 0.470 | -0.0329*** | 0.0747*** | 0.4817*** |
+| R12: Exact-adjacent-year lagged predictors + year FE | 4368 | 915 | 0.365 | -0.0361*** | 0.1040*** | 0.6074*** |
 
 ## Within-between sensitivity
 
@@ -24,4 +27,10 @@ The within-between sensitivity separates facility-level means from within-facili
 | capacity_100t | 0.1140*** | 0.0210** |
 | capacity_utilization_capped | 0.8646*** | 0.5133*** |
 
-*Interpretation: the between-facility columns preserve the cross-facility structure emphasized in the main paper, while the within-facility columns show how limited within-panel movement maps onto the same variables.*
+*Interpretation: the between-facility columns preserve the cross-facility structure emphasized in the main paper, while the within-facility columns are descriptive deviations, not causal aging effects. Facility age is mechanically related to calendar time, so its within component should not be read independently of the year indicators and unbalanced panel structure.*
+
+## Engineering-outcome validation
+
+The plausible-value validation frame contains 4,971 rows. The log thermal-conversion proxy and log reported generation efficiency correlate at 0.8636. Both technology-adjusted outcomes preserve negative age/vintage and positive scale and utilization associations. Reported efficiency is derived from related administrative fields and is convergent rather than fully independent validation.
+
+The exact-adjacent-year lagged-predictor model checks simultaneity more directly. It preserves the same directional pattern without turning lagged utilization into a causal intervention estimate.

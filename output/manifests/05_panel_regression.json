@@ -1,5 +1,7 @@
 {
   "analysis_config": {
+    "adoption_active_conversion_requires_positive_prior_throughput": true,
+    "adoption_elapsed_duration_uses_fiscal_years": true,
     "adoption_model": "observed_first_adoption_logit_hazard",
     "adoption_predictors_lagged_exact_one_year": true,
     "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
@@ -11,7 +13,8 @@
     "pre_fukushima_end": 2011,
     "regression_requires_official_facility_code": true,
     "regression_requires_positive_output": true,
-    "regression_winsorization_method": "clip"
+    "regression_winsorization_method": "clip",
+    "technology_categories_normalized_to_compact_groups": true
   },
   "inputs": [
     "data/processed/incineration_panel_enriched.csv"
@@ -168,6 +171,36 @@
     },
     "post_fukushima_within_total_ratio": 0.0956,
     "pre_fukushima_within_total_ratio": 0.1795,
+    "primary_model": {
+      "coefficients": {
+        "capacity_100t": 0.1103185,
+        "capacity_utilization_capped": 0.7599879,
+        "facility_age_years": -0.0328904,
+        "heating_value_mj_kg": 0.003178748
+      },
+      "estimand": "year-adjusted cross-facility generator comparison",
+      "label": "Year + technology adjusted OLS",
+      "observations": 5683,
+      "pvalues": {
+        "capacity_100t": 7.896378e-28,
+        "capacity_utilization_capped": 8.371089e-09,
+        "facility_age_years": 6.538152e-47,
+        "heating_value_mj_kg": 0.1194554
+      },
+      "rsquared": 0.3830205,
+      "std_errors": {
+        "capacity_100t": 0.01008916,
+        "capacity_utilization_capped": 0.1319238,
+        "facility_age_years": 0.002286624,
+        "heating_value_mj_kg": 0.002041502
+      },
+      "technology_controls": [
+        "furnace_type_group",
+        "operation_mode_group",
+        "facility_type_group",
+        "n_furnaces"
+      ]
+    },
     "rank_persistence": {
       "annual_transitions": 14,
       "exact_adjacent_year_pairs": 4368,

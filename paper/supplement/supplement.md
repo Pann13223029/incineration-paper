@@ -25,6 +25,9 @@ The manuscript uses a small number of repeated abbreviations:
 | MWh/t | Gross megawatt-hours of electricity generated per tonne of waste processed |
 | MJ/kg | Megajoules per kilogram |
 | Panel exit | Final disappearance from the coded panel before FY2024; not verified physical closure |
+| Broad asset entry | First positive installed capacity among all coded at-risk assets, including rows that may reflect commissioning, rebuild, or inactivity |
+| Active conversion | First positive installed capacity after requiring positive throughput in the immediately preceding fiscal year |
+| Age/vintage | A cross-facility age comparison that may combine physical age, design vintage, and other durable plant characteristics |
 
 Terms such as `observed transition`, `canonical generator frame`, and
 `structured conditional association` are intentional scope markers. They signal
@@ -52,16 +55,18 @@ cannot identify.
 | Official facility codes sometimes repeat within a fiscal year. | The supplement reports a composite-ID sensitivity; headline adoption and electricity-recovery signs remain stable. |
 | Heating value is noisy in administrative files. | Heating value is treated as a control, not an engineering outcome; plausible-value restrictions leave the core coefficients stable. |
 | The generator frame excludes uncoded operating rows. | The main text defines the electricity-recovery sample as the canonical identifiable generator frame, and this supplement compares coded and uncoded operating-generator rows. |
-| Age effects could be confounded with durable facility characteristics. | The paper interprets coefficients as structured conditional associations and uses the variance structure to justify descriptive cross-facility comparison, not causal vintage isolation. |
+| Age effects could be confounded with durable facility characteristics. | The paper explicitly calls the generator coefficient an age/vintage association and does not interpret it as a within-plant aging effect. |
 | Entry events are temporally clustered. | The paper reports the clustering and uses fiscal-year indicators; it does not interpret the timing as a uniquely identified policy shock or reporting change. |
-| Adoption risk may vary with time already spent at risk. | A duration-augmented exact-year hazard preserves the expected age and capacity sign pattern. |
+| Adoption risk may vary with time already spent at risk. | Actual elapsed fiscal time at risk is included in the main entry model; it is not inferred from the number of observed rows. |
+| Broad asset entry may be mistaken for retrofit of an operating plant. | The paper reports a required positive-prior-throughput model. Scale persists, while the age gradient attenuates. |
 | Non-entry may be confused with continued operation through the panel endpoint. | A separate panel-exit hazard treats final coded disappearance as a competing observed path but does not call it closure. |
 | Bounded MWh/t could create the regression pattern. | Unclipped-log outcome models preserve the age, capacity, and utilization signs. |
+| MWh/t may be too remote from engineering performance. | Heating-value-based thermal conversion and reported generation-efficiency models preserve the main signs in a plausible-value frame. |
 | “Persistent hierarchy” could rely only on a variance decomposition. | Adjacent-year within-year percentile ranks correlate at 0.9325 across 4,368 exact pairs. |
 
-The result is a narrower but more defensible claim: the linked samples show
-selective observed installed-capacity entry and structured conditional performance
-among identifiable generators.
+The result is a narrower but more defensible claim: entry is robustly scale-
+selective, its age pattern depends on the risk-set definition, and post-entry
+performance remains structured among identifiable generators.
 
 ### S2.0a Bridge-map placement decision
 
@@ -92,14 +97,18 @@ material. The preferred journal-mode action is:
 - Exact-year lagged entry-model observations: 10,823
 - Exact-year lagged entry-model facilities: 1,911
 - Installed-capacity entry events retained in the exact-year lagged model: 98
+- Exact-year events with zero or missing prior-year throughput: 40
+- Active-conversion sensitivity: 9,215 facility-years, 1,663 facilities, 58 events
+- Exact-lag rows where actual elapsed fiscal duration differs from observed-row count: 4,055
 - Broader previous-observed-coded-row model frame before exact-year restriction: 11,717 observations, 1,915 facilities, 140 events
 - Non-exact lag rows excluded from the main entry model: 894 rows, including 42 events
 - Positive-output alternative: 10,937 exact-year observations and 146 events
 - Post-entry output bridge: 128 of 141 positive in the event year, 135 by year +1, and 138 within the observed event-to-three-year window
 
-Interpretation: the main model estimates reporting entry into installed
-generation capacity within the coded at-risk frame, not unrestricted fleet-wide
-modernization or the date of a verified engineering retrofit.
+Interpretation: the main model estimates broad coded-asset entry, not unrestricted
+fleet-wide modernization or a verified engineering retrofit. The active-
+conversion model narrows the estimand to facilities with positive prior-year
+throughput; comparing the two is part of the result rather than a cosmetic check.
 
 ### S2.2 Generator frame
 
@@ -158,6 +167,11 @@ capacity, which removes the first observed at-risk year for each facility, a
 small number of additional rows with missing lagged predictors, and non-exact
 lag rows created by duplicate same-year codes or official-code gaps.
 
+The model also includes actual elapsed fiscal time since first entering the risk
+set, measured from fiscal-year values. It does not use the number of observed
+rows as a duration proxy. Those quantities differ on 4,055 exact-lag rows because
+the official-code panel has gaps.
+
 The entry estimand is therefore not "which facilities ever modernized" in a
 complete historical sense. It is the probability that a coded facility first
 records positive installed generation capacity in the next observed fiscal
@@ -166,6 +180,13 @@ being observed at risk in the panel and conditional on exact one-fiscal-year
 prior age and capacity. This distinction protects the paper from overclaiming about
 unobserved pre-panel investments or physical retrofit histories that the
 administrative file does not directly record.
+
+The broad risk set does not require positive throughput before entry. Because 40
+of 98 exact-year events have zero or missing prior-year throughput, it can include
+commissioning, rebuild, inactive-asset, and reporting pathways. The active-
+conversion model requires positive prior-year throughput and therefore answers a
+narrower question about operating non-generators. It is not assumed that the two
+frames estimate the same population parameter.
 
 Observed entry events are temporally clustered: 109 of 141 events occur in
 FY2013-FY2019. The main hazard includes fiscal-year indicators, and the paper
@@ -236,20 +257,23 @@ $$
 + \beta_2 I(\text{Age}_{i,t-1}=20\text{-}30)
 + \beta_3 I(\text{Age}_{i,t-1}\geq 30)
 + \beta_4 \text{Capacity100}_{i,t-1}
++ \delta D_{it}
 + \gamma_t
 \right].
 $$
 
 The omitted age category is 0-10 years. \(\gamma_t\) denotes fiscal-year
-indicators, not facility fixed effects. Capacity is measured in 100 t/day units. Standard errors are clustered
+indicators, not facility fixed effects. Capacity is measured in 100 t/day units,
+and \(D_{it}\) is actual elapsed at-risk duration in ten-fiscal-year units.
+Standard errors are clustered
 by facility. The table reports average marginal effects in percentage points
 because those are easier to read than log-odds coefficients. For example, an
-average marginal effect of -1.67 percentage points means that the annual
-probability of first reporting positive installed capacity is 1.67 percentage points lower than
+average marginal effect of -1.41 percentage points means that the annual
+probability of first reporting positive installed capacity is 1.41 percentage points lower than
 in the omitted 0-10 year age group, conditional on the included variables and
 year indicators. A saturated year-plus-prefecture specification is
 reported as sensitivity evidence rather than as the primary estimate. This
-keeps the primary model at 18 parameters and 5.44 events per parameter, instead
+keeps the primary model at 19 parameters and 5.16 events per parameter, instead
 of 64 parameters and 1.53 events per parameter in the saturated sensitivity.
 
 The entry equation should not be read as a physical retrofit model. The
@@ -257,6 +281,12 @@ dependent variable is observed entry into reported installed capacity in the
 administrative panel. A recorded event may correspond to a new plant,
 replacement, major refurbishment, reporting transition, or a continuity-type
 upgrade; the pathway audit is used only to bound that interpretation.
+
+The active-conversion sensitivity fits the same equation after requiring
+positive prior-year throughput. It contains 58 events rather than 98. The broad
+and active models should be compared term by term: capacity AMEs are +0.45 and
++0.44 pp, while the three age AMEs move from -1.41, -1.45, and -0.83 pp to
+-0.67, -0.56, and -0.29 pp.
 
 Two event diagnostics use the same logic. The positive-output alternative sets
 \(A_{it}=1\) at first reported positive electricity generation. The panel-exit
@@ -283,11 +313,11 @@ q_{it}=\operatorname{clip}(q^{raw}_{it},0.01,0.80),
 y_{it}=\log(q_{it}).
 $$
 
-The core panel regression can be written as:
+The primary RQ2 regression can be written as:
 
 $$
 y_{it}
-= \alpha + X_{it}'\beta + \gamma_t + u_i + \varepsilon_{it}.
+= \alpha + X_{it}'\beta + Z_{it}'\theta + \gamma_t + \varepsilon_{it}.
 $$
 
 \(X_{it}\) contains facility age, design capacity in 100 t/day units, capacity
@@ -302,8 +332,15 @@ $$
 
 The numerator of \(q^{raw}_{it}\) is reported gross generation, not net export
 after onsite use. The metric also excludes useful heat and should not be read as
-full thermodynamic efficiency. The four main models use the same outcome and
-covariates but vary the panel structure:
+full thermodynamic efficiency. \(Z_{it}\) contains normalized furnace type,
+operating mode, facility type, and number of furnaces. The primary model uses
+fiscal-year indicators and facility-clustered standard errors. Facility age is
+derived from fiscal year and reported starting year; with year indicators, its
+coefficient is an age/vintage comparison across facilities observed in a common
+year, not a causal within-plant aging effect.
+
+The supplemental estimator ladder uses the same core outcome and covariates but
+varies the panel structure:
 
 | Model | Equation terms included | Interpretation |
 |:--|:--|:--|
@@ -315,15 +352,16 @@ covariates but vary the panel structure:
 Because the outcome is logged, coefficients are semi-elasticities. For small
 coefficients, multiplying by 100 gives an approximate percentage change in MWh/t
 for a one-unit change in the predictor. The exact transformation is
-\(100[\exp(\beta)-1]\). Thus the pooled age coefficient of -0.0277 corresponds
-to about 2.7% lower electricity recovered per tonne for each additional
-facility year, while the pooled capacity coefficient of 0.0853 corresponds to
-about 8.9% higher electricity recovered per tonne per additional 100 t/day of
-design capacity. For utilization, a 0.10 increase in the capped utilization
-ratio under the pooled model corresponds to about 7.8% higher electricity
-recovered per tonne.
+\(100[\exp(\beta)-1]\). Thus the primary age/vintage coefficient of -0.0329
+corresponds to about 3.2% lower electricity recovered per tonne for each
+additional age year in a cross-facility comparison, while the capacity
+coefficient of 0.1103 corresponds to about 11.7% higher electricity recovered
+per tonne per additional 100 t/day. For utilization, a 0.10 difference under
+the primary model corresponds to about 7.9% higher electricity recovered per
+tonne.
 
-The random-effects specifications are used descriptively. They retain
+The primary model is year- and technology-adjusted OLS. Random-effects
+specifications are supplementary and descriptive. They retain
 between-facility structure by estimating a facility-specific intercept, but the
 paper does not rely on a causal assumption that unobserved facility or municipal
 traits are unrelated to age, capacity, technology, or utilization. A
@@ -331,10 +369,9 @@ facility-fixed-effects model would answer a different question: how much
 electricity recovery changes within the same facility as its covariates change
 over time. That is useful for some policy-effect designs, but it would absorb
 much of the durable plant scale, design, and vintage structure that this paper
-is explicitly trying to describe. The main paper therefore treats
-fiscal-year-indicator and random-effects choices as complementary descriptive
-views, not as a claim
-that one estimator identifies a structural causal effect.
+is explicitly trying to describe. The paper therefore treats the estimator
+ladder as complementary descriptive views, not as a claim that one estimator
+identifies a structural causal effect.
 
 The bounded outcome is not the sole basis of the result. Robustness models use
 \(\log(q^{raw}_{it})\) without clipping and preserve the negative age and
@@ -342,14 +379,29 @@ positive capacity and utilization coefficients. Persistence is also assessed by
 ranking facilities within each fiscal year and correlating percentile ranks for
 exact adjacent-year pairs, avoiding dependence on the outcome's absolute scale.
 
+Two engineering-oriented outcomes add convergent validation in the 4,971-row
+plausible-value frame. The gross thermal-conversion proxy is
+
+$$
+T_{it} = \frac{q^{raw}_{it}\times 3.6}{\text{heating value}_{it}},
+$$
+
+where the 3.6 factor converts MWh to GJ and the numerical MJ/kg heating value is
+equivalent to GJ/t. A second outcome uses reported generation efficiency. Their
+logged values correlate at 0.8636, and technology-adjusted models preserve
+negative age/vintage and positive capacity and utilization associations. Because
+the outcomes share administrative inputs, this is convergent rather than
+independent validation.
+
 ### S5.1 Installed-capacity entry robustness
 
 The main entry result is estimated as an exact one-fiscal-year lagged
-discrete-time logit hazard with fiscal-year indicators plus facility-clustered
-standard errors. The saturated year-plus-prefecture fixed-effects model is
+discrete-time logit hazard with fiscal-year indicators, actual elapsed at-risk
+duration, and facility-clustered standard errors. The saturated year-plus-
+prefecture fixed-effects model is
 retained as sensitivity evidence because entry events are sparse: it
-has 64 estimated parameters and 1.53 events per parameter, compared with 18
-estimated parameters and 5.44 events per parameter in the primary model. The
+has 64 estimated parameters and 1.53 events per parameter, compared with 19
+estimated parameters and 5.16 events per parameter in the primary model. The
 broader previous-observed-coded-row model is also retained only as sensitivity
 evidence because official facility codes are missing for FY2010-FY2012. Several
 robustness variants preserve the main sign pattern:
@@ -360,23 +412,25 @@ robustness variants preserve the main sign pattern:
 - exact-year logit with age and capacity only
 - lagged complementary log-log
 - lagged linear probability model
-- exact-year duration-augmented logit
+- exact-year positive-prior-throughput active-conversion model
+- exact-year model with prior observed technology profiles
 - positive-electricity-output event definition
 - p99-capped capacity and log-capacity forms
 
-Across these variants, older facilities remain less likely to record observed
-entry and larger facilities remain more likely to do so. Under the
-positive-output event, the exact-year frame contains 10,937 rows and 146 events;
-age AMEs range from -3.92 to -2.72 pp and the capacity AME is +0.67 pp. Capping
-capacity at its p99 gives +0.88 pp per 100 t/day, while log(1 + t/day) remains
-positive (coefficient 1.424, p < 0.001).
+Across broad-frame variants, age AMEs remain negative and capacity remains
+positive. The positive-output event contains 10,937 rows and 146 events; its age
+AMEs are -2.57, -3.03, and -2.03 pp and capacity is +0.64 pp. Capping capacity
+at p99 gives +0.87 pp per 100 t/day, while log(1 + t/day) remains positive
+(coefficient 1.414, p < 0.001). Adding prior technology profiles leaves capacity
+at +0.34 pp.
 
-The additional duration check adds elapsed at-risk duration, measured in 10-year
-units, to the exact-year year fixed-effects hazard. This keeps the expected sign
-pattern: age 10-20 is -1.47 pp, age 20-30 is -1.55 pp, age 30+ is -0.90 pp,
-and prior-year capacity is +0.45 pp per 100 t/day. The duration coefficient is
--1.329 (p = 0.0099). This is interpreted as a sensitivity check for duration
-dependence, not as a separate theory of why facilities wait to report capacity.
+The main duration coefficient, measured per ten elapsed fiscal years, is -1.134
+(p = 0.0006). It controls duration dependence but is not interpreted as a theory
+of waiting. More importantly, the active-conversion model preserves capacity at
++0.44 pp while attenuating age AMEs to -0.67, -0.56, and -0.29 pp. The latter
+two age estimates are not conventionally significant. Robust scale selectivity
+therefore travels across risk sets; a universal operating-plant age gradient
+does not.
 
 The robustness checks are interpreted as sign-pattern checks. They are not used
 to claim that the entry estimates are policy effects or that the event path
@@ -398,10 +452,26 @@ within three years.
 | 2 | 91 | 91 | 0.325 | 0.361 |
 | 3 | 71 | 71 | 0.339 | 0.360 |
 
-At first canonical-frame appearance, entrant mean MWh/t is 0.328 versus 0.328
-for incumbent generators observed in the same fiscal years. This validates the
-operational relevance of the capacity event but does not imply that entry causes
-performance or that every entrant becomes a high-ranked generator.
+The event-time comparison uses same-year incumbents and within-year percentile
+ranks to avoid confusing entrant timing with common year conditions. An
+incumbent has no observed entry event or an event before the comparison fiscal
+year:
+
+| Event time | Events | Entrant mean MWh/t | Mean percentile | Incumbent mean MWh/t | Difference |
+|--:|--:|--:|--:|--:|--:|
+| 0 | 125 | 0.324 | 51.5 | 0.329 | -0.006 |
+| 1 | 102 | 0.338 | 54.8 | 0.328 | +0.009 |
+| 2 | 91 | 0.325 | 52.1 | 0.335 | -0.010 |
+| 3 | 71 | 0.339 | 52.9 | 0.340 | -0.001 |
+
+Across 389 observations and 137 events, entrants are near the middle of the
+same-year distribution on average. At event time zero, entrants operating in the
+prior year average the 45.7th percentile, compared with 51.4 for zero/missing
+prior throughput and 60.8 for events with no exact prior-year row. Follow-up is
+selected and declines to 71 events by time three, so subgroup paths are
+descriptive clues rather than entry effects. At first canonical-frame appearance,
+entrant and incumbent means both round to 0.328 MWh/t; this validates operational
+relevance without implying superior performance.
 
 #### S5.1b Competing panel-exit diagnostic
 
@@ -413,35 +483,41 @@ describe final coded-panel disappearance before FY2024, not verified closure.
 
 ### S5.2 Electricity-recovery estimator note
 
-The main electricity-recovery results are presented through four compact specifications:
+The primary model is year- and technology-adjusted OLS. Its focal coefficients
+are -0.0329 for age/vintage, +0.1103 for capacity per 100 t/day, and +0.7600 for
+utilization; all have p < 0.001. Heating value is +0.0032 with p = 0.119. The
+model contains 5,683 observations across 1,016 facilities and has R-squared
+0.3830. The base year-adjusted model without technology controls gives -0.0348,
++0.1051, and +0.7760, with R-squared 0.3699.
 
-- pooled OLS
-- year indicators
-- random effects
-- year indicators plus random effects
-
-The paper keeps these models because the intensive-margin question is largely
-about structured cross-facility differences inside the generating segment. The
-coefficients are therefore interpreted as structured conditional associations,
-not as strict structural parameters. This choice is deliberate: a strict
-facility-fixed-effects-only reading would absorb much of the durable facility
-heterogeneity that is substantively central to the paper's question. The paper
-therefore reports models that preserve cross-facility structure while
-explicitly avoiding causal language about vintage or policy effects.
+Pooled OLS, year-indicator OLS, random effects, and year-indicator plus random-
+effects models form a supplemental ladder. They preserve cross-facility
+structure under different representations of common-year and persistent
+heterogeneity. None is interpreted as a strict structural parameter, and a
+facility-fixed-effects-only model would answer a different within-facility
+question while absorbing durable scale and vintage structure.
 
 The within-between sensitivity adds another check on this choice. It separates
 facility-level means from within-facility deviations and includes year
 indicators. The between-facility component remains aligned with the main paper:
 facility age is negative (-0.0359), capacity is positive (+0.1140), and
 utilization is positive (+0.8646). Within-facility deviations also retain the
-same signs for the three core variables, but they are not used as the main
-interpretive basis because within-panel movement is limited.
+same signs for the three core variables, but age is mechanically related to
+calendar time in an unbalanced panel. Those terms are not used as causal aging
+effects.
 
 The unbounded raw-ratio log models also preserve the pattern. Pooled estimates
 are -0.0274 for age, +0.0891 for capacity, and +0.7526 for utilization; adding
 year indicators gives -0.0346, +0.1090, and +0.7761, respectively. The bounded
 outcome therefore controls extreme administrative ratios without determining
 the result.
+
+Technology-adjusted thermal-conversion and reported-efficiency models in the
+4,971-row plausible-value frame yield age/vintage coefficients of -0.0326 and
+-0.0329, capacity coefficients of +0.0768 and +0.0747, and utilization
+coefficients of +0.5353 and +0.4817. An exact-adjacent-year lagged-predictor model
+on 4,368 observations gives -0.0361, +0.1040, and +0.6074. All nine focal
+coefficients have p < 0.01.
 
 ### S5.3 Identifier and heating-value sensitivity
 
@@ -461,15 +537,15 @@ adoption and electricity-recovery checks.
 
 | Variable | Exact-year official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
 |:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.67 | 0.25 | -1.66 | 0.25 |
-| Prior-year age 20-30 yrs | -1.94 | 0.39 | -1.89 | 0.39 |
-| Prior-year age 30+ yrs | -1.24 | 0.38 | -1.22 | 0.39 |
+| Prior-year age 10-20 yrs | -1.41 | 0.21 | -1.43 | 0.21 |
+| Prior-year age 20-30 yrs | -1.45 | 0.33 | -1.45 | 0.33 |
+| Prior-year age 30+ yrs | -0.83 | 0.35 | -0.85 | 0.35 |
 | Prior-year capacity per 100 t/day | 0.45 | 0.15 | 0.46 | 0.16 |
 
 | ID rule | Observations | Facilities | Events | Pseudo-R2 |
 |:--|--:|--:|--:|--:|
-| Official code | 10,823 | 1,911 | 98 | 0.1829 |
-| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1777 |
+| Official code | 10,823 | 1,911 | 98 | 0.1920 |
+| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1862 |
 
 **Panel B. Electricity-recovery sensitivity**
 
@@ -501,6 +577,8 @@ particular, they do not prove:
 
 - that every observed adoption event is a physical retrofit rather than a
   rebuild, replacement, coding update, or administrative timing issue
+- that broad asset entry and active operating-plant conversion have the same age
+  association or represent the same population
 - that official facility identifiers perfectly track all real-world plant
   histories
 - that heating value is measured with engineering-grade precision
@@ -513,6 +591,8 @@ particular, they do not prove:
   generation equals net export
 - that high adjacent-year rank persistence rules out meaningful plant-specific
   operational gains
+- that the selected post-entry trajectory estimates a treatment effect or
+  represents entrants that disappear from follow-up
 
 These limits are why the main paper uses calibrated phrases such as
 `observed transition`, `canonical generator frame`, `structured conditional
@@ -527,15 +607,17 @@ bounded language.
 
 | Likely concern | Main response | Where to inspect |
 |:--|:--|:--|
-| "Is this just saying newer and larger plants perform better?" | No. The contribution is the linked two-margin structure: selective installed-capacity entry, verified output follow-through, competing panel exit, and persistent hierarchy after entry. | Introduction, Section 4.3, Discussion |
+| "Is this just saying newer and larger plants perform better?" | No. Scale selectivity survives both risk sets, but the age gradient attenuates among active non-generators; entrants also begin near the middle of the same-year generator distribution. | Introduction, Sections 4.1 and 4.3, Discussion |
 | "Why not one model for the full fleet?" | Non-generators and generators answer different questions. Adoption requires an at-risk transition frame; performance requires positive output and identifiable panel rows. | Section 3, Table 1, S2 |
 | "Does entry mean physical retrofit or output?" | Not necessarily. The main event is first positive installed capacity; a positive-output event and post-entry bridge preserve the result and demonstrate operational follow-through. | Section 4.1, S3, S5.1a |
-| "Are 98 hazard events enough?" | The headline model is parsimonious with year indicators; saturated year-plus-prefecture estimates are kept as sensitivity evidence because of sparse-event pressure. | Section 3, S5.1 |
-| "Why use random effects?" | RE is used descriptively to retain cross-facility structure; it is not presented as a causal solution to unobserved heterogeneity. | Section 3, S5.0, S5.2 |
+| "Are 98 hazard events enough?" | The broad model is parsimonious at 5.16 events per parameter; the 58-event active model is explicitly treated as sparse sensitivity evidence, and saturated models are not headlined. | Section 3, S5.1 |
+| "Why use random effects?" | RE is no longer the primary RQ2 estimator. The primary model is year- and technology-adjusted OLS; RE remains one descriptive rung in the supplement. | Section 3, S5.0, S5.2 |
 | "Could missing FY2010-FY2012 codes bias period claims?" | Yes, which is why period language is bounded and the generator frame is called canonical identifiable rather than a census. | Section 3, Section 4.2, S2.4 |
 | "Are non-entrants assumed to remain open?" | No. A separate panel-exit hazard makes administrative disappearance explicit but does not equate it with closure. | Section 4.1, S2.3, S5.1b |
 | "Is persistence inferred only from low within variance?" | No. The paper also reports a 0.9325 pooled adjacent-year percentile-rank correlation across 4,368 exact pairs. | Section 4.2, S2.2, S5.2 |
 | "Is heating value too noisy?" | Heating value is a control, not a key interpreted outcome; plausible-value restrictions leave the core sign pattern stable. | S5.3 |
+| "Is MWh/t an engineering performance measure?" | It is a gross operational intensity, not net or total efficiency. Thermal-conversion and reported-efficiency checks preserve the focal signs in a plausible-value frame. | Section 3, S5.0, S5.2 |
+| "Does entry improve performance?" | The trajectory is descriptive: entrants average near the same-year distribution middle, with attrition from 125 to 71 events. No entry treatment effect is claimed. | Section 4.3, S5.1a |
 | "Can this support policy recommendations?" | It supports planning triage, not intervention ranking. Entry-side asset questions and generator-side performance questions should be separated first. | Discussion, Table 4 |
 
 ## S6. Appendix Tables

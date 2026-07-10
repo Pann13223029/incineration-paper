@@ -34,12 +34,14 @@ May move to supplement:
 - extra sample-construction detail
 - edge-case cleaning notes
 
-## Claim 2: Observed transition into generation is selective rather than diffuse
+## Claim 2: Entry is scale-selective, while the age result is frame-specific
 
 Claim:
 
-- within the coded adoption frame, younger and larger facilities are more likely
-  to record observed transition into generation
+- prior-year scale positively predicts entry in the broad asset and active-
+  conversion frames
+- negative age AMEs in the broad frame attenuate after requiring positive prior-
+  year throughput
 
 Current evidence:
 
@@ -50,23 +52,25 @@ Must stay in main text:
 - adoption model sample counts
 - one adoption results table
 - one adoption figure or compact event-rate visualization
-- plain-language statement of the age and capacity pattern
+- both broad and active model columns in the main results table
+- plain-language statement that scale is robust but age is frame-specific
 - concise disclosure that 109 of 141 first-adoption events occur in
   FY2013-FY2019, without interpreting the cluster as an identified shock
 
 May move to supplement:
 
 - alternative lag structures
+- prior-technology adjustment
 - extended event-year detail
 - extra subgroup tables
 
-## Claim 3: Conditional generator performance is strongly structured
+## Claim 3: Conditional generator performance is structured after observed technology adjustment
 
 Claim:
 
-- within the canonical generator frame, performance is structured by age, scale,
-  and utilization, and between-facility structure matters more than large
-  within-facility movement
+- within the canonical generator frame, performance is structured by age/vintage,
+  scale, and utilization after common-year and observed-technology adjustment
+- engineering-oriented outcomes and lagged predictors preserve the signs
 
 Current evidence:
 
@@ -78,6 +82,7 @@ Must stay in main text:
 
 - generator sample counts
 - one electricity-recovery results table
+- primary year- and technology-adjusted specification
 - the within / total variance ratio in prose or compact display
 - a concise interpretation of structured generator performance
 - short explanation that the canonical generator frame excludes 907 uncoded
@@ -86,10 +91,33 @@ Must stay in main text:
 May move to supplement:
 
 - fuller estimator comparisons
+- alternate engineering outcomes
 - extra robustness variants
 - expanded early/later coded-window detail
 
-## Claim 4: The paper supports calibrated planning diagnostics
+## Claim 4: Entry and post-entry position are empirically linked but not causal
+
+Claim:
+
+- entrants begin near the middle of the same-year generator distribution on
+  average, with pathway-relevant subgroup differences and declining follow-up
+
+Current evidence:
+
+- [post_adoption_trajectories.csv](../../output/post_adoption_trajectories.csv)
+- [adoption_results.md](../evidence/current/adoption_results.md)
+
+Must stay in main text:
+
+- event-time zero through three trajectory summary
+- attrition from 125 to 71 represented events
+- explicit statement that the trajectory is not an entry treatment effect
+
+May move to supplement:
+
+- detailed prior-operating-status and pathway subgroup tables
+
+## Claim 5: The paper supports calibrated planning diagnostics
 
 Claim:
 
@@ -116,7 +144,7 @@ May move to supplement:
 - longer policy discussion
 - extended comparisons with alternative institutional channels
 
-## Claim 5: The pathway audit is supportive, not the paper's main novelty
+## Claim 6: The pathway audit is supportive, not the paper's main novelty
 
 Claim:
 

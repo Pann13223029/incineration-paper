@@ -1,5 +1,7 @@
 {
   "analysis_config": {
+    "adoption_active_conversion_requires_positive_prior_throughput": true,
+    "adoption_elapsed_duration_uses_fiscal_years": true,
     "adoption_model": "observed_first_adoption_logit_hazard",
     "adoption_predictors_lagged_exact_one_year": true,
     "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
@@ -11,7 +13,8 @@
     "pre_fukushima_end": 2011,
     "regression_requires_official_facility_code": true,
     "regression_requires_positive_output": true,
-    "regression_winsorization_method": "clip"
+    "regression_winsorization_method": "clip",
+    "technology_categories_normalized_to_compact_groups": true
   },
   "inputs": [
     "data/processed/incineration_panel_enriched.csv"

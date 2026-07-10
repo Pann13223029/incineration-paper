@@ -21,6 +21,8 @@ This note keeps the article's citation layer disciplined.
   - `Uno2015`
   - `TabataTsai2016`
   - `Yamada2023`
+  - `Sasao2018` for the closest Japanese plant-panel production comparator
+  - `Shino2019` for the MWh-per-waste-input and thermal-interpretation lineage
 - Generator-only / performance-side comparator:
   - `Chen2012`
   - `Yeh2020`
@@ -34,6 +36,8 @@ This note keeps the article's citation layer disciplined.
 - MOE survey source:
   - `MOEJ2022`
 - Econometric framing where it clarifies the estimator family:
+  - `Allison1982`
+  - `BeckKatzTucker1998`
   - `Wooldridge2010`
 
 ### Discussion

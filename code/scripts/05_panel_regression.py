@@ -45,6 +45,12 @@ MAIN_MODEL_LABELS = [
     "Model 4 (Year indicators + RE)",
 ]
 
+TECHNOLOGY_CATEGORICALS = [
+    "furnace_type_group",
+    "operation_mode_group",
+    "facility_type_group",
+]
+
 
 def load_regression_frame():
     """Load the enriched panel and build the shared regression frame."""
@@ -300,6 +306,55 @@ def run_ols_with_year_fe(regression):
     return model
 
 
+def build_technology_adjusted_design(regression):
+    """Build the primary year-adjusted cross-facility design matrix."""
+    year_dummies = pd.get_dummies(
+        regression["fiscal_year"],
+        prefix="fy",
+        drop_first=True,
+        dtype=float,
+    )
+    technology_dummies = pd.get_dummies(
+        regression[TECHNOLOGY_CATEGORICALS],
+        prefix=["furnace", "operation", "facility"],
+        drop_first=True,
+        dtype=float,
+    )
+    return sm.add_constant(
+        pd.concat(
+            [
+                regression[MODEL_VARS],
+                regression[["n_furnaces"]],
+                technology_dummies,
+                year_dummies,
+            ],
+            axis=1,
+        )
+    )
+
+
+def run_primary_technology_adjusted_model(regression):
+    """Primary RQ2 model: year-adjusted OLS with plant-configuration controls."""
+    print("\n" + "=" * 60)
+    print("PRIMARY RQ2 MODEL: YEAR + TECHNOLOGY ADJUSTED OLS")
+    print("=" * 60)
+
+    X = build_technology_adjusted_design(regression)
+    model = sm.OLS(regression["log_efficiency"], X).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": regression["analysis_facility_id"]},
+    )
+    print(f"  R-squared: {model.rsquared:.4f}")
+    print(f"  Adj R-squared: {model.rsquared_adj:.4f}")
+    print(f"  N: {int(model.nobs):,}")
+    for var in MODEL_VARS:
+        print(
+            f"  {var:<28} {float(model.params[var]):>8.4f}  "
+            f"SE={float(model.bse[var]):>7.4f}  p={float(model.pvalues[var]):>7.4f}"
+        )
+    return model
+
+
 def _fit_random_effects(regression, include_year_fe):
     """Shared RE estimator helper."""
     from linearmodels.panel import RandomEffects
@@ -361,8 +416,14 @@ def run_random_effects_with_year_fe(regression):
     return model
 
 
-def comparison_table(models, regression, sample_report_path, persistence_summary):
-    """Write a markdown comparison table for the four main models."""
+def comparison_table(
+    models,
+    primary_model,
+    regression,
+    sample_report_path,
+    persistence_summary,
+):
+    """Write the primary RQ2 model and the supplemental estimator ladder."""
     print("\n" + "=" * 60)
     print("MODEL COMPARISON")
     print("=" * 60)
@@ -378,6 +439,49 @@ def comparison_table(models, regression, sample_report_path, persistence_summary
             f"{regression['analysis_facility_id'].nunique():,} facilities.\n\n"
         )
         f.write(f"Sample definition: `{os.path.basename(sample_report_path)}`\n\n")
+        f.write("## Primary RQ2 Specification\n\n")
+        f.write(
+            "The primary estimand is a year-adjusted cross-facility comparison: "
+            "how gross MWh/t differs across generator age/vintage, scale, "
+            "utilization, heating value, and observed plant-configuration profiles "
+            "within common fiscal years. It is not a causal within-plant aging "
+            "effect. Both columns use facility-clustered standard errors.\n\n"
+        )
+        f.write(
+            "| Variable | Base year-adjusted model | Primary year + technology model |\n"
+        )
+        f.write("|:--|--:|--:|\n")
+        base_model = models[1]
+        for var in MODEL_VARS:
+            base_p = float(model_pvalues(base_model)[var])
+            primary_p = float(model_pvalues(primary_model)[var])
+            f.write(
+                f"| {var} | {float(base_model.params[var]):.4f}"
+                f"{significance_stars(base_p)} "
+                f"({float(model_std_errors(base_model)[var]):.4f}) | "
+                f"{float(primary_model.params[var]):.4f}"
+                f"{significance_stars(primary_p)} "
+                f"({float(model_std_errors(primary_model)[var]):.4f}) |\n"
+            )
+        f.write(
+            f"| Observations | {int(base_model.nobs):,} | "
+            f"{int(primary_model.nobs):,} |\n"
+        )
+        f.write(
+            f"| Facilities | {regression['analysis_facility_id'].nunique():,} | "
+            f"{regression['analysis_facility_id'].nunique():,} |\n"
+        )
+        f.write(
+            f"| R-squared | {float(base_model.rsquared):.4f} | "
+            f"{float(primary_model.rsquared):.4f} |\n\n"
+        )
+        f.write(
+            "Technology controls in the primary model are normalized furnace type, "
+            "operating mode, facility type, and number of furnaces. Fiscal-year "
+            "indicators are included in both columns.\n\n"
+        )
+
+        f.write("## Supplemental Estimator Ladder\n\n")
         f.write("| Variable | " + " | ".join(MAIN_MODEL_LABELS) + " |\n")
         f.write("|:---------|" + "|".join([":--------------------:"] * 4) + "|\n")
 
@@ -443,6 +547,27 @@ def serialize_main_models(models):
     return payload
 
 
+def serialize_primary_model(model):
+    """Return structured metadata for the declared primary RQ2 model."""
+    return {
+        "label": "Year + technology adjusted OLS",
+        "estimand": "year-adjusted cross-facility generator comparison",
+        "technology_controls": [
+            "furnace_type_group",
+            "operation_mode_group",
+            "facility_type_group",
+            "n_furnaces",
+        ],
+        "coefficients": {var: float(model.params[var]) for var in MODEL_VARS},
+        "std_errors": {
+            var: float(model_std_errors(model)[var]) for var in MODEL_VARS
+        },
+        "pvalues": {var: float(model_pvalues(model)[var]) for var in MODEL_VARS},
+        "rsquared": float(model.rsquared),
+        "observations": int(model.nobs),
+    }
+
+
 def serialize_age_group_summary(path):
     """Read the age-group markdown table into structured metadata."""
     lines = [line.strip() for line in open(path, "r", encoding="utf-8")]
@@ -484,9 +609,11 @@ def main():
     m2 = run_ols_with_year_fe(regression)
     m3 = run_random_effects(regression)
     m4 = run_random_effects_with_year_fe(regression)
+    primary_model = run_primary_technology_adjusted_model(regression)
     models = [m1, m2, m3, m4]
     results_path = comparison_table(
         models,
+        primary_model,
         regression,
         sample_report_path,
         persistence_summary,
@@ -513,6 +640,7 @@ def main():
             "early_coded_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
             "later_coded_within_total_ratio": summary["post_fukushima_within_total_ratio"],
             "main_models": serialize_main_models(models),
+            "primary_model": serialize_primary_model(primary_model),
             "age_group_summary": serialize_age_group_summary(age_table_path),
             "rank_persistence": persistence_summary,
             "outputs": {

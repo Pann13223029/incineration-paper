@@ -142,20 +142,22 @@ These lines are intentionally present because `code/scripts/08_verify_claims.py`
 - Installed-capacity entry risk set: (13,770 facility-years, 2,035 facilities, 141 installed-capacity entry events)
 - Main installed-capacity entry model: 10,823 facility-years across 1,911 facilities and 98 events
 - Count distinction: 141 is the descriptive adoption universe for event-rate summaries and pathway auditing; 98 is the stricter exact one-fiscal-year lagged hazard subset.
-- Entry age pattern: facilities older than 10 years are 1.2–1.9 percentage points less likely to report installed-capacity entry.
-- Entry capacity pattern: prior-year capacity raises entry probability by about 0.45 percentage points per 100 t/day.
+- Broad/active distinction: 40 of 98 exact-year events have zero or missing prior-year throughput; the active-conversion frame contains 9,215 rows, 1,663 facilities, and 58 events.
+- Entry age pattern: broad age AMEs are −1.41, −1.45, and −0.83 pp; active-conversion AMEs attenuate to −0.67, −0.56, and −0.29 pp.
+- Entry capacity pattern: prior-year capacity raises entry probability by 0.45 pp in the broad frame and 0.44 pp in the active frame per 100 t/day.
 - Output bridge: 135 of 141 entrants report positive output by the following year; 137 enter the canonical generator frame within three years.
 - Panel attrition: 1,305 of 1,894 non-entrants (68.9%) are last observed before FY2024; this is coded-panel exit, not verified closure.
 - Pathway audit: 50 observed entry events as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved.
 - Generator persistence: the pooled within-year percentile-rank correlation is 0.9325 across 4,368 exact adjacent-year pairs.
+- Primary generator model: year- and technology-adjusted OLS gives age/vintage −0.0329, capacity +0.1103, and utilization +0.7600.
+- Post-entry trajectory: 389 observations across 137 events; entrants average near the same-year distribution middle and follow-up declines from 125 to 71 represented events.
 
 | Evidence block | Current finding | Check |
 |:--|:--|:--|
-| Capacity-entry hazard, prior-year age bands | Facilities older than 10 years are 1.2–1.9 pp less likely than 0–10-year facilities to report positive installed capacity in the next fiscal year | p < 0.05 in every reported age-band coefficient |
-| Capacity-entry hazard, prior-year capacity | +0.45 pp per 100 t/day | p < 0.05 |
-| Facility age effect | −0.014 to −0.035 in the four main specifications | p < 0.001 in every reported main specification |
-| Design capacity effect | +0.034 to +0.105 in the four main specifications | Positive in every main specification |
-| Capacity utilization effect | +0.543 to +0.776 in the four main specifications | Positive in every main specification |
+| Broad entry hazard, prior-year age bands | −1.41, −1.45, and −0.83 pp versus ages 0–10 | All p < 0.05 |
+| Active-conversion age bands | −0.67, −0.56, and −0.29 pp | Only ages 10–20 have p < 0.01 |
+| Entry capacity | +0.45 pp broad; +0.44 pp active per 100 t/day | Both p < 0.01 |
+| Primary generator model | Age/vintage −0.0329; capacity +0.1103; utilization +0.7600 | All p < 0.001 |
 
 ## Legacy Thesis Boundary
 

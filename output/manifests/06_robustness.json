@@ -1,5 +1,7 @@
 {
   "analysis_config": {
+    "adoption_active_conversion_requires_positive_prior_throughput": true,
+    "adoption_elapsed_duration_uses_fiscal_years": true,
     "adoption_model": "observed_first_adoption_logit_hazard",
     "adoption_predictors_lagged_exact_one_year": true,
     "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
@@ -11,7 +13,8 @@
     "pre_fukushima_end": 2011,
     "regression_requires_official_facility_code": true,
     "regression_requires_positive_output": true,
-    "regression_winsorization_method": "clip"
+    "regression_winsorization_method": "clip",
+    "technology_categories_normalized_to_compact_groups": true
   },
   "inputs": [
     "data/processed/incineration_panel_enriched.csv"
@@ -21,6 +24,10 @@
       2005,
       2009
     ],
+    "engineering_validation": {
+      "plausible_rows": 4971,
+      "thermal_reported_log_correlation": 0.8636071
+    },
     "later_coded_window": [
       2013,
       2024
@@ -163,6 +170,51 @@
         "model_family": "within_between",
         "n": 5683,
         "r2": 0.3796139,
+        "year_fe": true
+      },
+      {
+        "capacity_100t_coef": 0.07681196,
+        "capacity_100t_p": 3.503959e-21,
+        "capacity_utilization_capped_coef": 0.5353259,
+        "capacity_utilization_capped_p": 6.126679e-07,
+        "dv": "log_thermal_conversion_proxy",
+        "facilities": 934,
+        "facility_age_years_coef": -0.03261797,
+        "facility_age_years_p": 1.566371e-52,
+        "label": "R10: Thermal-conversion proxy + year/technology controls",
+        "model_family": "engineering_validation",
+        "n": 4971,
+        "r2": 0.449339,
+        "year_fe": true
+      },
+      {
+        "capacity_100t_coef": 0.07468894,
+        "capacity_100t_p": 5.666011e-21,
+        "capacity_utilization_capped_coef": 0.4817302,
+        "capacity_utilization_capped_p": 4.739232e-07,
+        "dv": "log_reported_power_efficiency",
+        "facilities": 934,
+        "facility_age_years_coef": -0.03293157,
+        "facility_age_years_p": 7.000127e-51,
+        "label": "R11: Reported generation efficiency + year/technology controls",
+        "model_family": "engineering_validation",
+        "n": 4971,
+        "r2": 0.4699793,
+        "year_fe": true
+      },
+      {
+        "capacity_100t_coef": 0.1040125,
+        "capacity_100t_p": 7.262614e-28,
+        "capacity_utilization_capped_coef": 0.6074246,
+        "capacity_utilization_capped_p": 6.676194e-05,
+        "dv": "log_efficiency",
+        "facilities": 915,
+        "facility_age_years_coef": -0.03614424,
+        "facility_age_years_p": 1.957937e-47,
+        "label": "R12: Exact-adjacent-year lagged predictors + year FE",
+        "model_family": "lagged_predictor",
+        "n": 4368,
+        "r2": 0.3649761,
         "year_fe": true
       }
     ]

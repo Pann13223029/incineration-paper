@@ -28,6 +28,8 @@ paper's framing, methods, and interpretation.
 - Han, Q.-l., Liu, H.-q., Gong, Y.-y., Tao, J.-y., Sun, Y.-n., Wei, G.-x., Zhu, Y.-w., & Chen, G.-y. (2025). Strengthening pollutant control and resource recovery can enhance sustainable waste incineration in China. *Communications Earth & Environment*, *6*, Article 863. https://doi.org/10.1038/s43247-025-02859-0
 - Liu, B., Wang, P., Zhou, J., Guo, Y., Ma, S., Chen, W.-Q., Li, J., & Chang, V. W.-C. (2025). Refocusing on effectiveness over expansion in urban waste-energy-carbon development in China. *Nature Energy*, *10*, 215-225. https://doi.org/10.1038/s41560-024-01683-8
 - Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste to energy, a consequential approach. *Waste Management*, *30*(12), 2510-2519. https://doi.org/10.1016/j.wasman.2010.04.015
+- Sasao, T. (2018). How does municipal solid waste policy affect heat and electricity produced by incinerators? *Detritus*, *2*, 133-141. https://doi.org/10.31025/2611-4135/2018.13650
+- Shino, Y. (2019). System analysis of MSW incinerator power generation performance. *Journal of the Japan Society of Material Cycles and Waste Management*, *30*, 113-121. https://doi.org/10.3985/jjsmcwm.30.113
 - Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving waste to energy rate by promoting an integrated municipal solid-waste management system. *Resources, Conservation and Recycling*, *136*, 289-296. https://doi.org/10.1016/j.resconrec.2018.05.005
 - Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies of Taiwan's municipal solid waste incineration plants using data envelopment analysis. *Waste Management*, *107*, 28-35. https://doi.org/10.1016/j.wasman.2020.03.040
 

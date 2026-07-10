@@ -40,4 +40,4 @@ npm run slides:paper:pdf
 
 ## Presentation Use
 
-Use the PDF for Zoom screen sharing and keep `paper-zoom-script.md` open on a second screen. The live route is 20 slides and includes motivation, data sources, sample construction, two-method logic, figures, a rate chart, robustness, data limitations, decision logic, and future direction. The slides keep the audience-facing story clean; the script carries presenter framing and detailed explanation.
+Use the PDF for Zoom screen sharing and keep `paper-zoom-script.md` open on a second screen. The live route is 20 slides and includes motivation, data sources, broad-versus-active entry, the technology-adjusted generator model, Figures 2-4, robustness, data limits, contribution boundaries, and future direction. The slides keep the audience-facing story clean; the script carries presenter framing and detailed explanation.

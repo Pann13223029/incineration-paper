@@ -8,6 +8,24 @@ Canonical regression frame: 5,683 observations across 1,016 facilities.
 
 Sample definition: `sample_definition.md`
 
+## Primary RQ2 Specification
+
+The primary estimand is a year-adjusted cross-facility comparison: how gross MWh/t differs across generator age/vintage, scale, utilization, heating value, and observed plant-configuration profiles within common fiscal years. It is not a causal within-plant aging effect. Both columns use facility-clustered standard errors.
+
+| Variable | Base year-adjusted model | Primary year + technology model |
+|:--|--:|--:|
+| facility_age_years | -0.0348*** (0.0023) | -0.0329*** (0.0023) |
+| capacity_100t | 0.1051*** (0.0087) | 0.1103*** (0.0101) |
+| capacity_utilization_capped | 0.7760*** (0.1351) | 0.7600*** (0.1319) |
+| heating_value_mj_kg | 0.0033 (0.0021) | 0.0032 (0.0020) |
+| Observations | 5,683 | 5,683 |
+| Facilities | 1,016 | 1,016 |
+| R-squared | 0.3699 | 0.3830 |
+
+Technology controls in the primary model are normalized furnace type, operating mode, facility type, and number of furnaces. Fiscal-year indicators are included in both columns.
+
+## Supplemental Estimator Ladder
+
 | Variable | Model 1 (Pooled OLS) | Model 2 (Year indicators) | Model 3 (RE) | Model 4 (Year indicators + RE) |
 |:---------|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
 | facility_age_years | -0.0277*** | -0.0348*** | -0.0136*** | -0.0332*** |

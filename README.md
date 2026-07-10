@@ -4,7 +4,7 @@ This is a private, paper-focused derivative workspace for the Japan waste-incine
 
 The paper's working claim is narrow:
 
-> Japan's incineration-fleet transition is better read as two linked but distinct margins: selective first reporting of installed generation capacity and structured electricity-recovery performance among operating generators.
+> Japan's incineration-fleet transition combines scale-selective entry, a risk-set-dependent age pattern, and structured electricity-recovery performance after entry.
 
 ## Start Here
 
@@ -23,12 +23,15 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-The current evidence base covers 23,599 observations across 2,948 facilities. The entry risk set contains 13,770 facility-years across 2,035 facilities, with 141 installed-capacity entry events. The exact one-fiscal-year lagged entry model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Use these counts deliberately: 141 is the descriptive event universe, while 98 is the stricter exact-year hazard subset. Relative to prior-year age 0-10, older facilities are 1.2–1.9 percentage points less likely to report positive installed capacity, while prior-year capacity adds +0.45 percentage points per 100 t/day. The event is operationally meaningful but not identical to output: 135 of 141 entrants report positive output by the following year. Attrition is also explicit: 1,305 of 1,894 non-entrants (68.9%) are last observed before FY2024, which is treated as panel exit rather than verified closure. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.014 to −0.035, capacity from +0.034 to +0.105, and utilization from +0.543 to +0.776. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024. The pooled within-year rank correlation across 4,368 exact adjacent-year pairs is 0.9325.
+The evidence base covers 23,599 rows and 2,948 coded facilities. The broad entry risk set contains 13,770 facility-years, 2,035 facilities, and 141 observed events; the exact-year model retains 10,823 rows, 1,911 facilities, and 98 events. 40 of those events have zero or missing prior-year throughput. A required active-conversion model therefore uses 9,215 rows, 1,663 facilities, and 58 events. Prior-year capacity is robust across the two frames (+0.45 and +0.44 percentage points per 100 t/day), while broad age effects of −1.41, −1.45, and −0.83 percentage points attenuate to −0.67, −0.56, and −0.29. The event is operationally meaningful: 135 of 141 entrants report positive output by the following year. The canonical generator frame contains 5,683 rows across 1,016 facilities. Its primary year- and technology-adjusted model reports −0.0329 for age/vintage, +0.1103 for capacity, and +0.7600 for utilization. Adjacent-year within-year ranks correlate at 0.9325 across 4,368 exact pairs. A 389-row post-entry trajectory shows entrants near the middle of the contemporaneous generator distribution on average, with represented events declining from 125 at event time zero to 71 at time three.
 
 | Headline | Current value |
 |:--|:--|
-| Capacity-entry age effect | −1.94 to −1.24 percentage points vs prior-year age 0–10 |
-| Capacity-entry scale effect | +0.45 percentage points per 100 t/day of prior-year capacity |
+| Broad asset-entry age AMEs | −1.41, −1.45, and −0.83 pp vs prior-year age 0–10 |
+| Active-conversion age AMEs | −0.67, −0.56, and −0.29 pp; latter two not conventionally significant |
+| Entry scale AME | +0.45 pp broad and +0.44 pp active per 100 t/day |
+| Primary generator model | Age/vintage −0.0329; capacity +0.1103; utilization +0.7600 |
+| Early post-entry position | Mean same-year percentile 51.5 at event time zero and 52.9 at time three |
 | Pathway audit of entry events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
 | Within/total variance ratio | 0.1499 (pooled), 0.1795 (early coded), 0.0956 (later coded) |
 | Adjacent-year rank persistence | 0.9325 across 4,368 exact pairs |

@@ -1,7 +1,7 @@
 # Highlights
 
-- One paper separates installed-capacity entry from conditional generator performance
-- Capacity entry is concentrated in younger, larger facilities and usually precedes output
-- Older non-entrants are more likely to disappear from the coded panel
-- Generator electricity recovery declines with age and rises with scale and utilization
+- One national panel separates asset entry, active conversion, and generator performance
+- Entry remains scale-selective, but its age gradient attenuates among active plants
+- Most capacity entrants report output and begin near the generator distribution middle
+- Year- and technology-adjusted MWh/t varies with age/vintage, scale, and utilization
 - Adjacent-year generator performance ranks correlate at 0.93

@@ -9,8 +9,10 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
+import unicodedata
 from typing import Any
 
 import numpy as np
@@ -38,8 +40,18 @@ REGRESSION_COLUMNS = [
     "fiscal_year",
     "facility_name",
     "prefecture",
+    "n_furnaces",
+    "furnace_type",
+    "operation_mode",
+    "facility_type",
+    "furnace_type_group",
+    "operation_mode_group",
+    "facility_type_group",
+    "continuous_operation",
+    "gasification_melting",
     "throughput_t_year",
     "power_generated_mwh",
+    "power_efficiency_pct",
     "facility_age_years",
     "capacity_t_day",
     "capacity_100t",
@@ -51,6 +63,9 @@ REGRESSION_COLUMNS = [
     "energy_efficiency_mwh_per_t",
     "log_efficiency_raw",
     "log_efficiency",
+    "gross_thermal_conversion_ratio",
+    "log_thermal_conversion_proxy",
+    "log_reported_power_efficiency",
 ]
 
 ADOPTION_COLUMNS = [
@@ -60,6 +75,12 @@ ADOPTION_COLUMNS = [
     "facility_name",
     "prefecture",
     "year_started",
+    "n_furnaces",
+    "furnace_type_group",
+    "operation_mode_group",
+    "facility_type_group",
+    "continuous_operation",
+    "gasification_melting",
     "has_power_gen",
     "adopt_power_this_year",
     "facility_age_years",
@@ -73,7 +94,9 @@ ADOPTION_COLUMNS = [
 
 ADOPTION_MODEL_COLUMNS = [
     *ADOPTION_COLUMNS,
-    "risk_duration_years",
+    "risk_observed_rows",
+    "first_risk_fiscal_year",
+    "elapsed_at_risk_years",
     "lag_fiscal_year",
     "lag_gap_years",
     "exact_one_year_lag",
@@ -81,6 +104,13 @@ ADOPTION_MODEL_COLUMNS = [
     "lag_age_band",
     "lag_capacity_t_day",
     "lag_capacity_100t",
+    "lag_throughput_t_year",
+    "lag_n_furnaces",
+    "lag_furnace_type_group",
+    "lag_operation_mode_group",
+    "lag_facility_type_group",
+    "lag_continuous_operation",
+    "lag_gasification_melting",
 ]
 
 ADOPTION_PATHWAY_AUDIT_COLUMNS = [
@@ -152,7 +182,10 @@ def analysis_config() -> dict[str, Any]:
         "adoption_model": "observed_first_adoption_logit_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
         "adoption_predictors_lagged_exact_one_year": True,
+        "adoption_elapsed_duration_uses_fiscal_years": True,
+        "adoption_active_conversion_requires_positive_prior_throughput": True,
         "adoption_previous_observed_coded_row_retained_as_sensitivity": True,
+        "technology_categories_normalized_to_compact_groups": True,
     }
 
 
@@ -179,6 +212,57 @@ def age_band_from_years(series: pd.Series) -> pd.Series:
     )
 
 
+def normalize_category_value(value: Any) -> str:
+    """Normalize source category labels while preserving an explicit unknown group."""
+    if pd.isna(value):
+        return ""
+    normalized = unicodedata.normalize("NFKC", str(value)).strip()
+    return re.sub(r"\s+", "", normalized)
+
+
+def add_technology_profiles(frame: pd.DataFrame) -> pd.DataFrame:
+    """Add compact, stable technology groups used by sensitivity models."""
+    result = frame.copy()
+    furnace = result["furnace_type"].map(normalize_category_value)
+    operation = result["operation_mode"].map(normalize_category_value)
+    facility = result["facility_type"].map(normalize_category_value)
+
+    result["furnace_type_group"] = np.select(
+        [
+            furnace.str.contains("\u30b9\u30c8\u30fc\u30ab", na=False),
+            furnace.str.contains("\u6d41\u52d5\u5e8a", na=False),
+            furnace.str.contains("\u30b7\u30e3\u30d5\u30c8", na=False),
+            furnace.str.contains("\u56de\u8ee2", na=False),
+        ],
+        ["Stoker", "Fluidized bed", "Shaft", "Rotary"],
+        default="Other/unknown",
+    )
+    result["operation_mode_group"] = np.select(
+        [
+            operation.str.contains("\u5168\u9023\u7d9a\u904b\u8ee2", na=False),
+            operation.str.contains("\u51c6\u9023\u7d9a\u904b\u8ee2", na=False),
+            operation.str.contains("\u30d0\u30c3\u30c1\u904b\u8ee2", na=False),
+        ],
+        ["Continuous", "Semi-continuous", "Batch"],
+        default="Other/unknown",
+    )
+    result["facility_type_group"] = np.select(
+        [
+            facility.str.contains("\u30ac\u30b9\u5316", na=False),
+            facility.str.contains("\u713c\u5374", na=False),
+        ],
+        ["Gasification/melting", "Incineration"],
+        default="Other/unknown",
+    )
+    result["continuous_operation"] = result["operation_mode_group"].eq(
+        "Continuous"
+    ).astype(int)
+    result["gasification_melting"] = result["facility_type_group"].eq(
+        "Gasification/melting"
+    ).astype(int)
+    return result
+
+
 def build_full_fleet_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
     """
     Build the coded full-fleet frame used for extensive-margin analysis.
@@ -200,7 +284,7 @@ def build_full_fleet_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
     fleet["throughput_100k_t"] = fleet["throughput_t_year"] / 100000.0
     fleet["heating_value_mj_kg"] = fleet["heating_value_kj_kg"] / 1000.0
     fleet["has_power_gen"] = fleet["has_power_gen"].fillna(False).astype(bool)
-    return fleet
+    return add_technology_profiles(fleet)
 
 
 def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
@@ -236,6 +320,12 @@ def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
                     "facility_name": row["facility_name"],
                     "prefecture": row["prefecture"],
                     "year_started": row["year_started"],
+                    "n_furnaces": row["n_furnaces"],
+                    "furnace_type_group": row["furnace_type_group"],
+                    "operation_mode_group": row["operation_mode_group"],
+                    "facility_type_group": row["facility_type_group"],
+                    "continuous_operation": row["continuous_operation"],
+                    "gasification_melting": row["gasification_melting"],
                     "has_power_gen": bool(row["has_power_gen"]),
                     "adopt_power_this_year": int(adopt_now),
                     "facility_age_years": row["facility_age_years"],
@@ -275,7 +365,11 @@ def build_adoption_model_frame(
 
     model = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
     group = model.groupby("analysis_facility_id", sort=False)
-    model["risk_duration_years"] = group.cumcount() + 1
+    model["risk_observed_rows"] = group.cumcount() + 1
+    model["first_risk_fiscal_year"] = group["fiscal_year"].transform("min")
+    model["elapsed_at_risk_years"] = (
+        model["fiscal_year"] - model["first_risk_fiscal_year"] + 1
+    )
     model["lag_fiscal_year"] = group["fiscal_year"].shift(1)
     model["lag_gap_years"] = model["fiscal_year"] - model["lag_fiscal_year"]
     model["exact_one_year_lag"] = model["lag_gap_years"].eq(1)
@@ -283,6 +377,13 @@ def build_adoption_model_frame(
     model["lag_age_band"] = group["age_band"].shift(1)
     model["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
     model["lag_capacity_100t"] = group["capacity_100t"].shift(1)
+    model["lag_throughput_t_year"] = group["throughput_t_year"].shift(1)
+    model["lag_n_furnaces"] = group["n_furnaces"].shift(1)
+    model["lag_furnace_type_group"] = group["furnace_type_group"].shift(1)
+    model["lag_operation_mode_group"] = group["operation_mode_group"].shift(1)
+    model["lag_facility_type_group"] = group["facility_type_group"].shift(1)
+    model["lag_continuous_operation"] = group["continuous_operation"].shift(1)
+    model["lag_gasification_melting"] = group["gasification_melting"].shift(1)
 
     first_rows = group.cumcount().eq(0)
     extra_missing_mask = (
@@ -450,7 +551,27 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
     power["capacity_100t"] = power["capacity_t_day"] / 100.0
     power["heating_value_mj_kg"] = power["heating_value_kj_kg"] / 1000.0
 
-    return power
+    positive_heating_value = power["heating_value_mj_kg"].gt(0)
+    power["gross_thermal_conversion_ratio"] = np.where(
+        positive_heating_value,
+        power["energy_efficiency_raw_mwh_per_t"]
+        * 3.6
+        / power["heating_value_mj_kg"],
+        np.nan,
+    )
+    power["log_thermal_conversion_proxy"] = np.where(
+        power["gross_thermal_conversion_ratio"].gt(0),
+        np.log(power["gross_thermal_conversion_ratio"]),
+        np.nan,
+    )
+    reported_efficiency_fraction = power["power_efficiency_pct"] / 100.0
+    power["log_reported_power_efficiency"] = np.where(
+        reported_efficiency_fraction.gt(0),
+        np.log(reported_efficiency_fraction),
+        np.nan,
+    )
+
+    return add_technology_profiles(power)
 
 
 def build_regression_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
@@ -504,6 +625,13 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
     power_flagged = panel[panel["has_power_gen"] == True].copy()
     operating = build_operating_power_frame(panel)
     regression = build_regression_frame(panel)
+    active_adoption_model = adoption_model[
+        adoption_model["lag_throughput_t_year"].gt(0)
+    ].copy()
+    duration_mismatch = adoption_model["elapsed_at_risk_years"].ne(
+        adoption_model["risk_observed_rows"]
+    )
+    fy2024 = panel[panel["fiscal_year"].eq(2024)].copy()
 
     summary = {
         "full_panel_obs": int(len(panel)),
@@ -532,6 +660,23 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         "adoption_model_obs": int(len(adoption_model)),
         "adoption_model_facilities": int(adoption_model["analysis_facility_id"].nunique()),
         "adoption_model_events": int(adoption_model["adopt_power_this_year"].sum()),
+        "adoption_active_model_obs": int(len(active_adoption_model)),
+        "adoption_active_model_facilities": int(
+            active_adoption_model["analysis_facility_id"].nunique()
+        ),
+        "adoption_active_model_events": int(
+            active_adoption_model["adopt_power_this_year"].sum()
+        ),
+        "adoption_nonpositive_prior_throughput_rows": int(
+            adoption_model["lag_throughput_t_year"].fillna(0).le(0).sum()
+        ),
+        "adoption_nonpositive_prior_throughput_events": int(
+            adoption_model.loc[
+                adoption_model["lag_throughput_t_year"].fillna(0).le(0),
+                "adopt_power_this_year",
+            ].sum()
+        ),
+        "adoption_duration_row_count_mismatch": int(duration_mismatch.sum()),
         "adoption_previous_observed_model_obs": int(
             adoption_model.attrs.get("previous_observed_model_obs", len(adoption_model))
         ),
@@ -564,6 +709,11 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         "regression_year_end": int(regression["fiscal_year"].max()),
         "regression_within_total_ratio": round(
             within_total_variance_ratio(regression, "log_efficiency"), 4
+        ),
+        "fy2024_panel_rows": int(len(fy2024)),
+        "fy2024_positive_capacity_rows": int(fy2024["has_power_gen"].sum()),
+        "fy2024_positive_capacity_share_pct": float(
+            fy2024["has_power_gen"].mean() * 100
         ),
     }
 
@@ -617,6 +767,12 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
         ),
         f"- Power-generation rows flagged by MOE (`has_power_gen == True`): {summary['power_generation_flagged_obs']:,}",
         (
+            f"- FY2024 analytic-panel positive-capacity share: "
+            f"{summary['fy2024_positive_capacity_rows']:,} of "
+            f"{summary['fy2024_panel_rows']:,} rows "
+            f"({summary['fy2024_positive_capacity_share_pct']:.1f}%)"
+        ),
+        (
             f"- Operating power-generation sample (positive throughput and positive output): "
             f"{summary['operating_power_obs']:,}"
         ),
@@ -655,6 +811,20 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"- Exact-year lagged adoption-model observations: {summary['adoption_model_obs']:,} "
             f"({summary['adoption_model_facilities']:,} facilities; "
             f"{summary['adoption_model_events']:,} events)"
+        ),
+        (
+            f"- Positive-prior-throughput conversion sensitivity: "
+            f"{summary['adoption_active_model_obs']:,} observations "
+            f"({summary['adoption_active_model_facilities']:,} facilities; "
+            f"{summary['adoption_active_model_events']:,} events)"
+        ),
+        (
+            f"- Main-frame events with zero or missing prior-year throughput: "
+            f"{summary['adoption_nonpositive_prior_throughput_events']:,}"
+        ),
+        (
+            f"- Exact-lag rows where elapsed fiscal duration differs from observed-row count: "
+            f"{summary['adoption_duration_row_count_mismatch']:,}"
         ),
         (
             f"- Broader previous-observed-coded-row adoption frame before exact-year restriction: "

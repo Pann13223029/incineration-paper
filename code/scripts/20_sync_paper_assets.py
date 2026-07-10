@@ -28,6 +28,7 @@ SOURCE_FILES = [
     "adoption_pathway_audit.csv",
     "figure2_transition_effects.csv",
     "post_adoption_bridge.csv",
+    "post_adoption_trajectories.csv",
     "figure3_persistence.csv",
 ]
 

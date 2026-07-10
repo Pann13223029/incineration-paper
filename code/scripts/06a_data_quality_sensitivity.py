@@ -138,6 +138,7 @@ def run_hazard_summary(adoption_model: pd.DataFrame) -> dict[str, Any]:
         adoption_model,
         include_year_fe=True,
         include_pref_fe=False,
+        include_duration=True,
     )
     model = adoption_mod.fit_logit_hazard(x, y, adoption_model["analysis_facility_id"])
     ame = adoption_mod.compute_logit_average_marginal_effects(model)
@@ -507,10 +508,10 @@ def write_markdown_report(path: Path, report: dict[str, Any]) -> None:
             (
                 "The duplicate-code issue is a real data-structure concern and should be "
                 "disclosed or appendix-tested. The sensitivity checks do not overturn the "
-                "headline claims: adoption remains selective toward younger and larger "
-                "facilities, while efficiency remains lower with age and higher with scale "
-                "and utilization. Heating-value noise is likewise not driving the core "
-                "age, scale, and utilization patterns because those coefficients are stable "
+                "broad-frame results: the age AMEs remain negative and entry remains "
+                "scale-selective. Generator performance remains lower with age/vintage and "
+                "higher with scale and utilization. Heating-value noise is likewise not "
+                "driving those generator associations because the coefficients are stable "
                 "after plausible-value restrictions."
             ),
             "",

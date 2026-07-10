@@ -11,11 +11,11 @@ description: Audience-facing Zoom briefing deck for the Japan waste-incineration
 
 # Where Energy Recovery Stalls
 
-## Two bottlenecks in Japan's municipal waste-incineration fleet
+## Two margins and one crucial risk-set distinction
 
 <div class="hero-title-card">
   <p class="hero-title-label">Paper title</p>
-  <p class="hero-paper-title">Selective Modernization and Bounded Responsiveness in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study</p>
+  <p class="hero-paper-title">Selective Entry and Structured Electricity-Recovery Performance in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study</p>
 </div>
 
 <div class="pill-row">
@@ -54,7 +54,7 @@ Script cue: Set expectation. This is an audience-facing route: problem, method, 
     <div class="flow-step">
       <p class="step-number">3</p>
       <p class="mini-title">Not all heat becomes electricity</p>
-      <p class="mini-text">In FY2024, only 41.1% of panel facilities are flagged as power-generating.</p>
+      <p class="mini-text">In FY2024, 415 of 991 facilities (41.9%) generated electricity in the official summary.</p>
     </div>
   </div>
 </div>
@@ -73,11 +73,11 @@ Script cue: Start from practical stakes before methodology.
 
 <div class="card single-card center">
   <p class="eyebrow">Expected part</p>
-  <p class="reader-line">Younger and larger plants have advantages. That is not the surprising claim.</p>
+  <p class="reader-line">Scale may matter, but the age story depends on which facilities count as candidates.</p>
 </div>
 
 <div class="callout">
-  <p>The real question is whether energy-recovery modernization spreads through lagging facilities, or concentrates where conditions are already favorable.</p>
+  <p>The paper tests broad asset entry, conversion of active plants, and performance after entry as distinct outcomes.</p>
 </div>
 
 <!--
@@ -107,7 +107,7 @@ Script cue: Defuse the "common sense" objection early.
 </div>
 
 <div class="term-row">
-  <div class="term-chip"><strong>Entry</strong> = a plant first starts reporting electricity generation.</div>
+  <div class="term-chip"><strong>Entry</strong> = a facility first reports positive installed generation capacity.</div>
   <div class="term-chip"><strong>MWh/t</strong> = electricity produced per tonne of waste processed.</div>
   <div class="term-chip"><strong>Bottleneck</strong> = the step where improvement is most constrained.</div>
 </div>
@@ -141,13 +141,13 @@ Script cue: Define the terms before using them.
     </tr>
     <tr>
       <td>Facility operating attributes</td>
-      <td>Power-generation flag/output, throughput, design capacity, start year/age</td>
+      <td>Installed capacity/output, throughput, design capacity, start year/age, furnace and operation type</td>
       <td>Entry risk set and generator-output comparison</td>
     </tr>
     <tr>
       <td>Context and plausibility controls</td>
-      <td>Heating value and grid-emission context</td>
-      <td>Comparability checks, not the central contribution</td>
+      <td>Heating value and reported generation efficiency</td>
+      <td>Comparability and engineering-oriented validation</td>
     </tr>
   </tbody>
 </table>
@@ -183,7 +183,7 @@ Script cue: Say what the dataset can and cannot observe.
     <p class="eyebrow">Entry frame</p>
     <p class="kpi">13,770</p>
     <p class="kpi-label">at-risk facility-years</p>
-    <p class="kpi-note">2,035 initial non-generators; 141 first-entry events.</p>
+    <p class="kpi-note">Broad universe: 141 events. Exact model: 98. Active conversion: 58.</p>
   </div>
   <div class="pipe-arrow">&rarr;</div>
   <div class="pipe-card">
@@ -195,7 +195,7 @@ Script cue: Say what the dataset can and cannot observe.
 </div>
 
 <div class="callout">
-  <p>The split separates two outcomes: crossing into power generation, and performing well after crossing.</p>
+  <p>The design distinguishes broad asset entry, conversion among active non-generators, and performance after entry.</p>
 </div>
 
 <!--
@@ -217,7 +217,7 @@ Script cue: The sample split is a substantive choice, not just a data-cleaning d
   </thead>
   <tbody>
     <tr>
-      <td>Who starts generating?</td>
+      <td>Who first reports installed capacity?</td>
       <td>Facilities first observed without power generation</td>
       <td>First report of electricity generation</td>
       <td>Whether energy recovery diffuses into the lagging fleet</td>
@@ -246,7 +246,7 @@ Script cue: This slide prevents the audience from asking why there is not one mo
 <div class="method-grid">
   <div class="formula-card">
     <p class="eyebrow">Plain model</p>
-    <p class="formula">Pr(first generation in year t) = f(prior age, prior capacity, year, prefecture)</p>
+    <p class="formula">Pr(first installed capacity in year t) = f(prior age, prior capacity, year, elapsed time at risk)</p>
   </div>
   <div class="card">
     <p class="eyebrow">Risk set</p>
@@ -259,9 +259,9 @@ Script cue: This slide prevents the audience from asking why there is not one mo
     <p class="small">Age and capacity are measured before first entry, not after the event.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Comparability</p>
-    <p class="big">Year and prefecture controls.</p>
-    <p class="small">Uncertainty is clustered by facility, and alternative hazard forms are checked.</p>
+    <p class="eyebrow">Two estimands</p>
+    <p class="big">Broad assets and active plants.</p>
+    <p class="small">The active model requires positive throughput in the prior fiscal year.</p>
   </div>
 </div>
 
@@ -280,7 +280,7 @@ Script cue: This is where the method becomes more than common sense.
 <div class="method-grid">
   <div class="formula-card">
     <p class="eyebrow">Outcome model</p>
-    <p class="formula">log(MWh per tonne) = age + capacity + utilization + heating value + grid context + year structure</p>
+    <p class="formula">log(MWh per tonne) = age/vintage + capacity + utilization + heating value + year + technology</p>
   </div>
   <div class="card">
     <p class="eyebrow">Outcome</p>
@@ -288,19 +288,19 @@ Script cue: This is where the method becomes more than common sense.
     <p class="small">This measures output intensity, not just the existence of a generator.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Model family</p>
-    <p class="big">Pooled OLS, year FE, RE, year FE + RE.</p>
-    <p class="small">Multiple structures check whether the sign pattern survives.</p>
+    <p class="eyebrow">Primary model</p>
+    <p class="big">Year + technology OLS.</p>
+    <p class="small">Furnace type, operating mode, facility type, and furnace count are observed controls.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Interpretation</p>
     <p class="big">This is diagnostic, not causal.</p>
-    <p class="small">It tests whether generators converge enough to erase inherited facility differences.</p>
+    <p class="small">It compares generators within common years without claiming an intervention effect.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The critical question after entry is whether generator performance converges enough to erase inherited facility differences.</p>
+  <p>The coefficient is an age/vintage comparison across facilities, not the causal effect of making one plant older.</p>
 </div>
 
 <!--
@@ -309,14 +309,14 @@ Script cue: Move the discussion from "old plants are worse" to "do generators co
 
 ---
 
-# Result 1: Entry Clusters in Young, Large Facilities
+# Result 1: Scale Is Robust; Age Depends on the Frame
 
 <div class="figure-card figure-wide">
   <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
 </div>
 
 <div class="callout">
-  <p>First entry is concentrated in already favorable facility types: 102/141 events are age 0-10, and 99/141 are in the largest capacity quartile.</p>
+  <p>Capacity predicts entry in both frames (+0.45 and +0.44 pp per 100 t/day); age differences shrink among active plants.</p>
 </div>
 
 <!--
@@ -325,59 +325,31 @@ Script cue: Say the two numbers slowly, but do not stop at counts.
 
 ---
 
-# Interpretation: Not Broad Fleet Catch-Up
+# Interpretation: The Risk Set Changes the Story
 
-<div class="rate-panels">
-  <div class="rate-panel">
-    <p class="eyebrow">Annual first-entry rate by age</p>
-    <div class="bar-row">
-      <span class="bar-label">0-10 yrs</span>
-      <span class="bar-track"><span class="bar-fill" style="width: 100%;"></span></span>
-      <span class="bar-value">5.94%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">10-20 yrs</span>
-      <span class="bar-track"><span class="bar-fill muted-fill" style="width: 6%;"></span></span>
-      <span class="bar-value">0.35%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">20-30 yrs</span>
-      <span class="bar-track"><span class="bar-fill muted-fill" style="width: 6%;"></span></span>
-      <span class="bar-value">0.34%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">30+ yrs</span>
-      <span class="bar-track"><span class="bar-fill muted-fill" style="width: 5%;"></span></span>
-      <span class="bar-value">0.27%</span>
-    </div>
+<div class="three-col">
+  <div class="kpi-card">
+    <p class="eyebrow">Broad asset entry</p>
+    <p class="kpi">98</p>
+    <p class="kpi-label">exact-year events</p>
+    <p class="kpi-note">Age AMEs: -1.41, -1.45, -0.83 pp.</p>
   </div>
-  <div class="rate-panel">
-    <p class="eyebrow">Annual first-entry rate by capacity</p>
-    <div class="bar-row">
-      <span class="bar-label">Q1 small</span>
-      <span class="bar-track"><span class="bar-fill muted-fill" style="width: 1%;"></span></span>
-      <span class="bar-value">0.03%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">Q2</span>
-      <span class="bar-track"><span class="bar-fill muted-fill" style="width: 3%;"></span></span>
-      <span class="bar-value">0.08%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">Q3</span>
-      <span class="bar-track"><span class="bar-fill" style="width: 37%;"></span></span>
-      <span class="bar-value">1.16%</span>
-    </div>
-    <div class="bar-row">
-      <span class="bar-label">Q4 large</span>
-      <span class="bar-track"><span class="bar-fill" style="width: 100%;"></span></span>
-      <span class="bar-value">3.11%</span>
-    </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Active conversion</p>
+    <p class="kpi">58</p>
+    <p class="kpi-label">exact-year events</p>
+    <p class="kpi-note">Age AMEs attenuate to -0.67, -0.56, -0.29 pp.</p>
+  </div>
+  <div class="kpi-card">
+    <p class="eyebrow">Scale result</p>
+    <p class="kpi">+0.45 / +0.44</p>
+    <p class="kpi-label">pp per 100 t/day</p>
+    <p class="kpi-note">Positive and precisely estimated in both frames.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>If modernization were broad catch-up, older and smaller non-generators would show more entry. Instead, the smallest capacity quartile records 1 event; the largest records 99.</p>
+  <p>40 of 98 broad events follow zero or missing prior-year throughput. Commissioning and rebuild pathways materially affect the broad age result.</p>
 </div>
 
 <!--
@@ -391,26 +363,26 @@ Script cue: This answers the obviousness objection.
 <div class="three-col">
   <div class="kpi-card">
     <p class="eyebrow">Reset / rebuild-like</p>
-    <p class="kpi">82</p>
+    <p class="kpi">50</p>
     <p class="kpi-label">observed events</p>
     <p class="kpi-note">Capital-side modernization is empirically present.</p>
   </div>
   <div class="kpi-card">
     <p class="eyebrow">Continuity / upgrade-like</p>
-    <p class="kpi">38</p>
+    <p class="kpi">36</p>
     <p class="kpi-label">observed events</p>
     <p class="kpi-note">Some cases remain consistent with in-place upgrade.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">Placeholder / forward-dated</p>
-    <p class="kpi">20</p>
+    <p class="eyebrow">Ambiguous / other</p>
+    <p class="kpi">55</p>
     <p class="kpi-label">observed events</p>
-    <p class="kpi-note">Some entries should not be forced into a stronger mechanism claim.</p>
+    <p class="kpi-note">12 placeholder, 42 non-adjacent, and 1 unresolved event.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The evidence supports selective modernization, but it does not prove that replacement is the only pathway.</p>
+  <p>The audit bounds possible pathways, but it does not prove that replacement is the only mechanism.</p>
 </div>
 
 <!--
@@ -435,7 +407,7 @@ Script cue: Do not imply older plants cannot improve; say the observed hierarchy
 
 ---
 
-# Interpretation: Performance Gaps Persist
+# Interpretation: Ranks Persist Across Coded Years
 
 <div class="three-col">
   <div class="kpi-card">
@@ -445,21 +417,21 @@ Script cue: Do not imply older plants cannot improve; say the observed hierarchy
     <p class="kpi-note">Most generator-output variation is between facilities.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">FY2005-FY2011</p>
-    <p class="kpi">0.1795</p>
+    <p class="eyebrow">Coded windows</p>
+    <p class="kpi">0.1795 &rarr; 0.0956</p>
     <p class="kpi-label">within-to-total ratio</p>
-    <p class="kpi-note">Baseline period for the Fukushima-context robustness split.</p>
+    <p class="kpi-note">FY2005-09 versus FY2013-24.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">FY2012-FY2024</p>
-    <p class="kpi">0.0956</p>
-    <p class="kpi-label">within-to-total ratio</p>
-    <p class="kpi-note">Post-Fukushima-context period; cross-facility hierarchy remains.</p>
+    <p class="eyebrow">Adjacent-year ranks</p>
+    <p class="kpi">0.9325</p>
+    <p class="kpi-label">pooled correlation</p>
+    <p class="kpi-note">4,368 exact pairs across 915 facilities.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The 2011 split is a context check around Fukushima, not a causal claim. In both periods, generation entry does not erase inherited facility gaps.</p>
+  <p>FY2010-FY2012 official codes are missing, so the paper uses FY2005-FY2009 and FY2013-FY2024 as coded windows, not a Fukushima treatment design.</p>
 </div>
 
 <!--
@@ -485,19 +457,19 @@ Script cue: This makes result 2 more critical and less obvious.
       <td>Age penalties and positive capacity effect remain stable</td>
     </tr>
     <tr>
-      <td>Alternative adoption models</td>
-      <td>Checks whether logit hazard choice creates the result</td>
-      <td>Complementary log-log and LPM keep the same sign pattern</td>
+      <td>Active-conversion risk set</td>
+      <td>Removes zero/missing prior-throughput pathways</td>
+      <td>Scale persists; the age gradient attenuates</td>
     </tr>
     <tr>
-      <td>Generator-output stress tests</td>
-      <td>Checks period, scale, and outcome-coding sensitivity</td>
-      <td>Age stays negative; capacity and utilization stay positive</td>
+      <td>Technology-adjusted primary model</td>
+      <td>Controls observed furnace and operating configuration</td>
+      <td>Age/vintage stays negative; scale and utilization stay positive</td>
     </tr>
     <tr>
-      <td>Heating-value plausibility restrictions</td>
-      <td>Checks whether noisy heat-value data drive model patterns</td>
-      <td>Main age, scale, and utilization coefficients remain stable</td>
+      <td>Engineering outcomes + lagged predictors</td>
+      <td>Checks outcome definition and same-year simultaneity</td>
+      <td>Thermal conversion, reported efficiency, and lagged models agree</td>
     </tr>
   </tbody>
 </table>
@@ -545,57 +517,39 @@ Script cue: Make limits sound like research discipline, not weakness.
 
 ---
 
-# Why the Split Matters for Decisions
+# What Happens After Entry?
 
-<div class="diagram-card">
-  <div class="flow">
-    <div class="flow-step">
-      <p class="step-number">A</p>
-      <p class="mini-title">Non-generators</p>
-      <p class="mini-text">Can this plant start recovering electricity?</p>
-    </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <p class="step-number">B</p>
-      <p class="mini-title">Generators</p>
-      <p class="mini-text">Can this plant recover more electricity from the same waste?</p>
-    </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <p class="step-number">C</p>
-      <p class="mini-title">Planning</p>
-      <p class="mini-text">Use different decisions for different bottlenecks.</p>
-    </div>
-  </div>
+<div class="figure-card figure-wide">
+  <img src="../figures/figure4_post_entry_trajectories.png" alt="Post-entry electricity-recovery trajectory and within-year generator ranks" />
 </div>
 
 <div class="callout">
-  <p>Renewal, starting electricity generation, and generator optimization are different decisions, not one generic "improve incineration" task.</p>
+  <p>Entrants begin near the middle of the same-year generator distribution. Follow-up falls from 125 events at time zero to 71 at time three, so this is descriptive, not an entry effect.</p>
 </div>
 
 <!--
-Script cue: This is the practical payoff.
+Script cue: This is the empirical bridge between entry and later performance.
 -->
 
 ---
 
-# Contribution: Two Bottlenecks in One Fleet
+# Contribution: Two Margins, Clear Boundaries
 
 <div class="two-col">
   <div class="claim-card boundary">
     <p class="eyebrow">Weak version</p>
-    <p class="big">Newer and larger plants generate more.</p>
+    <p class="big">Newer and larger plants have advantages.</p>
     <p class="small">This is plausible but not enough for a paper by itself.</p>
   </div>
   <div class="claim-card good">
     <p class="eyebrow">Stronger version</p>
-    <p class="big">The fleet has two bottlenecks.</p>
-    <p class="small">Starting generation is selective, and generator output remains uneven after entry.</p>
+    <p class="big">The result has clear boundaries.</p>
+    <p class="small">Scale is robust, age depends on the risk set, and entry does not guarantee a frontier position.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The contribution is locating the bottlenecks, not pretending that age and scale advantages are surprising.</p>
+  <p>Planning should distinguish broad asset entry, active conversion, and generator performance before choosing an intervention.</p>
 </div>
 
 <!--
@@ -638,10 +592,10 @@ Script cue: Be honest that future work is proposed, not completed.
 
 # Discussion Questions
 
-<p class="subtitle">Two bottlenecks shape the story: who starts generating electricity, and who generates well after starting.</p>
+<p class="subtitle">Three linked outcomes shape the story: asset entry, active conversion, and generator performance.</p>
 
 <div class="close-line">
-  <p>Is the two-bottleneck explanation strong enough as the central contribution? Which limitation or future direction should be prioritized?</p>
+  <p>Is the three-outcome framing convincing, and is the broad-versus-active entry distinction clear enough? Which mechanism should future work test first?</p>
 </div>
 
 <!--
