@@ -362,7 +362,8 @@ def write_transition_figure_data(
             )
     output = pd.DataFrame(rows)
     path = os.path.join(OUTPUT_DIR, "figure2_transition_effects.csv")
-    output.to_csv(path, index=False, float_format="%.10g")
+    # GLM covariance calculations can differ below reported precision by platform.
+    output.to_csv(path, index=False, float_format="%.8g")
     return path
 
 
