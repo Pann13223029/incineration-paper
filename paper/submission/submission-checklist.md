@@ -34,7 +34,7 @@ Official source used for this checklist:
 ## Journal-Fit Checks
 
 - abstract at or below 250 words:
-  - current draft is about 243 words
+  - current draft is about 244 words
 - keywords present:
   - current manuscript has 6 keywords
 - numbered main sections present:
@@ -44,15 +44,16 @@ Official source used for this checklist:
 - combined main-text figure/table count within 8:
   - current count is 7 if the two bridge maps are not counted as formal tables
 - full-length article word count within 6,500 words:
-  - current main text is about 5,915 words before references, excluding
+  - current main text is about 6,020 words before references, excluding
     markdown tables, figure captions, and display equations
 
 ## Still Required Before Real Submission
 
 - rerun the reference-style check if the manuscript citations change
-- confirm whether the two review-facing bridge maps should remain in the main
-  manuscript for professor review or move to the supplement for journal
-  submission
+- bridge-map decision for the current baseline:
+  - keep both bridge maps in the main manuscript for professor-review clarity
+  - move the research-question-to-model bridge to the supplement during journal
+    compression if the target format or editor pressures table count
 - confirm conflict-of-interest and funding statements in the submission system
 - decide whether to keep or revise the AI disclosure statement and whether the
   journal requires it as a separate upload

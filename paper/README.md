@@ -23,7 +23,7 @@ The paper layer narrows and reorganizes the thesis evidence. It must not become 
 | Explain comparator papers and method lineage to supervisor | [`notes/professor-comparator-method-lineage.md`](notes/professor-comparator-method-lineage.md) |
 | Check thesis-to-paper conversion logic | [`notes/thesis-to-paper-map.md`](notes/thesis-to-paper-map.md) |
 | Check reviewer risks | [`notes/reviewer-rubric.md`](notes/reviewer-rubric.md) |
-| Check supplement | [`supplement/supplement.md`](supplement/supplement.md) |
+| Check supplement, abbreviation guide, and reviewer-response map | [`supplement/supplement.md`](supplement/supplement.md) |
 | Check synced evidence | [`evidence/`](evidence/) |
 | Present the paper in a Zoom meeting | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
 

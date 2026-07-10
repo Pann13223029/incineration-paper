@@ -7,6 +7,29 @@ keeps the argument readable; the supplement carries the denser sample,
 classification, robustness, and estimator-comparison detail that a skeptical
 reviewer may still want to inspect.
 
+### S1.1 Abbreviation and term guide
+
+The manuscript uses a small number of repeated abbreviations:
+
+| Term | Meaning in this paper |
+|:--|:--|
+| FY | Fiscal year |
+| RQ | Research question |
+| WtE | Waste-to-energy or waste incineration with energy recovery |
+| OLS | Ordinary least squares |
+| FE | Fixed effects, usually fiscal-year fixed effects in the main models |
+| RE | Random effects, used descriptively to represent persistent facility-level differences |
+| AME | Average marginal effect from the adoption logit, reported in percentage points |
+| pp | Percentage points |
+| EF | Grid emissions factor |
+| MWh/t | Megawatt-hours of electricity recovered per tonne of waste processed |
+| MJ/kg | Megajoules per kilogram |
+
+Terms such as `observed transition`, `canonical generator frame`, and
+`structured conditional association` are intentional scope markers. They signal
+that the paper is describing administrative-panel patterns rather than claiming
+to identify a unique physical retrofit mechanism or a causal policy effect.
+
 ## S2. Analytical Frames And Sample Construction
 
 The analysis begins from a Ministry of the Environment facility panel covering
@@ -32,8 +55,27 @@ cannot identify.
 | Adoption events are temporally clustered. | The paper reports the clustering and uses year fixed effects; it does not interpret the timing as a uniquely identified policy shock or reporting change. |
 
 The result is a narrower but more defensible claim: the linked samples show
-selective observed entry into generation and bounded conditional performance
+selective observed entry into generation and structured conditional performance
 among identifiable generators.
+
+### S2.0a Bridge-map placement decision
+
+The current review-facing manuscript keeps two explanatory bridge maps in the
+main text: the research-question-to-model bridge and the linked analytical
+framework. They are retained there because the current priority is making the
+methodological foundation easy to inspect before a human review meeting.
+
+For a journal-compressed version, these bridge maps are optional main-text
+material. The preferred journal-mode action is:
+
+- keep Table 1, the linked analytical framework, in the main text because it
+  anchors the two-margin contribution;
+- move the research-question-to-model bridge to the supplement if the editor or
+  target format pressures the figure/table count or if the methods section feels
+  too table-heavy;
+- do not remove the bridge logic entirely, because it is the clearest defense
+  against the critique that the paper is two unrelated analyses placed side by
+  side.
 
 ### S2.1 Adoption frame
 
@@ -363,6 +405,24 @@ particular, they do not prove:
 These limits are why the main paper uses calibrated phrases such as
 `observed transition`, `canonical generator frame`, `structured conditional
 association`, and `descriptive pathway evidence`.
+
+## S5.5 Reviewer-response map
+
+This map records the intended answer path for predictable peer-review and
+professor-review concerns. It is not a substitute for the main argument; it is a
+navigation aid for checking whether each concern already has evidence and
+bounded language.
+
+| Likely concern | Main response | Where to inspect |
+|:--|:--|:--|
+| "Is this just saying newer and larger plants perform better?" | No. The contribution is the two-margin structure: selective entry before generation and persistent hierarchy after entry. | Introduction, Section 4.3, Discussion |
+| "Why not one model for the full fleet?" | Non-generators and generators answer different questions. Adoption requires an at-risk transition frame; performance requires positive output and identifiable panel rows. | Section 3, Table 1, S2 |
+| "Does adoption mean physical retrofit?" | Not necessarily. The paper uses observed-transition language and treats the pathway audit as descriptive support, not mechanism proof. | Section 4.1, S3, S4 |
+| "Are 98 hazard events enough?" | The headline model is parsimonious with year fixed effects; saturated year-plus-prefecture fixed effects are kept as sensitivity evidence because of sparse-event pressure. | Section 3, S5.1 |
+| "Why use random effects?" | RE is used descriptively to retain cross-facility structure; it is not presented as a causal solution to unobserved heterogeneity. | Section 3, S5.0, S5.2 |
+| "Could missing FY2010-FY2012 codes bias period claims?" | Yes, which is why period language is bounded and the generator frame is called canonical identifiable rather than a census. | Section 3, Section 4.2, S2.3 |
+| "Is heating value too noisy?" | Heating value is a control, not a key interpreted outcome; plausible-value restrictions leave the core sign pattern stable. | S5.3 |
+| "Can this support policy recommendations?" | It supports planning triage, not intervention ranking. Entry-side asset questions and generator-side performance questions should be separated first. | Discussion, Table 4 |
 
 ## S6. Appendix Tables
 

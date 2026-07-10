@@ -12,8 +12,8 @@ This paper workspace is a private side project derived from the defended thesis 
 | Manuscript | Professor-review-ready near-submission draft |
 | Current review mode | Professor comprehension first; peer-review-safe wording preserved |
 | Main figures | 3 |
-| Main-text tables | 4 formal tables, plus 2 review-facing bridge maps |
-| Supplement | Present and updated with data-quality, identifier, and event-timing caveats |
+| Main-text tables | 4 formal tables, plus 2 review-facing bridge maps kept for professor-review clarity |
+| Supplement | Present and updated with data-quality, identifier, event-timing, abbreviation, and reviewer-response caveats |
 | Title page, highlights, cover letter | Present |
 | Evidence sync | Managed by `npm run paper:sync` |
 | Claim verification | Managed by `npm run claims:verify` |
@@ -31,11 +31,19 @@ The current repo includes:
   main manuscript
 - review-facing comparator-adaptation and method-to-RQ bridge maps in the
   main manuscript
+- a documented bridge-map placement decision: keep both bridge maps in the
+  professor-review manuscript; move the research-question-to-model bridge to
+  the supplement during journal compression if needed
 - explicit two-margin contribution wording clarifying that the novelty is not
   simply that age and scale matter, but that entry and post-entry performance
   show distinct fleet constraints
 - reader-facing regression guide explaining AMEs, log coefficients, fixed
   effects, random effects, and clustered standard errors
+- stronger methods-defense wording explaining parsimony in the sparse adoption
+  hazard and the descriptive purpose of the OLS/year-FE/RE model ladder
+- supplement abbreviation guide and reviewer-response map for predictable
+  concerns about adoption events, random effects, uncoded rows, heating value,
+  and planning implications
 - supervisor-facing comparator and method-lineage packet at
   `paper/notes/professor-comparator-method-lineage.md`
 - explicit facility-clustered standard-error language for the efficiency models
@@ -96,6 +104,8 @@ If the edit is purely stylistic and does not touch evidence or claims, `analysis
 1. Whether the professor agrees that the two-margin diagnostic is the right
    central contribution.
 2. Whether to do a final human editorial pass for readability and journal tone.
-3. Whether to expand or compress the supplement for the actual target journal.
-4. Whether to revise the AI disclosure statement for the actual submission context.
-5. Whether to start a true journal-submission workflow from this private baseline.
+3. Whether journal mode should move the research-question-to-model bridge from
+   the main text into the supplement.
+4. Whether to expand or compress the supplement for the actual target journal.
+5. Whether to revise the AI disclosure statement for the actual submission context.
+6. Whether to start a true journal-submission workflow from this private baseline.

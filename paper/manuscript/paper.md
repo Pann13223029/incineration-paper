@@ -234,6 +234,16 @@ interpretation is adequate. This makes the framework similar in spirit to
 plant-level optimization and performance papers, but distinct in its
 Japan-specific two-margin diagnostic focus.
 
+Several modeling choices follow from that alignment between question and
+sample. The adoption model is deliberately narrow because the event of interest
+is first observed reporting of generation, not every capital investment that
+may have occurred before or outside the panel. The generator model is also
+deliberately narrow because it compares identifiable operating generators, not
+all facilities and not uncoded generator rows that cannot be followed reliably
+as facility panels. The paper therefore uses the same administrative source for
+both questions but does not force both questions into the same sample or the
+same estimator.
+
 **Research-question-to-model bridge**
 
 | Research question | Empirical frame | Main model | What it can show | What it cannot show |
@@ -259,23 +269,27 @@ non-generating in one year first reports generation in the following fiscal
 year. Technically, it is an exact one-fiscal-year lagged discrete-time logit
 hazard estimated on 10,823 observations across 1,911 facilities and 98 retained
 events. Predictors are prior-year age band and prior-year design capacity, with
-year fixed effects and facility-clustered standard errors. A more saturated
-year-plus-prefecture fixed-effects model is retained as sensitivity evidence
-rather than used as the main specification because it would estimate 64
-parameters with 98 retained events, or 1.53 events per parameter. The primary
-year fixed-effects model estimates 18 parameters, or 5.44 events per parameter.
-The exact-year restriction is important because official facility codes are
-missing in FY2010-FY2012; broader previous-observed-coded-row
-estimates are also reported only as sensitivity evidence. This is an
-observed-transition model, not a complete structural model of all possible
-modernization pathways. The design follows grouped event-history logic: each
-coded facility-year contributes to the risk set until first event occurrence
-(Allison, 1982; Beck et al., 1998). That distinction matters because the paper
-is not estimating a continuous engineering retrofit process. It estimates the
-probability that a facility first records entry into power generation in the next
-fiscal year, conditional on still being at risk. The lagged predictor structure
-ensures that age band and capacity are measured before the observed event rather
-than on the event row itself.
+year fixed effects and facility-clustered standard errors. The year fixed
+effects absorb common fiscal-year conditions, while clustered standard errors
+recognize that repeated rows from the same facility are not independent draws.
+A more saturated year-plus-prefecture fixed-effects model is retained as
+sensitivity evidence rather than used as the main specification because it would
+estimate 64 parameters with 98 retained events, or 1.53 events per parameter.
+The primary year fixed-effects model estimates 18 parameters, or 5.44 events per
+parameter. This is a parsimony choice: the headline model favors a smaller,
+auditable event-history specification over a sparse specification that absorbs
+more geographic detail but leaves little event information per parameter. The
+exact-year restriction is important because official facility codes are missing
+in FY2010-FY2012; broader previous-observed-coded-row estimates are also
+reported only as sensitivity evidence. This is an observed-transition model, not
+a complete structural model of all possible modernization pathways. The design
+follows grouped event-history logic: each coded facility-year contributes to the
+risk set until first event occurrence (Allison, 1982; Beck et al., 1998). That
+distinction matters because the paper is not estimating a continuous engineering
+retrofit process. It estimates the probability that a facility first records
+entry into power generation in the next fiscal year, conditional on still being
+at risk. The lagged predictor structure ensures that age band and capacity are
+measured before the observed event rather than on the event row itself.
 
 Formally, let \(A_{it}=1\) if facility \(i\) first reports power generation in
 fiscal year \(t\), conditional on still being in the at-risk set \(R_{it}=1\).
@@ -351,11 +365,17 @@ intercept. All four models use facility-clustered standard errors to avoid
 treating repeated observations from the same facility as fully independent
 (Wooldridge, 2010).
 
-The random-effects specifications are not used because they solve all
-unobserved-facility concerns. They are used because the paper's intensive-margin
-question is descriptive cross-facility structure, while a pure facility
-fixed-effects interpretation would rely on limited within-facility movement and
-would identify a different question.
+The model sequence is meant as a transparent ladder, not as model shopping.
+Pooled OLS asks whether generators differ in a simple conditional comparison.
+Year FE asks whether the same signs remain after removing common fiscal-year
+conditions. RE asks how the associations look when persistent facility-level
+differences are represented directly. The random-effects specifications are not
+used because they solve all unobserved-facility concerns. They are used because
+the paper's intensive-margin question is descriptive cross-facility structure,
+while a pure facility fixed-effects interpretation would rely on limited
+within-facility movement and would identify a different question. In particular,
+facility fixed effects would absorb much of the durable plant scale, design,
+and vintage structure that the paper is trying to describe.
 
 Because the dependent variable is logged, small coefficients can be read
 approximately as percentage changes in electricity recovered per tonne. For
