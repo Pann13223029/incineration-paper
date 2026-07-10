@@ -1,184 +1,118 @@
 # Incineration Paper Workspace
 
-This is a private, paper-focused derivative workspace for the Japan waste-incineration study. It preserves the empirical core from the thesis repo, but the active product here is a journal-style paper.
+This repository develops a journal-style paper from Japan's Ministry of the Environment (MOE) municipal waste-incineration facility records for FY2005-FY2024. The paper asks three linked questions:
 
-The paper's working claim is narrow:
+1. How different are facility participation and waste-volume coverage in electricity generation?
+2. Which prior-year characteristics are associated with first reporting positive installed electrical-generation capacity?
+3. Among operating generators, how do installed generator sizing, annual electrical capacity factor, and waste loading combine in gross output?
 
-> Japan's incineration-fleet transition combines scale-selective entry, a risk-set-dependent age pattern, and structured electricity-recovery performance after entry.
+The central descriptive contrast is simple but important: in FY2024, 41.1% of analytical facility records report installed generation capacity, while positive-output facilities handle 80.1% of recorded throughput and installed-generation facilities represent 70.5% of waste-processing design capacity. The paper therefore distinguishes facility counts, waste-volume coverage, entry into installed capacity, and conditional generator components.
+
+Gross generation intensity in MWh per tonne is an administrative output ratio. It is not treated as net export, useful-heat recovery, lifecycle benefit, R1 efficiency, or an independent measure of operational efficiency.
 
 ## Start Here
 
-Use this order if you are new to the repo:
-
 1. Read the active manuscript: [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
-2. Check the current status: [`paper/submission/current-status.md`](paper/submission/current-status.md).
-3. Check the claim discipline: [`paper/notes/positioning/claim-stack.md`](paper/notes/positioning/claim-stack.md).
-4. Check the evidence map: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
-5. Open the current PDF with the [browser-compatible viewer](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf).
-6. If the browser viewer is unavailable, [download the PDF directly from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) or read the [Markdown manuscript](paper/manuscript/paper.md).
+2. Check the revision state: [`paper/submission/current-status.md`](paper/submission/current-status.md).
+3. Read the generated evidence summary: [`output/sample_definition.md`](output/sample_definition.md).
+4. Trace claims to evidence: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
+5. Read the current PDF with the [browser-compatible viewer](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf), or [download it from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
 
-For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). For assistant-specific rules, read [`AGENTS.md`](AGENTS.md).
+The tracked PDF is a reading artifact, not a source of empirical truth. Check the current-status page before treating it as verified.
 
-## Current Evidence Anchors
+## Evidence At A Glance
 
-These facts are generated from the canonical pipeline and checked by `code/analysis/08_verify_claims.py`.
-
-The evidence base covers 23,599 rows and 2,948 coded facilities. The broad entry risk set contains 13,770 facility-years, 2,035 facilities, and 141 observed events; the exact-year model retains 10,823 rows, 1,911 facilities, and 98 events. 40 of those events have zero or missing prior-year throughput. A required active-conversion model therefore uses 9,215 rows, 1,663 facilities, and 58 events. Prior-year capacity is robust across the two frames (+0.45 and +0.44 percentage points per 100 t/day), while broad age effects of −1.41, −1.45, and −0.83 percentage points attenuate to −0.67, −0.56, and −0.29. The event is operationally meaningful: 135 of 141 entrants report positive output by the following year. The canonical generator frame contains 5,683 rows across 1,016 facilities. Its primary year- and technology-adjusted model reports −0.0329 for age/vintage, +0.1103 for capacity, and +0.7600 for utilization. Adjacent-year within-year ranks correlate at 0.9325 across 4,368 exact pairs. A 389-row post-entry trajectory shows entrants near the middle of the contemporaneous generator distribution on average, with represented events declining from 125 at event time zero to 71 at time three.
-
-| Headline | Current value |
+| Evidence block | Current audited value |
 |:--|:--|
-| Broad asset-entry age AMEs | −1.41, −1.45, and −0.83 pp vs prior-year age 0–10 |
-| Active-conversion age AMEs | −0.67, −0.56, and −0.29 pp; latter two not conventionally significant |
-| Entry scale AME | +0.45 pp broad and +0.44 pp active per 100 t/day |
-| Primary generator model | Age/vintage −0.0329; capacity +0.1103; utilization +0.7600 |
-| Early post-entry position | Mean same-year percentile 51.5 at event time zero and 52.9 at time three |
-| Pathway audit of entry events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
-| Within/total variance ratio | 0.1499 (pooled), 0.1795 (early coded), 0.0956 (later coded) |
-| Adjacent-year rank persistence | 0.9325 across 4,368 exact pairs |
+| Source records | 23,599 parsed rows; 23,593 unique retained records |
+| Longitudinal identity | 1,690 stable administrative facility lineages; 1,767 asset episodes; 16 accepted uncertain links exposed |
+| Official-code discontinuities | Codes absent in FY2010-FY2012; zero FY2019-FY2020 code overlap |
+| Restored FY2019-FY2020 continuity | 1,064 stable-lineage links |
+| Installed-capacity entries | 55 descriptive events |
+| Broad exact-year Firth frame | 15,154 rows; 1,137 lineages; 35 events |
+| Prior-operation Firth frame | 13,072 rows; 1,019 lineages; 33 events |
+| Continuity and identity sensitivities | Same episode: 15,095/1,135/24; identity certain: 15,107/1,130/35 rows/lineages/events |
+| FY2024 count-volume contrast | 41.1% facility participation; 80.1% throughput coverage; 70.5% design-capacity share |
+| Generator component frame | 6,511 engineering-valid rows across 493 lineages |
+
+`stable_site_id` is a reproducible, audited administrative lineage reconstructed from annual records. It is not proof that one immutable physical site, owner, or equipment configuration persisted unchanged. `asset_episode_id` separates reported configuration resets within a lineage, but it is still based on administrative evidence.
+
+Administrative disappearance is not modeled because the survey alone cannot distinguish closure, recoding, consolidation, or reporting change.
 
 ## Repository Logic
 
 ![Repository layers](docs/figures/readme_paper_layers.svg)
 
-The repo has four ownership layers:
-
 | Layer | Role | Main paths |
 |:--|:--|:--|
-| Evidence core | Source data, processing, model outputs, and claim verification | [`data/`](data/), [`code/analysis/`](code/analysis/), [`output/`](output/) |
-| Active paper layer | Manuscript, supplement, figures, submission assets, and paper-facing evidence snapshots | [`paper/`](paper/) |
-| Publication tooling | Evidence synchronization, manuscript export, PDF builds, and presentation export | [`code/publishing/`](code/publishing/) |
-| Archived thesis layer | Defended thesis source, supervision materials, and historical automation | [`legacy/`](legacy/) |
+| Evidence core | Raw sources, identity reconstruction, analysis, audits, and canonical outputs | [`data/`](data/), [`code/analysis/`](code/analysis/), [`output/`](output/) |
+| Active paper | Manuscript, supplement, figures, slides, and submission materials | [`paper/`](paper/) |
+| Publication tooling | Evidence sync, export, PDF, and presentation builds | [`code/publishing/`](code/publishing/) |
+| Archived thesis | Defended thesis and historical support materials | [`legacy/`](legacy/) |
 
-Do not make the manuscript a second source of empirical truth. Paper prose stays downstream of `output/*`.
+The evidence hierarchy is one-way:
+
+```text
+raw workbooks
+  -> parsed and identity-audited data
+  -> canonical output/* evidence
+  -> paper/evidence/current synchronized copies
+  -> manuscript and supplement
+  -> submission and share artifacts
+```
+
+Do not hand-edit generated evidence to make prose agree with a preferred result. Change the pipeline, rebuild, synchronize, and then revise the paper.
 
 ## Canonical Files
 
 | Need | Use |
 |:--|:--|
-| Current sample counts and model facts | [`output/sample_definition.md`](output/sample_definition.md), [`output/adoption_results.md`](output/adoption_results.md), [`output/regression_results.md`](output/regression_results.md) |
-| Robustness and data-quality checks | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md), [`output/identifier_gap_audit.md`](output/identifier_gap_audit.md) |
-| Claim synchronization status | [`output/claim_verification.md`](output/claim_verification.md) |
-| Claim-to-evidence bridge | [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
-| Active paper manuscript | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
-| Analysis implementation | [`code/analysis/`](code/analysis/) |
-| Publication and export implementation | [`code/publishing/`](code/publishing/) |
-| Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) · [Download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
+| Raw-file hashes, URLs, and schema decisions | [`output/raw_data_provenance.md`](output/raw_data_provenance.md), [`output/raw_data_manifest.csv`](output/raw_data_manifest.csv), [`output/raw_workbook_schema_map.csv`](output/raw_workbook_schema_map.csv) |
+| Identity reconstruction and code discontinuities | [`output/facility_identity_audit.md`](output/facility_identity_audit.md), [`output/identity_low_margin_links.csv`](output/identity_low_margin_links.csv), [`output/identifier_gap_audit.md`](output/identifier_gap_audit.md) |
+| Sample definitions and FY2024 coverage | [`output/sample_definition.md`](output/sample_definition.md), [`output/fleet_decomposition.md`](output/fleet_decomposition.md) |
+| Entry model | [`output/adoption_results.md`](output/adoption_results.md) |
+| Generator component models | [`output/regression_results.md`](output/regression_results.md), [`output/generator_component_results.csv`](output/generator_component_results.csv) |
+| Robustness and data quality | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
+| Claim verification | [`output/claim_verification.md`](output/claim_verification.md), [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
+| Active prose | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
+| Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
 
-## Reproducible Setup
+## Reproduce And Verify
 
-Expected local tools:
-
-- Python matching [`.python-version`](.python-version)
-- Node matching [`.node-version`](.node-version)
-- Tectonic for LaTeX PDF builds
-- Google Chrome only if you intentionally use browser PDF export
-
-Recommended setup:
+Expected local tools are Python matching [`.python-version`](.python-version), Node matching [`.node-version`](.node-version), and Tectonic for the LaTeX build.
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 npm install
-```
 
-The GitHub workflow uses a virtual environment plus `npm ci`. Local package scripts call `.venv/bin/python`, so create the virtual environment before running `npm run ...` commands.
-
-## Workflow Gates
-
-Use the lightest workflow that matches the change.
-
-| Change type | Required action |
-|:--|:--|
-| Path, folder, or navigation change | Run `npm run repo:check`. |
-| Prose-only paper edit | Edit `paper/manuscript/paper.md`; rebuild artifacts if you need updated share files. |
-| Claim wording edit with current numbers | Run `npm run claims:verify`. |
-| Evidence or model change | Run `npm run analysis:rebuild`, then `npm run paper:sync`, then `npm run claims:verify`. |
-| Submission artifact refresh | Run `npm run paper:export:nopdf` for portable Markdown/HTML/DOCX export; run `npm run paper:build:latex` for the authoritative PDF. |
-| Before pushing | Run `npm run paper:check`, `npm run claims:verify`, and `git diff --check`. |
-
-## Commands
-
-```bash
-npm run repo:check
-npm run paper:check
-npm run paper:sync
-npm run claims:verify
 npm run analysis:rebuild
+npm run paper:sync
+npm run paper:check
+npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run repo:check
 ```
 
-Command meanings:
-
-| Command | Meaning |
+| Command | Purpose |
 |:--|:--|
-| `repo:check` | Validates required ownership paths, retired-path absence, and tracked Markdown links. |
-| `paper:check` | Confirms required paper evidence artifacts exist in `output/`. |
-| `paper:sync` | Copies current canonical evidence into `paper/evidence/current/`. |
-| `claims:verify` | Checks important claims and stale-pattern guards in active paper-facing repo docs. |
-| `analysis:rebuild` | Rebuilds the empirical outputs and claim verification from raw/processed data. |
-| `paper:export:nopdf` | Generates portable submission Markdown, HTML, and DOCX without relying on Chrome PDF export. |
-| `paper:build:latex` | Rebuilds figures and the tracked LaTeX reading PDF. |
+| `analysis:rebuild` | Run the canonical empirical pipeline from parsing through claim checks. |
+| `paper:sync` | Copy selected canonical outputs into `paper/evidence/current/`. |
+| `paper:check` | Fail if required evidence is missing or synchronized copies are stale. |
+| `claims:verify` | Check registered high-risk claims and stale-language guards. |
+| `paper:export:nopdf` | Build portable Markdown, HTML, and DOCX submission artifacts. |
+| `paper:build:latex` | Build figures and the authoritative LaTeX reading PDF. |
+| `repo:check` | Validate required paths, Markdown links, and journal-format gates. |
 
-## Paper Direction
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for stage ownership and [`AGENTS.md`](AGENTS.md) for editing rules.
 
-The best current direction remains one integrated article:
+## Scope Boundaries
 
-**Selective entry and structured electricity-recovery performance in Japan's waste-incineration fleet**
+- The design is observational and does not identify a causal retrofit effect.
+- A first reported positive installed capacity is not automatically a retrofit, replacement, or first physical operation.
+- Stable administrative lineages are audited links, not verified immutable physical assets.
+- Gross output is not net electricity export, useful heat, avoided emissions, or a full plant-efficiency measure.
+- Heat recovery, closure histories, intervention costs, and engineering-frontier optimization require additional data.
 
-Keep the article narrow:
-
-- one dominant contribution
-- linked adoption and electricity-recovery margins
-- calibrated mechanism language
-- compact main text
-- stronger supplement for data-quality, robustness, and pathway details
-
-Avoid scope creep:
-
-- do not claim unique replacement identification
-- do not turn the paper into a full policy-optimization study
-- do not generalize Japan automatically to every national waste system
-- do not treat heat recovery as measured if the panel only supports electricity cleanly
-
-## Directory Map
-
-```text
-incineration-paper/
-|
-|-- paper/
-|   |-- manuscript/                    # active paper draft and LaTeX source
-|   |-- notes/                         # planning, positioning, and review workspaces
-|   |-- references/                    # citation plan and selected references
-|   |-- journals/                      # target-journal strategy
-|   |-- supplement/                    # supplement text and outline
-|   |-- evidence/                      # synced paper-facing output snapshots
-|   |-- figures/                       # paper figure scripts and rendered figures
-|   |-- submission/                    # local submission package artifacts
-|   +-- share/                         # tracked cross-device reading PDF
-|
-|-- code/
-|   |-- analysis/                      # canonical empirical pipeline and verifier
-|   +-- publishing/                    # evidence sync, exports, PDF, and slides
-|-- data/                              # raw and processed data
-|-- output/                            # canonical generated artifacts
-|-- docs/figures/                      # README-facing diagrams
-|-- legacy/
-|   |-- thesis/                        # defended thesis baseline
-|   |-- research/                      # historical review, defense, and packet assets
-|   +-- scripts/                       # historical thesis workflow automation
-|
-|-- README.md
-|-- ARCHITECTURE.md
-|-- AGENTS.md
-|-- package.json
-|-- requirements.txt
-```
-
-## Safety Rules
-
-- `origin` is the active paper repo: `https://github.com/Pann13223029/incineration-paper.git`.
-- `thesis-origin` points back to the thesis baseline and should not receive paper commits.
-- Keep source-of-truth numbers in generated `output/*` files.
-- Keep `legacy/` reference-only unless a task explicitly targets the defended thesis workflow.
-- Update `README.md`, `ARCHITECTURE.md`, `AGENTS.md`, `code/README.md`, and `paper/README.md` when workflow boundaries change.
+The defended thesis remains under [`legacy/`](legacy/) and is reference-only unless a task explicitly targets it.

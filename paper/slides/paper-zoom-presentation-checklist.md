@@ -1,80 +1,86 @@
 # Paper Zoom Presentation Checklist
 
-Use this checklist to keep the presentation critical but still easy to follow. The goal is not to show every detail in the paper. The goal is to make the listener understand why the paper is more than the obvious claim that newer and larger plants have advantages.
+Use this checklist to keep the 18-slide professor briefing aligned with the canonical manuscript. The goal is to make three estimands and their evidence boundaries clear without moving model detail onto the audience-facing slides.
 
 ## Core Rule
 
-- [ ] Say the paper in one sentence: "The paper separates broad asset entry, active conversion, and generator performance."
-- [ ] Keep the live presentation to slides 1-20.
-- [ ] Assume no prior knowledge unless the audience clearly signals otherwise.
-- [ ] Define key terms once: entry, MWh/t, bottleneck, fleet, robustness check, and causal claim.
-- [ ] Do not explain every coefficient.
-- [ ] Repeat the skeptical framing when needed: "Scale is robust, age depends on the candidate population, and entry does not guarantee top performance."
-- [ ] Stop after slide 20 and ask for targeted feedback.
+- [ ] Say the paper in one sentence: "The paper separates coverage denominators, first installed-capacity entry, and the engineering components of gross electricity per tonne."
+- [ ] Keep the live route to slides 1-18.
+- [ ] Use the official 415/991=41.9% only as national context; use analytical 417/1,014=41.1% for the reconstructed panel.
+- [ ] Define stable administrative lineage, Firth, design intensity, capacity factor, and gross MWh/t before interpreting results.
+- [ ] Use the joint age tests, not individual age coefficients, as the inferential summary.
+- [ ] Call gross MWh/t an accounting outcome, not independent technical efficiency.
+- [ ] Label all entry, component, and pathway results descriptive or diagnostic, not causal.
+- [ ] Stop after slide 18 and ask for targeted feedback.
 
 ## One-Day-Before Checklist
 
-- [ ] Open `paper/share/paper-zoom-briefing.pdf` and confirm it has 20 slides.
-- [ ] Open `paper/slides/paper-zoom-script.md` on a second screen or print it.
-- [ ] Practice once with a timer and stop at slide 20.
-- [ ] Confirm slide 1 includes the formal paper title.
-- [ ] Target 15-18 minutes for the main presentation.
-- [ ] Mark any slide that takes more than 70 seconds and shorten the spoken explanation.
-- [ ] Check that the data-source table, sample pipeline, method boxes, Figures 2-4, and main result cards are readable at Zoom screen-share size.
-- [ ] Prepare one answer for each likely question: causality, broad versus active entry, replacement, data quality, old-plant improvement, why not one model, and why the code gap overlaps Fukushima.
+- [ ] Open the current source deck and the exported PDF, if available, and confirm there are 18 audience-facing slides.
+- [ ] Confirm the title reads: "Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024."
+- [ ] Confirm Figures 1-4 are current and readable at Zoom screen-share size.
+- [ ] Check the identity numbers: 23,599 raw rows, 23,593 retained records, 1,690 stable lineages, 1,767 asset episodes, and 16 exposed uncertain links.
+- [ ] Check the entry frames: broad 15,154/1,137/35; prior-operation 13,072/1,019/33; same-episode 15,095/1,135/24; identity-certain 15,107/1,130/35.
+- [ ] Check the headline inference: OR 6.13/6.25; joint age p=.3800/.1863/.0508/.3566 across broad/prior/same-episode/identity-certain frames.
+- [ ] Check the engineering anchors: 6,511 rows/493 lineages; 5,806-row heating diagnostic; sizing-adjusted age p=.2977.
+- [ ] Practice once with a timer and target 16-18 minutes.
+- [ ] Mark any slide that takes more than 75 seconds and shorten the spoken explanation, not the slide text.
+- [ ] Keep `paper-zoom-script.md` open on a second screen.
 
 ## Live Delivery Checklist
 
-- [ ] Start with purpose in the script, not on the slide: "This is a paper briefing and I want feedback on the main contribution."
-- [ ] Translate jargon before using it heavily.
-- [ ] Explain why the issue matters before showing methods.
-- [ ] Say clearly that the paper is not trying to make age and scale sound surprising.
-- [ ] Spend enough time on slides 5-9; these are the methodological credibility slides.
-- [ ] Say the adoption numbers slowly on slide 10.
-- [ ] Use slide 11 to explain why the result is not just common sense.
-- [ ] Use slide 15 to show robustness without reading every test.
-- [ ] Use slide 16 to show limitations without sounding apologetic.
-- [ ] Stop at slide 20 and ask for feedback.
+- [ ] Start with the three research questions, not regression terminology.
+- [ ] Explain why facility count, throughput, and design-capacity coverage have different denominators.
+- [ ] Say clearly that official 41.9% and analytical 41.1% are not competing estimates of one quantity.
+- [ ] Define stable administrative lineage as a record-linkage construct, not a verified physical asset.
+- [ ] Say rows, lineages, and events in that order for each Firth frame.
+- [ ] Define Firth in one sentence, then return to the substantive entry question.
+- [ ] State that age inference is null in the broad and identity-certain frames and borderline with 24 events under same-episode continuity.
+- [ ] Read the gross-MWh/t identity slowly and define every component.
+- [ ] Use Figure 3 to replace an age-only story with a generator-sizing interpretation.
+- [ ] Call Figure 4 a selected descriptive rank comparison, not a pathway effect.
+- [ ] State the noncausal limits directly before presenting the contribution.
+- [ ] Stop after the discussion questions.
 
 ## Slide-By-Slide Checklist
 
 | Slide | Must-say message | Do not do |
 |:--|:--|:--|
-| 1 | The talk title is plain language; the formal paper title is also shown. | Do not start with regression terms. |
-| 2 | Incineration creates heat, but electricity recovery is uneven. | Do not debate all pros/cons of incineration. |
-| 3 | The real question is which patterns survive across asset, active-plant, and generator frames. | Do not oversell obvious findings. |
-| 4 | One average hides two margins; define entry, MWh/t, and bottleneck. | Do not use jargon without defining it. |
-| 5 | The data are national facility-level administrative records with clear limits. | Do not imply retrofit contracts or lifecycle emissions are observed. |
-| 6 | The sample pipeline creates two analysis frames for two questions. | Do not treat sample construction as boring. |
-| 7 | Two samples are necessary because the outcomes differ. | Do not use one-model language. |
-| 8 | The adoption method follows facilities still at risk and uses lagged predictors. | Do not forget pre-event timing. |
-| 9 | Generator output is compared after entry using output intensity. | Do not claim causal effects. |
-| 10 | Scale predicts entry in both risk sets; age attenuates in the active frame. | Do not universalize the broad age result. |
-| 11 | Forty broad events follow zero or missing prior throughput. | Do not equate broad asset entry with active retrofit. |
-| 12 | Entry pathway evidence supports modernization, not one mechanism. | Do not say replacement is the only pathway. |
-| 13 | Generation status alone does not mean high performance. | Do not say old generators cannot improve. |
-| 14 | Ranks persist across coded years, but persistence does not bound improvement. | Do not overexplain variance decomposition. |
-| 15 | Robustness checks stress-test identifiers, model form, period, scale, outcome coding, and heating value. | Do not say robustness proves causality. |
-| 16 | Data limitations are disclosed with counts and sensitivity logic. | Do not hide data caveats. |
-| 17 | Entrants begin near the same-year distribution middle; the trajectory is selected. | Do not claim an entry treatment effect. |
-| 18 | The contribution is the boundary across scale, age, and post-entry position. | Do not present common sense as novelty. |
-| 19 | Future work should test mechanisms. | Do not pretend mechanisms are already tested. |
-| 20 | Ask discussion questions. | Do not keep presenting after the ask. |
+| 1 | This is a three-estimand measurement and diagnostic paper. | Do not shorten or alter the formal paper title. |
+| 2 | Coverage, first entry, and generator components require different frames. | Do not describe them as one generic performance model. |
+| 3 | Official 41.9% is context; analytical 41.1% uses a different definition and denominator. | Do not substitute one ratio for the other. |
+| 4 | FY2024 coverage is 41.1% by records, 80.1% by throughput, and 70.5% by design capacity. | Do not imply the remaining throughput is automatically recoverable. |
+| 5 | Identity resolution precedes lags and events; lineages are administrative. | Do not call a lineage an immutable physical plant. |
+| 6 | There are 55 descriptive events, then 35 broad, 33 prior-operation, and 24 same-episode modeled events. | Do not let the large row counts hide event sparsity. |
+| 7 | Firth reduces sparse-logit bias and separation; it does not add information. | Do not imply the estimator solves omitted mechanisms. |
+| 8 | Scale ORs are 6.13 and 6.25; age inference changes under the stricter continuity rule. | Do not promote individual age intervals over the joint tests. |
+| 9 | Scale is a marker; pathway labels are descriptive administrative rules. | Do not say larger capacity causes entry or that labels verify projects. |
+| 10 | Gross MWh/t exactly combines design intensity, capacity factor, and utilization. | Do not call the ratio standalone technical efficiency. |
+| 11 | The primary component frame is 6,511 generator-years across 493 lineages. | Do not treat reported start year as a verified generator date. |
+| 12 | The cohort hierarchy is much stronger in installed sizing than in annual capacity factor. | Do not say older plants simply operate worse. |
+| 13 | In 5,806 heating-controlled rows, sizing-adjusted age has p=.2977. | Do not call the comparison causal mediation. |
+| 14 | Continuity ranks 40/37/54; rebuild-like ranks 72/66/65; the contrast is selected and descriptive. | Do not claim a pathway treatment effect. |
+| 15 | Period, weighting, bounds, and operating-component checks preserve the interpretation. | Do not say robustness proves causality. |
+| 16 | Identity, sparse entry, and gross-output boundaries limit the claims. | Do not hide missing project, net-export, heat, cost, or lifecycle evidence. |
+| 17 | The contribution is a measurement architecture that precedes mechanism testing. | Do not present a ranked investment policy. |
+| 18 | Ask whether the architecture is convincing and which evidence should come next. | Do not continue presenting after the feedback ask. |
 
 ## Simple Q&A Answers
 
-- [ ] Causality: "No, the paper identifies patterns and bottlenecks. It does not prove strict policy effects."
-- [ ] Code gap/Fukushima: "FY2010-FY2012 official codes are missing, so the early/later coded windows are descriptive and cannot identify a Fukushima treatment effect."
-- [ ] Replacement: "No, the pathway audit shows many reset/rebuild-like events, but also continuity upgrades and unresolved entries."
-- [ ] Data quality: "The administrative data have duplicate-code, missing-code, and heating-value issues; sensitivity checks do not overturn the headline pattern."
-- [ ] Old plants: "The paper does not say old active plants cannot convert. The age gradient attenuates when positive prior-year throughput is required."
-- [ ] One model: "One model would mix asset entry, active conversion, and generator performance, so it would answer an unclear question."
-- [ ] Contribution: "The contribution is robust scale selectivity, a frame-dependent age result, and a post-entry trajectory in one national panel."
+- [ ] Official versus analytical count: "The Ministry reports 415 of 991 generating facilities; the panel has 417 of 1,014 retained records with installed capacity. The numerator definitions and denominators differ."
+- [ ] Stable lineage: "It is an audited administrative record history used for lags and clustering, not proof that physical assets never changed."
+- [ ] Why Firth: "Only 35 broad and 24 same-episode events remain, so bias reduction and finite estimates under separation are preferable to ordinary sparse maximum-likelihood logit."
+- [ ] Age result: "The lineage-bootstrap joint age p-values are .3800, .1863, .0508, and .3566 across the four frames, so I report continuity sensitivity rather than a general age effect."
+- [ ] Scale result: "The 300-versus-100 t/day odds ratios are 6.13 and 6.25, but they are conditional associations, not effects of enlarging a facility."
+- [ ] Gross MWh/t: "It equals 0.024 times design intensity times capacity factor divided by utilization, so it cannot be interpreted independently of those components."
+- [ ] Engineering sample: "The primary component models use 6,511 engineering-valid rows across 493 stable lineages; the heating-controlled diagnostic uses 5,806 rows."
+- [ ] Pathways: "Continuity and rebuild-like entrants begin at different same-year component ranks, but small selected groups and administrative labels prevent a causal pathway claim."
+- [ ] Policy implication: "Report all three coverage denominators, use scale only for further screening, and benchmark existing generators after separating sizing from annual operation."
 
 ## After-Meeting Checklist
 
-- [ ] Write down whether the supervisor accepted the two-margin contribution and risk-set distinction.
-- [ ] Record which limitation sounded most serious.
-- [ ] Record which future-work direction sounded most publishable.
-- [ ] Record whether the methodology explanation was clear or still too technical.
-- [ ] Decide the next paper revision based on the strongest feedback, not every side comment.
+- [ ] Record whether the three estimands felt integrated or still appeared disconnected.
+- [ ] Record whether the official-versus-analytical count distinction was immediately clear.
+- [ ] Record whether Firth and the joint age interpretation were understandable without extra slides.
+- [ ] Record whether the exact identity changed how the listener interpreted gross MWh/t.
+- [ ] Record which limitation most constrained confidence.
+- [ ] Prioritize the next revision from the strongest feedback rather than every side comment.

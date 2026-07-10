@@ -1,7 +1,8 @@
 # AI Disclosure Template
 
 Use this if the final submission retains the current AI-assisted drafting, code,
-or review workflow. Keep the manuscript Methods disclosure aligned with it.
+or review workflow. Keep the manuscript declaration before the references aligned
+with it.
 
 Suggested journal-style wording:
 

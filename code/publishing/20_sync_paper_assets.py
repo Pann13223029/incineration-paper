@@ -14,19 +14,36 @@ PAPER_DIR = REPO_ROOT / "paper"
 CURRENT_DIR = PAPER_DIR / "evidence" / "current"
 
 SOURCE_FILES = [
+    "raw_data_provenance.md",
+    "raw_data_manifest.csv",
+    "raw_workbook_schema_map.csv",
+    "facility_identity_audit.md",
+    "identity_low_margin_links.csv",
+    "fleet_decomposition.md",
+    "fleet_decomposition.csv",
+    "fy2024_fleet_segments.csv",
     "sample_definition.md",
     "adoption_results.md",
     "regression_results.md",
+    "generator_component_results.csv",
     "robustness_results.md",
+    "robustness_component_results.csv",
     "data_quality_sensitivity.md",
+    "data_quality_sample_flow.csv",
+    "data_quality_engineering_bounds.csv",
+    "data_quality_official_code_duplicates.csv",
     "identifier_gap_audit.md",
+    "identifier_overlap_by_year.csv",
+    "identifier_gap_bridges.csv",
+    "identifier_duplicates_by_year.csv",
     "claim_evidence_map.md",
     "claim_verification.md",
     "panel_summary.md",
     "table1_summary_stats.md",
-    "table2_efficiency_by_age.md",
+    "table2_generator_components_by_cohort.md",
     "adoption_pathway_audit.csv",
     "figure2_transition_effects.csv",
+    "adoption_bootstrap_coefficients.csv",
     "post_adoption_bridge.csv",
     "post_adoption_trajectories.csv",
     "figure3_persistence.csv",
@@ -52,6 +69,11 @@ def check_synced_files() -> list[str]:
             continue
         if source.read_bytes() != target.read_bytes():
             stale.append(f"{filename} (stale copy)")
+    if CURRENT_DIR.exists():
+        expected = set(SOURCE_FILES)
+        for target in sorted(CURRENT_DIR.iterdir()):
+            if target.is_file() and target.name not in expected:
+                stale.append(f"{target.name} (unexpected retired artifact)")
     return stale
 
 
@@ -97,6 +119,10 @@ def sync() -> None:
             "Missing canonical output artifacts:\n- " + "\n- ".join(missing)
         )
     CURRENT_DIR.mkdir(parents=True, exist_ok=True)
+    expected = set(SOURCE_FILES)
+    for target in CURRENT_DIR.iterdir():
+        if target.is_file() and target.name not in expected:
+            target.unlink()
     for filename in SOURCE_FILES:
         shutil.copy2(OUTPUT_DIR / filename, CURRENT_DIR / filename)
     index = write_index()

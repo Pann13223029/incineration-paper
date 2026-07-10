@@ -7,6 +7,7 @@ point to one canonical set of sample-construction and transformation rules.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -28,14 +29,23 @@ os.makedirs(MANIFEST_DIR, exist_ok=True)
 
 EFF_FLOOR = 0.01
 EFF_CEIL = 0.80
-CAPACITY_UTILIZATION_CAP = 1.0
+CAPACITY_FACTOR_FLOOR = 0.02
+CAPACITY_FACTOR_CEIL = 1.20
+CAPACITY_UTILIZATION_CAP = 1.20
+HEATING_VALUE_FLOOR_MJ_KG = 3.0
+HEATING_VALUE_CEIL_MJ_KG = 25.0
 PRE_FUKUSHIMA_END = 2011
 POST_FUKUSHIMA_START = 2012
 AGE_BAND_BINS = [0, 10, 20, 30, float("inf")]
-AGE_BAND_LABELS = ["0-10 yrs", "10-20 yrs", "20-30 yrs", "30+ yrs"]
+AGE_BAND_LABELS = ["0-9 yrs", "10-19 yrs", "20-29 yrs", "30+ yrs"]
 
 REGRESSION_COLUMNS = [
     "analysis_facility_id",
+    "stable_site_id",
+    "asset_episode_id",
+    "asset_episode_number",
+    "identity_match_uncertain",
+    "identity_lineage_uncertain",
     "facility_code",
     "fiscal_year",
     "facility_name",
@@ -50,19 +60,30 @@ REGRESSION_COLUMNS = [
     "continuous_operation",
     "gasification_melting",
     "throughput_t_year",
+    "power_capacity_kw",
     "power_generated_mwh",
+    "power_sold_mwh",
     "power_efficiency_pct",
+    "heat_util_status",
+    "year_started",
     "facility_age_years",
+    "reported_start_year_cohort",
     "capacity_t_day",
     "capacity_100t",
+    "log_capacity_t_day",
+    "capacity_utilization_raw",
     "capacity_utilization_capped",
+    "generator_design_intensity_kw_per_t_day",
+    "log_generator_design_intensity",
+    "electrical_capacity_factor",
+    "log_electrical_capacity_factor",
     "heating_value_mj_kg",
-    "grid_ef_kgco2_kwh",
-    "avoided_co2_t",
+    "plausible_heating_value",
     "energy_efficiency_raw_mwh_per_t",
     "energy_efficiency_mwh_per_t",
     "log_efficiency_raw",
     "log_efficiency",
+    "engineering_valid",
     "gross_thermal_conversion_ratio",
     "log_thermal_conversion_proxy",
     "log_reported_power_efficiency",
@@ -70,6 +91,10 @@ REGRESSION_COLUMNS = [
 
 ADOPTION_COLUMNS = [
     "analysis_facility_id",
+    "stable_site_id",
+    "asset_episode_id",
+    "asset_episode_number",
+    "identity_match_method",
     "facility_code",
     "fiscal_year",
     "facility_name",
@@ -100,6 +125,8 @@ ADOPTION_MODEL_COLUMNS = [
     "lag_fiscal_year",
     "lag_gap_years",
     "exact_one_year_lag",
+    "lag_asset_episode_id",
+    "same_asset_episode_as_lag",
     "lag_facility_age_years",
     "lag_age_band",
     "lag_capacity_t_day",
@@ -115,6 +142,10 @@ ADOPTION_MODEL_COLUMNS = [
 
 ADOPTION_PATHWAY_AUDIT_COLUMNS = [
     "analysis_facility_id",
+    "stable_site_id",
+    "asset_episode_id",
+    "lag_asset_episode_id",
+    "asset_episode_changed",
     "facility_code",
     "fiscal_year",
     "prefecture",
@@ -139,6 +170,8 @@ ADOPTION_PATHWAY_AUDIT_COLUMNS = [
 IDENTIFIER_DTYPES = {
     "facility_code": "string",
     "muni_code": "string",
+    "stable_site_id": "string",
+    "asset_episode_id": "string",
 }
 
 
@@ -168,28 +201,79 @@ def normalize_manifest_value(value: Any) -> Any:
     return value
 
 
+def sha256_file(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def sha256_manifest_path(relative_path: str) -> str:
+    """Hash one input/output path, including tracked files under directories."""
+    absolute = os.path.join(REPO_ROOT, relative_path)
+    if not os.path.exists(absolute):
+        raise FileNotFoundError(f"Manifest path does not exist: {relative_path}")
+    if os.path.isfile(absolute):
+        return sha256_file(absolute)
+
+    tracked = subprocess.run(
+        ["git", "ls-files", "--", relative_path],
+        cwd=REPO_ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.splitlines()
+    files = [
+        item
+        for item in tracked
+        if os.path.isfile(os.path.join(REPO_ROOT, item))
+    ]
+    if not files:
+        files = [
+            os.path.relpath(os.path.join(root, filename), REPO_ROOT)
+            for root, _, filenames in os.walk(absolute)
+            for filename in filenames
+        ]
+    digest = hashlib.sha256()
+    for item in sorted(files):
+        digest.update(item.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(sha256_file(os.path.join(REPO_ROOT, item)).encode("ascii"))
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
 def analysis_config() -> dict[str, Any]:
     """Return the shared analysis configuration."""
     return {
-        "efficiency_floor_mwh_per_t": EFF_FLOOR,
-        "efficiency_ceiling_mwh_per_t": EFF_CEIL,
+        "gross_generation_intensity_floor_mwh_per_t": EFF_FLOOR,
+        "gross_generation_intensity_ceiling_mwh_per_t": EFF_CEIL,
+        "capacity_factor_floor": CAPACITY_FACTOR_FLOOR,
+        "capacity_factor_ceiling": CAPACITY_FACTOR_CEIL,
         "capacity_utilization_cap": CAPACITY_UTILIZATION_CAP,
+        "heating_value_plausible_range_mj_kg": [
+            HEATING_VALUE_FLOOR_MJ_KG,
+            HEATING_VALUE_CEIL_MJ_KG,
+        ],
         "pre_fukushima_end": PRE_FUKUSHIMA_END,
         "post_fukushima_start": POST_FUKUSHIMA_START,
         "regression_requires_positive_output": True,
-        "regression_requires_official_facility_code": True,
-        "regression_winsorization_method": "clip",
-        "adoption_model": "observed_first_adoption_logit_hazard",
+        "regression_uses_stable_site_id": True,
+        "regression_outlier_method": "exclude_predeclared_engineering_bounds",
+        "adoption_model": "firth_first_reported_capacity_discrete_time_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
         "adoption_predictors_lagged_exact_one_year": True,
         "adoption_elapsed_duration_uses_fiscal_years": True,
-        "adoption_active_conversion_requires_positive_prior_throughput": True,
-        "adoption_previous_observed_coded_row_retained_as_sensitivity": True,
+        "adoption_prior_operation_requires_positive_prior_throughput": True,
+        "adoption_exact_lag_requires_same_stable_lineage": True,
+        "adoption_primary_allows_asset_episode_change": True,
+        "adoption_continuity_sensitivity_requires_same_asset_episode": True,
         "technology_categories_normalized_to_compact_groups": True,
     }
 
 
-def load_panel(filename: str = "incineration_panel_enriched.csv") -> pd.DataFrame:
+def load_panel(filename: str = "incineration_panel_identified.csv") -> pd.DataFrame:
     """Load a processed panel file."""
     path = os.path.join(PROCESSED_DIR, filename)
     return pd.read_csv(path, dtype=IDENTIFIER_DTYPES)
@@ -265,10 +349,10 @@ def add_technology_profiles(frame: pd.DataFrame) -> pd.DataFrame:
 
 def build_full_fleet_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
     """
-    Build the coded full-fleet frame used for extensive-margin analysis.
+    Build the stable administrative-lineage fleet frame used for extensive-margin analysis.
 
     Rules:
-    - requires an official facility identifier so facilities can be tracked over time
+    - requires the audited stable administrative-lineage identifier
     - preserves both generating and non-generating facilities
     - adds shared transformations used by the adoption and efficiency stages
     """
@@ -276,9 +360,18 @@ def build_full_fleet_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
         panel = load_panel()
 
     fleet = panel.copy()
-    fleet["analysis_facility_id"] = normalize_analysis_facility_id(fleet["facility_code"])
-    fleet = fleet[fleet["analysis_facility_id"].notna()].copy()
-    fleet["facility_age_years"] = fleet["facility_age"].clip(lower=0)
+    if "stable_site_id" not in fleet.columns:
+        raise ValueError("Enriched panel is missing audited stable_site_id values")
+    fleet["analysis_facility_id"] = normalize_analysis_facility_id(
+        fleet["stable_site_id"]
+    )
+    if fleet["analysis_facility_id"].isna().any():
+        raise ValueError("Stable administrative-lineage identifiers must be complete")
+    if fleet.duplicated(["analysis_facility_id", "fiscal_year"]).any():
+        raise ValueError("Stable administrative-lineage identifiers must be unique within fiscal year")
+    fleet["facility_age_years"] = fleet["facility_age"].where(
+        fleet["facility_age"].ge(0)
+    )
     fleet["age_band"] = age_band_from_years(fleet["facility_age_years"])
     fleet["capacity_100t"] = fleet["capacity_t_day"] / 100.0
     fleet["throughput_100k_t"] = fleet["throughput_t_year"] / 100000.0
@@ -315,6 +408,10 @@ def build_adoption_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
             rows.append(
                 {
                     "analysis_facility_id": facility_id,
+                    "stable_site_id": row["stable_site_id"],
+                    "asset_episode_id": row["asset_episode_id"],
+                    "asset_episode_number": row["asset_episode_number"],
+                    "identity_match_method": row["identity_match_method"],
                     "facility_code": row["facility_code"],
                     "fiscal_year": int(row["fiscal_year"]),
                     "facility_name": row["facility_name"],
@@ -373,6 +470,10 @@ def build_adoption_model_frame(
     model["lag_fiscal_year"] = group["fiscal_year"].shift(1)
     model["lag_gap_years"] = model["fiscal_year"] - model["lag_fiscal_year"]
     model["exact_one_year_lag"] = model["lag_gap_years"].eq(1)
+    model["lag_asset_episode_id"] = group["asset_episode_id"].shift(1)
+    model["same_asset_episode_as_lag"] = model["asset_episode_id"].eq(
+        model["lag_asset_episode_id"]
+    )
     model["lag_facility_age_years"] = group["facility_age_years"].shift(1)
     model["lag_age_band"] = group["age_band"].shift(1)
     model["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
@@ -456,6 +557,7 @@ def build_adoption_pathway_audit(
     adoption_aug["lag_gap_years"] = adoption_aug["fiscal_year"] - adoption_aug["lag_fiscal_year"]
     adoption_aug["exact_one_year_lag"] = adoption_aug["lag_gap_years"].eq(1)
     adoption_aug["lag_year_started"] = group["year_started"].shift(1)
+    adoption_aug["lag_asset_episode_id"] = group["asset_episode_id"].shift(1)
     adoption_aug["lag_facility_age_years"] = group["facility_age_years"].shift(1)
     adoption_aug["lag_capacity_t_day"] = group["capacity_t_day"].shift(1)
     adoption_aug["lag_facility_name"] = group["facility_name"].shift(1)
@@ -468,6 +570,9 @@ def build_adoption_pathway_audit(
     events["name_changed"] = events["facility_name"] != events["lag_facility_name"]
     events["year_started_forward"] = events["year_started"] > events["fiscal_year"]
     events["year_reset"] = events["year_started"] > events["lag_year_started"]
+    events["asset_episode_changed"] = (
+        events["asset_episode_id"] != events["lag_asset_episode_id"]
+    )
     events["age_reset"] = (
         (events["lag_facility_age_years"] >= 10)
         & (events["facility_age_years"] <= 2)
@@ -478,7 +583,15 @@ def build_adoption_pathway_audit(
 
     timing_ambiguous_mask = ~events["exact_one_year_lag"]
     forward_mask = ~timing_ambiguous_mask & (events["year_started_forward"] | placeholder_mask)
-    reset_mask = ~timing_ambiguous_mask & ~forward_mask & (events["year_reset"] | events["age_reset"])
+    reset_mask = (
+        ~timing_ambiguous_mask
+        & ~forward_mask
+        & (
+            events["asset_episode_changed"]
+            | events["year_reset"]
+            | events["age_reset"]
+        )
+    )
     continuity_mask = (
         ~timing_ambiguous_mask
         & ~forward_mask
@@ -487,24 +600,24 @@ def build_adoption_pathway_audit(
     )
 
     events.loc[timing_ambiguous_mask, "pathway_category"] = (
-        "Timing-ambiguous / non-adjacent coded row"
+        "Timing-ambiguous / non-adjacent site row"
     )
     events.loc[timing_ambiguous_mask, "pathway_basis"] = (
-        "Prior coded row is not the immediately preceding fiscal year; mechanism language is weakened"
+        "Prior lineage row is not the immediately preceding fiscal year; event timing is interval-censored"
     )
     events.loc[forward_mask, "pathway_category"] = "Forward-dated / placeholder entry"
     events.loc[forward_mask, "pathway_basis"] = (
         "Forward-dated `year_started` or placeholder/new-build naming at event row"
     )
-    events.loc[reset_mask, "pathway_category"] = "Reset / rebuild-like transition"
+    events.loc[reset_mask, "pathway_category"] = "Rebuild/replacement-like entry"
     events.loc[reset_mask, "pathway_basis"] = (
-        "Observed reset in `year_started` or mature-to-new age reset before adoption"
+        "Asset episode, reported start year, or mature-to-new age resets before entry"
     )
     events.loc[continuity_mask, "pathway_category"] = (
-        "In-place upgrade / continuity transition"
+        "Continuity-lineage entry"
     )
     events.loc[continuity_mask, "pathway_basis"] = (
-        "No observed start-year reset; continuity row remains in service at adoption"
+        "Same administrative lineage and asset episode remain observed across the entry year"
     )
 
     return events[ADOPTION_PATHWAY_AUDIT_COLUMNS].copy()
@@ -518,12 +631,21 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
     - power-generation capacity must be present (`has_power_gen == True`)
     - throughput must be positive
     - electricity output must be positive
-    - efficiency is retained in both raw and winsorized form
-    - age is floored at zero for one-year commissioning mismatches
-    - utilization is capped at 1.0 for analysis
+    - gross generation intensity and its engineering components are retained
+    - implausible component records are flagged rather than clipped into the model
+    - negative reported ages remain missing rather than being silently set to zero
     """
     if panel is None:
         panel = load_panel()
+
+    if "identity_match_uncertain" not in panel:
+        raise ValueError(
+            "Identified panel is missing the identity uncertainty audit fields"
+        )
+    uncertain_lineages = panel.groupby("stable_site_id")[
+        "identity_match_uncertain"
+    ].transform("any")
+    panel = panel.assign(identity_lineage_uncertain=uncertain_lineages.astype(bool))
 
     power = panel[panel["has_power_gen"] == True].copy()
     power = power[
@@ -533,10 +655,20 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
         power["power_generated_mwh"].notna() & (power["power_generated_mwh"] > 0)
     ].copy()
 
-    power["analysis_facility_id"] = normalize_analysis_facility_id(power["facility_code"])
-    power["facility_age_years"] = power["facility_age"].clip(lower=0)
+    power["analysis_facility_id"] = normalize_analysis_facility_id(
+        power["stable_site_id"]
+    )
+    power["facility_age_years"] = power["facility_age"].where(
+        power["facility_age"].ge(0)
+    )
     power["age_band"] = age_band_from_years(power["facility_age_years"])
-    power["capacity_utilization_capped"] = power["capacity_utilization"].clip(
+    power["reported_start_year_cohort"] = pd.cut(
+        power["year_started"],
+        bins=[-np.inf, 1989, 1999, 2009, np.inf],
+        labels=["Before 1990", "1990-1999", "2000-2009", "2010 or later"],
+    )
+    power["capacity_utilization_raw"] = power["capacity_utilization"]
+    power["capacity_utilization_capped"] = power["capacity_utilization_raw"].clip(
         lower=0,
         upper=CAPACITY_UTILIZATION_CAP,
     )
@@ -549,9 +681,44 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
     power["log_efficiency_raw"] = np.log(power["energy_efficiency_raw_mwh_per_t"])
     power["log_efficiency"] = np.log(power["energy_efficiency_mwh_per_t"])
     power["capacity_100t"] = power["capacity_t_day"] / 100.0
+    power["log_capacity_t_day"] = np.where(
+        power["capacity_t_day"].gt(0),
+        np.log(power["capacity_t_day"]),
+        np.nan,
+    )
+    power["generator_design_intensity_kw_per_t_day"] = (
+        power["power_capacity_kw"] / power["capacity_t_day"]
+    )
+    power["electrical_capacity_factor"] = (
+        power["power_generated_mwh"] / (power["power_capacity_kw"] * 8.76)
+    )
+    power["log_generator_design_intensity"] = np.where(
+        power["generator_design_intensity_kw_per_t_day"].gt(0),
+        np.log(power["generator_design_intensity_kw_per_t_day"]),
+        np.nan,
+    )
+    power["log_electrical_capacity_factor"] = np.where(
+        power["electrical_capacity_factor"].gt(0),
+        np.log(power["electrical_capacity_factor"]),
+        np.nan,
+    )
     power["heating_value_mj_kg"] = power["heating_value_kj_kg"] / 1000.0
+    power["plausible_heating_value"] = power["heating_value_mj_kg"].between(
+        HEATING_VALUE_FLOOR_MJ_KG,
+        HEATING_VALUE_CEIL_MJ_KG,
+    )
+    power["engineering_valid"] = (
+        power["energy_efficiency_raw_mwh_per_t"].between(EFF_FLOOR, EFF_CEIL)
+        & power["electrical_capacity_factor"].between(
+            CAPACITY_FACTOR_FLOOR,
+            CAPACITY_FACTOR_CEIL,
+        )
+        & power["capacity_utilization_raw"].between(0.02, CAPACITY_UTILIZATION_CAP)
+        & power["generator_design_intensity_kw_per_t_day"].between(0.1, 100.0)
+        & power["facility_age_years"].notna()
+    )
 
-    positive_heating_value = power["heating_value_mj_kg"].gt(0)
+    positive_heating_value = power["plausible_heating_value"]
     power["gross_thermal_conversion_ratio"] = np.where(
         positive_heating_value,
         power["energy_efficiency_raw_mwh_per_t"]
@@ -576,23 +743,29 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
 
 def build_regression_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
     """
-    Build the canonical regression sample.
+    Build the engineering-valid stable administrative-lineage generator sample.
 
     This frame is stricter than the descriptive operating sample:
-    - requires an official facility identifier for clustering
-    - requires all model covariates to be non-missing
+    - requires an audited stable administrative-lineage identifier for clustering
+    - excludes predeclared implausible component records rather than clipping them
+    - requires the design-intensity and capacity-factor decomposition fields
     """
     power = build_operating_power_frame(panel)
-    reg = power[power["analysis_facility_id"].notna()].copy()
+    reg = power[
+        power["analysis_facility_id"].notna() & power["engineering_valid"]
+    ].copy()
     reg = reg.dropna(
         subset=[
-            "facility_age_years",
-            "capacity_100t",
-            "capacity_utilization_capped",
-            "heating_value_mj_kg",
-            "log_efficiency",
+            "reported_start_year_cohort",
+            "log_capacity_t_day",
+            "capacity_utilization_raw",
+            "log_generator_design_intensity",
+            "log_electrical_capacity_factor",
+            "log_efficiency_raw",
         ]
     ).copy()
+    if reg.duplicated(["analysis_facility_id", "fiscal_year"]).any():
+        raise ValueError("Regression frame contains duplicate stable-lineage-years")
     return reg[REGRESSION_COLUMNS].copy()
 
 
@@ -625,26 +798,31 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
     power_flagged = panel[panel["has_power_gen"] == True].copy()
     operating = build_operating_power_frame(panel)
     regression = build_regression_frame(panel)
-    active_adoption_model = adoption_model[
+    prior_operation_model = adoption_model[
         adoption_model["lag_throughput_t_year"].gt(0)
     ].copy()
     duration_mismatch = adoption_model["elapsed_at_risk_years"].ne(
         adoption_model["risk_observed_rows"]
     )
     fy2024 = panel[panel["fiscal_year"].eq(2024)].copy()
+    fy2024_total_throughput = float(fy2024["throughput_t_year"].fillna(0).sum())
+    fy2024_output = fy2024[fy2024["power_generated_mwh"].fillna(0).gt(0)].copy()
+    fy2024_total_capacity = float(fy2024["capacity_t_day"].fillna(0).sum())
+    fy2024_installed = fy2024[fy2024["has_power_gen"].fillna(False)].copy()
 
     summary = {
         "full_panel_obs": int(len(panel)),
-        "full_panel_facilities_with_codes": int(panel["facility_code"].nunique()),
-        "coded_full_fleet_obs": int(len(full_fleet)),
-        "coded_full_fleet_facilities": int(full_fleet["analysis_facility_id"].nunique()),
+        "official_code_values": int(panel["facility_code"].nunique()),
+        "stable_full_fleet_obs": int(len(full_fleet)),
+        "stable_full_fleet_sites": int(full_fleet["analysis_facility_id"].nunique()),
+        "asset_episodes": int(panel["asset_episode_id"].nunique()),
         "power_generation_flagged_obs": int(len(power_flagged)),
         "operating_power_obs": int(len(operating)),
-        "operating_power_facilities_with_codes": int(operating["facility_code"].nunique()),
+        "operating_power_sites": int(operating["analysis_facility_id"].nunique()),
         "operating_power_missing_facility_codes": int(
-            operating["analysis_facility_id"].isna().sum()
+            operating["facility_code"].isna().sum()
         ),
-        "operating_negative_age_rows_floored_to_zero": int(
+        "operating_negative_age_rows_excluded": int(
             (operating["facility_age"] < 0).sum()
         ),
         "raw_efficiency_below_floor": int(
@@ -653,6 +831,16 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         "raw_efficiency_above_ceiling": int(
             (operating["energy_efficiency_raw_mwh_per_t"] > EFF_CEIL).sum()
         ),
+        "raw_capacity_factor_outside_bounds": int(
+            (~operating["electrical_capacity_factor"].between(
+                CAPACITY_FACTOR_FLOOR,
+                CAPACITY_FACTOR_CEIL,
+            )).sum()
+        ),
+        "engineering_invalid_rows": int((~operating["engineering_valid"]).sum()),
+        "plausible_heating_value_rows": int(
+            operating["plausible_heating_value"].sum()
+        ),
         "left_censored_generators": int(adoption.attrs.get("left_censored_generators", 0)),
         "adoption_risk_obs": int(len(adoption)),
         "adoption_risk_facilities": int(adoption["analysis_facility_id"].nunique()),
@@ -660,12 +848,12 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
         "adoption_model_obs": int(len(adoption_model)),
         "adoption_model_facilities": int(adoption_model["analysis_facility_id"].nunique()),
         "adoption_model_events": int(adoption_model["adopt_power_this_year"].sum()),
-        "adoption_active_model_obs": int(len(active_adoption_model)),
-        "adoption_active_model_facilities": int(
-            active_adoption_model["analysis_facility_id"].nunique()
+        "adoption_prior_operation_obs": int(len(prior_operation_model)),
+        "adoption_prior_operation_sites": int(
+            prior_operation_model["analysis_facility_id"].nunique()
         ),
-        "adoption_active_model_events": int(
-            active_adoption_model["adopt_power_this_year"].sum()
+        "adoption_prior_operation_events": int(
+            prior_operation_model["adopt_power_this_year"].sum()
         ),
         "adoption_nonpositive_prior_throughput_rows": int(
             adoption_model["lag_throughput_t_year"].fillna(0).le(0).sum()
@@ -704,27 +892,41 @@ def sample_summary(panel: pd.DataFrame | None = None) -> dict[str, Any]:
             adoption_model.attrs.get("lag_drop_additional_missing_facilities", 0)
         ),
         "regression_obs": int(len(regression)),
-        "regression_facilities": int(regression["analysis_facility_id"].nunique()),
+        "regression_sites": int(regression["analysis_facility_id"].nunique()),
         "regression_year_start": int(regression["fiscal_year"].min()),
         "regression_year_end": int(regression["fiscal_year"].max()),
         "regression_within_total_ratio": round(
-            within_total_variance_ratio(regression, "log_efficiency"), 4
+            within_total_variance_ratio(regression, "log_efficiency_raw"), 4
         ),
         "fy2024_panel_rows": int(len(fy2024)),
         "fy2024_positive_capacity_rows": int(fy2024["has_power_gen"].sum()),
         "fy2024_positive_capacity_share_pct": float(
             fy2024["has_power_gen"].mean() * 100
         ),
+        "fy2024_positive_output_rows": int(len(fy2024_output)),
+        "fy2024_output_throughput_share_pct": float(
+            fy2024_output["throughput_t_year"].fillna(0).sum()
+            / fy2024_total_throughput
+            * 100
+        ),
+        "fy2024_installed_capacity_share_pct": float(
+            fy2024_installed["capacity_t_day"].fillna(0).sum()
+            / fy2024_total_capacity
+            * 100
+        ),
+        "fy2024_gross_generation_mwh": float(
+            fy2024["power_generated_mwh"].fillna(0).sum()
+        ),
     }
 
     for label, subset in [
-        ("pre_fukushima", regression[regression["fiscal_year"] <= PRE_FUKUSHIMA_END]),
-        ("post_fukushima", regression[regression["fiscal_year"] >= POST_FUKUSHIMA_START]),
+        ("early_window", regression[regression["fiscal_year"].between(2005, 2009)]),
+        ("later_window", regression[regression["fiscal_year"].between(2013, 2024)]),
     ]:
         summary[f"{label}_obs"] = int(len(subset))
-        summary[f"{label}_facilities"] = int(subset["analysis_facility_id"].nunique())
+        summary[f"{label}_sites"] = int(subset["analysis_facility_id"].nunique())
         summary[f"{label}_within_total_ratio"] = round(
-            within_total_variance_ratio(subset, "log_efficiency"), 4
+            within_total_variance_ratio(subset, "log_efficiency_raw"), 4
         )
 
     return summary
@@ -737,12 +939,34 @@ def write_stage_manifest(
     metadata: dict[str, Any],
 ) -> str:
     """Write a JSON manifest for a stage and return the manifest path."""
+    script_path = os.path.abspath(sys.argv[0])
+    if not os.path.isfile(script_path):
+        raise FileNotFoundError(f"Stage script does not exist: {script_path}")
+    script_relative = os.path.relpath(script_path, REPO_ROOT)
+    input_hashes = {
+        relative: sha256_manifest_path(relative) for relative in sorted(inputs)
+    }
+    output_hashes = {
+        relative: sha256_manifest_path(relative) for relative in sorted(outputs)
+    }
+    analysis_code_hashes = {
+        os.path.relpath(os.path.join(SCRIPT_DIR, filename), REPO_ROOT): sha256_file(
+            os.path.join(SCRIPT_DIR, filename)
+        )
+        for filename in sorted(os.listdir(SCRIPT_DIR))
+        if filename.endswith(".py")
+    }
     manifest = {
         "stage": stage_name,
         "python": sys.version.split()[0],
+        "script": script_relative,
+        "script_sha256": sha256_file(script_path),
+        "analysis_code_sha256": analysis_code_hashes,
         "analysis_config": analysis_config(),
         "inputs": inputs,
+        "input_sha256": input_hashes,
         "outputs": outputs,
+        "output_sha256": output_hashes,
         "metadata": normalize_manifest_value(metadata),
     }
     path = os.path.join(MANIFEST_DIR, f"{stage_name}.json")
@@ -757,13 +981,13 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
     lines = [
         "# Analysis Sample Definition",
         "",
-        "This report documents the canonical descriptive and regression samples used by the analysis scripts.",
+        "This report documents the stable administrative-lineage descriptive and model samples used by the analysis scripts.",
         "",
         f"- Full panel: {summary['full_panel_obs']:,} rows",
         (
-            f"- Coded full-fleet frame (facility identifier present): "
-            f"{summary['coded_full_fleet_obs']:,} rows "
-            f"({summary['coded_full_fleet_facilities']:,} facilities)"
+            f"- Stable administrative-lineage fleet frame: {summary['stable_full_fleet_obs']:,} rows "
+            f"across {summary['stable_full_fleet_sites']:,} administrative lineages and "
+            f"{summary['asset_episodes']:,} reported asset episodes"
         ),
         f"- Power-generation rows flagged by MOE (`has_power_gen == True`): {summary['power_generation_flagged_obs']:,}",
         (
@@ -774,23 +998,28 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
         ),
         (
             f"- Operating power-generation sample (positive throughput and positive output): "
-            f"{summary['operating_power_obs']:,}"
+            f"{summary['operating_power_obs']:,} rows across "
+            f"{summary['operating_power_sites']:,} stable administrative lineages"
         ),
         (
             f"- Operating sample rows missing official facility codes: "
             f"{summary['operating_power_missing_facility_codes']:,}"
         ),
         (
-            f"- Raw efficiency below {EFF_FLOOR:.2f} MWh/t before winsorization: "
+            f"- Raw gross generation intensity below {EFF_FLOOR:.2f} MWh/t: "
             f"{summary['raw_efficiency_below_floor']:,}"
         ),
         (
-            f"- Raw efficiency above {EFF_CEIL:.2f} MWh/t before winsorization: "
+            f"- Raw gross generation intensity above {EFF_CEIL:.2f} MWh/t: "
             f"{summary['raw_efficiency_above_ceiling']:,}"
         ),
         (
-            f"- Negative facility-age rows floored to zero: "
-            f"{summary['operating_negative_age_rows_floored_to_zero']:,}"
+            f"- Operating rows outside predeclared engineering bounds: "
+            f"{summary['engineering_invalid_rows']:,}"
+        ),
+        (
+            f"- Negative reported-age rows excluded rather than floored: "
+            f"{summary['operating_negative_age_rows_excluded']:,}"
         ),
         "",
         "## Extensive-Margin Adoption Frame",
@@ -813,10 +1042,10 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"{summary['adoption_model_events']:,} events)"
         ),
         (
-            f"- Positive-prior-throughput conversion sensitivity: "
-            f"{summary['adoption_active_model_obs']:,} observations "
-            f"({summary['adoption_active_model_facilities']:,} facilities; "
-            f"{summary['adoption_active_model_events']:,} events)"
+            f"- Entry following prior-lineage operation: "
+            f"{summary['adoption_prior_operation_obs']:,} observations "
+            f"({summary['adoption_prior_operation_sites']:,} lineages; "
+            f"{summary['adoption_prior_operation_events']:,} events)"
         ),
         (
             f"- Main-frame events with zero or missing prior-year throughput: "
@@ -827,7 +1056,7 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"{summary['adoption_duration_row_count_mismatch']:,}"
         ),
         (
-            f"- Broader previous-observed-coded-row adoption frame before exact-year restriction: "
+            f"- Broader previous-observed-site-row frame before exact-year restriction: "
             f"{summary['adoption_previous_observed_model_obs']:,} observations "
             f"({summary['adoption_previous_observed_model_facilities']:,} facilities; "
             f"{summary['adoption_previous_observed_model_events']:,} events)"
@@ -847,27 +1076,42 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"({summary['adoption_model_drop_additional_missing_facilities']:,} facilities)"
         ),
         "",
-        "## Regression Frame",
+        "## Engineering Component Frame",
         "",
         (
-            f"- Regression observations: {summary['regression_obs']:,} "
-            f"({summary['regression_facilities']:,} facilities)"
+            f"- Engineering-valid observations: {summary['regression_obs']:,} "
+            f"across {summary['regression_sites']:,} stable administrative lineages"
         ),
         (
             f"- Fiscal years: FY{summary['regression_year_start']} to "
             f"FY{summary['regression_year_end']}"
         ),
         (
-            f"- Within/total variance ratio (pooled log-efficiency): "
+            f"- Within/total variance ratio (log gross MWh/t): "
             f"{summary['regression_within_total_ratio']:.4f}"
         ),
         (
-            f"- Early coded-window ratio (FY2005-FY2009): "
-            f"{summary['pre_fukushima_within_total_ratio']:.4f}"
+            f"- Early-window ratio (FY2005-FY2009): "
+            f"{summary['early_window_within_total_ratio']:.4f}"
         ),
         (
-            f"- Later coded-window ratio (FY2013-FY2024): "
-            f"{summary['post_fukushima_within_total_ratio']:.4f}"
+            f"- Later-window ratio (FY2013-FY2024): "
+            f"{summary['later_window_within_total_ratio']:.4f}"
+        ),
+        "",
+        "## FY2024 Coverage Diagnostics",
+        "",
+        (
+            f"- Facilities with installed generation capacity: "
+            f"{summary['fy2024_positive_capacity_share_pct']:.1f}% of analytical rows"
+        ),
+        (
+            f"- Waste throughput handled by positive-output facilities: "
+            f"{summary['fy2024_output_throughput_share_pct']:.1f}%"
+        ),
+        (
+            f"- Waste-processing design capacity at installed-generation facilities: "
+            f"{summary['fy2024_installed_capacity_share_pct']:.1f}%"
         ),
     ]
 

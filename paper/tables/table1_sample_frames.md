@@ -1,12 +1,14 @@
-# Table 1. Sample structure and analytical frames
+# Table 1. Source records and analytical frames
 
-| Analytical frame | Observations | Facilities | Events | Role in paper |
+| Analytical frame | Observations | Stable administrative lineages | Events | Role |
 |:--|--:|--:|--:|:--|
-| Coded full-fleet frame | 19,827 | 2,948 | - | Starting point after facility identifiers are resolved |
-| Adoption risk set | 13,770 | 2,035 | 141 | Facilities first observed without power generation |
-| Main exact-year broad asset-entry frame | 10,823 | 1,911 | 98 | Year-indicator hazard with lagged profiles and actual elapsed risk duration |
-| Active-conversion sensitivity | 9,215 | 1,663 | 58 | Requires positive throughput in the prior fiscal year |
-| Previous-observed-coded-row adoption sensitivity | 11,717 | 1,915 | 140 | Sensitivity frame only because FY2010-FY2012 facility codes are missing |
-| Canonical generator frame | 5,683 | 1,016 | - | Operating generators used for conditional efficiency models |
+| Audited full panel | 23,593 | 1,690 | - | Unique records after collapsing six exact source duplicates |
+| Descriptive installed-capacity risk set | 16,519 | 1,223 | 55 | First reported positive installed generation capacity after an observed non-generating history |
+| Broad exact-year Firth frame | 15,154 | 1,137 | 35 | Adjacent-year transitions within the same stable administrative lineage |
+| Prior-operation Firth frame | 13,072 | 1,019 | 33 | Nested sensitivity additionally requiring positive prior-year throughput |
+| Same-asset-episode continuity | 15,095 | 1,135 | 24 | Sensitivity excluding inferred episode changes |
+| Identity-certain-lineage frame | 15,107 | 1,130 | 35 | Sensitivity excluding every lineage with an accepted uncertain identity link |
+| Operating positive-output frame | 6,660 | 504 | - | Rows with positive throughput and gross electricity output |
+| Engineering-valid component frame | 6,511 | 493 | - | Predeclared bounds for generator sizing, capacity factor, waste loading, gross MWh/t, and reported age |
 
-*Notes: the adoption frame excludes left-censored facilities already generating in their first observed year. Forty of 98 exact-year broad entry events have zero or missing prior-year throughput. The generator frame requires positive throughput and positive electricity output.*
+*Notes: official facility codes are not longitudinal identifiers. The identity audit reconstructs stable administrative facility lineages and 1,767 asset episodes; these are record-linkage constructs, not proof of immutable physical sites.*

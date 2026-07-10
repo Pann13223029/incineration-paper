@@ -1,227 +1,188 @@
 {
+  "analysis_code_sha256": {
+    "code/analysis/00_probe_estat_facility_data.py": "7ede37771716f42cd5c07f8c2082a0951c336f06f990f7a7292d5f6abedffdc3",
+    "code/analysis/01_download_facility_data.py": "7a56fdfbbf065aca33dc0a884f9d0d2622a6fad34d9911f226287a6c0c20f1e2",
+    "code/analysis/02_parse_facility_panel.py": "b93d0407c9d3b93d018a1fb5ad204ed208b17c91228dc76ff3d8bea8cf2e42bc",
+    "code/analysis/02a_build_facility_identity.py": "f47bfe47fced3e7c5ee4a958b8828533741c54203e835b44771045cbc237d8e4",
+    "code/analysis/02b_build_raw_data_manifest.py": "97df15b5e53f8eb496a9049e5261c455ab4a509a634fbca388df1a9dd03eb04b",
+    "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
+    "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
+    "code/analysis/05_fleet_decomposition.py": "fec958fa2ec4af913a466078d070212b9b526ec2065cbfa28545451f23308811",
+    "code/analysis/05_panel_regression.py": "0e6146391e4f83e945a9929359ee4c81f886a064350c22bcbefb8a6ce22b15d1",
+    "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
+    "code/analysis/06_robustness.py": "6ab5cab93577bfc1d8826954304b05151586bda622450c38d376adeaa1848e4a",
+    "code/analysis/06a_data_quality_sensitivity.py": "f6e5535cdaf3eac031dfd96c9d51cc0c8325b53848d3a20fa2654ce092d06651",
+    "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
+    "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
+    "code/analysis/08_verify_claims.py": "8b29cade8bacaa9fde1ba48faf249e2eb0c1b33fce09ac1946a8e0bda76bca62",
+    "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
+    "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
+    "code/analysis/rare_event_utils.py": "7377b3cded06073ffda5fcb1cf827042ee6c47588d1453783b0220d4c9305a67"
+  },
   "analysis_config": {
-    "adoption_active_conversion_requires_positive_prior_throughput": true,
+    "adoption_continuity_sensitivity_requires_same_asset_episode": true,
     "adoption_elapsed_duration_uses_fiscal_years": true,
-    "adoption_model": "observed_first_adoption_logit_hazard",
+    "adoption_exact_lag_requires_same_stable_lineage": true,
+    "adoption_model": "firth_first_reported_capacity_discrete_time_hazard",
     "adoption_predictors_lagged_exact_one_year": true,
-    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
+    "adoption_primary_allows_asset_episode_change": true,
+    "adoption_prior_operation_requires_positive_prior_throughput": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
-    "capacity_utilization_cap": 1.0,
-    "efficiency_ceiling_mwh_per_t": 0.8,
-    "efficiency_floor_mwh_per_t": 0.01,
+    "capacity_factor_ceiling": 1.2,
+    "capacity_factor_floor": 0.02,
+    "capacity_utilization_cap": 1.2,
+    "gross_generation_intensity_ceiling_mwh_per_t": 0.8,
+    "gross_generation_intensity_floor_mwh_per_t": 0.01,
+    "heating_value_plausible_range_mj_kg": [
+      3.0,
+      25.0
+    ],
     "post_fukushima_start": 2012,
     "pre_fukushima_end": 2011,
-    "regression_requires_official_facility_code": true,
+    "regression_outlier_method": "exclude_predeclared_engineering_bounds",
     "regression_requires_positive_output": true,
-    "regression_winsorization_method": "clip",
+    "regression_uses_stable_site_id": true,
     "technology_categories_normalized_to_compact_groups": true
   },
+  "input_sha256": {
+    "data/processed/incineration_panel_identified.csv": "ff6913f314b56e571ac87d3d208f83461cb59d69fdd57798779158bc907ea66b"
+  },
   "inputs": [
-    "data/processed/incineration_panel_enriched.csv"
+    "data/processed/incineration_panel_identified.csv"
   ],
   "metadata": {
-    "early_coded_window": [
-      2005,
-      2009
-    ],
-    "engineering_validation": {
-      "plausible_rows": 4971,
-      "thermal_reported_log_correlation": 0.8636071
-    },
-    "later_coded_window": [
-      2013,
-      2024
-    ],
-    "specifications": [
-      {
-        "capacity_100t_coef": 0.08745634,
-        "capacity_100t_p": 4.2799e-17,
-        "capacity_utilization_capped_coef": 0.640983,
-        "capacity_utilization_capped_p": 0.000396575,
-        "dv": "log_efficiency",
-        "facilities": 335,
-        "facility_age_years_coef": -0.04145254,
-        "facility_age_years_p": 6.736948e-36,
-        "label": "R1: Early coded-window pooled OLS (FY2005-FY2009)",
-        "n": 1400,
-        "r2": 0.3555022,
-        "year_fe": false
+    "bound_sets": {
+      "Broad engineering bounds": {
+        "capacity_factor": [
+          0.01,
+          1.5
+        ],
+        "design_intensity": [
+          0.05,
+          150.0
+        ],
+        "gross": [
+          0.005,
+          1.0
+        ],
+        "utilization": [
+          0.01,
+          1.5
+        ]
       },
-      {
-        "capacity_100t_coef": 0.08911392,
-        "capacity_100t_p": 4.864899e-17,
-        "capacity_utilization_capped_coef": 0.7483016,
-        "capacity_utilization_capped_p": 4.985315e-05,
-        "dv": "log_efficiency",
-        "facilities": 335,
-        "facility_age_years_coef": -0.04226035,
-        "facility_age_years_p": 6.327343e-38,
-        "label": "R2: Early coded-window year FE (FY2005-FY2009)",
-        "n": 1400,
-        "r2": 0.3755501,
-        "year_fe": true
+      "Conservative engineering bounds": {
+        "capacity_factor": [
+          0.05,
+          1.05
+        ],
+        "design_intensity": [
+          0.25,
+          75.0
+        ],
+        "gross": [
+          0.02,
+          0.7
+        ],
+        "utilization": [
+          0.05,
+          1.1
+        ]
       },
-      {
-        "capacity_100t_coef": 0.1060344,
-        "capacity_100t_p": 1.49253e-22,
-        "capacity_utilization_capped_coef": 0.821588,
-        "capacity_utilization_capped_p": 1.365641e-07,
-        "dv": "log_efficiency",
-        "facilities": 878,
-        "facility_age_years_coef": -0.03132302,
-        "facility_age_years_p": 5.415682e-38,
-        "label": "R3: Later coded-window pooled OLS (FY2013-FY2024)",
-        "n": 4283,
-        "r2": 0.3154988,
-        "year_fe": false
-      },
-      {
-        "capacity_100t_coef": 0.1121873,
-        "capacity_100t_p": 2.427942e-24,
-        "capacity_utilization_capped_coef": 0.8089011,
-        "capacity_utilization_capped_p": 2.237649e-07,
-        "dv": "log_efficiency",
-        "facilities": 878,
-        "facility_age_years_coef": -0.03313236,
-        "facility_age_years_p": 2.78667e-40,
-        "label": "R4: Later coded-window year FE (FY2013-FY2024)",
-        "n": 4283,
-        "r2": 0.3519537,
-        "year_fe": true
-      },
-      {
-        "capacity_100t_coef": 0.4431617,
-        "capacity_100t_p": 4.099853e-05,
-        "capacity_utilization_capped_coef": 1.252384,
-        "capacity_utilization_capped_p": 6.925527e-06,
-        "dv": "log_efficiency",
-        "facilities": 414,
-        "facility_age_years_coef": -0.03290574,
-        "facility_age_years_p": 2.924284e-10,
-        "label": "R5: Small capacity tercile",
-        "n": 1938,
-        "r2": 0.2037391,
-        "year_fe": false
-      },
-      {
-        "capacity_100t_coef": 0.04395764,
-        "capacity_100t_p": 1.124107e-06,
-        "capacity_utilization_capped_coef": 0.5646739,
-        "capacity_utilization_capped_p": 0.003156495,
-        "dv": "log_efficiency",
-        "facilities": 320,
-        "facility_age_years_coef": -0.02471168,
-        "facility_age_years_p": 7.103229e-18,
-        "label": "R6: Large capacity tercile",
-        "n": 1885,
-        "r2": 0.3062793,
-        "year_fe": false
-      },
-      {
-        "capacity_100t_coef": 0.08907181,
-        "capacity_100t_p": 9.393433e-21,
-        "capacity_utilization_capped_coef": 0.7526231,
-        "capacity_utilization_capped_p": 1.690564e-05,
-        "dv": "log_efficiency_raw",
-        "facilities": 1016,
-        "facility_age_years_coef": -0.02739588,
-        "facility_age_years_p": 1.803525e-24,
-        "label": "R7: Unclipped-log DV pooled OLS",
-        "n": 5683,
-        "r2": 0.1550805,
-        "year_fe": false
-      },
-      {
-        "capacity_100t_coef": 0.1090282,
-        "capacity_100t_p": 1.659527e-27,
-        "capacity_utilization_capped_coef": 0.7760673,
-        "capacity_utilization_capped_p": 6.047577e-06,
-        "dv": "log_efficiency_raw",
-        "facilities": 1016,
-        "facility_age_years_coef": -0.03460199,
-        "facility_age_years_p": 2.822373e-35,
-        "label": "R8: Unclipped-log DV with year indicators",
-        "n": 5683,
-        "r2": 0.2382234,
-        "year_fe": true
-      },
-      {
-        "capacity_100t_between_coef": 0.1139919,
-        "capacity_100t_between_p": 1.6786e-35,
-        "capacity_100t_coef": 0.1139919,
-        "capacity_100t_p": 1.6786e-35,
-        "capacity_100t_within_coef": 0.02096004,
-        "capacity_100t_within_p": 0.00696032,
-        "capacity_utilization_capped_between_coef": 0.8645904,
-        "capacity_utilization_capped_between_p": 1.06928e-06,
-        "capacity_utilization_capped_coef": 0.8645904,
-        "capacity_utilization_capped_p": 1.06928e-06,
-        "capacity_utilization_capped_within_coef": 0.5133159,
-        "capacity_utilization_capped_within_p": 1.329225e-06,
-        "dv": "log_efficiency",
-        "facilities": 1016,
-        "facility_age_years_between_coef": -0.03588596,
-        "facility_age_years_between_p": 1.968084e-45,
-        "facility_age_years_coef": -0.03588596,
-        "facility_age_years_p": 1.968084e-45,
-        "facility_age_years_within_coef": -0.02936117,
-        "facility_age_years_within_p": 2.622676e-26,
-        "label": "R9: Within-between sensitivity with year FE",
-        "model_family": "within_between",
-        "n": 5683,
-        "r2": 0.3796139,
-        "year_fe": true
-      },
-      {
-        "capacity_100t_coef": 0.07681196,
-        "capacity_100t_p": 3.503959e-21,
-        "capacity_utilization_capped_coef": 0.5353259,
-        "capacity_utilization_capped_p": 6.126679e-07,
-        "dv": "log_thermal_conversion_proxy",
-        "facilities": 934,
-        "facility_age_years_coef": -0.03261797,
-        "facility_age_years_p": 1.566371e-52,
-        "label": "R10: Thermal-conversion proxy + year/technology controls",
-        "model_family": "engineering_validation",
-        "n": 4971,
-        "r2": 0.449339,
-        "year_fe": true
-      },
-      {
-        "capacity_100t_coef": 0.07468894,
-        "capacity_100t_p": 5.666011e-21,
-        "capacity_utilization_capped_coef": 0.4817302,
-        "capacity_utilization_capped_p": 4.739232e-07,
-        "dv": "log_reported_power_efficiency",
-        "facilities": 934,
-        "facility_age_years_coef": -0.03293157,
-        "facility_age_years_p": 7.000127e-51,
-        "label": "R11: Reported generation efficiency + year/technology controls",
-        "model_family": "engineering_validation",
-        "n": 4971,
-        "r2": 0.4699793,
-        "year_fe": true
-      },
-      {
-        "capacity_100t_coef": 0.1040125,
-        "capacity_100t_p": 7.262614e-28,
-        "capacity_utilization_capped_coef": 0.6074246,
-        "capacity_utilization_capped_p": 6.676194e-05,
-        "dv": "log_efficiency",
-        "facilities": 915,
-        "facility_age_years_coef": -0.03614424,
-        "facility_age_years_p": 1.957937e-47,
-        "label": "R12: Exact-adjacent-year lagged predictors + year FE",
-        "model_family": "lagged_predictor",
-        "n": 4368,
-        "r2": 0.3649761,
-        "year_fe": true
+      "Main predeclared bounds": {
+        "capacity_factor": [
+          0.02,
+          1.2
+        ],
+        "design_intensity": [
+          0.1,
+          100.0
+        ],
+        "gross": [
+          0.01,
+          0.8
+        ],
+        "utilization": [
+          0.02,
+          1.2
+        ]
       }
-    ]
+    },
+    "coefficient_rows": 83,
+    "specifications": {
+      "Broad engineering bounds": {
+        "capacity_factor_r_squared": 0.3297173,
+        "design_r_squared": 0.5435033,
+        "gross_output_r_squared": 0.9098563,
+        "observations": 6535,
+        "site_equal_weights": false,
+        "stable_sites": 496
+      },
+      "Conservative engineering bounds": {
+        "capacity_factor_r_squared": 0.3363683,
+        "design_r_squared": 0.5557577,
+        "gross_output_r_squared": 0.9225882,
+        "observations": 6432,
+        "site_equal_weights": false,
+        "stable_sites": 490
+      },
+      "First decade (FY2005-FY2014)": {
+        "capacity_factor_r_squared": 0.2966907,
+        "design_r_squared": 0.5080801,
+        "gross_output_r_squared": 0.9079799,
+        "observations": 2882,
+        "site_equal_weights": false,
+        "stable_sites": 356
+      },
+      "Identity-certain lineages": {
+        "capacity_factor_r_squared": 0.3342264,
+        "design_r_squared": 0.5475198,
+        "gross_output_r_squared": 0.9133259,
+        "observations": 6450,
+        "site_equal_weights": false,
+        "stable_sites": 487
+      },
+      "Lineage-equal weights": {
+        "capacity_factor_r_squared": 0.4594905,
+        "design_r_squared": 0.5618198,
+        "gross_output_r_squared": 0.9155546,
+        "observations": 6511,
+        "site_equal_weights": true,
+        "stable_sites": 493
+      },
+      "Main predeclared bounds": {
+        "capacity_factor_r_squared": 0.3390337,
+        "design_r_squared": 0.549258,
+        "gross_output_r_squared": 0.9138868,
+        "observations": 6511,
+        "site_equal_weights": false,
+        "stable_sites": 493
+      },
+      "Second decade (FY2015-FY2024)": {
+        "capacity_factor_r_squared": 0.3794875,
+        "design_r_squared": 0.5732587,
+        "gross_output_r_squared": 0.9191251,
+        "observations": 3629,
+        "site_equal_weights": false,
+        "stable_sites": 444
+      }
+    },
+    "within_site_result_rows": 6,
+    "within_total_variance": {
+      "Log electrical capacity factor": 0.4259513,
+      "Log generator design intensity": 0.0157589,
+      "Log gross generation intensity": 0.08880473
+    }
+  },
+  "output_sha256": {
+    "output/robustness_component_results.csv": "aaad9a4974a05bf378613f83646ace5de8e1cdb9afb9fe5f3f5a0cbe1e422ab3",
+    "output/robustness_results.md": "1454debaaa333c9089f355a72dc9b543fdb44249cffd9b5e76d5c10cd321c5f1"
   },
   "outputs": [
-    "output/robustness_results.md"
+    "output/robustness_results.md",
+    "output/robustness_component_results.csv"
   ],
   "python": "3.12.12",
+  "script": "code/analysis/06_robustness.py",
+  "script_sha256": "6ab5cab93577bfc1d8826954304b05151586bda622450c38d376adeaa1848e4a",
   "stage": "06_robustness"
 }

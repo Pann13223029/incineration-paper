@@ -1,128 +1,79 @@
 # Current Paper Status
 
-This paper workspace is a private side project derived from the defended thesis evidence base. It is ready to resume, but it should remain downstream of the canonical pipeline rather than becoming a second live research track.
+The corrected empirical pipeline and professor-facing manuscript package form a verified review baseline as of 10 July 2026. Analysis reconstruction, evidence synchronization, claim verification, format validation, LaTeX compilation, and visual PDF review have passed. This is ready for substantive professor review, but it is not yet a journal-submission decision or a substitute for human sign-off.
 
-## Current State
+## Readiness
 
-| Item | Status |
+| Item | Current state |
 |:--|:--|
-| Private GitHub repo | `https://github.com/Pann13223029/incineration-paper` |
-| Frozen baseline tag | `wm-near-submission-20260421` |
+| Repository | Private paper workspace at `https://github.com/Pann13223029/incineration-paper` |
 | Target journal track | `Waste Management` |
-| Manuscript | Professor-review-ready near-submission draft |
-| Current review mode | Professor comprehension first; peer-review-safe wording preserved |
-| Main figures | 4 |
-| Main-text tables | 4 formal tables, plus 2 review-facing bridge maps kept for professor-review clarity |
-| Supplement | Present and updated with event-definition, panel-exit, post-entry, persistence, data-quality, and estimator diagnostics |
-| Title page, highlights, cover letter | Present |
-| Evidence sync | Managed by `npm run paper:sync` |
-| Claim verification | Managed by `npm run claims:verify` |
-| Authoritative PDF | `paper/share/waste-management-manuscript-latex.pdf` |
+| Empirical pipeline | Corrected identity, fleet, entry, component, robustness, quality, and claim stages implemented |
+| Manuscript and supplement | Reconciled with the corrected four-frame entry and component evidence |
+| Figures | Four regenerated academic figures; manuscript rendering inspected |
+| Evidence snapshot | 33 canonical artifacts synchronized; `paper:check` passes |
+| Claim verification | Passed for evidence integrity, Markdown, LaTeX, supplement, and professor packet |
+| Reading PDF | Rebuilt as a 22-page LaTeX PDF; every page visually inspected |
+| Presentation | Rebuilt as an 18-slide PDF; every slide visually inspected |
+| Preferred PDF path | `paper/share/waste-management-manuscript-latex.pdf` |
 
-## Latest Verified Baseline
+Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
 
-The current repo includes:
+## Corrected Evidence Baseline
 
-- duplicate official-code and heating-value sensitivity checks
-- operating-generator inclusion audit showing 907 uncoded operating-generator rows, concentrated in FY2010-FY2012
-- event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
-- precise main event definition as first positive installed generation capacity
-- exact elapsed fiscal duration in the main entry model rather than observed-row count
-- broad asset-entry and positive-prior-throughput active-conversion models shown together
-- 40 of 98 exact-year broad events disclosed as having zero or missing prior-year throughput
-- positive-output event sensitivity with 146 exact-year events
-- post-entry bridge showing 135 of 141 capacity entrants report positive output by the following year and 137 appear in the canonical generator frame within three years
-- competing panel-exit diagnostic covering 1,285 final coded-panel exits without equating administrative disappearance with physical closure
-- official FY2024 share of 415/991 (41.9%) used for national context, with the analytic-panel 417/1,014 (41.1%) disclosed separately
-- explicit adoption-hazard and electricity-recovery regression equations in the
-  main manuscript
-- review-facing comparator-adaptation and method-to-RQ bridge maps in the
-  main manuscript
-- a documented bridge-map placement decision: keep both bridge maps in the
-  professor-review manuscript; move the research-question-to-model bridge to
-  the supplement during journal compression if needed
-- explicit two-margin contribution wording clarifying that the novelty is not
-  simply that age and scale matter, but that entry and post-entry performance
-  show distinct fleet constraints
-- reader-facing regression guide explaining AMEs, log coefficients, fiscal-year
-  indicators, age/vintage interpretation, technology controls, random effects as supplemental evidence, facility fixed effects as a different estimand, and clustered standard errors
-- stronger methods-defense wording explaining parsimony in the sparse adoption
-  hazard and the descriptive purpose of the OLS/year-FE/RE model ladder
-- official MOE/e-Stat source citation updated to the FY2024 survey release and
-  statistics code `00650101`
-- primary year- and technology-adjusted RQ2 model with furnace type, operating mode, facility type, and furnace count
-- thermal-conversion, reported-efficiency, and exact-adjacent-year lagged-predictor validation
-- within-between electricity-recovery sensitivity added to separate
-  cross-facility means from within-facility deviations
-- adjacent-year percentile-rank persistence of 0.9325 across 4,368 exact pairs
-- post-entry trajectory with 389 observations across 137 events and explicit follow-up attrition
-- unclipped-log outcome sensitivity and explicit gross MWh/t and utilization definitions
-- interpolated grid emissions factor removed from the core regressions
-- supplement abbreviation guide and reviewer-response map for predictable
-  concerns about adoption events, random effects, uncoded rows, heating value,
-  and planning implications
-- supervisor-facing comparator and method-lineage packet at
-  `paper/notes/positioning/professor-comparator-method-lineage.md`
-- explicit facility-clustered standard-error language for the electricity-recovery models
-- safer policy wording around asset-renewal screening and capital-side triage
-- planning interpretation framed as triage rather than intervention ranking
-- synced data-quality report in `paper/evidence/current/data_quality_sensitivity.md`
-- supplement language documenting the sensitivity checks, inclusion audit, and event-timing caveat
-- claim verification passing locally and in GitHub Actions
-- rebuilt LaTeX reading PDF in `paper/share/`
+- 23,599 parsed source rows become 23,593 unique retained records after exact-duplicate collapse.
+- The identity layer contains 1,690 audited administrative facility lineages and 1,767 reported asset episodes; all 16 accepted uncertain links are exposed.
+- Official facility codes are absent in FY2010-FY2012 and have zero overlap between FY2019 and FY2020; audited linkage restores 1,064 lineages across that break.
+- `stable_site_id` is an administrative lineage, not proof of one immutable physical site, owner, or equipment configuration.
+- The descriptive installed-capacity entry universe contains 55 events.
+- The broad exact-year Firth model contains 15,154 rows, 1,137 lineages, and 35 events.
+- The prior-operation Firth sensitivity contains 13,072 rows, 1,019 lineages, and 33 events.
+- The same-episode continuity sensitivity contains 15,095 rows, 1,135 lineages, and 24 events.
+- The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
+- All four entry models complete 499 stable-lineage bootstrap replications; joint age p-values are 0.3800, 0.1863, 0.0508, and 0.3566, respectively.
+- FY2024 installed-capacity participation is 41.1% by facility count, while positive-output facilities handle 80.1% of throughput and installed-generation facilities represent 70.5% of waste-processing design capacity.
+- The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
+- Generator analysis separates installed design intensity from annual electrical capacity factor.
+- Gross MWh/t remains a descriptive administrative output ratio, not a stand-alone efficiency measure.
+- Administrative disappearance is not analyzed as physical closure.
 
-## What This Baseline Is Good For
+## Completed Technical Gates
 
-- resuming paper work without rebuilding the structure
-- explaining the article version of the thesis contribution
-- giving a professor the methodological foundation and comparator lineage
-  without making the manuscript sound like a private supervision note
-- preserving a stable private paper track after thesis completion
-- keeping reviewer-sensitive caveats visible before submission
-- preventing older, stronger renewal wording from being accidentally revived in future edits
+- Full raw-to-claims rebuild completed with exact workbook, code, input, and output hashes.
+- All four Firth models converged with all 499 requested whole-lineage bootstrap replications.
+- Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
+- `paper:check`, `claims:verify`, and `repo:check` passed after final evidence sync.
+- The LaTeX manuscript and presentation PDFs were rebuilt and visually inspected page by page.
+- The submission Markdown, HTML, and DOCX were regenerated; the DOCX archive is structurally valid.
 
-## What Is Still Deferred
+## Next Human Actions
 
-- journal-system metadata beyond local submission files
-- final journal-specific formatting
-- new causal, closure-history, net-export, heat-recovery, or engineering-frontier analysis
-- human editorial review of tone, concision, and target-journal fit
+1. Obtain professor feedback on the three-estimand architecture, continuity-sensitive age inference, and comparator lineage.
+2. Record requested substantive changes before journal-oriented compression or reframing.
+3. Re-run the complete verification sequence after any analytical or numerical revision.
 
-## Resume Workflow
+## Deferred Scope
 
-Use this order if work resumes:
+- Causal retrofit or intervention effects
+- Verified closure and consolidation histories
+- Net electricity export and useful-heat recovery
+- Lifecycle avoided-emissions estimates
+- Engineering-frontier or cost-effectiveness optimization
+- Final journal-system metadata and venue-specific formatting
+
+These require new data or a separate design and should not be inferred from the current administrative panel.
+
+## Verification Sequence
 
 ```bash
 npm run analysis:rebuild
 npm run paper:sync
 npm run paper:check
 npm run claims:verify
-```
-
-Then review:
-
-1. `paper/manuscript/paper.md`
-2. `paper/supplement/supplement.md`
-3. `paper/submission/submission-checklist.md`
-4. `paper/references/selected-references.md`
-5. `paper/notes/positioning/professor-comparator-method-lineage.md`
-
-After editing, refresh artifacts:
-
-```bash
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run repo:check
+git diff --check
 ```
 
-If the edit is purely stylistic and does not touch evidence or claims, `analysis:rebuild` can be skipped. Still run `paper:check`, `claims:verify`, and `paper:build:latex` before pushing.
-
-## Next Real Decisions
-
-1. Whether the professor agrees that the two-margin diagnostic is the right
-   central contribution.
-2. Whether to do a final human editorial pass for readability and journal tone.
-3. Whether journal mode should move the research-question-to-model bridge from
-   the main text into the supplement.
-4. Whether to expand or compress the supplement for the actual target journal.
-5. Whether the journal submission should retain the current full AI disclosure wording or adapt it to the submission form without reducing its scope.
-6. Whether to start a true journal-submission workflow from this private baseline.
+Submission readiness begins only after this sequence passes and the rebuilt PDF receives human visual review.

@@ -1,0 +1,11 @@
+analysis,stage,rows,rows_removed_from_prior_stage,stable_sites,events
+generator,Administrative panel,23593,0,1690,
+generator,Audited administrative-lineage fleet,23593,0,1690,
+generator,Installed generation reported,6950,16643,522,
+generator,Positive annual throughput,6694,256,505,
+generator,Positive gross electricity output,6660,34,504,
+generator,Passes all engineering bounds,6511,149,493,
+generator,Component-model complete cases,6511,0,493,
+entry,Observed non-generator risk set,16519,0,1223,55
+entry,Exact-year lag and complete covariates,15154,1365,1137,35
+entry,Exact-year lag after prior operation,13072,2082,1019,33

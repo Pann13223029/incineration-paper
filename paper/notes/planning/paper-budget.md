@@ -1,90 +1,97 @@
 # Paper Budget
 
-This note sets working constraints for the current professor-review draft and
-the later journal-compression pass.
+These are internal limits for a comprehensive professor-review draft. They are
+not a claim about any journal's current author rules. Confirm journal limits only
+when preparing an actual submission.
 
-These are internal drafting limits, not claims about the final journal's exact
-author guidelines. The point is to force discipline early.
+## Drafting Target
 
-## Primary Lane
+- Main-text target: approximately 6,500-7,000 words, excluding abstract,
+  references, table notes, figure captions, and supplement.
+- Priority: comprehension and methodological traceability before compression.
+- Compression trigger: professor agreement on the research questions,
+  constructs, and comparator lineage.
 
-- target journal lane: `Waste Management`
-- comparator discipline: top-tier structure and clarity, field-journal fit first
+## Section Budget
 
-## Working Length Budget
+| Section | Working range | Required job |
+|:--|--:|:--|
+| Abstract | 220-250 | Puzzle, design, two answers, implication |
+| Introduction and positioning | 1,100-1,350 | Count-volume puzzle, gap, RQs, comparator adaptation |
+| Data, provenance, and identity | 750-950 | Sources, 23,593 records, administrative-lineage reconstruction, validity boundary |
+| Methods | 1,050-1,300 | Coverage measures, Firth model, engineering identity, estimands |
+| Results | 1,650-1,950 | Fleet baseline, entry inference, components, pathway-qualified synthesis |
+| Discussion and limitations | 1,050-1,300 | Meaning, comparator contrast, noncausal limits, future validation |
+| Conclusion | 250-350 | Direct answer without new claims |
 
-- abstract: no more than 250 words; current draft is approximately 237
-- introduction + literature positioning: 1,300-1,700 words
-- data and design: 900-1,200 words
-- results: 1,400-1,900 words
-- discussion: 900-1,200 words
-- conclusion: 200-350 words
-
-Professor-review main-text target:
-
-- roughly 7,000-7,500 words before acknowledgements, references, and supplement
-- current draft is approximately 7,224 words under that counting rule
-
-Journal-compression target:
-
-- remove approximately 500-1,000 words only after professor feedback and target-journal confirmation
-
-Do not let the first paper draft drift back toward thesis scale.
+Ranges are guides, not quotas. Do not add text merely to reach a number.
 
 ## Figure Budget
 
-Current main text:
+Keep four figures for professor review:
 
-1. analytical framework
-2. broad-entry, active-conversion, and panel-exit effects
-3. generator-performance structure and rank persistence
-4. early post-entry trajectories
+1. Annual facility participation, throughput coverage, and design-capacity
+   coverage.
+2. Firth entry odds ratios with stable-lineage bootstrap intervals.
+3. Reported start-year cohort patterns in generator design intensity and
+   electrical capacity factor.
+4. First-complete-year pathway profiles, explicitly labeled descriptive.
 
-Keep all four for professor review. During journal compression, remove a figure
-only if its inferential role is preserved in a table or supplement.
+Each figure must answer one question, define its denominator, remain legible at
+single-column size, and avoid repeating a full table.
 
 ## Table Budget
 
-Main text:
+Keep three formal main-text tables:
 
-1. one compact sample-frame table
-2. one adoption-results table
-3. one generator-performance table
-4. one implications table
+1. sample frames, constructs, and denominators
+2. sparse entry-model results and joint tests
+3. generator-component results and sizing diagnostic
 
-Two additional bridge maps remain review-facing aids rather than formal result
-tables and can move to the supplement during journal compression.
+Place detailed linkage diagnostics, full bootstrap output, pathway rules,
+alternative bounds, and robustness variants in the supplement.
 
-Supplement:
+## Equation Budget
 
-- robustness tables
-- extended sample tables
-- pathway-audit detail tables
+Keep equations that are necessary to understand the design:
 
-## Supplement Boundary
+- the discrete-time entry probability with Firth penalization explained in prose
+- the generator design-intensity definition
+- the electrical-capacity-factor definition
+- the gross-generation accounting identity
 
-Supplement should carry:
+Do not add equations for routine transformations that prose or a table note can
+explain more clearly.
 
-- pathway-audit rule detail
-- estimator-comparison detail
-- extended robustness
-- extra sample-definition detail
+## Main-Text Protection Rules
 
-Main text should still carry enough method and evidence to stand alone.
+Do not cut:
 
-## Compression Rules
+- the identity problem and deterministic audit guardrails
+- exact event and sample counts for both Firth frames
+- the 300-versus-100 t/day scale interpretation
+- joint age tests across broad, prior-operation, same-episode, and identity-certain frames
+- the installed-sizing diagnostic and its noncausal interpretation
+- comparator adaptation and originality boundary
+- limitations needed to prevent engineering or causal misreading
 
-- every paragraph must strengthen the dominant novelty claim or one headline
-  finding
-- repeated caveat language should be merged, not duplicated
-- policy should stay to one short calibrated paragraph in discussion
-- thesis-operations or repo-provenance material stays out of the article
+Cut or relocate:
 
-## Scope Lock
+- repeated caveats that can be stated once precisely
+- software and repository operations
+- exhaustive robustness narration
+- unsupported policy scenarios
+- generic waste-management background
+- numeric repetition already visible in tables or figures
 
-Do not add new analyses unless they do one of these:
+## Scope Gate
 
-- materially reduce the strongest reviewer attack
-- materially strengthen the dominant novelty claim
+Add an analysis only if it does at least one of the following:
 
-If not, defer them.
+- tests administrative-lineage linkage validity
+- changes the sparse-entry estimand or its uncertainty
+- validates an engineering construct
+- challenges the count-volume conclusion
+- materially changes the comparator or originality claim
+
+Otherwise record it as future work rather than expanding the current draft.

@@ -1,99 +1,80 @@
-# Data-Quality and Identifier-Sensitivity Checks
+# Administrative-Lineage And Engineering Data-Quality Audit
 
-This report audits two non-core but reviewer-relevant data-quality issues: 
-same-year duplicate official facility codes and noisy heating-value controls.
-The checks are sensitivity diagnostics; they do not replace the main specification.
+## Enforced Grain
 
-## Duplicate Official Facility Codes
+- Administrative rows: 23,593; audited stable administrative lineages: 1,690; asset episodes: 1,767.
+- Missing administrative-lineage IDs: 0.
+- Missing asset-episode IDs: 0.
+- Duplicate stable-lineage-year rows: 0.
+- Official facility codes are audited only within fiscal year. They are not used as longitudinal identifiers.
 
-- Official codes with at least one same-year duplicate: 39
-- Source rows using those affected codes: 444
+## Sample Arithmetic
 
-| Frame | ID rule | Rows | Facilities | Duplicate facility-year pairs | Duplicate rows | Max rows/pair | Same-year lag events |
-|:--|:--|--:|--:|--:|--:|--:|--:|
-| Adoption model | Official code | 10,823 | 1,911 | 0 | 0 | 1 | 0 |
-| Adoption model | Composite sensitivity | 10,850 | 1,931 | 0 | 0 | 1 | 0 |
-| Regression | Official code | 5,683 | 1,016 | 11 | 69 | 22 | - |
-| Regression | Composite sensitivity | 5,683 | 1,050 | 3 | 6 | 2 | - |
+| analysis   | stage                                  |   rows |   rows_removed_from_prior_stage |   stable_sites | events   |
+|:-----------|:---------------------------------------|-------:|--------------------------------:|---------------:|:---------|
+| generator  | Administrative panel                   |  23593 |                               0 |           1690 | NA       |
+| generator  | Audited administrative-lineage fleet   |  23593 |                               0 |           1690 | NA       |
+| generator  | Installed generation reported          |   6950 |                           16643 |            522 | NA       |
+| generator  | Positive annual throughput             |   6694 |                             256 |            505 | NA       |
+| generator  | Positive gross electricity output      |   6660 |                              34 |            504 | NA       |
+| generator  | Passes all engineering bounds          |   6511 |                             149 |            493 | NA       |
+| generator  | Component-model complete cases         |   6511 |                               0 |            493 | NA       |
+| entry      | Observed non-generator risk set        |  16519 |                               0 |           1223 | 55       |
+| entry      | Exact-year lag and complete covariates |  15154 |                            1365 |           1137 | 35       |
+| entry      | Exact-year lag after prior operation   |  13072 |                            2082 |           1019 | 33       |
 
-## Operating-Generator Inclusion Audit
+## Age Handling
 
-This audit compares operating power-generation rows with official facility codes to operating rows missing those codes. Rows without official facility codes are excluded from the canonical regression frame because they cannot support facility-level clustering or panel comparison.
+The raw panel contains 36 missing and 355 negative reported ages. Negative values are converted to missing, not floored to zero. The constructed fleet has 391 missing and 0 negative analysis ages; the operating-generator sample has 52 missing and 0 negative analysis ages. The component-model frame has 0 missing ages.
 
-- Operating-generator rows with official facility codes: 5,753
-- Operating-generator rows missing official facility codes: 907
-- Additional coded operating rows dropped for complete model covariates: 70
-- Canonical regression rows: 5,683
+## Engineering Bounds And Heating Values
 
-| Group | Rows | Facility proxy | FY range | Mean capacity (t/day) | Median capacity | Mean throughput (t/year) | Mean power (MWh) | Mean bounded efficiency (MWh/t) | Median bounded efficiency | Mean age |
-|:--|--:|--:|:--|--:|--:|--:|--:|--:|--:|--:|
-| Official facility code present | 5,753 | 1,018 | FY2005-FY2024 | 332.1 | 280.0 | 71,617.9 | 47,156.4 | 0.330 | 0.331 | 15.0 |
-| Official facility code missing | 907 | 316 | FY2008-FY2012 | 359.0 | 300.0 | 76,469.4 | 24,868.7 | 0.296 | 0.298 | 13.4 |
+| scope                            | metric                                    |   lower_bound |   upper_bound |   rows |   missing |   below_bound |   within_bounds |   above_bound |
+|:---------------------------------|:------------------------------------------|--------------:|--------------:|-------:|----------:|--------------:|----------------:|--------------:|
+| Operating generator rows         | Gross generation intensity (MWh/t)        |         0.010 |         0.800 |   6660 |         0 |            51 |            6575 |            34 |
+| Operating generator rows         | Electrical capacity factor                |         0.020 |         1.200 |   6660 |         0 |            26 |            6616 |            18 |
+| Operating generator rows         | Waste-processing utilization              |         0.020 |         1.200 |   6660 |         0 |             3 |            6650 |             7 |
+| Operating generator rows         | Generator design intensity (kW per t/day) |         0.100 |       100.000 |   6660 |         0 |             0 |            6660 |             0 |
+| Operating generator rows         | Heating value (MJ/kg; plausibility only)  |         3.000 |        25.000 |   6660 |       106 |           594 |            5937 |            23 |
+| Engineering-valid component rows | Gross generation intensity (MWh/t)        |         0.010 |         0.800 |   6511 |         0 |             0 |            6511 |             0 |
+| Engineering-valid component rows | Electrical capacity factor                |         0.020 |         1.200 |   6511 |         0 |             0 |            6511 |             0 |
+| Engineering-valid component rows | Waste-processing utilization              |         0.020 |         1.200 |   6511 |         0 |             0 |            6511 |             0 |
+| Engineering-valid component rows | Generator design intensity (kW per t/day) |         0.100 |       100.000 |   6511 |         0 |             0 |            6511 |             0 |
+| Engineering-valid component rows | Heating value (MJ/kg; plausibility only)  |         3.000 |        25.000 |   6511 |       102 |           581 |            5806 |            22 |
 
-**Year-by-year code availability among operating generators**
+Of 6,660 positive-throughput, positive-output generator rows, 149 fail at least one predeclared engineering check and 38 fail more than one. Heating value is within 3-25 MJ/kg for 5,937 rows. Heating value is a plausibility/control field, not a condition for the primary component decomposition.
 
-| Fiscal year | Coded rows | Missing-code rows | Missing-code share (%) |
-|--:|--:|--:|--:|
-| 2005 | 274 | 0 | 0.0 |
-| 2006 | 280 | 0 | 0.0 |
-| 2007 | 285 | 0 | 0.0 |
-| 2008 | 283 | 4 | 1.4 |
-| 2009 | 293 | 4 | 1.3 |
-| 2010 | 0 | 295 | 100.0 |
-| 2011 | 0 | 300 | 100.0 |
-| 2012 | 0 | 304 | 100.0 |
-| 2013 | 306 | 0 | 0.0 |
-| 2014 | 314 | 0 | 0.0 |
-| 2015 | 328 | 0 | 0.0 |
-| 2016 | 345 | 0 | 0.0 |
-| 2017 | 354 | 0 | 0.0 |
-| 2018 | 361 | 0 | 0.0 |
-| 2019 | 370 | 0 | 0.0 |
-| 2020 | 375 | 0 | 0.0 |
-| 2021 | 384 | 0 | 0.0 |
-| 2022 | 394 | 0 | 0.0 |
-| 2023 | 399 | 0 | 0.0 |
-| 2024 | 408 | 0 | 0.0 |
+## Same-Year Official-Code Duplicates
 
-## Composite-ID Adoption Sensitivity
+|   fiscal_year |   rows |   coded_rows |   unique_official_codes |   duplicate_code_year_groups |   rows_in_duplicate_code_year_groups |   max_rows_per_official_code |   stable_sites_in_duplicate_groups |
+|--------------:|-------:|-------------:|------------------------:|-----------------------------:|-------------------------------------:|-----------------------------:|-----------------------------------:|
+|          2005 |   1318 |         1318 |                    1315 |                            3 |                                    6 |                            2 |                                  6 |
+|          2006 |   1301 |         1301 |                    1301 |                            0 |                                    0 |                            1 |                                  0 |
+|          2007 |   1306 |         1306 |                    1287 |                           19 |                                   38 |                            2 |                                 38 |
+|          2008 |   1305 |         1277 |                    1217 |                           31 |                                   91 |                           23 |                                 91 |
+|          2009 |   1309 |         1283 |                    1225 |                           30 |                                   88 |                           23 |                                 88 |
+|          2010 |   1244 |            0 |                       0 |                            0 |                                    0 |                            0 |                                  0 |
+|          2011 |   1250 |            0 |                       0 |                            0 |                                    0 |                            0 |                                  0 |
+|          2012 |   1222 |            0 |                       0 |                            0 |                                    0 |                            0 |                                  0 |
+|          2013 |   1199 |         1199 |                    1199 |                            0 |                                    0 |                            1 |                                  0 |
+|          2014 |   1207 |         1207 |                    1207 |                            0 |                                    0 |                            1 |                                  0 |
+|          2015 |   1192 |         1192 |                    1192 |                            0 |                                    0 |                            1 |                                  0 |
+|          2016 |   1154 |         1154 |                    1154 |                            0 |                                    0 |                            1 |                                  0 |
+|          2017 |   1139 |         1139 |                    1139 |                            0 |                                    0 |                            1 |                                  0 |
+|          2018 |   1128 |         1128 |                    1128 |                            0 |                                    0 |                            1 |                                  0 |
+|          2019 |   1093 |         1093 |                    1093 |                            0 |                                    0 |                            1 |                                  0 |
+|          2020 |   1087 |         1087 |                    1087 |                            0 |                                    0 |                            1 |                                  0 |
+|          2021 |   1060 |         1060 |                    1060 |                            0 |                                    0 |                            1 |                                  0 |
+|          2022 |   1038 |         1038 |                    1038 |                            0 |                                    0 |                            1 |                                  0 |
+|          2023 |   1027 |         1027 |                    1027 |                            0 |                                    0 |                            1 |                                  0 |
+|          2024 |   1014 |         1014 |                    1014 |                            0 |                                    0 |                            1 |                                  0 |
 
-The composite sensitivity appends facility name to official codes that repeat within at least one fiscal year. Residual duplicates remain when the source reports multiple lines under the same code and name.
+There are 83 duplicate official-code-year groups. These collisions do not create duplicate stable-lineage-year observations and are not resolved by treating official codes as persistent facility IDs.
 
-| Variable | Official AME (pp) | Official SE | Composite AME (pp) | Composite SE |
-|:--|--:|--:|--:|--:|
-| Prior-year age 10-20 yrs | -1.41 | 0.21 | -1.43 | 0.21 |
-| Prior-year age 20-30 yrs | -1.45 | 0.33 | -1.45 | 0.33 |
-| Prior-year age 30+ yrs | -0.83 | 0.35 | -0.85 | 0.35 |
-| Prior-year capacity per 100 t/day | 0.45 | 0.15 | 0.46 | 0.16 |
+## Identity-Uncertainty Exposure
 
-| ID rule | Observations | Facilities | Events | Pseudo-R2 |
-|:--|--:|--:|--:|--:|
-| Official code | 10,823 | 1,911 | 98 | 0.1920 |
-| Composite sensitivity | 10,850 | 1,931 | 99 | 0.1862 |
+The resolver accepts and explicitly exposes 16 uncertain links, all supported by a strong exact-name or official-code signal. Those links occur within 14 administrative lineages. Excluding every affected lineage leaves 15,107 exact-year entry-risk rows across 1,130 lineages and 35 events, versus 15,154/1,137/35 in the broad frame. The engineering-valid component sample retains 6,450 rows across 487 lineages after the same whole-lineage exclusion.
 
-## Composite-ID Efficiency Sensitivity
+## Audit Conclusion
 
-| Specification | Variable | Official coef. | Composite coef. |
-|:--|:--|--:|--:|
-| Pooled OLS | Facility age | -0.0277*** | -0.0277*** |
-| Pooled OLS | Capacity (100 t/day) | 0.0853*** | 0.0853*** |
-| Pooled OLS | Capacity utilization | 0.7462*** | 0.7462*** |
-| Year FE | Facility age | -0.0348*** | -0.0348*** |
-| Year FE | Capacity (100 t/day) | 0.1051*** | 0.1051*** |
-| Year FE | Capacity utilization | 0.7760*** | 0.7760*** |
-
-## Heating-Value Plausibility Sensitivity
-
-- Heating-value rows <= 0 in the canonical regression frame: 512
-- Heating-value rows > 30 MJ/kg in the canonical regression frame: 17
-- Heating-value rows outside 3-25 MJ/kg: 569
-
-| Sample | N | Facilities | Pooled age | Pooled capacity | Pooled utilization | Year-FE age | Year-FE capacity | Year-FE utilization |
-|:--|--:|--:|--:|--:|--:|--:|--:|--:|
-| Main frame | 5,683 | 1,016 | -0.0277 | 0.0853 | 0.7462 | -0.0348 | 0.1051 | 0.7760 |
-| HV > 0 and <= 30 MJ/kg | 5,154 | 960 | -0.0280 | 0.0850 | 0.7533 | -0.0350 | 0.1071 | 0.7946 |
-| HV 3-25 MJ/kg | 5,114 | 958 | -0.0280 | 0.0832 | 0.7558 | -0.0349 | 0.1056 | 0.7950 |
-
-## Interpretation
-
-The duplicate-code issue is a real data-structure concern and should be disclosed or appendix-tested. The sensitivity checks do not overturn the broad-frame results: the age AMEs remain negative and entry remains scale-selective. Generator performance remains lower with age/vintage and higher with scale and utilization. Heating-value noise is likewise not driving those generator associations because the coefficients are stable after plausible-value restrictions.
+The model sample is a complete-case subset of the positive-output generator sample after explicit engineering exclusions. The audit supports administrative-lineage clustering and component interpretation; it does not establish measurement error absence or causal identification.

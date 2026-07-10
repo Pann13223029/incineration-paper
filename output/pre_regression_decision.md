@@ -1,6 +1,5 @@
-# Pre-Regression Decision
+# Pre-Model Decision: Separate Generator Design From Operation
 
-- Regression frame: 5,683 obs, 1016 facilities.
-- Facilities with 10+ years: 154.
-- Within/total variance ratio of log-efficiency: 0.150.
-- DECISION: Use year- and observed-technology-adjusted OLS as the primary cross-facility specification; retain pooled, year-indicator, and random-effects models as a supplemental estimator ladder. Facility age remains mechanically linked to year, so a two-way facility-FE model answers a different question and does not isolate a causal aging effect.
+Gross annual generation per tonne combines installed electrical sizing, electrical capacity factor, and waste-processing utilization. It is not an independent measure of operating efficiency. The primary generator analysis therefore models log generator design intensity and log electrical capacity factor separately, with stable-lineage-clustered uncertainty. Gross MWh/t is retained as a transparent accounting outcome and specification diagnostic.
+
+Reported start-year cohorts are administrative design-vintage markers, not verified boiler or turbine installation dates. Within-lineage checks answer a narrower operational question and do not identify causal aging effects.

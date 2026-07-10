@@ -1,8 +1,12 @@
 """
 03_grid_emission_factors.py
 ============================
-Create a prefecture-to-grid-emission-factor crosswalk for Japan's
-10 regional electric utility areas.
+OPTIONAL, NONCANONICAL CONTEXT STAGE.
+
+Create a prefecture-to-grid-emission-factor crosswalk for Japan's 10 regional
+electric utility areas. The current paper does not use this stage. Its
+interpolation and simplified regional assignment require independent source and
+counterfactual validation before any carbon claim is made.
 
 Japan's electricity grid is divided into 10 regional utility areas.
 Each utility has a different CO2 emission factor (t-CO2/kWh) reflecting
@@ -189,6 +193,7 @@ def interpolate_factors():
 
 
 def main():
+    print("NONCANONICAL: not evidence for the current paper")
     print("=" * 60)
     print("Building Grid Emission Factor Dataset")
     print("=" * 60)
@@ -214,7 +219,7 @@ def main():
     print(f"Saved: {crosswalk_path}")
 
     # 4. Merge into the main panel
-    panel_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
+    panel_path = os.path.join(PROCESSED_DIR, 'incineration_panel_identified.csv')
     if os.path.exists(panel_path):
         panel = pd.read_csv(
             panel_path,
@@ -258,12 +263,20 @@ def main():
         print(f"  Median: {power_sub['avoided_co2_t'].median():,.0f} t-CO2/facility/year")
         print(f"  Total fleet avoided (latest year): {power_sub[power_sub['fiscal_year']==2024]['avoided_co2_t'].sum():,.0f} t-CO2")
     else:
-        print(f"\nPanel not found at {panel_path}. Run 02_parse_facility_panel.py first.")
+        print(
+            f"\nPanel not found at {panel_path}. Run "
+            "02_parse_facility_panel.py and 02a_build_facility_identity.py first."
+        )
 
     # 5. Summary report
     report_path = os.path.join(OUTPUT_DIR, 'grid_factors_summary.md')
     with open(report_path, 'w', encoding='utf-8') as f:
-        f.write("# Grid Emission Factors by Utility Area\n\n")
+        f.write("# Optional Legacy Grid Emission Factors by Utility Area\n\n")
+        f.write(
+            "**Not canonical paper evidence.** Intermediate values are interpolated, "
+            "the regional mapping is simplified, and avoided-emissions interpretation "
+            "requires an independently verified marginal counterfactual.\n\n"
+        )
         f.write("10 regional utilities × 20 years (FY2005-2024)\n\n")
         f.write("| Utility | FY2005 | FY2010 | FY2015 | FY2020 | FY2024 |\n")
         f.write("|:--------|:------:|:------:|:------:|:------:|:------:|\n")

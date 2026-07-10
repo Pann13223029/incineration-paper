@@ -1,0 +1,11 @@
+scope,metric,lower_bound,upper_bound,rows,missing,below_bound,within_bounds,above_bound
+Operating generator rows,Gross generation intensity (MWh/t),0.01,0.8,6660,0,51,6575,34
+Operating generator rows,Electrical capacity factor,0.02,1.2,6660,0,26,6616,18
+Operating generator rows,Waste-processing utilization,0.02,1.2,6660,0,3,6650,7
+Operating generator rows,Generator design intensity (kW per t/day),0.1,100,6660,0,0,6660,0
+Operating generator rows,Heating value (MJ/kg; plausibility only),3,25,6660,106,594,5937,23
+Engineering-valid component rows,Gross generation intensity (MWh/t),0.01,0.8,6511,0,0,6511,0
+Engineering-valid component rows,Electrical capacity factor,0.02,1.2,6511,0,0,6511,0
+Engineering-valid component rows,Waste-processing utilization,0.02,1.2,6511,0,0,6511,0
+Engineering-valid component rows,Generator design intensity (kW per t/day),0.1,100,6511,0,0,6511,0
+Engineering-valid component rows,Heating value (MJ/kg; plausibility only),3,25,6511,102,581,5806,22

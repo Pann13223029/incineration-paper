@@ -1,12 +1,12 @@
-# Table 1: Summary Statistics (Canonical Regression Frame)
+# Generator Component Summary Statistics
 
-| Variable                                      |    N |    Mean |   Median |      SD |    Min |      Max |
-|:----------------------------------------------|-----:|--------:|---------:|--------:|-------:|---------:|
-| Gross electricity generation (MWh/t, bounded) | 5683 |   0.33  |    0.332 |   0.149 |  0.01  |    0.8   |
-| log(Bounded gross MWh/t)                      | 5683 |  -1.265 |   -1.102 |   0.675 | -4.605 |   -0.223 |
-| Facility Age (years)                          | 5683 |  14.955 |   15     |   9.626 |  0     |   47     |
-| Capacity (t/day)                              | 5683 | 330.882 |  280     | 226.213 | 20     | 1800     |
-| Capacity Utilization                          | 5683 |   0.6   |    0.61  |   0.135 |  0.013 |    1     |
-| Heating Value (MJ/kg)                         | 5683 |   7.936 |    8.295 |   4.304 |  0     |  158.942 |
+| Variable                                  |    N |     Mean |   Median |       SD |    Min |       Max |
+|:------------------------------------------|-----:|---------:|---------:|---------:|-------:|----------:|
+| Gross generation intensity (MWh/t)        | 6511 |    0.325 |    0.327 |    0.141 |  0.011 |     0.790 |
+| Generator sizing intensity (kW per t/day) | 6511 |   14.903 |   14.000 |    8.301 |  0.533 |    62.000 |
+| Electrical capacity factor                | 6511 |    0.596 |    0.607 |    0.175 |  0.021 |     1.129 |
+| Waste-processing utilization              | 6511 |    0.601 |    0.609 |    0.128 |  0.027 |     1.156 |
+| Installed electrical capacity (kW)        | 6511 | 5542.399 | 3000.000 | 6334.281 | 72.000 | 50000.000 |
+| Waste-processing design capacity (t/day)  | 6511 |  338.546 |  300.000 |  228.138 | 20.000 |  1800.000 |
 
-*Note: heating value is a noisy administrative estimate derived from the source files and retained as a control variable rather than interpreted as a clean engineering measurement.*
+The frame excludes predeclared implausible generation-intensity, capacity-factor, utilization, generator-sizing, and reported-age records. Values are not clipped into the model.

@@ -1,87 +1,69 @@
 # Data
 
-This directory contains the raw inputs and processed panels that reproduce the
-paper-facing regression and robustness results.
+This directory contains the Ministry of the Environment (MOE) source workbooks and reproducible processed data used by the paper.
 
 ## Source
 
-All facility-level data come from Japan's Ministry of the Environment (MOE)
-**General Waste Treatment Survey** (一般廃棄物処理実態調査), an annual
-near-census survey of municipal solid waste treatment facilities operated by
-or contracted to Japanese municipalities.
+The facility records come from Japan's MOE **General Waste Treatment Survey** (一般廃棄物処理実態調査), an annual administrative survey of municipal solid-waste treatment facilities operated by or contracted to municipalities.
 
-- **Publisher:** Environmental Management Bureau, Ministry of the Environment, Japan
-- **Portal:** <https://www.env.go.jp/recycle/waste_tech/ippan/>
-- **e-Stat mirror:** <https://www.e-stat.go.jp/en/statistics/00650101>
-- **Current paper citation:** Ministry of the Environment Japan (2026) for the
-  FY2024 General Waste Treatment Survey results, with e-Stat statistics code
-  `00650101` as the official statistics portal reference.
-- **Licence:** Public Japanese government statistics, reproducible with attribution.
-  Cite as `MOEJ (YYYY)` following APA 7 conventions; see the thesis bibliography.
+- Publisher: Environmental Management Bureau, Ministry of the Environment, Japan
+- MOE portal: <https://www.env.go.jp/recycle/waste_tech/ippan/>
+- e-Stat portal: <https://www.e-stat.go.jp/en/statistics/00650101>
+- Coverage used here: FY2005-FY2024
+- Provenance outputs: [`../output/raw_data_provenance.md`](../output/raw_data_provenance.md), [`../output/raw_data_manifest.csv`](../output/raw_data_manifest.csv), and [`../output/raw_workbook_schema_map.csv`](../output/raw_workbook_schema_map.csv)
 
-## Contents
+The manifest records SHA-256 hashes, file sizes, configured source URLs, sheet names, header locations, and parser-selected fields. Use it rather than relying on filenames alone.
+
+## Directory Contents
 
 ### `raw/facility_annual/`
 
-Twenty annual Excel workbooks downloaded from the MOE portal, one per fiscal
-year from FY2005 through FY2024. File format is `.xls` through FY2013 and
-`.xlsx` from FY2014 onward, reflecting the MOE's own change in publication
-format. Column positions, header rows, and Japanese/English labelling vary
-year-to-year; `code/analysis/02_parse_facility_panel.py` auto-detects these
-per-file and normalises them into a single schema.
+Twenty annual Excel workbooks, one for each fiscal year from FY2005 through FY2024. MOE publication formats and column layouts change across years, so `code/analysis/02_parse_facility_panel.py` detects each workbook's sheet, header, and field mapping.
 
-Files are reproduced verbatim from the MOE portal. To re-download from scratch,
-run `code/analysis/01_download_facility_data.py`.
+Run `code/analysis/01_download_facility_data.py` only when intentionally refreshing source files. A refresh changes provenance and requires a full rebuild and review.
 
 ### `processed/incineration_panel.csv`
 
-The base panel produced by `02_parse_facility_panel.py`. 23,599 facility-year
-observations across 2,948 coded facilities, FY2005–FY2024, 28 columns covering
-facility identification, design capacity, throughput, waste composition,
-electricity generation, and facility age.
+The direct parser output: 23,599 source rows in a normalized annual schema. This file precedes exact-duplicate collapse and longitudinal identity reconstruction.
+
+### `processed/incineration_panel_identified.csv`
+
+The identity-audited analytical panel: 23,593 unique retained records across 1,690 stable administrative facility lineages and 1,767 asset episodes. Sixteen accepted uncertain links are exposed in [`../output/identity_low_margin_links.csv`](../output/identity_low_margin_links.csv) for whole-lineage sensitivity analysis.
+
+`stable_site_id` is a deterministic administrative lineage reconstructed from annual evidence. It does not establish one immutable physical site, continuous ownership, unchanged machinery, or physical closure. `asset_episode_id` separates reported configuration resets within a lineage but is not a verified equipment registry.
+
+### `processed/facility_identity_crosswalk.csv`
+
+Record-level mapping from parsed source rows to stable lineages and asset episodes, including match diagnostics. Official facility code is supporting evidence, not a persistent key: codes are entirely absent in FY2010-FY2012 and FY2019-FY2020 has zero code overlap, while audited linkage restores 1,064 lineages across that transition.
 
 ### `processed/incineration_panel_enriched.csv`
 
-The authoritative analysis file, produced by `03_grid_emission_factors.py` from
-the base panel. It retains the facility variables used by the entry and
-generator-performance models and also contains a legacy contextual grid-factor
-series. The current main regressions do not use that interpolated grid series;
-fiscal-year indicators absorb common annual conditions without asking the grid
-factor to carry a facility-performance interpretation.
+An optional legacy/context derivative containing regional grid fields. It is not
+the input to the current paper models and is not rebuilt by the canonical
+pipeline.
 
-### `processed/grid_emission_factors.csv`
+### Contextual files
 
-Contextual series for ten Japanese utility areas across twenty fiscal years,
-with linear interpolation where direct annual values were unavailable. It is
-retained for legacy comparability and exploratory climate context, not as a core
-covariate or paper result. Any future carbon-accounting use should replace or
-independently verify the anchors against primary annual disclosures.
+- `processed/grid_emission_factors.csv` retains a legacy contextual regional series; it is not a core covariate in the current models.
+- `processed/prefecture_utility_crosswalk.csv` maps prefectures to regional utility areas for that contextual series.
 
-### `processed/prefecture_utility_crosswalk.csv`
+Any future carbon-accounting analysis should independently verify annual factors and add an explicit counterfactual. Gross generation alone is not avoided emissions.
 
-Static mapping of Japan's 47 prefectures to the 10 regional utility areas that
-serve them for grid emission-factor assignment. Verified against utility
-service-area maps and MOE regional classifications.
+The fleet, entry, and generator-component stages read
+`processed/incineration_panel_identified.csv` directly.
 
 ## Reproduction
 
-Everything in `processed/` can be regenerated from `raw/facility_annual/` via
-the numbered scripts in `code/analysis/`. The processed files are included here
-so that readers can reproduce the regression results and tables in
-`paper/manuscript/paper.md` without needing to re-run the parsing pipeline, which
-involves year-specific column detection heuristics.
+From the repository root:
 
 ```bash
-# From raw Excel to final regression output:
-python code/analysis/02_parse_facility_panel.py     # raw -> incineration_panel.csv
-python code/analysis/03_grid_emission_factors.py    # + grid factors -> enriched
-python code/analysis/05a_power_adoption.py          # capacity entry and exit hazards
-python code/analysis/05_panel_regression.py         # generator-performance models
-python code/analysis/06_robustness.py               # robustness specifications
+npm run analysis:rebuild
 ```
+
+The orchestrator runs parsing, provenance, identity, enrichment, descriptive analysis, fleet decomposition, Firth entry models, generator component models, robustness and data-quality audits, identifier audits, and claim verification.
+
+Generated analytical facts belong in `output/`; selected paper-facing copies belong in `paper/evidence/current/` after `npm run paper:sync`. Do not hand-edit processed or generated files to force agreement with manuscript prose.
 
 ## Attribution
 
-When using these data, cite the MOE survey directly. If referring to this
-derived analysis workspace, cite the paper/manuscript that uses the processed
-panel.
+Cite the MOE survey and e-Stat statistics code `00650101` when using the source records. Cite the paper for the derived identity reconstruction, samples, and analysis.

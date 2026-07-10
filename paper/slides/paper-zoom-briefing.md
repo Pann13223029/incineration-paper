@@ -3,25 +3,25 @@ marp: true
 paginate: true
 theme: paper-zoom
 size: 16:9
-title: Where Energy Recovery Stalls
-description: Audience-facing Zoom briefing deck for the Japan waste-incineration facility-panel study.
+title: Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024
+description: Professor-facing Zoom briefing for the current canonical manuscript.
 ---
 
 <!-- _class: hero -->
 
-# Where Energy Recovery Stalls
+# Coverage, Entry, and Engineering Components
 
-## Two margins and one crucial risk-set distinction
+<p class="subtitle">Three denominators, sparse first entry, and an exact accounting identity</p>
 
 <div class="hero-title-card">
   <p class="hero-title-label">Paper title</p>
-  <p class="hero-paper-title">Selective Entry and Structured Electricity-Recovery Performance in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study</p>
+  <p class="hero-paper-title">Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024</p>
 </div>
 
 <div class="pill-row">
-  <span class="pill">15-18 minute route</span>
-  <span class="pill">Data + method</span>
-  <span class="pill">Results + limits</span>
+  <span class="pill">Professor briefing</span>
+  <span class="pill">18-slide route</span>
+  <span class="pill">Descriptive + diagnostic</span>
 </div>
 
 <div class="meta">
@@ -30,560 +30,533 @@ description: Audience-facing Zoom briefing deck for the Japan waste-incineration
 </div>
 
 <!--
-Script cue: Set expectation. This is an audience-facing route: problem, method, results, limits, and feedback questions.
+Script cue: State the formal title once, then give the three-part plain-language route.
 -->
 
 ---
 
-# Why This Matters
+# The Paper Asks Three Different Questions
 
-<div class="diagram-card">
-  <div class="flow">
-    <div class="flow-step">
-      <p class="step-number">1</p>
-      <p class="mini-title">Waste is burned</p>
-      <p class="mini-text">Japan relies heavily on municipal waste incineration.</p>
-    </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <p class="step-number">2</p>
-      <p class="mini-title">Heat already exists</p>
-      <p class="mini-text">Incineration creates heat whether or not electricity is recovered.</p>
-    </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <p class="step-number">3</p>
-      <p class="mini-title">Not all heat becomes electricity</p>
-      <p class="mini-text">In FY2024, 415 of 991 facilities (41.9%) generated electricity in the official summary.</p>
-    </div>
+<div class="three-col">
+  <div class="card">
+    <p class="eyebrow">RQ1 · Coverage</p>
+    <p class="big">How much of the fleet is covered?</p>
+    <p class="small">Compare facility records, waste throughput, and processing design capacity.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">RQ2 · Entry</p>
+    <p class="big">Which non-generators first report installed capacity?</p>
+    <p class="small">Use an at-risk history and a sparse-event estimator.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">RQ3 · Components</p>
+    <p class="big">What produces gross electricity per tonne?</p>
+    <p class="small">Separate installed sizing, annual capacity factor, and waste loading.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The same waste-treatment process can either recover useful power or miss that energy-recovery opportunity.</p>
+  <p>One fleet average cannot answer all three questions: the denominators, candidate populations, and outcomes differ.</p>
 </div>
 
 <!--
-Script cue: Start from practical stakes before methodology.
+Script cue: This is the organizing logic for the entire paper.
 -->
 
 ---
 
-# The Real Question
-
-<div class="card single-card center">
-  <p class="eyebrow">Expected part</p>
-  <p class="reader-line">Scale may matter, but the age story depends on which facilities count as candidates.</p>
-</div>
-
-<div class="callout">
-  <p>The paper tests broad asset entry, conversion of active plants, and performance after entry as distinct outcomes.</p>
-</div>
-
-<!--
-Script cue: Defuse the "common sense" objection early.
--->
-
----
-
-# Two Questions, One Fleet
-
-<div class="card single-card center">
-  <p class="eyebrow">Core logic</p>
-  <p class="reader-line">One fleet average hides two different bottlenecks.</p>
-</div>
+# Two FY2024 Count Statistics, Not One
 
 <div class="two-col">
-  <div class="card">
-    <p class="eyebrow">Question 1</p>
-    <p class="big">Which plants start generating electricity?</p>
-    <p class="small">This is the entry bottleneck.</p>
+  <div class="claim-card boundary">
+    <p class="eyebrow">Published national context</p>
+    <p class="kpi">415 / 991 = 41.9%</p>
+    <p class="kpi-label">official electricity-generating facilities</p>
+    <p class="kpi-note">The Ministry's published facility count and denominator.</p>
   </div>
-  <div class="card">
-    <p class="eyebrow">Question 2</p>
-    <p class="big">Among generators, who produces more electricity per tonne?</p>
-    <p class="small">This is the performance bottleneck.</p>
+  <div class="claim-card good">
+    <p class="eyebrow">Analytical panel</p>
+    <p class="kpi">417 / 1,014 = 41.1%</p>
+    <p class="kpi-label">retained records with installed capacity</p>
+    <p class="kpi-note">The paper's record definition and reconstructed denominator.</p>
   </div>
 </div>
-
-<div class="term-row">
-  <div class="term-chip"><strong>Entry</strong> = a facility first reports positive installed generation capacity.</div>
-  <div class="term-chip"><strong>MWh/t</strong> = electricity produced per tonne of waste processed.</div>
-  <div class="term-chip"><strong>Bottleneck</strong> = the step where improvement is most constrained.</div>
-</div>
-
-<!--
-Script cue: Define the terms before using them.
--->
-
----
-
-# What the Data Can See
-
-<table class="source-table">
-  <thead>
-    <tr>
-      <th>Observed layer</th>
-      <th>Observed fields</th>
-      <th>Analytical role</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>MOE General Waste Treatment Survey</td>
-      <td>National municipal waste-treatment facility records, FY2005-FY2024</td>
-      <td>Base facility-year panel and power-generation outcome</td>
-    </tr>
-    <tr>
-      <td>Facility identifiers and location</td>
-      <td>Official code, facility name, prefecture, fiscal year</td>
-      <td>Panel linkage, prefecture controls, clustered uncertainty, duplicate-code checks</td>
-    </tr>
-    <tr>
-      <td>Facility operating attributes</td>
-      <td>Installed capacity/output, throughput, design capacity, start year/age, furnace and operation type</td>
-      <td>Entry risk set and generator-output comparison</td>
-    </tr>
-    <tr>
-      <td>Context and plausibility controls</td>
-      <td>Heating value and reported generation efficiency</td>
-      <td>Comparability and engineering-oriented validation</td>
-    </tr>
-  </tbody>
-</table>
 
 <div class="callout">
-  <p>The panel observes facility reporting patterns well. It does not directly observe internal retrofit contracts, municipal bargaining, or full lifecycle emissions.</p>
+  <p>The 41.9% official statistic is context; it is not substituted for the paper's 41.1% analytical measure.</p>
 </div>
 
 <!--
-Script cue: Say what the dataset can and cannot observe.
+Script cue: Explain why the numerators and denominators are intentionally distinct.
 -->
 
 ---
 
-# How the Panel Becomes Two Frames
+# Facility Counts Understate Waste Coverage
+
+<div class="two-col wide-left">
+  <div class="figure-card">
+    <img src="../figures/figure1_two_part_framework.png" alt="Facility, throughput, and design-capacity coverage from FY2005 to FY2024" />
+  </div>
+  <div class="stack">
+    <div class="kpi-card">
+      <p class="eyebrow">Facility participation</p>
+      <p class="kpi">41.1%</p>
+      <p class="kpi-note">Retained FY2024 records with installed capacity.</p>
+    </div>
+    <div class="kpi-card">
+      <p class="eyebrow">Throughput coverage</p>
+      <p class="kpi">80.1%</p>
+      <p class="kpi-note">Recorded tonnes handled by positive-output facilities.</p>
+    </div>
+    <div class="kpi-card">
+      <p class="eyebrow">Design-capacity coverage</p>
+      <p class="kpi">70.5%</p>
+      <p class="kpi-note">Processing capacity at installed-capacity facilities.</p>
+    </div>
+  </div>
+</div>
+
+<!--
+Script cue: The key RQ1 result is denominator discipline, not a single coverage rate.
+-->
+
+---
+
+# Audited Identity Comes Before Transitions
 
 <div class="pipeline">
   <div class="pipe-card">
-    <p class="eyebrow">Starting panel</p>
+    <p class="eyebrow">Parsed source</p>
     <p class="kpi">23,599</p>
-    <p class="kpi-label">facility-year rows</p>
-    <p class="kpi-note">Full analytical starting point.</p>
+    <p class="kpi-label">raw rows</p>
+    <p class="kpi-note">Twenty annual workbooks, FY2005-FY2024.</p>
   </div>
   <div class="pipe-arrow">&rarr;</div>
   <div class="pipe-card">
-    <p class="eyebrow">Coded fleet</p>
-    <p class="kpi">2,948</p>
-    <p class="kpi-label">identifiable facilities</p>
-    <p class="kpi-note">Official identifiers support panel linkage.</p>
+    <p class="eyebrow">Deduplicated</p>
+    <p class="kpi">23,593</p>
+    <p class="kpi-label">retained records</p>
+    <p class="kpi-note">Six exact duplicate source records collapsed.</p>
   </div>
   <div class="pipe-arrow">&rarr;</div>
   <div class="pipe-card">
-    <p class="eyebrow">Entry frame</p>
-    <p class="kpi">13,770</p>
-    <p class="kpi-label">at-risk facility-years</p>
-    <p class="kpi-note">Broad universe: 141 events. Exact model: 98. Active conversion: 58.</p>
+    <p class="eyebrow">Longitudinal identity</p>
+    <p class="kpi">1,690</p>
+    <p class="kpi-label">stable administrative lineages</p>
+    <p class="kpi-note">Deterministically linked record histories.</p>
   </div>
   <div class="pipe-arrow">&rarr;</div>
   <div class="pipe-card">
-    <p class="eyebrow">Performance frame</p>
-    <p class="kpi">5,683</p>
-    <p class="kpi-label">generator observations</p>
-    <p class="kpi-note">1,016 operating generators with covariates.</p>
+    <p class="eyebrow">Configuration history</p>
+    <p class="kpi">1,767</p>
+    <p class="kpi-label">asset episodes</p>
+    <p class="kpi-note">New episode when reported asset evidence resets.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The design distinguishes broad asset entry, conversion among active non-generators, and performance after entry.</p>
+  <p>A <strong>stable administrative lineage</strong> is an inferred administrative history, not proof of unchanged physical assets. All 16 accepted uncertain links are exposed and tested by whole-lineage exclusion.</p>
 </div>
 
 <!--
-Script cue: The sample split is a substantive choice, not just a data-cleaning detail.
+Script cue: Define lineage carefully; do not call it a verified physical plant identity.
 -->
 
 ---
 
-# Why Two Samples Are Needed
+<!-- _class: dense -->
+
+# Analytical Frames Match the Estimands
 
 <table class="source-table">
   <thead>
     <tr>
-      <th>Question</th>
-      <th>Sample frame</th>
-      <th>Outcome</th>
-      <th>What it tests</th>
+      <th>Frame</th>
+      <th>Rows</th>
+      <th>Lineages</th>
+      <th>Events</th>
+      <th>Purpose</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Who first reports installed capacity?</td>
-      <td>Facilities first observed without power generation</td>
-      <td>First report of electricity generation</td>
-      <td>Whether energy recovery diffuses into the lagging fleet</td>
+      <td>Descriptive entry risk set</td>
+      <td>16,519</td>
+      <td>1,223</td>
+      <td>55</td>
+      <td>First reported installed-capacity events</td>
     </tr>
     <tr>
-      <td>Who generates well?</td>
-      <td>Identifiable operating generators</td>
-      <td>MWh generated per tonne processed</td>
-      <td>Whether performance converges after entry</td>
+      <td>Broad exact-year Firth</td>
+      <td>15,154</td>
+      <td>1,137</td>
+      <td>35</td>
+      <td>Adjacent-year, complete-covariate entry model</td>
+    </tr>
+    <tr>
+      <td>Prior-operation Firth</td>
+      <td>13,072</td>
+      <td>1,019</td>
+      <td>33</td>
+      <td>Exact frame plus positive prior throughput</td>
+    </tr>
+    <tr>
+      <td>Same-episode / identity-certain</td>
+      <td>15,095 / 15,107</td>
+      <td>1,135 / 1,130</td>
+      <td>24 / 35</td>
+      <td>Continuity / linkage sensitivities</td>
+    </tr>
+    <tr>
+      <td>Engineering components</td>
+      <td>6,511</td>
+      <td>493</td>
+      <td>-</td>
+      <td>Positive-throughput, positive-output generator-years within bounds</td>
     </tr>
   </tbody>
 </table>
 
 <div class="callout">
-  <p>One model for everything would mix the gate into generation with performance after entry, hiding where the bottleneck actually sits.</p>
+  <p>Entry means the <strong>first report of positive installed electrical capacity</strong>; it is not a verified retrofit or commissioning date.</p>
 </div>
 
 <!--
-Script cue: This slide prevents the audience from asking why there is not one model for everything.
+Script cue: Say rows, lineages, and events in that order for each modeled entry frame.
 -->
 
 ---
 
-# Method: First Entry Into Generation
+# Why Firth for First Entry?
 
 <div class="method-grid">
   <div class="formula-card">
-    <p class="eyebrow">Plain model</p>
-    <p class="formula">Pr(first installed capacity in year t) = f(prior age, prior capacity, year, elapsed time at risk)</p>
+    <p class="eyebrow">Sparse-event estimator</p>
+    <p class="formula">Firth = bias-reduced logistic regression using a Jeffreys-prior penalty</p>
+    <p class="small">It reduces first-order small-sample bias and keeps estimates finite under separation.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Risk set</p>
-    <p class="big">Only initial non-generators are candidates.</p>
-    <p class="small">Facilities already generating in their first observed year are left-censored for first-entry analysis.</p>
+    <p class="eyebrow">Exact-year frame</p>
+    <p class="big">Only adjacent records still at risk.</p>
+    <p class="small">Prior age and processing capacity describe the lineage before entry.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Timing discipline</p>
-    <p class="big">Predictors are lagged.</p>
-    <p class="small">Age and capacity are measured before first entry, not after the event.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Two estimands</p>
-    <p class="big">Broad assets and active plants.</p>
-    <p class="small">The active model requires positive throughput in the prior fiscal year.</p>
-  </div>
-</div>
-
-<div class="callout">
-  <p>Plain question: among facilities still outside power generation, who first reports generation in the next fiscal year?</p>
-</div>
-
-<!--
-Script cue: This is where the method becomes more than common sense.
--->
-
----
-
-# Method: Output Among Generators
-
-<div class="method-grid">
-  <div class="formula-card">
-    <p class="eyebrow">Outcome model</p>
-    <p class="formula">log(MWh per tonne) = age/vintage + capacity + utilization + heating value + year + technology</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Outcome</p>
-    <p class="big">Electricity recovered per tonne processed.</p>
-    <p class="small">This measures output intensity, not just the existence of a generator.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Primary model</p>
-    <p class="big">Year + technology OLS.</p>
-    <p class="small">Furnace type, operating mode, facility type, and furnace count are observed controls.</p>
+    <p class="eyebrow">Prior-operation frame</p>
+    <p class="big">Require positive prior-year throughput.</p>
+    <p class="small">This is a nested sensitivity, not an independent comparison group.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Interpretation</p>
-    <p class="big">This is diagnostic, not causal.</p>
-    <p class="small">It compares generators within common years without claiming an intervention effect.</p>
+    <p class="big">Association, not intervention effect.</p>
+    <p class="small">All four models complete 499 whole-lineage bootstrap replications.</p>
+  </div>
+</div>
+
+<!--
+Script cue: Define Firth in one sentence, then return to the substantive risk-set distinction.
+-->
+
+---
+
+# Scale Selection Is Clear; Age Is Uncertain
+
+<div class="two-col wide-left">
+  <div class="figure-card figure-wide">
+    <img src="../figures/figure2_selective_transition.png" alt="Firth entry odds ratios for age bands and processing capacity in two risk sets" />
+  </div>
+  <div class="stack">
+    <div class="kpi-card">
+      <p class="eyebrow">Scale · 300 vs 100 t/day</p>
+      <p class="kpi">OR 6.13 / 6.25</p>
+      <p class="kpi-note">Strong positive association in both entry frames.</p>
+    </div>
+    <div class="kpi-card">
+      <p class="eyebrow">Joint age evidence</p>
+      <p class="kpi">.380 / .186</p>
+      <p class="kpi-note">Broad / prior-operation joint age p-values. Same episode: .051; identity certain: .357.</p>
+    </div>
+  </div>
+</div>
+
+<!--
+Script cue: Lead with the scale contrast, then state why the age evidence does not support a frame-dependent story.
+-->
+
+---
+
+# What the Entry Result Supports
+
+<div class="three-col">
+  <div class="claim-card good">
+    <p class="eyebrow">Supported</p>
+    <p class="big">Entry is rare and strongly scale-selective.</p>
+    <p class="small">A 300-versus-100 t/day contrast has about six times the conditional odds in both frames.</p>
+  </div>
+  <div class="claim-card boundary">
+    <p class="eyebrow">Not supported</p>
+    <p class="big">No defensible age-only rule.</p>
+    <p class="small">Broad and identity-certain tests are null; the 24-event same-episode result is borderline.</p>
+  </div>
+  <div class="card">
+    <p class="eyebrow">Observed pathways · 55 events</p>
+    <p class="big">35 continuity · 11 rebuild-like · 9 forward-dated</p>
+    <p class="small">Administrative classifications describe evidence patterns, not verified projects.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The coefficient is an age/vintage comparison across facilities, not the causal effect of making one plant older.</p>
+  <p>Processing scale is a screening marker for unobserved technical, financial, and municipal conditions, not the causal effect of enlarging a plant.</p>
 </div>
 
 <!--
-Script cue: Move the discussion from "old plants are worse" to "do generators converge after entry?"
+Script cue: Keep the supported and unsupported claims equally explicit.
 -->
 
 ---
 
-# Result 1: Scale Is Robust; Age Depends on the Frame
+# Gross MWh/t Is an Accounting Identity
 
-<div class="figure-card figure-wide">
-  <img src="../figures/figure2_selective_transition.png" alt="Observed adoption event rates by age and capacity" />
+<div class="formula-card">
+  <p class="eyebrow">Exact facility-year identity</p>
+  <p class="formula">gross MWh/t = 0.024 &times; design intensity &times; capacity factor &divide; processing utilization</p>
+</div>
+
+<div class="term-row">
+  <div class="term-chip"><strong>Gross MWh/t</strong> = annual gross electricity generated divided by annual waste throughput.</div>
+  <div class="term-chip"><strong>Design intensity</strong> = installed electrical kW per t/day of waste-processing design capacity.</div>
+  <div class="term-chip"><strong>Capacity factor</strong> = annual gross output relative to installed kW operating for all 8,760 hours.</div>
 </div>
 
 <div class="callout">
-  <p>Capacity predicts entry in both frames (+0.45 and +0.44 pp per 100 t/day); age differences shrink among active plants.</p>
+  <p>Processing utilization is annual throughput divided by 365 times processing design capacity. The identity is exact, but it is not a causal decomposition or an independent efficiency score.</p>
 </div>
 
 <!--
-Script cue: Say the two numbers slowly, but do not stop at counts.
+Script cue: Define every component before interpreting cohort differences.
 -->
 
 ---
 
-# Interpretation: The Risk Set Changes the Story
+# Engineering Frame Separates Design From Operation
 
 <div class="three-col">
   <div class="kpi-card">
-    <p class="eyebrow">Broad asset entry</p>
-    <p class="kpi">98</p>
-    <p class="kpi-label">exact-year events</p>
-    <p class="kpi-note">Age AMEs: -1.41, -1.45, -0.83 pp.</p>
+    <p class="eyebrow">Primary component frame</p>
+    <p class="kpi">6,511</p>
+    <p class="kpi-label">generator-years</p>
+    <p class="kpi-note">Positive capacity, throughput, and output within predeclared engineering bounds.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">Active conversion</p>
-    <p class="kpi">58</p>
-    <p class="kpi-label">exact-year events</p>
-    <p class="kpi-note">Age AMEs attenuate to -0.67, -0.56, -0.29 pp.</p>
+    <p class="eyebrow">Repeated histories</p>
+    <p class="kpi">493</p>
+    <p class="kpi-label">stable lineages</p>
+    <p class="kpi-note">Uncertainty is clustered by audited stable lineage.</p>
   </div>
   <div class="kpi-card">
-    <p class="eyebrow">Scale result</p>
-    <p class="kpi">+0.45 / +0.44</p>
-    <p class="kpi-label">pp per 100 t/day</p>
-    <p class="kpi-note">Positive and precisely estimated in both frames.</p>
+    <p class="eyebrow">Two component models</p>
+    <p class="kpi">D + F</p>
+    <p class="kpi-label">installed sizing + annual use</p>
+    <p class="kpi-note">Waste loading enters through processing utilization.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>40 of 98 broad events follow zero or missing prior-year throughput. Commissioning and rebuild pathways materially affect the broad age result.</p>
+  <p>Reported start year is an administrative <strong>design-vintage marker</strong>, not a verified boiler or generator installation date.</p>
 </div>
 
 <!--
-Script cue: This answers the obviousness objection.
+Script cue: Emphasize the distinction between a mostly fixed design attribute and an annual operating component.
 -->
 
 ---
 
-# Entry Pathways: Modernization, Not One Mechanism
+# The Cohort Hierarchy Is Mainly Generator Sizing
 
-<div class="three-col">
-  <div class="kpi-card">
-    <p class="eyebrow">Reset / rebuild-like</p>
-    <p class="kpi">50</p>
-    <p class="kpi-label">observed events</p>
-    <p class="kpi-note">Capital-side modernization is empirically present.</p>
+<div class="two-col wide-left">
+  <div class="figure-card figure-wide">
+    <img src="../figures/figure3_efficiency_structure.png" alt="Generator design intensity and electrical capacity factor by reported start-year cohort" />
   </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Continuity / upgrade-like</p>
-    <p class="kpi">36</p>
-    <p class="kpi-label">observed events</p>
-    <p class="kpi-note">Some cases remain consistent with in-place upgrade.</p>
+  <div class="stack">
+    <div class="kpi-card">
+      <p class="eyebrow">Design intensity</p>
+      <p class="kpi">5.3 &rarr; 20.6</p>
+      <p class="kpi-note">Median installed kW per t/day, oldest to newest reported cohort.</p>
+    </div>
+    <div class="kpi-card">
+      <p class="eyebrow">Capacity factor</p>
+      <p class="kpi">No monotonic gradient</p>
+      <p class="kpi-note">Annual use of installed kW does not reproduce the pattern; the hierarchy is principally installed sizing.</p>
+    </div>
   </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Ambiguous / other</p>
-    <p class="kpi">55</p>
-    <p class="kpi-label">observed events</p>
-    <p class="kpi-note">12 placeholder, 42 non-adjacent, and 1 unresolved event.</p>
+</div>
+
+<!--
+Script cue: Interpret the cohort pattern through installed sizing and annual capacity factor.
+-->
+
+---
+
+# The Age Association Is Specification-Dependent
+
+<div class="two-col">
+  <div class="claim-card boundary">
+    <p class="eyebrow">Heating-controlled legacy specification</p>
+    <p class="kpi">age = -0.0349</p>
+    <p class="kpi-label">p&lt;.001 · R&sup2;=.4737</p>
+    <p class="kpi-note">Gross MWh/t appears lower with reported age when installed sizing is omitted.</p>
+  </div>
+  <div class="claim-card good">
+    <p class="eyebrow">Add generator design intensity</p>
+    <p class="kpi">age = -0.0020</p>
+    <p class="kpi-label">p=.2977 · R&sup2;=.8131</p>
+    <p class="kpi-note">Design intensity enters at +0.7532 (p&lt;.001).</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The audit bounds possible pathways, but it does not prove that replacement is the only mechanism.</p>
+  <p>The diagnostic uses <strong>5,806</strong> engineering-valid rows with plausible heating value. Scale and utilization also become non-significant after sizing is added.</p>
 </div>
 
 <!--
-Script cue: This slide shows critical restraint.
+Script cue: Call this specification dependence, not causal mediation.
 -->
 
 ---
 
-# Result 2: Generation Status Is Not Enough
+# Observed Pathways Start at Different Ranks
 
-<div class="figure-card figure-wide">
-  <img src="../figures/figure3_efficiency_structure.png" alt="Generator efficiency structure by age and variance ratio" />
-</div>
-
-<div class="callout">
-  <p>Among generators, output intensity still differs sharply: age 0-10 averages 0.400 MWh/t, while age 30+ averages 0.183 MWh/t.</p>
+<div class="two-col wide-left">
+  <div class="figure-card figure-wide">
+    <img src="../figures/figure4_post_entry_trajectories.png" alt="First-complete-year component ranks for continuity and rebuild-like entry pathways" />
+  </div>
+  <div class="stack">
+    <div class="kpi-card">
+      <p class="eyebrow">Continuity · n=27</p>
+      <p class="kpi">40 / 37 / 54</p>
+      <p class="kpi-note">Gross MWh/t / design intensity / capacity factor ranks.</p>
+    </div>
+    <div class="kpi-card">
+      <p class="eyebrow">Rebuild-like · n=11</p>
+      <p class="kpi">72 / 66 / 65</p>
+      <p class="kpi-note">Same first-complete-year ranks. Descriptive selected contrast; six forward-dated observations are omitted.</p>
+    </div>
+  </div>
 </div>
 
 <!--
-Script cue: Do not imply older plants cannot improve; say the observed hierarchy persists.
+Script cue: Explain the rank denominator and the selected, noncausal pathway comparison.
 -->
 
 ---
 
-# Interpretation: Ranks Persist Across Coded Years
+<!-- _class: dense -->
 
-<div class="three-col">
-  <div class="kpi-card">
-    <p class="eyebrow">Full sample</p>
-    <p class="kpi">0.1499</p>
-    <p class="kpi-label">within-to-total variance ratio</p>
-    <p class="kpi-note">Most generator-output variation is between facilities.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Coded windows</p>
-    <p class="kpi">0.1795 &rarr; 0.0956</p>
-    <p class="kpi-label">within-to-total ratio</p>
-    <p class="kpi-note">FY2005-09 versus FY2013-24.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Adjacent-year ranks</p>
-    <p class="kpi">0.9325</p>
-    <p class="kpi-label">pooled correlation</p>
-    <p class="kpi-note">4,368 exact pairs across 915 facilities.</p>
-  </div>
-</div>
-
-<div class="callout">
-  <p>FY2010-FY2012 official codes are missing, so the paper uses FY2005-FY2009 and FY2013-FY2024 as coded windows, not a Fukushima treatment design.</p>
-</div>
-
-<!--
-Script cue: This makes result 2 more critical and less obvious.
--->
-
----
-
-# Stress Tests: The Pattern Survives
+# Stress Tests Preserve the Component Interpretation
 
 <table class="source-table">
   <thead>
     <tr>
       <th>Stress test</th>
-      <th>Why it matters</th>
-      <th>What survives</th>
+      <th>Current evidence</th>
+      <th>Interpretation</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Composite facility-ID sensitivity</td>
-      <td>Checks whether duplicate official codes drive the adoption result</td>
-      <td>Age penalties and positive capacity effect remain stable</td>
+      <td>Two ten-year windows</td>
+      <td>Scale coefficient in the design-intensity model: 0.474 / 0.577</td>
+      <td>The sizing relationship appears in both periods.</td>
     </tr>
     <tr>
-      <td>Active-conversion risk set</td>
-      <td>Removes zero/missing prior-throughput pathways</td>
-      <td>Scale persists; the age gradient attenuates</td>
+      <td>Engineering bounds</td>
+      <td>Conservative / broad scale coefficients: 0.520 / 0.536</td>
+      <td>The result is not tied to one plausibility range.</td>
     </tr>
     <tr>
-      <td>Technology-adjusted primary model</td>
-      <td>Controls observed furnace and operating configuration</td>
-      <td>Age/vintage stays negative; scale and utilization stay positive</td>
+      <td>Lineage-equal weighting</td>
+      <td>Design-vintage hierarchy remains</td>
+      <td>Longer observed histories do not create the main pattern.</td>
     </tr>
     <tr>
-      <td>Engineering outcomes + lagged predictors</td>
-      <td>Checks outcome definition and same-year simultaneity</td>
-      <td>Thermal conversion, reported efficiency, and lagged models agree</td>
+      <td>Identity-certain lineages</td>
+      <td>6,450 rows; scale coefficient 0.533</td>
+      <td>Accepted uncertain links do not drive the component pattern.</td>
+    </tr>
+    <tr>
+      <td>Within-episode operating models</td>
+      <td>Utilization-capacity-factor association remains positive</td>
+      <td>Used only for components with meaningful within-asset change.</td>
     </tr>
   </tbody>
 </table>
 
 <div class="callout">
-  <p>These checks do not make the estimates causal. They show the diagnostic pattern is not a fragile artifact of one coding choice.</p>
+  <p>Robustness strengthens the descriptive component result; it does not make throughput, maintenance, sizing, or output exogenous.</p>
 </div>
 
 <!--
-Script cue: Use this to show the paper is more than descriptive common sense.
+Script cue: Summarize the purpose of each test rather than reading the table cell by cell.
 -->
 
 ---
 
-# Data Limits: Disclosed and Tested
+# Evidence Boundaries Are Part of the Result
 
 <div class="three-col">
-  <div class="kpi-card">
-    <p class="eyebrow">Duplicate-code concern</p>
-    <p class="kpi">39</p>
-    <p class="kpi-label">official codes affected</p>
-    <p class="kpi-note">444 source rows use codes that duplicate within at least one fiscal year.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Missing-code concern</p>
-    <p class="kpi">907</p>
-    <p class="kpi-label">operating-generator rows</p>
-    <p class="kpi-note">Rows missing official codes are excluded from the canonical regression frame.</p>
-  </div>
-  <div class="kpi-card">
-    <p class="eyebrow">Plausibility concern</p>
-    <p class="kpi">569</p>
-    <p class="kpi-label">heating-value rows</p>
-    <p class="kpi-note">Rows outside 3-25 MJ/kg are checked through sensitivity restrictions.</p>
-  </div>
-</div>
-
-<div class="callout">
-  <p>These limits are disclosed and stress-tested. The evidence maps bottlenecks; it does not claim a perfect engineering census or fully identified causal mechanism.</p>
-</div>
-
-<!--
-Script cue: Make limits sound like research discipline, not weakness.
--->
-
----
-
-# What Happens After Entry?
-
-<div class="figure-card figure-wide">
-  <img src="../figures/figure4_post_entry_trajectories.png" alt="Post-entry electricity-recovery trajectory and within-year generator ranks" />
-</div>
-
-<div class="callout">
-  <p>Entrants begin near the middle of the same-year generator distribution. Follow-up falls from 125 events at time zero to 71 at time three, so this is descriptive, not an entry effect.</p>
-</div>
-
-<!--
-Script cue: This is the empirical bridge between entry and later performance.
--->
-
----
-
-# Contribution: Two Margins, Clear Boundaries
-
-<div class="two-col">
   <div class="claim-card boundary">
-    <p class="eyebrow">Weak version</p>
-    <p class="big">Newer and larger plants have advantages.</p>
-    <p class="small">This is plausible but not enough for a paper by itself.</p>
+    <p class="eyebrow">Identity</p>
+    <p class="big">Lineages are inferred.</p>
+    <p class="small">No physical-site registry verifies ownership, equipment, replacement, or closure histories.</p>
   </div>
-  <div class="claim-card good">
-    <p class="eyebrow">Stronger version</p>
-    <p class="big">The result has clear boundaries.</p>
-    <p class="small">Scale is robust, age depends on the risk set, and entry does not guarantee a frontier position.</p>
+  <div class="claim-card boundary">
+    <p class="eyebrow">Entry</p>
+    <p class="big">35 broad; 24 same episode.</p>
+    <p class="small">Firth and bootstrap intervals cannot replace missing project, finance, or contract data.</p>
+  </div>
+  <div class="claim-card boundary">
+    <p class="eyebrow">Engineering</p>
+    <p class="big">Gross output is not net benefit.</p>
+    <p class="small">No complete net export, useful heat, cost, outage, or lifecycle-emissions measure.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>Planning should distinguish broad asset entry, active conversion, and generator performance before choosing an intervention.</p>
+  <p>All estimates are descriptive or diagnostic associations. The paper does not identify retrofit effects, pathway effects, or an optimal investment policy.</p>
 </div>
 
 <!--
-Script cue: This is the publishability pitch.
+Script cue: State the noncausal boundary without weakening the measurement contribution.
 -->
 
 ---
 
-# Next Step: Test Mechanisms
+# Contribution: Measurement Before Mechanism
 
 <div class="three-col">
-  <div class="card">
-    <p class="eyebrow">Capital renewal</p>
-    <p class="big">Link entry to investment and rebuild histories.</p>
-    <p class="small">This would test whether selective entry is mainly capital replacement or retrofit.</p>
+  <div class="claim-card good">
+    <p class="eyebrow">Coverage</p>
+    <p class="big">Report counts and volumes together.</p>
+    <p class="small">A 41.1% record share coexists with 80.1% throughput coverage.</p>
+  </div>
+  <div class="claim-card boundary">
+    <p class="eyebrow">Entry</p>
+    <p class="big">Use scale for screening, not an age-only rule.</p>
+    <p class="small">Scale is strongly associated with entry; joint age evidence is uncertain.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Governance and routing</p>
-    <p class="big">Link facilities to municipal decisions.</p>
-    <p class="small">This could explain why some plants start generation or improve output.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Climate and comparison</p>
-    <p class="big">Add lifecycle or cross-fleet evidence.</p>
-    <p class="small">This would move from energy-recovery diagnosis toward climate or international comparison.</p>
+    <p class="eyebrow">Generators</p>
+    <p class="big">Decompose before benchmarking.</p>
+    <p class="small">Gross MWh/t should be read through sizing, capacity factor, and waste loading.</p>
   </div>
 </div>
 
 <div class="callout">
-  <p>The next research step is moving from diagnostic mapping to mechanism testing.</p>
+  <p>The next evidence should link procurement, construction, generator history, net export, heat use, outages, waste composition, and finance to specific projects.</p>
 </div>
 
 <!--
-Script cue: Be honest that future work is proposed, not completed.
+Script cue: Present the contribution as a defensible measurement architecture.
 -->
 
 ---
@@ -592,10 +565,10 @@ Script cue: Be honest that future work is proposed, not completed.
 
 # Discussion Questions
 
-<p class="subtitle">Three linked outcomes shape the story: asset entry, active conversion, and generator performance.</p>
+<p class="subtitle">The paper separates fleet coverage, first entry, and generator components before interpreting hierarchy.</p>
 
 <div class="close-line">
-  <p>Is the three-outcome framing convincing, and is the broad-versus-active entry distinction clear enough? Which mechanism should future work test first?</p>
+  <p>Is the three-estimand architecture convincing? Are the Firth entry design and engineering identity explained clearly enough? Which missing project-level evidence should come next?</p>
 </div>
 
 <!--

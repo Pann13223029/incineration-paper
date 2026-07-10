@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Generate Figure 3 from canonical generator-performance output."""
+"""Plot generator design intensity and capacity factor by start-year cohort."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -12,140 +15,175 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 FIGURE_DIR = Path(__file__).resolve().parent
-DATA_PATH = ROOT / "output" / "figure3_persistence.csv"
+DATA_PATH = ROOT / "output" / "table2_generator_components_by_cohort.md"
 PNG_OUT = FIGURE_DIR / "figure3_efficiency_structure.png"
 PDF_OUT = FIGURE_DIR / "figure3_efficiency_structure.pdf"
 
+INK = "#20262d"
+MUTED = "#59636e"
+GRID = "#d9dee3"
+BLUE = "#0072b2"
+ORANGE = "#d55e00"
 
-def style_axes(ax, grid_axis: str = "y") -> None:
+COHORT_ORDER = ("Before 1990", "1990-1999", "2000-2009", "2010 or later")
+COHORT_LABELS = ("Before\n1990", "1990-\n1999", "2000-\n2009", "2010 or\nlater")
+
+
+def read_markdown_table(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise SystemExit("Run the generator component analysis before Figure 3.")
+    table_lines = [line for line in path.read_text(encoding="utf-8").splitlines() if line.startswith("|")]
+    if len(table_lines) < 3:
+        raise ValueError("Figure 3 could not find the cohort table.")
+    rows = [[cell.strip() for cell in line.strip().strip("|").split("|")] for line in table_lines]
+    header = rows[0]
+    body = [row for row in rows[1:] if not set(row[0]).issubset({":", "-"})]
+    frame = pd.DataFrame(body, columns=header)
+    required = {
+        "reported_start_year_cohort",
+        "observations",
+        "stable_sites",
+        "median_generator_sizing",
+        "median_capacity_factor",
+    }
+    missing = required.difference(frame.columns)
+    if missing:
+        raise ValueError(f"Figure 3 input is missing columns: {sorted(missing)}")
+    numeric = required.difference({"reported_start_year_cohort"})
+    for column in numeric:
+        frame[column] = pd.to_numeric(frame[column], errors="raise")
+    frame = frame.set_index("reported_start_year_cohort").loc[list(COHORT_ORDER)].reset_index()
+    if frame["reported_start_year_cohort"].duplicated().any():
+        raise ValueError("Figure 3 requires one row per start-year cohort.")
+    if not frame["median_capacity_factor"].between(0, 1.2).all():
+        raise ValueError("Capacity-factor medians are outside the audited range.")
+    return frame
+
+
+def style_axes(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color("#66727f")
-    ax.spines["bottom"].set_color("#66727f")
-    ax.tick_params(colors="#33414d", labelsize=9.2)
-    ax.grid(axis=grid_axis, color="#dce3ea", linewidth=0.8)
+    ax.spines["left"].set_color(MUTED)
+    ax.spines["bottom"].set_color(MUTED)
+    ax.tick_params(colors=INK, labelsize=7.7, length=3)
+    ax.grid(axis="y", color=GRID, linewidth=0.65)
     ax.set_axisbelow(True)
 
 
-def build() -> None:
-    if not DATA_PATH.exists():
-        raise SystemExit("Run the generator regression analysis before building Figure 3.")
-    data = pd.read_csv(DATA_PATH)
-    age = data[data["record_type"].eq("age_mean")].copy()
-    rank = data[data["record_type"].eq("rank_correlation")].copy()
+def annotate_points(ax: plt.Axes, x: np.ndarray, values: np.ndarray, suffix: str) -> None:
+    offset = 0.035 * (ax.get_ylim()[1] - ax.get_ylim()[0])
+    for x_value, value in zip(x, values):
+        ax.text(
+            x_value,
+            value + offset,
+            f"{value:.1f}{suffix}",
+            ha="center",
+            va="bottom",
+            fontsize=7.2,
+            color=INK,
+        )
 
+
+def build() -> None:
+    data = read_markdown_table(DATA_PATH)
+    site_counts = ", ".join(str(int(value)) for value in data["stable_sites"])
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "axes.titlesize": 11.5,
-            "axes.titleweight": "bold",
-            "axes.labelsize": 10.5,
+            "font.size": 8.3,
+            "axes.labelcolor": INK,
+            "text.color": INK,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
         }
     )
-    fig, (ax1, ax2) = plt.subplots(
-        1,
-        2,
-        figsize=(10.8, 4.5),
-        dpi=200,
-        gridspec_kw={"width_ratios": [0.9, 1.25]},
-    )
 
-    style_axes(ax1)
-    x_age = np.arange(len(age))
-    yerr = np.vstack(
-        [age["value"] - age["ci_low"], age["ci_high"] - age["value"]]
-    )
-    ax1.errorbar(
-        x_age,
-        age["value"],
-        yerr=yerr,
-        fmt="o",
-        color="#35689a",
-        ecolor="#35689a",
-        markerfacecolor="white",
-        markeredgewidth=1.8,
-        markersize=8,
-        capsize=4,
-        linewidth=1.6,
-    )
-    for x_value, mean in zip(x_age, age["value"]):
-        ax1.text(
-            x_value,
-            mean + 0.028,
-            f"{mean:.3f}",
-            ha="center",
-            fontsize=8.7,
-            color="#263440",
-            fontweight="bold",
-        )
-    ax1.set_title(
-        "A. Mean gross electricity per tonne",
-        loc="left",
-        color="#22313f",
-        pad=16,
-    )
-    ax1.text(
-        0,
-        1.015,
-        "Facility-clustered 95% confidence intervals",
-        transform=ax1.transAxes,
-        fontsize=8.5,
-        color="#53616d",
-        va="bottom",
-    )
-    ax1.set_ylabel("Bounded MWh per tonne")
-    ax1.set_xticks(x_age, [label.replace(" yrs", "") for label in age["label"]])
-    ax1.set_xlabel("Generator age group (years)")
-    ax1.set_ylim(0, 0.47)
+    fig, axes = plt.subplots(2, 1, figsize=(3.7, 5.0), dpi=200, sharex=True)
+    x = np.arange(len(data), dtype=float)
 
-    style_axes(ax2)
-    x_rank = np.arange(len(rank))
-    ax2.scatter(
-        x_rank,
-        rank["value"],
-        marker="s",
-        s=38,
-        facecolors="white",
-        edgecolors="#a35f2d",
-        linewidths=1.5,
+    design = data["median_generator_sizing"].to_numpy(dtype=float)
+    style_axes(axes[0])
+    axes[0].vlines(x, 0, design, color="#b8cbd8", linewidth=1.2, zorder=2)
+    axes[0].scatter(
+        x,
+        design,
+        s=30,
+        marker="o",
+        facecolor="white",
+        edgecolor=BLUE,
+        linewidth=1.35,
         zorder=3,
     )
-    median_corr = float(rank["value"].median())
-    ax2.axhline(
-        median_corr,
-        color="#263440",
-        linestyle="--",
-        linewidth=1.0,
-        label=f"Median annual = {median_corr:.3f}",
-    )
-    ax2.set_title(
-        "B. Adjacent-year facility rank persistence",
+    axes[0].set_ylim(0, 25)
+    axes[0].set_yticks([0, 5, 10, 15, 20, 25])
+    axes[0].set_ylabel("Installed kW per t/day", fontsize=8.0)
+    axes[0].set_title(
+        "A. Generator design intensity",
         loc="left",
-        color="#22313f",
-        pad=16,
+        fontsize=8.8,
+        fontweight="semibold",
+        pad=6,
     )
-    ax2.text(
-        0,
-        1.015,
-        "Spearman rank correlation; focused vertical scale",
-        transform=ax2.transAxes,
-        fontsize=8.5,
-        color="#53616d",
-        va="bottom",
-    )
-    ax2.set_ylabel("Rank correlation")
-    period_labels = [
-        f"{str(int(start))[-2:]}-{str(int(end))[-2:]}"
-        for start, end in zip(rank["year_start"], rank["year_end"])
-    ]
-    ax2.set_xticks(x_rank, period_labels, rotation=45, ha="right")
-    ax2.set_xlabel("Fiscal-year pair")
-    ax2.set_ylim(0.84, 1.0)
-    ax2.legend(frameon=False, fontsize=8.5, loc="lower right")
+    annotate_points(axes[0], x, design, "")
 
-    fig.tight_layout(w_pad=2.4)
-    fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight", facecolor="white")
-    fig.savefig(PDF_OUT, bbox_inches="tight", facecolor="white")
+    capacity_factor = data["median_capacity_factor"].to_numpy(dtype=float) * 100
+    style_axes(axes[1])
+    axes[1].vlines(x, 0, capacity_factor, color="#e7c7b8", linewidth=1.2, zorder=2)
+    axes[1].scatter(
+        x,
+        capacity_factor,
+        s=30,
+        marker="s",
+        facecolor="white",
+        edgecolor=ORANGE,
+        linewidth=1.35,
+        zorder=3,
+    )
+    axes[1].set_ylim(0, 100)
+    axes[1].set_yticks([0, 20, 40, 60, 80, 100])
+    axes[1].set_ylabel("Capacity factor (%)", fontsize=8.0)
+    axes[1].set_title(
+        "B. Electrical capacity factor",
+        loc="left",
+        fontsize=8.8,
+        fontweight="semibold",
+        pad=6,
+    )
+    annotate_points(axes[1], x, capacity_factor, "%")
+    axes[1].set_xticks(x, COHORT_LABELS)
+    axes[1].set_xlabel("Reported facility start-year cohort", fontsize=8.0, labelpad=6)
+
+    fig.suptitle(
+        "Generator components by reported cohort",
+        x=0.08,
+        y=0.97,
+        ha="left",
+        fontsize=9.5,
+        fontweight="semibold",
+    )
+    fig.text(
+        0.08,
+        0.932,
+        "Engineering-valid facility-years; medians",
+        color=MUTED,
+        fontsize=7.4,
+        ha="left",
+    )
+    fig.text(
+        0.08,
+        0.035,
+        f"Lineage counts, oldest to newest: {site_counts}.\n"
+        "Counts are non-additive because lineages can span cohorts.\n"
+        "Start year is not a verified equipment date.",
+        color=MUTED,
+        fontsize=6.5,
+        ha="left",
+        linespacing=1.25,
+    )
+
+    fig.subplots_adjust(left=0.22, right=0.97, top=0.86, bottom=0.20, hspace=0.48)
+    fig.savefig(PNG_OUT, dpi=300, facecolor="white")
+    fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)
 
 

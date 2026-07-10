@@ -1,1336 +1,1053 @@
-# Professor Comparator And Method-Lineage Packet
+# Professor Method-Lineage And Orientation Packet
 
 Last updated: 2026-07-10
 
 ## Purpose
 
-This note is designed for a supervisor or professor who wants to understand
-where the paper comes from intellectually, which papers inspired it, which
-methods it adapts, and how to give targeted feedback on the next direction.
+This packet explains the corrected paper to a professor who needs to assess its
+intellectual foundation, empirical design, originality, limitations, and best
+next direction. It is not a history of earlier drafts. All sample counts,
+estimands, equations, and interpretations below refer to the current
+administrative-lineage analysis.
 
-The short answer is:
+The paper combines established ideas rather than claiming a new estimator. It
+adapts facility-hierarchy and decomposition logic from waste-incineration
+research, annual transition logic from event-history research, and bias-
+reduced logistic estimation for sparse events. Its Japan panel, longitudinal
+identity reconstruction, variables, event definitions, estimands, code,
+figures, tables, and numerical results are original to this project.
 
-> The paper is inspired substantively by recent facility-level
-> waste-to-energy and incineration-efficiency papers, especially Cui et al.
-> (2026) and Liu et al. (2025), but its actual empirical method is a simpler
-> and more defensible two-margin facility-panel design: a discrete-time entry
-> hazard that distinguishes broad asset entry from active conversion, followed
-> by a year- and technology-adjusted comparison of electricity recovered per
-> tonne among generators.
+No wording, code, data, estimates, tables, or figures are copied from the
+comparator papers. The intellectual ideas and standard methods that influenced
+the design are identified and cited explicitly.
 
-## 2026-06-14 Method Hardening Note
+## Executive Orientation
 
-A red-team methods review identified that FY2010-FY2012 source rows lack
-official facility codes, which can turn a naive `shift(1)` lag into the
-previous observed coded row rather than the previous fiscal year. The paper now
-uses the stricter version as the main adoption model:
+### One-sentence description
 
-| Item | Current treatment |
-|:--|:--|
-| Main adoption model | Exact one-fiscal-year lagged discrete-time logit hazard |
-| Main adoption frame | 10,823 observations, 1,911 facilities, 98 events |
-| Sensitivity frame | Broader previous-observed-coded-row model: 11,717 observations, 1,915 facilities, 140 events |
-| Non-exact lag rows | 894 rows and 42 events excluded from the main adoption model |
-| Pathway audit | Strong mechanism labels kept only for adjacent-year events; non-adjacent events are timing-ambiguous |
-| Generator panel | FY2010-FY2012 missing-code rows are disclosed; period checks are early/later coded-window diagnostics, not Fukushima causal tests |
+> The paper asks how widely electricity generation is distributed across
+> Japan's municipal waste-incineration fleet, which continuously observed
+> non-generating lineages first report installed generation capacity, and how
+> generator sizing and annual loading jointly produce the observed electricity
+> generated per tonne.
 
-This strengthens the paper's integrity position. The paper is still inspired by
-high-profile facility-level waste-incineration papers, but its empirical claims
-now rest on a stricter Japan-specific administrative-panel design rather than a
-loose analogy to those papers.
+### Why the paper is not just an "old versus new plant" comparison
 
-## 2026-07-03 Sparse-Event Adoption Specification Note
+The corrected paper has three linked but distinct empirical layers:
 
-A later methods pass tightened the main adoption model again. The exact-year
-frame has 98 retained first-adoption events. A saturated model with both fiscal
-year and prefecture fixed effects estimates 64 parameters, or 1.53 events per
-parameter. That model is now retained as sensitivity evidence rather than used
-as the primary estimate.
-
-The main manuscript now uses a more parsimonious exact-year logit hazard with
-fiscal-year indicators, actual elapsed at-risk duration, and facility-clustered
-standard errors as the primary adoption model. This specification estimates 19 parameters, or 5.16 events per
-parameter, while preserving annual transition timing. The professor-facing
-interpretation should therefore be:
-
-> The paper borrows established discrete-time event-history logic, but it keeps
-> the main adoption model parsimonious because the event count is modest. The
-> more saturated year-plus-prefecture model supports robustness of the sign
-> pattern, not the headline estimate.
-
-## 2026-07-10 Estimand And Technology-Control Revision
-
-The latest red-team pass made three changes that should guide professor review:
-
-1. Broad coded-asset entry is no longer described as equivalent to conversion
-   of an operating plant. Forty of 98 exact-year events have zero or missing
-   prior-year throughput. A required active-conversion model uses 9,215 rows,
-   1,663 facilities, and 58 events.
-2. Scale selectivity survives both frames (+0.45 and +0.44 pp per 100 t/day),
-   while age AMEs attenuate from -1.41/-1.45/-0.83 pp to
-   -0.67/-0.56/-0.29 pp. The headline is robust scale selectivity and a risk-
-   set-dependent age pattern.
-3. RQ2 now has one primary year- and technology-adjusted OLS specification.
-   Furnace type, operating mode, facility type, and furnace count are included;
-   the pooled/RE ladder remains supplementary. Thermal-conversion, reported-
-   efficiency, and lagged-predictor checks preserve the focal signs.
-
-The post-entry bridge now follows entrants through event time three. Entrants
-average near the middle of the same-year generator distribution, with declining
-follow-up. This links the two margins without claiming an entry treatment effect.
-
-## 2026-07-03 Citation-Fit Check
-
-A citation-fit pass checked whether the main manuscript's method and comparator
-citations support the claims placed near them. The main local finding was that
-all core method claims have nearby references: Allison (1982) and Beck et al.
-(1998) support the discrete-time event-history layer, Chen et al. (2012) and
-Yeh (2020) support facility-level incinerator performance comparison, and
-Wooldridge (2010) supports the panel-regression framing.
-
-The recent high-profile comparator DOIs were also checked against Crossref:
-Cui et al. (2026), Liu et al. (2025), and Han et al. (2025) resolve to the
-expected Nature-family articles. The Münster and Meibom (2010) reference title
-was corrected to the Crossref title. No additional citation was needed for the
-new methods-positioning paragraph because it reuses already-cited method and
-facility-performance sources.
-
-## 2026-07-03 Professor-Facing Manuscript Orientation
-
-The current manuscript is intentionally allowed to be more explanatory than a
-compressed journal submission. The immediate goal is to help a professor see the
-foundation behind the paper: which high-profile and method papers inspired it,
-what research logic was adapted, and why the Japan design is similar in spirit
-but not a copy. If later targeting a journal, the comparator-adaptation prose can
-be compressed again after the supervisor has confirmed the framing.
-
-The main manuscript now includes two review-facing bridge maps:
-
-1. A comparator-adaptation map showing what is borrowed from Cui et al. (2026),
-   Liu et al. (2025), Han et al. (2025), Chen et al. (2012), Yeh (2020), Grosso
-   et al. (2010), and Münster and Meibom (2010), plus what the paper does not
-   claim.
-2. A method bridge linking RQ1, RQ2, and RQ3 to the exact-year adoption hazard,
-   generator-performance panel regressions, and two-margin synthesis.
-
-Those bridge maps are intentionally explanatory. They are meant to help the
-professor audit the intellectual foundation before any later journal-style
-compression. Their manuscript labels are neutral so they can remain usable in
-peer-review mode.
-
-The paper does not copy one single paper. It combines three research families:
-
-1. Waste-to-energy performance and efficiency studies.
-2. Event-history or transition modeling for observed entry into a new state.
-3. Panel regression for facility-level performance differences over time.
-
-The contribution is not "we use the same method as Cui et al." The better
-claim is:
-
-> High-profile incineration papers show that facility-level hierarchy matters.
-> This paper adds a Japan-specific two-margin design: it separates who enters
-> electricity generation from how well generators perform after entry.
-
-## How The Professor Should Use This Packet
-
-Use this packet before commenting on the manuscript. It answers four questions:
-
-1. Which papers are closest to this paper?
-2. Which methods are borrowed or adapted?
-3. What is genuinely different about this paper?
-4. What feedback would be most useful before the paper is reframed?
-
-Recommended reading order for a busy supervisor:
-
-1. Read Section 1 of this packet: "One-page positioning summary."
-2. Read Section 2: "Comparator map."
-3. Read Section 4: "Method lineage."
-4. Skim Section 7: "What feedback we need from the professor."
-
-If the professor has more time, read Section 5 and Section 6 for the
-paper-by-paper explanation.
-
-## 1. One-Page Positioning Summary
-
-### What This Paper Is
-
-This paper is a facility-level empirical study of Japan's municipal
-waste-incineration fleet from FY2005 to FY2024. It asks two linked questions:
-
-1. Which non-generating facilities first report power generation?
-2. Among facilities that already generate electricity, how much electricity is
-   recovered per tonne of waste processed?
-
-This is a two-margin paper:
-
-| Margin | Plain question | Method | Main result |
+| Layer | Question | Current evidence | Interpretation |
 |:--|:--|:--|:--|
-| Adoption margin | Which assets enter, and does the answer change for active plants? | Lagged logit hazard with actual elapsed risk duration | Scale is robust; the age gradient attenuates in the active-conversion frame |
-| Performance margin | How do generators differ after entry? | Year- and technology-adjusted OLS of logged MWh/t | Recovery is lower at older-vintage plants and higher at larger, more utilized plants |
-| Synthesis | Does one fleet average hide the bottleneck? | Interpret both margins together | Non-generators and existing generators should not be managed as one average segment |
+| Fleet coverage | Does the number of generating facilities represent the waste volume handled by generators? | In FY2024, installed-generation facilities are 41.1% of facility records, positive-output facilities handle 80.1% of throughput, and installed-generation facilities hold 70.5% of waste-processing design capacity. | Facility counts and system volume answer different questions. |
+| First reported entry | Among lineages observed without installed generation, which characteristics precede the first positive installed-capacity report? | There are 55 descriptive first entries, 35 broad exact-year model events, 33 after positive prior-year operation, and 24 under same-episode continuity. A 300 versus 100 t/day contrast has odds ratios of 6.13 and 6.25 in the broad and prior-operation frames. | Entry is strongly scale-selective, but age inference changes under the stricter continuity rule and the model does not identify why entry occurs. |
+| Generator components | Among positive-output generators, what produces gross MWh/t differences? | The primary engineering frame contains 6,511 rows across 493 stable administrative lineages. A separate 5,806-row diagnostic with plausible heating value and heating value controlled raises `R^2` from 0.4737 to 0.8131 after generator sizing is added; age, processing capacity, and utilization are then not independently significant. | The previous age-performance story combined generator sizing with annual operation. The comparison is a specification diagnostic, not causal mediation. |
 
-### What This Paper Is Inspired By
+### Current central argument
 
-The paper is mainly inspired by high-quality studies that treat incineration
-plants as heterogeneous facilities rather than as one national average.
+The defensible argument is distributional and diagnostic, not causal:
 
-The closest inspiration papers are:
+1. Generation is less common by facility count than by the share of waste
+   throughput handled.
+2. First reported entry into installed generation is concentrated among larger
+   waste-processing lineages.
+3. Within the generating segment, gross MWh/t must be decomposed into installed
+   generator sizing, electrical capacity factor, and waste loading before age
+   or operational variables are interpreted.
 
-| Paper | Why it matters for this paper |
-|:--|:--|
-| Cui et al. (2026), Nature Communications | Shows that facility-level hierarchy and optimization matter in waste incineration |
-| Liu et al. (2025), Nature Energy | Shows that waste-energy systems should be judged by effectiveness, not only expansion |
-| Chen et al. (2012), Journal of Environmental Management | Shows how facility-level incinerator performance can be studied empirically |
-| Yeh (2020), Waste Management | Shows that electricity-related incinerator performance can be decomposed across facilities |
-| Grosso et al. (2010), Waste Management | Provides energy-recovery-efficiency framing for waste incineration |
-| Sasao (2018), Detritus | Closest Japanese plant-panel comparator for heat and electricity production |
-| Shino (2019), JSMCWM | Supports electricity per waste input and careful thermal interpretation |
-| Allison (1982) and Beck et al. (1998) | Provide the event-history logic behind the adoption model |
-| Wooldridge (2010) | Provides the panel-regression logic behind the performance models |
+These findings matter because a single fleet average can confuse three policy
+questions: how many facilities generate, how much waste is processed where
+generation occurs, and how generating facilities are technically sized and
+loaded.
 
-### What This Paper Does Differently
+### What the paper does not claim
 
-Most comparator papers start from operating generators or energy-recovery
-systems. They ask how existing incinerators perform. This paper adds the
-non-generator problem.
+- It does not estimate the causal effect of plant age, scale, utilization,
+  subsidies, municipal policy, or a retrofit.
+- It does not equate first positive reported capacity with a verified retrofit,
+  construction date, or investment decision.
+- It does not treat an administrative facility code as a permanent physical-
+  plant identifier.
+- It does not call gross MWh/t net electrical efficiency, thermodynamic
+  efficiency, useful-energy recovery, electricity export, or lifecycle benefit.
+- It does not infer closure from the disappearance of an administrative record.
+- It does not treat the nested prior-operation frame as an independent group or
+  use its two excluded events as an equality or equivalence test.
+- It does not reproduce the optimization, data-envelopment-analysis, emissions,
+  or policy models used by the comparator papers.
 
-That matters because a fleet can fail in two different ways:
+## Recommended Reading Order For A Professor
 
-1. Many plants may not generate electricity at all.
-2. Plants that do generate may still recover electricity unevenly.
+1. Read the executive orientation and the research-question map.
+2. Read the comparator lineage matrix to see exactly what is adapted.
+3. Read the equations and sample construction to assess the estimands.
+4. Read the interpretation limits and challenge agenda before suggesting a
+   stronger causal or engineering claim.
+5. Use the pivot options to decide whether the current paper should be kept
+   narrow or expanded with new data.
 
-The key difference is therefore not a more complex estimator. It is the
-analytical split.
+## Research Questions And Estimands
 
-### Best One-Sentence Framing For The Professor
+### RQ1: Fleet distribution
 
-> This paper adapts facility-level waste-to-energy performance logic from the
-> incineration-efficiency literature, but reframes the Japan case as a
-> two-margin transition problem: selective entry into power generation and
-> bounded performance among generators.
+**Question:** How different are facility-count participation, throughput
+coverage, and waste-processing design-capacity coverage in the incineration
+fleet?
 
-## 2. Comparator Map
+**Estimands:** Annual descriptive shares. These are accounting quantities, not
+regression effects.
 
-### A. Closest High-Profile Substantive Comparators
+**Current answer:** In FY2024, the three shares are 41.1%, 80.1%, and 70.5%,
+respectively. The count-volume difference is the result. The 41.1% facility
+share must not be described as the share of Japanese waste that misses
+generation.
 
-| Comparator | Journal/status | What it studies | What we take from it | What we do differently |
-|:--|:--|:--|:--|:--|
-| Cui et al. (2026) | Nature Communications | China-wide waste-incineration efficiency hierarchy and optimization | Facility-level hierarchy, technical heterogeneity, performance classification | We do not build a technical optimization model; we study Japan's administrative panel and include non-generators |
-| Liu et al. (2025) | Nature Energy | Waste-energy-carbon development in China, emphasizing effectiveness over expansion | Framing that capacity expansion alone is not enough | We use plant-level Japan data and distinguish entry from conditional performance |
-| Han et al. (2025) | Communications Earth & Environment | Pollutant control and resource recovery in China's incineration system | System-level sustainability and upgrade framing | We do not model emissions-control technology directly because the Japan panel does not include equivalent technical detail |
+### RQ2: First reported installed-capacity entry
 
-### B. Closest Facility-Performance Papers
+**Question:** Among stable administrative lineages observed without installed
+electrical-generation capacity, which prior-year characteristics are associated
+with the first positive capacity report?
 
-| Comparator | Journal | Method family | What we take from it | What we do differently |
-|:--|:--|:--|:--|:--|
-| Chen et al. (2012) | Journal of Environmental Management | Network DEA for Taiwan incinerators | Incinerators can be compared as multi-activity facilities | We use regression and panel structure, not DEA |
-| Yeh (2020) | Waste Management | Dynamic DEA/electricity revenue inefficiency | Electricity-related incinerator performance can be decomposed | We use MWh/t, not electricity revenue inefficiency |
-| Grosso et al. (2010) | Waste Management | Energy-recovery performance criteria | Energy recovery is a meaningful performance dimension | We use administrative MWh/t, not a full R1-style engineering efficiency standard |
-| Münster and Meibom (2010) | Waste Management | Energy-system consequences of waste-to-energy | WTE performance depends on energy-system context | We control for grid emissions but do not run an energy-system optimization model |
+**Estimand:** A conditional annual transition probability within the observed
+at-risk population. The main coefficient contrast compares otherwise modeled
+lineage-years with different prior-year waste-processing design capacities.
 
-### C. Closest Japan/System-Context Papers
+**Current answer:** Scale selectivity is the robust result. The estimated odds
+for 300 rather than 100 t/day are 6.13 in the broad exact-year frame and 6.25 in
+the prior-operation subset. The lineage-bootstrap joint age tests are
+`p = 0.3800` broad, `p = 0.1863` prior-operation, `p = 0.0508` same-episode,
+and `p = 0.3566` identity-certain. The borderline same-episode result uses only
+24 events and differs from its model-based covariance result; the age-band
+coefficients should therefore not be converted into a general headline.
 
-| Comparator | Role in this paper | Why professor should know it |
+### RQ3: Generator design and annual operation
+
+**Question:** Among engineering-valid positive-output generator observations,
+how do generator design intensity and electrical capacity factor structure
+gross electricity generation per tonne?
+
+**Estimands:** Conditional associations in component-specific pooled panel
+models, plus a specification diagnostic comparing a gross-intensity model with
+and without generator sizing.
+
+**Current answer:** The primary analysis is the 6,511-row component
+decomposition. The separate gross-intensity diagnostic uses 5,806
+engineering-valid rows with plausible heating value and explicitly controls
+heating value. Its legacy coefficients are -0.0349 for age, +0.1001 for
+waste-processing capacity, and +0.6699 for utilization. After generator design
+intensity is added, the corresponding estimates are -0.0020 (`p = 0.2977`),
+-0.0092 (`p = 0.1991`), and -0.0995 (`p = 0.2038`), while sizing is +0.7532
+(`p < 0.001`); `R^2` rises from 0.4737 to 0.8131. The earlier independent age,
+capacity, and utilization interpretation does not survive this specification
+check, which is not a causal mediation analysis.
+
+## Data And Longitudinal Identity
+
+### Source frame
+
+The source is an annual Japanese municipal waste-treatment administrative
+panel covering FY2005-FY2024. After exact duplicate source records are
+collapsed, the analysis retains 23,593 facility-year records.
+
+The raw-data provenance manifest records recoverable source configuration,
+file hashes, byte sizes, and workbook schema mappings. The original retrieval
+timestamp is unavailable. Checkout filesystem modification time (mtime) is
+unavailable/not persisted because it is volatile. Last Git commit time records
+repository history, not retrieval or acquisition time.
+
+### Why identity reconstruction is part of the method
+
+Official facility codes cannot be assumed to persist longitudinally. Some
+years lack usable official codes, and the code system changes across part of
+the panel. A naive code-based lag can therefore connect the wrong record,
+break a real history, or manufacture a transition.
+
+The corrected pipeline constructs:
+
+- 1,690 **stable administrative lineages**, called administrative lineages in
+  the prose and stored as `stable_site_id`, intended to connect the
+  same continuing site-level administrative entity across years; and
+- 1,767 **asset episodes**, which split a lineage when reported start year or
+  major configuration evidence indicates a possible replacement or reset.
+
+Matching uses annual one-to-one constraints and evidence from normalized
+facility name, municipality, reported start year, waste-processing design
+capacity, furnace count, and available configuration fields. Adjacent years
+are resolved before short gaps. Official codes are supporting fields rather
+than conclusive identities.
+
+Sub-threshold and weak ambiguous candidate edges are removed before assignment.
+The resolver evaluates both the current row's alternative and the prior
+record's competing claimant. Sixteen accepted links across 14 lineages remain
+uncertain under this two-sided margin rule, but all retain exact-name or
+official-code evidence and are exposed individually. Whole-lineage
+identity-certain sensitivities exclude all affected lineages; the entry model
+retains 15,107 rows, 1,130 lineages, and all 35 events, while the component
+model retains 6,450 rows across 487 lineages.
+
+### Identity terminology that must remain precise
+
+| Term | Meaning in this paper | Meaning it does not establish |
 |:--|:--|:--|
-| Tabata and Tsai (2016) | Japan heat-supply and WTE context | Helps explain why energy recovery in Japan has practical constraints |
-| Uno (2015) | Japan high-efficiency WTE technology trends | Helps connect the empirical pattern to Japanese technology discussions |
-| Yamada et al. (2023) | Japan waste-sector net-zero scenarios | Helps justify why energy recovery matters for decarbonization planning |
-| Sakai et al. (2011) | Comparative waste-policy context | Keeps the paper inside waste hierarchy and 3R policy thinking |
-| European Commission (2017) | Circular-economy policy context | Prevents overclaiming that WTE is automatically good outside a waste hierarchy |
+| Facility-year record | One retained administrative observation in one fiscal year | A uniquely verified boiler, turbine, or legal entity |
+| Stable administrative lineage | Records linked as a continuing site-level administrative history | Proof that physical equipment never changed |
+| Asset episode | A segment separated when the record indicates a material start-year or configuration reset | A fully externally verified rebuild date |
+| Exact continuity-lineage event | Positive capacity first appears in the adjacent year while stable-lineage and asset-episode continuity are preserved | A proven retrofit decision |
 
-### D. Closest Methods References
+### Remaining identity limitation
 
-| Method source | Method idea | Where it appears in our paper |
+Deterministic record linkage creates an auditable longitudinal grain; it does
+not eliminate all linkage uncertainty. A professor should treat linkage as a
+measurement layer that supports annual comparisons, not as ground truth about
+physical ownership or equipment continuity. Any future causal or project-level
+study would require external validation from facility histories, procurement
+records, permits, or operator documents.
+
+## Notation
+
+For stable administrative lineage `i` in fiscal year `t`:
+
+| Symbol | Definition | Unit |
 |:--|:--|:--|
-| Allison (1982) | Discrete-time event-history modeling | Adoption hazard for first observed generation |
-| Beck, Katz, and Tucker (1998) | Binary time-series-cross-section/event dependence logic | Robustness logic for transition modeling |
-| Wooldridge (2010) | Panel regression, clustered SEs, FE/RE logic | Performance regressions among generators |
+| `W_it` | Waste-processing design capacity | tonnes/day |
+| `Q_it` | Recorded annual waste throughput | tonnes/year |
+| `K_it` | Installed electrical-generation capacity | kW |
+| `E_it` | Recorded gross electricity generation | MWh/year |
+| `A_it` | Reported facility age or age band | years/category |
+| `Z_it` | Available furnace and facility configuration controls | vector |
+| `O_i,t-1` | Indicator for positive prior-year waste throughput | binary |
+| `Y_it` | First positive installed-capacity report while at risk | binary |
 
-## 3. The Core Intellectual Lineage
+The terms "waste-processing design capacity" (`W`) and "installed electrical-
+generation capacity" (`K`) must never be shortened to the same word without a
+qualifier.
 
-The paper should be explained as a combination of these research lines:
+## Equation Set 1: Fleet Coverage
 
-### Line 1: Facility-Level Waste-To-Energy Performance
+Define `I_it^K = 1[K_it > 0]` for positive installed electrical capacity and
+`I_it^E = 1[E_it > 0 and Q_it > 0]` for positive-output operation.
 
-This line asks:
+The facility participation share is:
 
-> How different are incinerators from each other once they are operating?
+$$
+P_t = \frac{\sum_i I_{it}^{K}}{N_t}.
+$$
 
-Representative papers:
+The positive-output throughput coverage share is:
 
-- Cui et al. (2026)
-- Chen et al. (2012)
-- Yeh (2020)
-- Grosso et al. (2010)
+$$
+V_t = \frac{\sum_i I_{it}^{E} Q_{it}}{\sum_i Q_{it}}.
+$$
 
-How our paper uses this line:
+The installed-generation share of waste-processing design capacity is:
 
-- We use the idea that incinerators are not interchangeable units.
-- We compare electricity recovered per tonne among operating generators.
-- We interpret age, capacity, and utilization as facility-structure variables.
+$$
+C_t = \frac{\sum_i I_{it}^{K} W_{it}}{\sum_i W_{it}}.
+$$
 
-What we do not take:
+These equations deliberately use different indicators and denominators. A
+facility can report installed generation capacity without positive annual
+output, and a large operating generator can account for far more throughput
+than a small non-generator.
 
-- We do not use DEA.
-- We do not estimate an engineering frontier.
-- We do not estimate technical optimization pathways.
-- We do not claim to classify each plant into a full technology-efficiency
-  hierarchy like Cui et al.
+For engineering-valid positive-output rows, the fleet gross-intensity identity
+is:
 
-### Line 2: Transition / Adoption / Event-History Modeling
+$$
+\frac{\sum_{i \in \mathcal{G}_t} E_{it}}{\sum_i Q_{it}}
+=
+\left(\frac{\sum_{i \in \mathcal{G}_t} Q_{it}}{\sum_i Q_{it}}\right)
+\left(\frac{\sum_{i \in \mathcal{G}_t} E_{it}}
+{\sum_{i \in \mathcal{G}_t} Q_{it}}\right),
+$$
 
-This line asks:
+where `G_t` is the engineering-valid generator set. In words:
 
-> When does a unit move from one state to another?
+> Fleet gross MWh per total tonne equals generator-throughput coverage times
+> conditional generator gross MWh/t.
 
-Representative papers:
+This is an exact accounting identity. It is adapted in spirit from the
+decomposition and hierarchy emphasis of Cui et al. (2026), but the variables,
+Japan panel, validity screen, and calculated shares are this project's own.
 
-- Allison (1982)
-- Beck, Katz, and Tucker (1998)
+## Equation Set 2: Sparse Annual Entry Hazard
 
-How our paper uses this line:
+### Event construction
 
-- A non-generator enters the risk set.
-- Each facility-year is observed until the facility first reports generation.
-- The dependent variable is first observed adoption of generation.
-- Predictors are lagged so that age and capacity are measured before the event.
+`Y_it = 1` only in the first fiscal year when a lineage reports `K_it > 0`
+after an observed history with no installed generation. A lineage leaves the
+risk set after that first event. Lineages already generating in their first
+observed year are left-censored for entry and do not contribute a witnessed
+first transition.
 
-What we do not take:
+The event hierarchy is:
 
-- We do not claim to identify the physical retrofit mechanism.
-- We do not claim that observed reporting equals confirmed engineering
-  conversion.
-- We do not estimate a policy-shock treatment effect.
+| Sample | Purpose | Current events |
+|:--|:--|--:|
+| Descriptive first-entry inventory | Retains all first positive reports for auditing and pathway description | 55 |
+| Exact continuity-lineage model | Requires an adjacent-year transition in the same stable lineage and asset episode | 35 |
+| Prior-operation subset | Additionally requires positive prior-year throughput | 33 |
 
-### Line 3: Panel Regression For Structured Facility Differences
+The exact sample is primary because annual covariates should predict an annual
+transition, not a change observed across an unknown multi-year gap. The prior-
+operation subset asks whether the scale pattern remains when the site was
+already processing waste. It is a nested sensitivity frame, not a separately
+identified retrofit population.
 
-This line asks:
+### Model
 
-> How do repeated observations of the same facility help describe performance?
+The annual hazard is modeled as:
 
-Representative source:
+$$
+\operatorname{logit}(h_{it}) =
+\alpha
++ \sum_k \gamma_k \mathbf{1}(A_{i,t-1} \in k)
++ \beta \log\left(1 + \frac{W_{i,t-1}}{100}\right)
++ \delta_{r(t)}
++ \lambda_{d(it)},
+$$
 
-- Wooldridge (2010)
+where:
 
-How our paper uses this line:
+- `h_it = Pr(Y_it = 1 | Y_i,t-1 = 0, X_i,t-1)` is the conditional annual
+  probability of first reported entry;
+- age enters as bands rather than an imposed linear age slope;
+- `r(t)` denotes broad calendar eras; and
+- `d(it)` denotes flexible elapsed-at-risk duration bands.
 
-- The primary model is year- and technology-adjusted OLS; pooled and random-
-  effects variants form a supplemental estimator ladder.
-- We use facility-clustered standard errors.
-- We interpret coefficients as structured conditional associations.
+Calendar terms absorb broad period differences in reporting and system context.
+Duration terms address event dependence: a lineage's hazard may differ after
+one year versus many years in the observed non-generating state. Neither set of
+terms creates causal identification.
 
-What we do not take:
+### Firth bias reduction
 
-- We do not treat the random-effects model as causal proof.
-- We do not claim facility age is randomly assigned.
-- We do not claim that changing a plant's age, capacity, or utilization by
-  policy would mechanically reproduce the coefficient.
+With only 35 exact events and 33 prior-operation events, ordinary maximum-
+likelihood logit can have severe small-event bias or separation. The model uses
+Firth's Jeffreys-prior penalized likelihood:
 
-### Line 4: Infrastructure Lock-In And Municipal Governance
+$$
+\ell_F(\boldsymbol{\theta}) =
+\ell(\boldsymbol{\theta})
++ \frac{1}{2}\log\left|\mathcal{I}(\boldsymbol{\theta})\right|,
+$$
 
-This line asks:
+where `ell` is the ordinary binomial log-likelihood and `I(theta)` is the
+expected information matrix. Firth (1993) provides the bias-reduction basis;
+Heinze and Schemper (2002) explain its practical value when logistic-regression
+data exhibit complete or quasi-complete separation. The method reduces first-
+order maximum-likelihood bias and helps when covariates nearly separate rare
+events. It does not add information, repair omitted variables, or transform an
+observational hazard into a causal model.
 
-> Why might old infrastructure remain stratified rather than converge quickly?
+The coefficient table labels fitted-model uncertainty as model-based. Primary
+repeated-observation uncertainty uses 499 deterministic bootstrap replications
+that resample whole stable lineages, preserving within-lineage dependence.
+Every requested replication must converge and return all focal coefficients.
+Percentile intervals use the bootstrap distributions; joint age tests use the
+bootstrap covariance of all three age coefficients.
 
-Representative papers:
+### Interpretable capacity contrast
 
-- Unruh (2000)
-- Geels (2004)
-- Seto et al. (2016)
-- Rausch (2006)
-- Sakai et al. (2008, 2011)
+Because waste-processing capacity is transformed, the reported contrast is not
+the exponentiated coefficient for an arbitrary one-unit change. For 300 versus
+100 t/day:
 
-How our paper uses this line:
+$$
+OR_{300:100} =
+\exp\left\{\beta
+\left[\log(1 + 300/100) - \log(1 + 100/100)\right]\right\}.
+$$
 
-- It interprets persistent age and scale hierarchy as a plausible
-  infrastructure pattern.
-- It connects facility differences to municipal planning and asset renewal.
+This gives 6.13 in the broad exact-year frame and 6.25 in the prior-operation
+frame. These are conditional odds ratios, not risk ratios, predicted
+probabilities, or benefit-cost estimates, and they cannot show what enlarging a
+plant would cause.
 
-What we do not take:
+### Four estimand and sensitivity frames
 
-- We do not prove carbon lock-in causally.
-- We do not estimate municipal political mechanisms directly.
-- We do not claim every old plant is technically impossible to upgrade.
+The broad exact-year model requires an adjacent-year lag in the same stable
+administrative lineage but permits an inferred asset-episode change. It asks
+about first administrative-lineage entry. Three predeclared sensitivities then
+change one condition at a time:
 
-## 4. Method Lineage In More Detail
+1. The prior-operation frame requires positive prior-year throughput and
+   contains 13,072 rows, 1,019 lineages, and 33 events.
+2. The same-episode continuity frame excludes 59 cross-episode rows, including
+   11 events, and contains 15,095 rows, 1,135 lineages, and 24 events.
+3. The identity-certain frame excludes each lineage containing an accepted
+   uncertain link and contains 15,107 rows, 1,130 lineages, and 35 events.
 
-### 4.1 Adoption Model
+The broad frame contains 15,154 rows, 1,137 lineages, and 35 events. The
+lineage-bootstrap joint age tests are `p = 0.3800` broad, `p = 0.1863`
+prior-operation, `p = 0.0508` same-episode continuity, and `p = 0.3566`
+identity-certain. The same-episode fitted-model covariance instead gives
+`p = 0.0099`. This divergence shows sensitivity to the continuity definition
+and within-lineage dependence. The nested prior-operation frame has only two
+fewer events than the broad frame and is not treated as an independent group;
+the former interaction contrast is therefore not used as an equality or
+equivalence test.
 
-The adoption model is inspired by event-history analysis. The empirical
-question is:
+## Equation Set 3: Generator Engineering Components
 
-> Among facilities that are still non-generating, which ones first report power
-> generation in the next observed fiscal year?
+### Why gross MWh/t needs decomposition
 
-Main equation:
+For positive-output generators, define:
 
-```text
-Pr(A_it = 1 | R_it = 1)
-  = logit^{-1}[
-      alpha
-      + beta_1 I(Age_i,t-1 = 10-20)
-      + beta_2 I(Age_i,t-1 = 20-30)
-      + beta_3 I(Age_i,t-1 >= 30)
-      + beta_4 Capacity100_i,t-1
-      + gamma_t
-      + delta_p
-    ]
-```
+$$
+G_{it} = \frac{E_{it}}{Q_{it}}
+\quad \text{(gross generation intensity, MWh/t)},
+$$
 
-Where:
+$$
+D_{it} = \frac{K_{it}}{W_{it}}
+\quad \text{(generator design intensity, kW per t/day)},
+$$
 
-| Symbol | Meaning |
-|:--|:--|
-| `A_it` | First observed report of power generation for facility `i` in fiscal year `t` |
-| `R_it` | Facility is still at risk of first adoption |
-| `Age_i,t-1` | Prior-year facility age band |
-| `Capacity100_i,t-1` | Prior-year design capacity in 100 t/day units |
-| `gamma_t` | Fiscal-year fixed effects |
-| `delta_p` | Prefecture fixed effects |
+$$
+F_{it} = \frac{E_{it}}{8.76K_{it}}
+\quad \text{(electrical capacity factor)},
+$$
 
-Why this method is appropriate:
+and
 
-- The outcome is binary: a facility either first reports generation or does
-  not.
-- The data are observed annually, not continuously.
-- Facilities can only have one first adoption event.
-- A discrete-time hazard naturally represents annual first-entry probability.
+$$
+U_{it} = \frac{Q_{it}}{365W_{it}}
+\quad \text{(waste-processing utilization)}.
+$$
 
-What professor may ask:
+One kW operating continuously for 8,760 hours produces 8.76 MWh per year. These
+definitions imply:
 
-- Is actual elapsed fiscal duration measured correctly across code gaps?
-- Are year fixed effects sufficient for temporal dependence?
-- Should the main model be logit, complementary log-log, or linear probability?
-- Should the adoption event be called "observed generation entry" rather than
-  "adoption" to avoid overclaiming?
+$$
+G_{it} = \frac{8.76}{365}
+\frac{D_{it}F_{it}}{U_{it}}.
+$$
 
-Current answer:
+This identity is the key correction. Gross MWh/t is jointly structured by how
+much electrical capacity is installed relative to waste-processing capacity,
+how intensively that electrical capacity is used, and how much waste passes
+through the denominator. It is therefore unsafe to label a regression of gross
+MWh/t on plant age and utilization as an independent efficiency model while
+omitting generator sizing.
 
-- The model is a diagnostic transition model with fiscal-year indicators,
-  exact-year lagged predictors, and actual elapsed at-risk duration.
-- Duration is calculated from fiscal years rather than observed-row count.
-- The active-conversion model tests how the result changes when positive prior-
-  year throughput is required.
-- Alternative links and event definitions remain supplementary checks.
+### Engineering-valid sample
 
-### 4.2 Electricity-Recovery Model
+The component analysis uses 6,511 facility-year rows across 493 stable
+administrative lineages. The screen applies predeclared plausible ranges to
+gross MWh/t, electrical capacity factor, waste-processing utilization, generator
+design intensity, and reported age. Invalid rows are excluded rather than
+clipped into range. This limits obvious unit or reporting errors but does not
+guarantee engineering measurement accuracy.
 
-The performance model is inspired by facility-level efficiency and panel-data
-studies. The empirical question is:
+### Component models
 
-> Among identifiable operating generators, how does electricity recovered per
-> tonne vary with age, scale, utilization, heating value, and grid context?
+Generator design intensity is modeled as:
 
-Outcome construction:
+$$
+\log D_{it} =
+\alpha_D
++ \boldsymbol{\kappa}_D'\text{Cohort}_i
++ \beta_D \log W_{it}
++ \boldsymbol{\eta}_D'Z_{it}
++ \tau_{Dt}
++ \varepsilon_{Dit}.
+$$
 
-```text
-raw electricity recovery = MWh generated / tonnes processed
-clipped recovery         = clip(raw recovery, 0.01, 0.80)
-y_it                     = log(clipped recovery)
-```
+Electrical capacity factor is modeled as:
 
-Main equation:
+$$
+\log F_{it} =
+\alpha_F
++ \boldsymbol{\kappa}_F'\text{Cohort}_i
++ \beta_F \log W_{it}
++ \gamma_F U_{it}
++ \boldsymbol{\eta}_F'Z_{it}
++ \tau_{Ft}
++ \varepsilon_{Fit}.
+$$
 
-```text
-y_it = alpha + X_it' beta + gamma_t + u_i + epsilon_it
-```
+`Cohort` is based on reported facility start year, not a verified turbine or
+boiler commissioning year. `Z_it` contains the available coarse furnace and
+facility configuration controls, including furnace count. Fiscal-year
+indicators absorb common annual differences. Standard errors are clustered by
+stable administrative lineage.
 
-Where:
+A direct gross-output check models:
 
-| Term | Meaning |
-|:--|:--|
-| `y_it` | Log electricity recovered per tonne |
-| `X_it` | Age, capacity, utilization, heating value, grid EF |
-| `gamma_t` | Fiscal-year fixed effects |
-| `u_i` | Facility-specific random intercept |
-| `epsilon_it` | Idiosyncratic error term |
+$$
+\log E_{it} =
+\alpha_E
++ \eta_Q \log Q_{it}
++ \eta_K \log K_{it}
++ \boldsymbol{\kappa}_E'\text{Cohort}_i
++ \boldsymbol{\eta}_E'Z_{it}
++ \tau_{Et}
++ \varepsilon_{Eit}.
+$$
 
-Reported specifications:
+These equations describe conditional panel associations. They do not estimate
+the electricity gain from changing turbine size, throughput, or configuration.
 
-| Model | Terms included | Why included |
+### Omitted-sizing diagnostic
+
+The former gross-intensity specification can be represented as:
+
+$$
+\log G_{it} =
+\alpha + \beta_A A_{it} + \beta_W W_{it}
++ \beta_U U_{it} + \beta_H H_{it} + \boldsymbol{\eta}'Z_{it}
++ \tau_t + \epsilon_{it}.
+$$
+
+Here `H_it` is reported heating value. Both specifications use the same 5,806
+engineering-valid rows with plausible heating value and explicitly control
+heating value; this frame is distinct from the 6,511-row primary component
+models. In the legacy model, age is -0.0349, waste-processing capacity is
++0.1001, and utilization is +0.6699 (all `p < 0.001`). The corrected diagnostic
+adds `log D_it`; age becomes -0.0020 (`p = 0.2977`), capacity -0.0092
+(`p = 0.1991`), utilization -0.0995 (`p = 0.2038`), and generator sizing is
++0.7532 (`p < 0.001`). Model fit rises from 0.4737 to 0.8131. This is evidence
+that the earlier model omitted a central design component. It is a specification
+diagnostic, not a causal mediation analysis, and the `R^2` change does not prove
+that generator sizing is exogenous.
+
+## Comparator And Method-Lineage Matrix
+
+| Source | Idea or method adapted | How it appears here | What is deliberately different |
+|:--|:--|:--|:--|
+| Cui et al. (2026) | Facility hierarchy and decomposition: incinerators should not be treated as interchangeable units. | The Japan fleet is separated into participation, throughput coverage, conditional generator output, generator design intensity, and electrical capacity factor. | No Chinese plant or line data, optimization frontier, technical-potential simulation, or ranking on Cui et al.'s frontier is reproduced. |
+| Liu et al. (2025) | Effectiveness should be distinguished from expansion alone. | Installed-capacity participation is not treated as sufficient; the paper separately measures waste-volume coverage and conditional generator components. | No urban waste-energy-carbon expansion model, scenario analysis, or causal evaluation of expansion is attempted. |
+| Han et al. (2025) | Plant conclusions should acknowledge configuration and upgrade differences. | Available furnace type, facility type, and furnace count enter the generator models, and asset resets are not silently treated as unchanged equipment. | The Japan data do not support Han et al.'s pollutant-control, resource-recovery, or detailed upgrade-technology analysis. |
+| Sasao (2018) | Japanese incinerators can be studied as an unbalanced plant panel rather than a national aggregate. | The current study uses a Japan facility-year panel and controls repeated observations at the reconstructed lineage level. | The outcome is first reported installed-capacity entry plus engineering components, not Sasao's heat/electricity Tobit production model or policy-effect specification. |
+| Shino (2019) | Electricity generated per unit waste input is observable and useful, but thermal interpretation depends on calorific value and system boundaries. | Gross MWh/t is reported transparently and then decomposed; calorific-value plausibility is used as a caution and check. | Gross MWh/t is not called net efficiency, useful heat recovery, or a complete thermodynamic measure. |
+| Chen et al. (2012) | Operating incinerators can be compared as heterogeneous multi-activity facilities. | Generator observations are compared only after positive output is observed, with configuration-aware panel models. | No network data-envelopment-analysis frontier, efficiency score, or Taiwan data are used. |
+| Yeh (2020) | Electricity-related performance varies across operating incinerators and over time. | The generator layer studies repeated gross-output and component measures among operating generators. | No dynamic data-envelopment analysis, electricity-revenue inefficiency, price model, or Taiwan institutional result is transferred. |
+| Allison (1982) | A transition observed in annual intervals can be modeled using discrete-time event-history data. | Each eligible lineage-year is a risk-set row; only the first observed entry is an event. | The application concerns first reported installed generation in a reconstructed Japanese administrative panel. |
+| Beck, Katz, and Tucker (1998) | Binary time-series-cross-section analysis must account for temporal dependence. | Flexible elapsed-risk duration and calendar terms are included rather than treating all lineage-years as exchangeable. | The paper does not claim a general political-event model or rely on their exact application. |
+| Firth (1993) | Jeffreys-prior penalization reduces first-order maximum-likelihood bias. | Firth logit is used because exact entry events are sparse and may approach separation. | Penalization is treated as an estimation safeguard, not a substitute for events, covariates, design, or causal identification. |
+| Heinze and Schemper (2002) | Bias-reduced likelihood provides a practical response to complete or quasi-complete separation in logistic regression. | The sparse-entry rationale distinguishes separation control from substantive identification. | The paper does not treat estimator convergence as evidence that the event sample is large or unconfounded. |
+
+## Detailed Intellectual Lineage
+
+### Cui et al. (2026): hierarchy and decomposition
+
+Cui et al. is the nearest conceptual comparator, not a template that this paper
+replicates. The transferable insight is that national waste-incineration
+performance emerges from a hierarchy of heterogeneous facilities and technical
+configurations. That insight motivates two choices here.
+
+First, the paper does not infer system coverage from a simple count of
+generating plants. Facility share, waste-throughput share, and design-capacity
+share are calculated separately. Second, gross MWh/t is not treated as a
+primitive facility trait. It is decomposed into installed generator sizing,
+electrical capacity factor, and waste loading.
+
+The boundary is equally important. The present study does not use Cui et al.'s
+data, optimization objective, technical frontier, plant ranking, or estimated
+improvement potential. Its decomposition is an accounting and regression
+framework built from the Japanese administrative variables actually observed.
+The appropriate sentence is "inspired by facility-hierarchy logic," not "uses
+Cui et al.'s model."
+
+### Liu et al. (2025): effectiveness versus expansion
+
+Liu et al. motivates a conceptual separation between adding or reporting
+capacity and demonstrating effective system use. In this paper, the analogue
+is intentionally modest. Installed electrical capacity establishes
+participation; positive-output throughput coverage shows how much recorded
+waste passes through operating generators; component measures show how the
+generating segment is designed and loaded.
+
+This is not Liu et al.'s China development framework. The paper does not model
+urban expansion, carbon-system feedback, or future capacity scenarios. The
+adaptation is the logic of not equating more capacity with more effective
+service, not the data or estimator.
+
+### Han et al. (2025): configuration-aware facility evidence
+
+Han et al. demonstrates why configuration and upgrading matter when evaluating
+incineration systems. The current paper applies the narrow lesson that facility
+comparisons should condition on available technical configuration and should
+not assume that a site history represents unchanged equipment. Coarse furnace
+and facility controls enter the component models, while asset episodes mark
+reported resets.
+
+The available Japan panel lacks equivalent plant-level pollutant-control and
+resource-recovery technology detail. Therefore, the paper cannot estimate the
+environmental benefits of a specific upgrade bundle or compare control
+technologies. Citing Han et al. supports configuration awareness, not an
+emissions conclusion.
+
+### Sasao (2018): the closest Japan panel predecessor
+
+Sasao is essential because it prevents an inflated novelty claim. Sasao already
+showed that Japanese plant-level heat and electricity production can be studied
+with an unbalanced facility panel and related to policy, technology, and local
+covariates. The present project inherits the plant-panel level of analysis.
+
+It differs in four concrete ways. It reconstructs longitudinal administrative
+lineages across code gaps and resets; defines a first positive installed-
+capacity event among previously observed non-generators; separates facility
+participation from throughput coverage; and decomposes generator output into
+design intensity and electrical capacity factor. It does not replicate Sasao's
+random-effects Tobit outcome, policy variables, or policy-effect interpretation.
+
+The novelty claim should therefore be relational: the paper extends the Japan
+facility-panel tradition to a corrected transition-and-component design. It
+should never imply that no prior Japanese plant panel exists.
+
+### Shino (2019): observable output and thermal caution
+
+Shino supports using electricity generated per unit waste input as a transparent
+administrative performance indicator. Shino also explains why interpretation
+depends on calorific value and conversion boundaries. The current paper follows
+both lessons.
+
+Gross MWh/t is useful because the numerator and denominator are observed across
+the panel. It remains a gross output ratio, not a net export or complete
+efficiency measure. Heating value, own-use electricity, useful heat, steam
+conditions, downtime, and waste composition can change the engineering meaning
+of the same MWh/t. The component identity narrows the interpretation but does
+not supply missing thermodynamic data.
+
+### Chen et al. (2012) and Yeh (2020): post-entry comparison
+
+Chen et al. and Yeh establish that incinerator performance is heterogeneous and
+can be compared empirically after plants are operating. They motivate the
+decision to analyze the generating segment separately rather than mix zeros
+from non-generators into a continuous output model.
+
+The estimator is different. Chen et al. uses multi-activity network data
+envelopment analysis, and Yeh uses dynamic data envelopment analysis focused on
+electricity-revenue inefficiency. The current paper uses observable engineering
+ratios and regression diagnostics. It does not estimate an efficiency frontier,
+revenue loss, or best-practice score.
+
+### Allison (1982) and Beck et al. (1998): annual transition logic
+
+Allison provides the foundation for representing annual event histories as
+lineage-year risk rows. Beck et al. reinforces that repeated binary observations
+have temporal dependence and should not be modeled as independent cross-
+sections. These ideas justify the first-event risk set, lagged covariates,
+elapsed-duration terms, and calendar controls.
+
+The critical adaptation is to the administrative observation process. The event
+is first reported installed capacity, not necessarily the physical decision or
+commissioning date. Exact adjacent-year and same-episode continuity is therefore
+required for the primary model. Event-history structure improves timing
+discipline; it does not validate the event's substantive mechanism.
+
+### Firth (1993) and Heinze and Schemper (2002): sparse-event estimation
+
+Firth bias reduction is an estimator-level adaptation. It addresses bias and
+separation risk when only a small number of transitions is observed relative to
+the covariate pattern. The paper implements the penalized likelihood directly,
+reports interpretable capacity contrasts, uses joint tests for age bands, and
+checks uncertainty by resampling stable lineages.
+
+The two citations serve different roles. Firth (1993) establishes the
+Jeffreys-prior bias-reduction method. Heinze and Schemper (2002) supports its
+use as a solution to separation in logistic regression. Together they justify
+the estimator choice, not the substantive event definition or covariate set.
+
+The method should not be oversold. With 35 and 33 modeled events, precision is
+inherently limited. Firth estimation can stabilize coefficients; it cannot make
+the age result precise, reveal omitted investment determinants, or prove a
+counterfactual effect of plant scale.
+
+## Originality And Attribution Boundary
+
+| Component | Intellectual source | Project-specific contribution |
 |:--|:--|:--|
-| Pooled OLS | `X_it` | Baseline cross-facility comparison |
-| Year FE | `X_it + gamma_t` | Adjusts for common fiscal-year shocks |
-| RE | `X_it + u_i` | Summarizes persistent facility-level differences |
-| Year FE + RE | `X_it + gamma_t + u_i` | Combines year adjustment and facility heterogeneity |
-
-Why this method is appropriate:
-
-- The paper is not estimating a frontier.
-- The paper asks whether observable facility characteristics structure
-  electricity recovery.
-- Panel regressions are transparent and easy for reviewers to audit.
-- Facility-clustered standard errors account for repeated observations.
-
-Why this is not DEA:
-
-- DEA is useful for frontier performance measurement.
-- This paper's main contribution is not frontier ranking.
-- DEA would not solve the entry-margin question.
-- DEA would also require careful decisions about inputs, outputs, undesirable
-  outputs, and technology assumptions.
-- A DEA extension could be a future side paper, not the cleanest current
-  thesis-to-paper path.
-
-Why this is not causal:
-
-- Facility age is not randomly assigned.
-- Capacity reflects long-term design decisions.
-- Utilization may reflect waste routing, municipal demand, and operations.
-- Random effects summarize persistent differences but do not prove exogeneity.
-
-Best wording:
-
-> The coefficients are structured conditional associations within the
-> identifiable generator frame, not causal estimates of what would happen if a
-> plant's age or capacity were changed by policy.
-
-## 5. Paper-By-Paper Comparator Explanation
-
-### 5.1 Cui et al. (2026), Nature Communications
-
-Full citation:
-
-> Cui, J., Cui, Y., Li, J., Gao, X., Wei, W., Chen, Y., Ma, W., Zhu, N.,
-> Geng, Y., Zhao, Y., and Lou, Z. (2026). Efficiency hierarchy and optimization
-> of waste incineration in China to balance disposal and energy supply.
-> Nature Communications, 17(1), Article 3069.
-> https://doi.org/10.1038/s41467-026-69897-w
-
-Why it is important:
-
-- This is the strongest high-profile comparator.
-- It shows how an incineration paper can be elevated beyond a local case study.
-- It treats incineration facilities as heterogeneous assets.
-- It links efficiency hierarchy to optimization and system planning.
-
-What we take from it:
-
-- Facility-level hierarchy matters.
-- Incinerators should not be summarized only by national totals.
-- Energy recovery is a performance dimension, not just a yes/no technology
-  label.
-- High-profile papers make a broader planning argument from facility-level
-  evidence.
-
-What we do not take:
-
-- We do not build a comprehensive technical database of incineration lines.
-- We do not model detailed furnace design, flue-gas systems, or technology
-  packages.
-- We do not estimate optimization measures.
-- We do not claim the same level of engineering mechanism identification.
-
-How to explain our difference:
-
-> Cui et al. show what high-profile facility-level waste-incineration
-> performance research can look like when detailed technical data are
-> available. Our Japan paper works with a different data structure: a national
-> administrative facility panel. That allows us to study adoption and
-> performance over time, including non-generators, but not to reproduce a full
-> engineering optimization model.
-
-What the professor can help with:
-
-- Should we cite Cui et al. earlier in the introduction?
-- Should we explicitly say our paper is a "Japan panel complement" rather than
-  an optimization paper?
-- Should we strengthen the comparison between China's facility hierarchy and
-  Japan's asset-entry/active-conversion distinction?
-- Is the current phrase "structured electricity-recovery performance" clear
-  enough for a non-specialist reader?
-
-### 5.2 Liu et al. (2025), Nature Energy
-
-Full citation:
-
-> Liu, B., Wang, P., Zhou, J., Guo, Y., Ma, S., Chen, W.-Q., Li, J., and
-> Chang, V. W.-C. (2025). Refocusing on effectiveness over expansion in urban
-> waste-energy-carbon development in China. Nature Energy, 10, 215-225.
-> https://doi.org/10.1038/s41560-024-01683-8
-
-Why it is important:
-
-- It gives the paper a high-level framing: expansion is not enough.
-- It supports the idea that "more capacity" or "more WTE" is not automatically
-  the right performance question.
-- It helps explain why generator performance after entry matters.
-
-What we take from it:
-
-- Effectiveness matters after infrastructure exists.
-- Waste-energy-carbon systems should be assessed by performance, not only by
-  scale or expansion.
-- The policy conversation should move from "how much infrastructure exists" to
-  "how well the infrastructure performs."
-
-What we do differently:
-
-- Liu et al. study China's waste-energy-carbon development.
-- Our paper studies Japan's facility-level administrative panel.
-- Our paper separates non-generator entry from generator performance.
-- Our paper is diagnostic and descriptive, not a full carbon-development model.
-
-How to explain our difference:
-
-> Liu et al. inspire the "effectiveness over expansion" logic. Our paper applies
-> a related idea to Japan: the key question is not only whether facilities
-> exist, but whether non-generators enter electricity recovery and whether
-> existing generators recover electricity effectively.
-
-What the professor can help with:
-
-- Should the introduction explicitly use the phrase "effectiveness over
-  expansion"?
-- Should the paper tie the adoption/performance split more strongly to carbon
-  planning?
-- Or should the carbon framing remain secondary to avoid overclaiming?
-
-### 5.3 Chen et al. (2012), Journal of Environmental Management
-
-Full citation:
-
-> Chen, P.-C., Chang, C.-C., Yu, M.-M., and Hsu, S.-H. (2012). Performance
-> measurement for incineration plants using multi-activity network data
-> envelopment analysis: The case of Taiwan. Journal of Environmental
-> Management, 93(1), 95-103.
-> https://doi.org/10.1016/j.jenvman.2011.08.011
-
-Why it is important:
-
-- It is a close facility-performance comparator.
-- It shows that incinerator performance can be decomposed empirically.
-- It treats incineration plants as multi-activity production units.
-
-What we take from it:
-
-- Facility-level incinerator performance is a legitimate empirical object.
-- Electricity generation can be part of performance measurement.
-- Plant-level heterogeneity is meaningful for waste-management policy.
-
-What we do differently:
-
-- Chen et al. use network DEA.
-- We use panel regression.
-- Chen et al. evaluate operating plants.
-- We also study non-generators entering generation.
-
-How to explain our difference:
-
-> Chen et al. are methodologically closer to facility performance measurement,
-> but our method is intentionally simpler. We are not ranking plants by DEA
-> efficiency. We are showing that Japan's fleet has two different margins:
-> entry into generation and conditional electricity recovery after entry.
-
-What the professor can help with:
-
-- Would a DEA robustness extension improve publishability?
-- Or would it distract from the two-margin contribution?
-- Should DEA papers be discussed as "related but not the chosen method"?
-
-### 5.4 Yeh (2020), Waste Management
-
-Full citation:
-
-> Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies
-> of Taiwan's municipal solid waste incineration plants using data envelopment
-> analysis. Waste Management, 107, 28-35.
-> https://doi.org/10.1016/j.wasman.2020.03.040
-
-Why it is important:
-
-- It is directly in the target-journal ecosystem.
-- It focuses on electricity-related inefficiency in MSW incineration plants.
-- It supports the idea that generator performance is uneven and measurable.
-
-What we take from it:
-
-- Electricity-related performance matters in incinerator evaluation.
-- Dynamic facility comparison is relevant to Waste Management readers.
-
-What we do differently:
-
-- Yeh studies electricity revenue inefficiency, not MWh/t.
-- Yeh uses DEA, not regression.
-- Yeh does not address the non-generator adoption margin.
-
-How to explain our difference:
-
-> Yeh is a Waste Management precedent for studying electricity-related
-> incinerator performance. Our paper complements that family by asking an
-> earlier fleet question: which plants enter generation at all?
-
-### 5.5 Grosso et al. (2010), Waste Management
-
-Full citation:
-
-> Grosso, M., Motta, A., and Rigamonti, L. (2010). Efficiency of energy recovery
-> from waste incineration, in the light of the new Waste Framework Directive.
-> Waste Management, 30(7), 1238-1243.
-> https://doi.org/10.1016/j.wasman.2010.02.036
-
-Why it is important:
-
-- It anchors the energy-recovery-performance concept.
-- It reminds readers that energy recovery is not just an operational detail.
-- It connects incineration performance to policy criteria.
-
-What we take from it:
-
-- Electricity/energy recovery is a legitimate outcome dimension.
-- Waste incinerators can be judged partly by recovery performance.
-
-What we do differently:
-
-- We do not calculate a full EU R1 recovery-efficiency criterion.
-- We use administrative MWh/t because that is what the Japan panel supports.
-- We frame the metric as "electricity recovery intensity" rather than a pure
-  thermodynamic efficiency measure.
-
-How to explain our difference:
-
-> Grosso et al. support the importance of energy recovery, but our paper uses a
-> practical administrative metric: electricity generated per tonne of waste.
-> This is less engineering-complete but more feasible for national panel
-> comparison.
-
-### 5.6 Allison (1982)
-
-Full citation:
-
-> Allison, P. D. (1982). Discrete-time methods for the analysis of event
-> histories. Sociological Methodology, 13, 61-98.
-> https://doi.org/10.2307/270718
-
-Why it is important:
-
-- It supports the adoption-model logic.
-- It explains how to model events observed in discrete time.
-
-What we take from it:
-
-- Each facility-year is a risk-set observation.
-- The event is first observed entry into generation.
-- A logit hazard is appropriate for annual event data.
-
-What we do differently:
-
-- We apply event-history logic to municipal incineration facilities.
-- We keep interpretation descriptive because the event is administrative
-  reporting of generation, not directly observed engineering retrofit.
-
-### 5.7 Beck, Katz, and Tucker (1998)
-
-Full citation:
-
-> Beck, N., Katz, J. N., and Tucker, R. (1998). Taking time seriously:
-> Time-series-cross-section analysis with a binary dependent variable.
-> American Journal of Political Science, 42(4), 1260-1288.
-> https://doi.org/10.2307/2991857
-
-Why it is important:
-
-- It is a classic reference for binary outcomes in time-series-cross-section
-  data.
-- It warns that time dependence matters when units are observed repeatedly.
-
-What we take from it:
-
-- Repeated facility-year binary outcomes should not be treated as simple
-  independent cross-sections.
-- Event timing and temporal controls matter.
-
-What we do differently:
-
-- We use the paper as methodological support, not as a full replication.
-- We use fiscal-year indicators, exact-year lagged predictors, and actual
-  elapsed time at risk in the main entry model.
-
-### 5.8 Wooldridge (2010)
-
-Full citation:
-
-> Wooldridge, J. M. (2010). Econometric analysis of cross section and panel
-> data (2nd ed.). MIT Press.
-
-Why it is important:
-
-- It supports panel regression, fixed effects, random effects, and clustered
-  standard errors.
-
-What we take from it:
-
-- Pooled and panel regressions are standard tools for repeated facility data.
-- Clustered standard errors are appropriate when rows repeat by facility.
-- Fixed effects and random effects answer different descriptive questions.
-
-What we do differently:
-
-- We do not claim the panel regressions identify causal treatment effects.
-- We use the models as structured descriptive comparisons.
-
-## 6. What The Paper Takes, Adapts, And Does Not Take
-
-### 6.1 What We Take
-
-| Source family | What we take | How it appears in the paper |
-|:--|:--|:--|
-| Cui/Liu high-profile WTE papers | Facility hierarchy and effectiveness framing | Two-margin interpretation and broader contribution |
-| Taiwan DEA papers | Facility-level incinerator performance is measurable | Generator performance model |
-| Energy-recovery literature | MWh/t and recovery performance matter | Electricity recovered per tonne outcome |
-| Event-history literature | First-entry modeling in annual data | Adoption hazard |
-| Panel-data literature | Repeated facility observations require panel-aware methods | Pooled/year FE/RE models and clustered SEs |
-| Lock-in literature | Mature infrastructure can remain stratified | Discussion interpretation |
-
-### 6.2 What We Adapt
-
-| Borrowed idea | Adaptation |
-|:--|:--|
-| Facility efficiency hierarchy | We convert it into a Japan panel hierarchy of electricity recovered per tonne |
-| Effectiveness over expansion | We convert it into "entry is not enough; generator performance also matters" |
-| Event-history modeling | We apply it to first observed generation entry in administrative data |
-| Panel regression | We use it as descriptive facility comparison, not causal proof |
-| Infrastructure lock-in | We use it as interpretation, not as a mechanism test |
-
-### 6.3 What We Do Not Take
-
-| Method or claim not taken | Why not |
-|:--|:--|
-| Full optimization model like Cui et al. | Japan panel lacks detailed line-level technology and optimization variables |
-| DEA as main method | It would answer a frontier-ranking question, not the two-margin adoption/performance question |
-| Causal retrofit effect | Adoption events are observed reports, not verified physical retrofit records |
-| Policy shock identification | Event timing is clustered but not cleanly identified as a policy shock |
-| Full thermodynamic efficiency | Heating value is noisy and not enough for a full engineering efficiency measure |
-| Universal global claim | The evidence is Japan-specific and sample-bounded |
-
-## 7. What Feedback We Need From The Professor
-
-The professor can help most by answering these questions.
-
-### 7.1 Framing Questions
-
-1. Should the paper be framed mainly as a Japan waste-management paper?
-2. Should it be framed as a facility-level energy-recovery paper?
-3. Should it be framed as a two-margin fleet-transition paper?
-4. Does the current title accurately signal a descriptive two-margin study
-   without implying causal modernization effects?
-
-Recommended current choice:
-
-> Two-margin fleet-transition paper, written for Waste Management readers.
-
-Why:
-
-- It is more original than a generic Japan case study.
-- It explains why the adoption and performance models belong in one paper.
-- It avoids competing directly with engineering-optimization papers on their
-  own terms.
-
-### 7.2 Methods Questions
-
-1. Is the adoption model defensible as a discrete-time logit hazard?
-2. Is the broad asset-entry versus active-conversion distinction convincing and
-   sufficiently prominent?
-3. Is year- and technology-adjusted OLS the clearest primary RQ2 specification,
-   with random effects retained only as supplementary evidence?
-4. Should we add a facility fixed-effects sensitivity in the supplement, even
-   if it is not the main model?
-5. Should we avoid the word "efficiency" more aggressively and use
-   "electricity recovery intensity" throughout?
-
-Recommended current choice:
-
-> Keep actual elapsed duration in the main entry model, retain both entry risk
-> sets in the main table, and use year- and technology-adjusted OLS as the
-> primary generator model.
-
-Why:
-
-- It distinguishes asset commissioning/rebuild from active conversion.
-- It prevents the 98-event hazard from being over-saturated.
-- It makes the generator estimand and observed technology adjustment explicit.
-
-### 7.3 Literature Questions
-
-1. Should Cui et al. (2026) be cited in the introduction rather than only the
-   literature section?
-2. Should Liu et al. (2025) be used to frame "effectiveness over expansion"?
-3. Should the Taiwan DEA papers be described as a parallel method family rather
-   than direct method parents?
-4. Should Japan-specific sources be made more prominent so the paper does not
-   look like a China-comparator paper?
-
-Recommended current choice:
-
-> Cite Cui et al. and Liu et al. as high-profile framing comparators, but make
-> clear that the actual methods come from event-history and panel-data
-> literature.
-
-Why:
-
-- This is honest.
-- It avoids implying that we copied a Nature-style optimization model.
-- It helps the professor understand the paper's ambition and limits.
-
-### 7.4 Contribution Questions
-
-1. Is the main contribution the Japan dataset, the two-margin design, or the
-   policy implication?
-2. Is the adoption margin strong enough to be a main contribution?
-3. Is the generator-performance margin strong enough without DEA?
-4. Should the paper emphasize "selective modernization" or "asset-management
-   triage"?
-
-Recommended current choice:
-
-> The main contribution is the two-margin design applied to Japan's national
-> facility panel.
-
-Why:
-
-- The Japan dataset matters, but "Japan case study" alone is weaker.
-- The policy implication matters, but it is descriptive and should stay
-  calibrated.
-- The two-margin design is the clearest originality claim.
-
-## 8. Suggested Meeting Script
-
-This is a simple way to explain the paper to the professor.
-
-### Opening
-
-> I prepared this paper as a facility-level Japan study, but I do not want to
-> present it as if it came from one single method paper. It is inspired by
-> recent waste-incineration efficiency papers, especially Cui et al. in Nature
-> Communications and Liu et al. in Nature Energy. Those papers show that WTE
-> systems should be evaluated by facility-level performance and effectiveness,
-> not just by total capacity.
-
-### Method Explanation
-
-> Methodologically, our paper is simpler and more defensible. It uses two
-> linked models. First, a discrete-time logit hazard distinguishes broad asset
-> entry from conversion among active non-generators. Second, a year- and
-> technology-adjusted regression asks how much electricity per tonne is
-> recovered among operating generators. The first model comes from event-
-> history logic, while the second adapts facility-performance regression.
-
-### Contribution Explanation
-
-> The main contribution is the split between the adoption margin and the
-> performance margin. Many studies look only at operating generators. Our paper
-> shows that in Japan, the fleet problem has two parts: some facilities still do
-> not enter generation, and generators that already entered still differ
-> strongly by age, scale, and utilization.
-
-### Feedback Request
-
-> I would like your feedback on whether this should be framed mainly as a
-> Japan waste-management paper, a facility-performance paper, or a two-margin
-> fleet-transition paper. I also want to know whether you think the methods are
-> sufficient, or whether we should add one robustness check such as
-> time-at-risk controls in the adoption model.
-
-## 9. Recommended Reframing Options
-
-### Option A: Waste Management Conventional Framing
-
-Possible title direction:
-
-> Separating generation entry and electricity recovery in Japan's municipal
-> waste-incineration fleet
-
-Strength:
-
-- Clear for Waste Management readers.
-- Less risky than abstract theory language.
-
-Weakness:
-
-- Less distinctive.
-- May sound incremental.
-
-Best if:
-
-- The professor wants a safe submission-oriented paper.
-
-### Option B: High-Profile Comparator Framing
-
-Possible title direction:
-
-> Selective modernization and performance hierarchy in Japan's
-> waste-incineration fleet
-
-Strength:
-
-- Connects better to Cui et al. and Liu et al.
-- Makes the paper feel more ambitious.
-
-Weakness:
-
-- Must be carefully bounded because we do not have their technical detail.
-
-Best if:
-
-- The professor wants the paper to aim higher and be more conceptually
-  memorable.
-
-### Option C: Policy And Asset-Management Framing
-
-Possible title direction:
-
-> From non-generator triage to generator optimization: Evidence from Japan's
-> municipal waste-incineration fleet
-
-Strength:
-
-- Strong practical meaning.
-- Easy for municipal-policy readers to understand.
-
-Weakness:
-
-- "Optimization" may imply stronger methods than we have.
-
-Best if:
-
-- The professor wants stronger planning relevance.
-
-### Option D: Methods-First Two-Margin Framing
-
-Possible title direction:
-
-> Why fleet averages mislead: Adoption and conditional performance in Japan's
-> waste-incineration fleet
-
-Strength:
-
-- Clear methodological contribution.
-- Explains why both models belong in one paper.
-
-Weakness:
-
-- Less directly engineering-focused.
-
-Best if:
-
-- The professor thinks the originality is mainly analytical design.
-
-## 10. Recommended Current Direction
-
-My recommendation is Option D blended with Option B:
-
-> A two-margin fleet-transition paper with high-profile facility-performance
-> comparators.
-
-Working frame:
-
-> Recent high-profile waste-incineration studies show that facility-level
-> efficiency hierarchy matters. This paper extends that logic to Japan by
-> separating two margins that are often blended together: observed entry into
-> electricity generation and electricity recovered per tonne among generators.
-
-Why this is optimal:
-
-- It is ambitious but defensible.
-- It uses Cui et al. and Liu et al. as inspiration without pretending to use
-  the same optimization methods.
-- It explains why adoption and performance are both necessary.
-- It avoids a weak "Japan has many incinerators" case-study framing.
-
-## 11. What To Add To The Manuscript After Professor Feedback
-
-These are possible additions, not changes to make blindly.
-
-### High Priority
-
-1. Add a short comparator paragraph in the introduction:
-
-   > Recent facility-level waste-incineration studies increasingly emphasize
-   > performance hierarchy and effectiveness rather than expansion alone. This
-   > paper follows that facility-level logic but applies it to a different
-   > problem: the coexistence of non-generators and uneven generator
-   > performance in Japan.
-
-2. Add one sentence distinguishing this paper from Cui et al.:
-
-   > Unlike optimization studies based on detailed technical line-level data,
-   > this paper uses an administrative facility panel to separate observed
-   > generation entry from conditional electricity recovery.
-
-3. Add one methodological bridge:
-
-   > The design therefore joins event-history logic for the entry margin with
-   > panel-regression logic for the performance margin.
-
-### Medium Priority
-
-1. Obtain verified plant capital histories or municipal finance variables for a
-   future mechanism-focused extension.
-2. Add net export or heat-recovery outcomes if comparable plant data become
-   available.
-3. Rename remaining ambiguous instances of "efficiency" to "electricity
-   recovery intensity."
-4. Extend post-entry follow-up only after diagnosing selected attrition.
-
-### Low Priority
-
-1. Add a DEA appendix.
-2. Build an optimization scenario model.
-3. Add international comparison beyond Japan/China/Taiwan.
-
-Why these are low priority:
-
-- They may create a second paper rather than improve the current one.
-- They require new assumptions and may delay submission.
-- The current contribution is already clear if framed correctly.
-
-## 12. Honest Boundaries To State To The Professor
-
-The professor should know these boundaries before suggesting directions.
-
-### Boundary 1: The Paper Is Not Cui et al.
-
-It does not have:
-
-- line-level furnace design data
-- complete technology-package information
-- detailed flue-gas treatment records
-- waste-composition detail across all plants
-- optimization-measure simulation
-
-Therefore:
-
-> The paper should not be framed as a Japan version of Cui et al. It should be
-> framed as a Japan panel complement that studies transition and performance
-> margins.
-
-### Boundary 2: The Adoption Event Is Administrative
-
-The event is:
-
-- first observed report of power generation in the panel
-
-It is not always:
-
-- directly observed retrofit
-- confirmed new turbine installation
-- verified replacement project
-
-Therefore:
-
-> Use "observed transition into generation" rather than "retrofit" unless the
-> pathway audit supports the specific case.
-
-### Boundary 3: The Performance Outcome Is MWh/t
-
-The outcome is:
-
-- electricity generated per tonne of waste processed
-
-It is not:
-
-- full thermodynamic efficiency
-- R1 recovery status
-- total energy recovery including heat use
-
-Therefore:
-
-> Use "electricity recovery intensity" when precision matters. "Efficiency" can
-> be used as shorthand only after defining the metric.
-
-### Boundary 4: The Models Are Descriptive
-
-The models show:
-
-- conditional associations
-- stable sign patterns
-- facility hierarchy
-
-They do not prove:
-
-- causal effect of age
-- causal effect of capacity
-- policy treatment effect
-- unique modernization mechanism
-
-Therefore:
-
-> The paper's strength is diagnostic decomposition, not causal identification.
-
-## 13. Best Questions For The Professor To Answer
-
-Bring these questions to the meeting.
-
-### Question 1
-
-Should the paper cite high-profile China papers in the introduction as framing
-comparators, or keep them in the literature review to avoid making the paper
-look like it is trying to compete directly with them?
-
-Recommended default:
-
-> Mention them briefly in the introduction and explain the difference clearly.
-
-### Question 2
-
-Is "scale-selective entry and structured post-entry performance" a clear
-conceptual frame?
-
-Recommended default:
-
-> Use the plainer frame. It distinguishes the robust scale result from the
-> risk-set-dependent age result and avoids implying an estimated bound on
-> responsiveness.
-
-### Question 3
-
-Is the main duration/time-at-risk treatment now adequate?
-
-Recommended default:
-
-> Yes for the present descriptive design: actual elapsed fiscal duration is now
-> included in the main model. The next improvement would be better capital-
-> history data, not another row-count duration proxy.
-
-### Question 4
-
-Should DEA be mentioned as related literature only, or added as an empirical
-extension?
-
-Recommended default:
-
-> Mention DEA as related literature only. Save DEA for a future paper unless
-> the professor strongly wants it.
-
-### Question 5
-
-Should the paper be submitted as a descriptive empirical paper, or should it
-wait for stronger causal or optimization analysis?
-
-Recommended default:
-
-> Keep it as a descriptive empirical paper. The claim is already defensible if
-> the framing is precise.
-
-## 14. Suggested Email To Professor
-
-Subject:
-
-```text
-Comparator papers and method lineage for the incineration paper
-```
-
-Body:
-
-```text
-Professor,
-
-I prepared a short method-lineage note to clarify which papers inspired the
-paper and which methods were adapted.
-
-The paper is mainly inspired by recent facility-level waste-incineration
-performance work, especially Cui et al. (2026) in Nature Communications and
-Liu et al. (2025) in Nature Energy. However, I am not trying to replicate their
-optimization methods. My paper uses a Japan administrative facility panel and
-separates two margins:
-
-1. observed entry into electricity generation among non-generators; and
-2. electricity recovered per tonne among operating generators.
-
-Methodologically, the first part follows discrete-time event-history logic, and
-the second part uses panel regression with facility-clustered standard errors.
-
-I would like your feedback on whether this should be framed as a Japan
-waste-management paper, a facility-performance paper, or a two-margin
-fleet-transition paper. I would also appreciate your view on whether we should
-add one more robustness check, such as time-at-risk controls in the adoption
-model.
-
-Best regards,
-Pann
-```
-
-## 15. Source List For The Professor
-
-### High-Profile / Benchmark Papers
-
-- Cui, J., Cui, Y., Li, J., Gao, X., Wei, W., Chen, Y., Ma, W., Zhu, N.,
-  Geng, Y., Zhao, Y., and Lou, Z. (2026). Efficiency hierarchy and optimization
-  of waste incineration in China to balance disposal and energy supply. Nature
-  Communications, 17(1), Article 3069.
-  https://doi.org/10.1038/s41467-026-69897-w
-- Liu, B., Wang, P., Zhou, J., Guo, Y., Ma, S., Chen, W.-Q., Li, J., and
-  Chang, V. W.-C. (2025). Refocusing on effectiveness over expansion in urban
-  waste-energy-carbon development in China. Nature Energy, 10, 215-225.
-  https://doi.org/10.1038/s41560-024-01683-8
-- Han, Q.-l., Liu, H.-q., Gong, Y.-y., Tao, J.-y., Sun, Y.-n., Wei, G.-x.,
-  Zhu, Y.-w., and Chen, G.-y. (2025). Strengthening pollutant control and
-  resource recovery can enhance sustainable waste incineration in China.
-  Communications Earth & Environment, 6, Article 863.
-  https://doi.org/10.1038/s43247-025-02859-0
-
-### Facility-Performance Papers
-
-- Chen, P.-C., Chang, C.-C., Yu, M.-M., and Hsu, S.-H. (2012). Performance
-  measurement for incineration plants using multi-activity network data
-  envelopment analysis: The case of Taiwan. Journal of Environmental
-  Management, 93(1), 95-103.
-  https://doi.org/10.1016/j.jenvman.2011.08.011
-- Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies
-  of Taiwan's municipal solid waste incineration plants using data envelopment
-  analysis. Waste Management, 107, 28-35.
-  https://doi.org/10.1016/j.wasman.2020.03.040
-- Grosso, M., Motta, A., and Rigamonti, L. (2010). Efficiency of energy
-  recovery from waste incineration, in the light of the new Waste Framework
-  Directive. Waste Management, 30(7), 1238-1243.
-  https://doi.org/10.1016/j.wasman.2010.02.036
-- Münster, M., and Meibom, P. (2010). Long-term affected energy production of
-  waste to energy technologies identified by use of energy system analysis.
-  Waste Management, 30(12), 2510-2519.
-  https://doi.org/10.1016/j.wasman.2010.04.015
-
-### Japan Context
-
-- Tabata, T., and Tsai, P. (2016). Heat supply from municipal solid waste
-  incineration plants in Japan: Current situation and future challenges. Waste
-  Management & Research, 34(4), 345-351.
-  https://doi.org/10.1177/0734242X15617009
-- Uno, S. (2015). Trends in Waste-to-Energy Technologies for High Efficiency
-  Power Generation. Material Cycles and Waste Management Research, 26(2),
-  114-119.
-  https://doi.org/10.3985/mcwmr.26.114
-- Yamada, K., Ii, R., Yamamoto, M., Ueda, H., and Sakai, S. (2023). Japan's
-  greenhouse gas reduction scenarios toward net zero by 2050 in the material
-  cycles and waste management sector. Journal of Material Cycles and Waste
-  Management, 25(4), 1807-1823.
-  https://doi.org/10.1007/s10163-023-01650-7
-
-### Methods
+| Facility heterogeneity | Cui; Chen; Yeh; Han | Japan-specific fleet shares, stable-lineage data, component variables, and estimates |
+| Effectiveness versus expansion | Liu | Separation of installed participation, positive-output throughput coverage, and generator components |
+| Japan facility panel | Sasao; Shino | FY2005-FY2024 assembly, corrected identity layer, current outcomes, and current code |
+| Annual first-event logic | Allison; Beck et al. | First reported positive-capacity event, exact continuity rule, and Japan risk sets |
+| Sparse-event bias reduction and separation control | Firth; Heinze and Schemper | Implementation, stable-lineage bootstrap, contrasts, and current estimates |
+| Post-entry comparison | Chen; Yeh | Regression-based engineering decomposition rather than a DEA frontier |
+| Configuration awareness | Han | Available Japanese furnace/facility controls and separate asset episodes |
+
+The paper's originality rests on the combination and application, not on
+claiming ownership of standard methods. The following are original project
+outputs:
+
+- the cleaned 23,593-record analytical panel;
+- the 1,690 stable administrative lineages and 1,767 asset episodes;
+- the first-reported-capacity event and nested continuity samples;
+- the FY2024 count-volume-capacity decomposition;
+- the generator design-intensity and electrical-capacity-factor construction;
+- the model code, diagnostics, robustness checks, figures, tables, and prose;
+- the numerical results reported in this packet.
+
+Transparent citation is the protection against both plagiarism and exaggerated
+novelty. A method can be adapted legitimately when its source is cited, its
+scope is described accurately, and the new data, estimand, implementation, and
+results are distinguishable. That is the intended standard here.
+
+## Identification And Interpretation Limits
+
+### Limits common to all three layers
+
+- The data are observational administrative records.
+- Reporting accuracy and definitions may vary over time and across facilities.
+- Stable-lineage matching is audited but not externally verified for every site.
+- Available controls do not capture all municipal finances, contracts, policy
+  incentives, grid conditions, waste composition, or engineering constraints.
+- Standard errors and bootstrap intervals address sampling dependence under the
+  model; they do not address all measurement or linkage uncertainty.
+
+### Limits specific to fleet coverage
+
+- Facility, throughput, and design-capacity shares are descriptive accounting
+  measures.
+- Positive gross output does not show net export, useful heat, avoided
+  emissions, or economic efficiency.
+- A throughput-weighted result gives more influence to large facilities by
+  design. It answers a system-volume question, not an equity or local-impact
+  question.
+
+### Limits specific to first entry
+
+- Entry means first positive reported installed capacity within the observed
+  window.
+- Already-generating first observations are left-censored and cannot reveal
+  their entry timing.
+- Thirty-five exact events constrain model complexity and precision.
+- Prior waste-processing capacity may proxy for unobserved urban scale,
+  financing ability, technology, waste contracts, or project feasibility.
+- The 6.13 and 6.25 odds ratios do not imply that increasing a plant from 100 to
+  300 t/day would multiply its entry probability by those values.
+- The nonsignificant age tests are absence of strong evidence in this design,
+  not proof that age never matters.
+
+### Limits specific to generator components
+
+- `K_it` is reported installed electrical capacity, not independently verified
+  turbine capability.
+- Reported start-year cohort is not the installation date of each generator,
+  boiler, or control system.
+- Gross MWh/t is sensitive to the waste denominator and does not include useful
+  heat or plant own-use electricity.
+- Electrical capacity factor summarizes annual use of reported electrical
+  capacity; it does not isolate downtime, dispatch, fuel quality, or conversion
+  technology.
+- The `R^2` increase diagnoses omitted generator sizing but does not establish a
+  causal channel.
+- Conditioning on positive-output generators creates a selected post-entry
+  population; results do not automatically generalize to non-generators.
+
+## What A Professor Should Challenge
+
+The most useful supervision is not a request for stronger wording. It is a test
+of whether each estimand answers a worthwhile and supportable question.
+
+1. **Identity validity:** Are the linkage evidence and asset-episode reset rules
+   convincing enough for the 35 exact events and lineage-clustered models?
+2. **Event meaning:** Should the paper call the outcome "first reported
+   installed-capacity entry" throughout, or can any events be externally
+   verified as commissioning or retrofit projects?
+3. **Risk-set eligibility:** Is the observed non-generating history long enough
+   to make the event meaningful, and should a minimum pre-event history be a
+   sensitivity check?
+4. **Sparse-event complexity:** Are the age bands, capacity term, calendar eras,
+   and duration bands parsimonious enough for 35 and 33 events?
+5. **Capacity functional form:** Does `log(1 + W/100)` adequately represent
+   scale, or should splines or prespecified categories be shown descriptively?
+6. **Confounding:** Which municipal finance, population, policy, or waste-flow
+   variables would most plausibly explain both processing scale and generation
+   entry?
+7. **Count-volume contribution:** Is the 41.1% versus 80.1% contrast framed as a
+   correction to system interpretation rather than as evidence that the
+   non-generating segment is unimportant?
+8. **Component identity:** Are the units and the factor `8.76/365` communicated
+   clearly enough that a reader can reproduce the decomposition?
+9. **Configuration adequacy:** Are the available furnace and facility controls
+   sufficient for descriptive comparison, and are their missing categories
+   documented?
+10. **Outcome language:** Does every use of "performance" specify gross output,
+    generator design intensity, or electrical capacity factor rather than imply
+    complete technical efficiency?
+11. **Age interpretation:** Has every old claim of an independent adverse age
+    association been removed after the sizing diagnostic?
+12. **External validity:** Does the administrative fleet represent the intended
+    policy population, and what facilities or energy pathways remain outside
+    the data?
+13. **Mechanism evidence:** Which proposed explanation is directly measured,
+    which is consistent with the pattern, and which is speculation?
+14. **Scope discipline:** Would the paper become clearer if post-entry pathway
+    description remained supplemental rather than carrying a separate causal
+    claim?
+
+If these challenges cannot be answered with current evidence, the correct
+response is to narrow the claim or collect new data, not to add stronger
+rhetoric.
+
+## Pivot Options
+
+### Option A: Retain the corrected three-layer diagnostic
+
+**Recommended with current data.** Keep RQ1 as the count-volume accounting
+result, RQ2 as a sparse first-reported-entry hazard, and RQ3 as an engineering
+component decomposition. Center the paper on scale selectivity and omitted
+generator sizing. Treat all results as descriptive or associational.
+
+This option is the most defensible because it matches the information content
+of the current panel. Its limitation is that mechanisms remain unresolved.
+
+### Option B: Build an externally validated entry-project sample
+
+Collect facility histories, procurement notices, permits, subsidy records,
+operator reports, and equipment commissioning dates for the 55 descriptive
+events. Reclassify each event as verified new facility, rebuild, retrofit,
+administrative recode, delayed reporting, or unresolved.
+
+This would strengthen event meaning and may support pathway-specific analysis.
+It would likely reduce the usable sample and should be pursued for validity,
+not to force statistical significance.
+
+### Option C: Add municipal decision determinants
+
+Link population served, municipal fiscal capacity, intermunicipal cooperation,
+waste contracts, electricity prices, subsidies, and policy eligibility to the
+risk set. This could test why processing scale predicts entry rather than
+treating scale itself as the mechanism.
+
+This option requires careful temporal alignment and a prespecified causal
+diagram. Adding contemporaneous controls without a decision model could create
+post-treatment or collider bias.
+
+### Option D: Move toward a causal policy design
+
+Identify a policy rule, funding threshold, phased eligibility change, or other
+plausibly exogenous source of variation. Then define treatment timing,
+comparison units, anticipation, and outcome windows before estimation.
+
+No such design is established by the current paper. This pivot should occur
+only if institutional evidence supports the identifying assumptions.
+
+### Option E: Move toward a full engineering-performance paper
+
+Collect net electricity export, own-use demand, useful heat, lower heating
+value, steam conditions, turbine and boiler specifications, downtime, and
+waste composition. These data could support net-efficiency or exergy-oriented
+questions that gross administrative MWh/t cannot answer.
+
+This would be a different empirical paper. It should not be simulated by
+renaming the current gross-output ratio.
+
+## Recommended Decision Sequence
+
+1. Validate the stable-lineage and asset-episode assignments for all 55
+   descriptive events.
+2. Ask whether external project records can classify enough events to justify
+   Option B.
+3. If not, retain Option A and keep the event interpretation explicitly
+   administrative.
+4. Decide whether municipal determinants can be obtained with valid prior-year
+   timing before adding them.
+5. Keep the generator component identity regardless of pivot; it prevents a
+   return to the misspecified age-performance model.
+6. Add a causal or engineering claim only after the corresponding new data and
+   identification assumptions exist.
+
+## Defense-Ready Questions And Answers
+
+### "Isn't it obvious that larger facilities are more likely to generate?"
+
+The direction may be intuitive, but the paper's contribution is not the slogan
+"large plants generate." It constructs a valid annual risk set through unstable
+administrative identifiers, quantifies the scale gradient under rare-event
+bias reduction, shows that the contrast persists in the prior-operation subset,
+and separates this entry pattern from the amount of waste handled by generators.
+The result remains an association and should be presented as such.
+
+### "What is new relative to Sasao?"
+
+Sasao is the closest Japan panel predecessor and must be acknowledged. The
+current paper adds longitudinal identity reconstruction across code breaks, a
+first-reported installed-capacity risk set, separate count and throughput
+coverage, and an engineering decomposition of gross MWh/t. It does not claim to
+replace or reproduce Sasao's production model.
+
+### "Did this paper copy Cui et al.?"
+
+No. Cui et al. supplies the high-level insight that heterogeneous facilities
+form a performance hierarchy that should be decomposed. This project uses a
+different national dataset, reconstructed administrative identities, different
+outcomes, different equations, and independently written code. It does not use
+Cui et al.'s optimization model, frontier, data, numerical results, text, or
+figures. The conceptual adaptation is stated and cited.
+
+### "Why use Firth logit?"
+
+The exact models contain 35 and 33 events. In sparse binary data, ordinary
+maximum-likelihood logit can be biased or fail under separation. Firth's
+penalized likelihood reduces that bias and stabilizes estimation. It does not
+solve confounding or make the estimates causal.
+
+### "Why not claim that age prevents entry?"
+
+The broad and identity-certain joint age tests are not statistically
+distinguishable from zero. The same-episode test is borderline under
+lineage-bootstrap covariance and stronger under fitted-model covariance, with
+only 24 events. Individual age-band signs do not override this dependence on
+continuity and uncertainty rules. The defensible result is scale selectivity,
+not an age barrier.
+
+### "Why did the earlier age-performance result disappear?"
+
+Gross MWh/t mechanically combines generator sizing, electrical loading, and
+waste loading. The earlier model omitted generator design intensity. Adding it
+in a separate 5,806-row plausible-heating-value frame that controls heating
+value raises `R^2` from 0.4737 to 0.8131. Legacy age, capacity, and utilization
+estimates of -0.0349, +0.1001, and +0.6699 become -0.0020 (`p = 0.2977`),
+-0.0092 (`p = 0.1991`), and -0.0995 (`p = 0.2038`), while sizing is +0.7532
+(`p < 0.001`). This specification diagnostic is distinct from the 6,511-row
+primary component models and is not causal mediation. The correction is a
+strength because it removes a misleading interpretation.
+
+### "Why not call MWh/t efficiency?"
+
+Gross MWh/t does not account for net export, plant own-use electricity, useful
+heat, heating value, steam conditions, or lifecycle impacts. Shino supports its
+use as an observable per-input indicator while warning about thermal
+interpretation. The paper therefore calls it gross generation intensity and
+decomposes it rather than relabeling it.
+
+### "Do the 41.1% and 80.1% figures contradict each other?"
+
+No. They use different denominators. The first is a facility-count share based
+on installed capacity. The second is a throughput-weighted share based on
+positive-output facilities. Their difference shows that generation is
+concentrated in larger-throughput facilities.
+
+### "What would most improve confidence in the paper?"
+
+External validation of the 55 first-entry records would have the highest
+immediate value. It would test the administrative event definition and clarify
+which entries represent continuing-site installations, replacements, new
+facilities, delayed reports, or recodes.
+
+## Language Control For The Manuscript
+
+### Preferred terms
+
+- stable administrative lineage
+- asset episode
+- first reported installed-generation-capacity entry
+- waste-processing design capacity
+- installed electrical-generation capacity
+- positive-output generator
+- gross generation intensity (MWh/t)
+- generator design intensity (kW per t/day)
+- electrical capacity factor
+- conditional association
+- descriptive accounting identity
+
+### Terms requiring qualification or removal
+
+- "facility identity" without "administrative" or a linkage caveat
+- "adoption" without explaining that the event is first reported capacity
+- "retrofit" unless externally verified
+- "efficiency" when the measure is gross MWh/t
+- "age coefficient" without stating that the estimate is observational or not independently
+  significant after sizing
+- "utilization coefficient" when generator sizing is omitted
+- "closure" inferred from record disappearance
+- Do not use "caused," "led to," "increased," or "reduced" for the current regressions
+
+## Professor Sign-Off Checklist
+
+- [ ] The three research questions are distinct and each has one defined
+  estimand.
+- [ ] The 23,593 records, 1,690 stable administrative lineages, and 1,767 asset
+  episodes are used consistently.
+- [ ] The FY2024 figures always appear as 41.1% facility participation, 80.1%
+  positive-output throughput coverage, and 70.5% installed-generation share of
+  waste-processing design capacity.
+- [ ] The event hierarchy is 55 descriptive, 35 broad exact-year, 33
+  prior-operation, and 24 same-episode events; identity-certain retains 35.
+- [ ] The capacity contrasts are described as conditional odds ratios of about
+  6.13 and 6.25, not causal multipliers of probability.
+- [ ] Lineage-bootstrap joint age tests `p = 0.3800`, `0.1863`, `0.0508`, and
+  `0.3566` are mapped to broad, prior-operation, same-episode, and
+  identity-certain frames and interpreted as continuity-sensitive evidence.
+- [ ] The generator frame is 6,511 rows across 493 stable administrative
+  lineages.
+- [ ] The separate sizing diagnostic uses 5,806 engineering-valid rows with
+  plausible heating value and explicitly controls heating value.
+- [ ] Legacy age -0.0349, capacity +0.1001, and utilization +0.6699 become age
+  -0.0020 (`p = 0.2977`), capacity -0.0092 (`p = 0.1991`), and utilization
+  -0.0995 (`p = 0.2038`) after sizing; sizing is +0.7532 (`p < 0.001`).
+- [ ] The `R^2` change from 0.4737 to 0.8131 is called a specification
+  diagnostic, not causal mediation.
+- [ ] Age and waste-processing utilization are not described as independent
+  gross-intensity drivers after generator sizing is included.
+- [ ] Cui, Liu, Han, Sasao, Shino, Chen, Yeh, Allison, Beck et al., and Firth are
+  cited for the specific ideas actually adapted; Heinze and Schemper are cited
+  specifically for the separation rationale.
+- [ ] No comparator's data, estimator, result, wording, table, figure, or code is
+  represented as this project's own.
+- [ ] Gross MWh/t is never presented as net export, useful heat, complete
+  thermodynamic efficiency, or lifecycle benefit.
+
+## References Central To This Lineage
 
 - Allison, P. D. (1982). Discrete-time methods for the analysis of event
-  histories. Sociological Methodology, 13, 61-98.
+  histories. *Sociological Methodology*, *13*, 61-98.
   https://doi.org/10.2307/270718
-- Beck, N., Katz, J. N., and Tucker, R. (1998). Taking time seriously:
-  Time-series-cross-section analysis with a binary dependent variable. American
-  Journal of Political Science, 42(4), 1260-1288.
+- Beck, N., Katz, J. N., & Tucker, R. (1998). Taking time seriously:
+  Time-series-cross-section analysis with a binary dependent variable.
+  *American Journal of Political Science*, *42*(4), 1260-1288.
   https://doi.org/10.2307/2991857
-- Wooldridge, J. M. (2010). Econometric analysis of cross section and panel
-  data (2nd ed.). MIT Press.
+- Chen, P.-C., Chang, C.-C., Yu, M.-M., & Hsu, S.-H. (2012). Performance
+  measurement for incineration plants using multi-activity network data
+  envelopment analysis: The case of Taiwan. *Journal of Environmental
+  Management*, *93*(1), 95-103.
+  https://doi.org/10.1016/j.jenvman.2011.08.011
+- Cui, J., Cui, Y., Li, J., Gao, X., Wei, W., Chen, Y., Ma, W., Zhu, N., Geng,
+  Y., Zhao, Y., & Lou, Z. (2026). Efficiency hierarchy and optimization of
+  waste incineration in China to balance disposal and energy supply. *Nature
+  Communications*, *17*(1), Article 3069.
+  https://doi.org/10.1038/s41467-026-69897-w
+- Firth, D. (1993). Bias reduction of maximum likelihood estimates.
+  *Biometrika*, *80*(1), 27-38. https://doi.org/10.1093/biomet/80.1.27
+- Han, Q.-l., Liu, H.-q., Gong, Y.-y., Tao, J.-y., Sun, Y.-n., Wei, G.-x., Zhu,
+  Y.-w., & Chen, G.-y. (2025). Strengthening pollutant control and resource
+  recovery can enhance sustainable waste incineration in China.
+  *Communications Earth & Environment*, *6*, Article 863.
+  https://doi.org/10.1038/s43247-025-02859-0
+- Heinze, G., & Schemper, M. (2002). A solution to the problem of separation in
+  logistic regression. *Statistics in Medicine*, *21*(16), 2409-2419.
+  https://doi.org/10.1002/sim.1047
+- Liu, B., Wang, P., Zhou, J., Guo, Y., Ma, S., Chen, W.-Q., Li, J., & Chang,
+  V. W.-C. (2025). Refocusing on effectiveness over expansion in urban
+  waste-energy-carbon development in China. *Nature Energy*, *10*, 215-225.
+  https://doi.org/10.1038/s41560-024-01683-8
+- Sasao, T. (2018). How does municipal solid waste policy affect heat and
+  electricity produced by incinerators? *Detritus*, *2*, 133-141.
+  https://doi.org/10.31025/2611-4135/2018.13650
+- Shino, Y. (2019). System analysis of MSW incinerator power generation
+  performance. *Journal of the Japan Society of Material Cycles and Waste
+  Management*, *30*, 113-121. https://doi.org/10.3985/jjsmcwm.30.113
+- Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies
+  of Taiwan's municipal solid waste incineration plants using data envelopment
+  analysis. *Waste Management*, *107*, 28-35.
+  https://doi.org/10.1016/j.wasman.2020.03.040
 
-## 16. Bottom-Line Recommendation
+## Bottom Line For Supervision
 
-For the meeting, do not say:
+The strongest current paper is not a claim that older incinerators are
+inefficient or that a particular policy caused generation entry. It is a
+carefully bounded facility-panel diagnosis:
 
-> We copied the method from Cui et al.
+> Generating facilities are a minority by count but handle most recorded waste
+> throughput; first reported entry is strongly concentrated among larger
+> processing lineages; and gross MWh/t differences are primarily interpretable
+> only after generator sizing is separated from annual electrical and waste
+> loading.
 
-Say instead:
-
-> Cui et al. and Liu et al. inspired the ambition and facility-level framing.
-> Chen, Yeh, and Grosso show that incinerator energy-recovery performance is a
-> legitimate facility-level empirical object. Allison, Beck et al., and
-> Wooldridge support the actual empirical methods. Our contribution is to join
-> these lines in a Japan panel by separating observed generation entry from
-> conditional generator performance.
-
-This is the most honest, defensible, and useful way to help the professor give
-feedback.
+That argument is useful if its administrative event definition, observational
+limits, and engineering boundaries remain explicit. The next substantive gain
+would come from validating entry projects or adding correctly timed decision
+determinants, not from restoring discarded age claims or adding more complex
+models to the same sparse events.

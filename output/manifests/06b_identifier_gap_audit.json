@@ -1,41 +1,83 @@
 {
+  "analysis_code_sha256": {
+    "code/analysis/00_probe_estat_facility_data.py": "7ede37771716f42cd5c07f8c2082a0951c336f06f990f7a7292d5f6abedffdc3",
+    "code/analysis/01_download_facility_data.py": "7a56fdfbbf065aca33dc0a884f9d0d2622a6fad34d9911f226287a6c0c20f1e2",
+    "code/analysis/02_parse_facility_panel.py": "b93d0407c9d3b93d018a1fb5ad204ed208b17c91228dc76ff3d8bea8cf2e42bc",
+    "code/analysis/02a_build_facility_identity.py": "f47bfe47fced3e7c5ee4a958b8828533741c54203e835b44771045cbc237d8e4",
+    "code/analysis/02b_build_raw_data_manifest.py": "97df15b5e53f8eb496a9049e5261c455ab4a509a634fbca388df1a9dd03eb04b",
+    "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
+    "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
+    "code/analysis/05_fleet_decomposition.py": "fec958fa2ec4af913a466078d070212b9b526ec2065cbfa28545451f23308811",
+    "code/analysis/05_panel_regression.py": "0e6146391e4f83e945a9929359ee4c81f886a064350c22bcbefb8a6ce22b15d1",
+    "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
+    "code/analysis/06_robustness.py": "6ab5cab93577bfc1d8826954304b05151586bda622450c38d376adeaa1848e4a",
+    "code/analysis/06a_data_quality_sensitivity.py": "f6e5535cdaf3eac031dfd96c9d51cc0c8325b53848d3a20fa2654ce092d06651",
+    "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
+    "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
+    "code/analysis/08_verify_claims.py": "8b29cade8bacaa9fde1ba48faf249e2eb0c1b33fce09ac1946a8e0bda76bca62",
+    "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
+    "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
+    "code/analysis/rare_event_utils.py": "7377b3cded06073ffda5fcb1cf827042ee6c47588d1453783b0220d4c9305a67"
+  },
   "analysis_config": {
-    "adoption_active_conversion_requires_positive_prior_throughput": true,
+    "adoption_continuity_sensitivity_requires_same_asset_episode": true,
     "adoption_elapsed_duration_uses_fiscal_years": true,
-    "adoption_model": "observed_first_adoption_logit_hazard",
+    "adoption_exact_lag_requires_same_stable_lineage": true,
+    "adoption_model": "firth_first_reported_capacity_discrete_time_hazard",
     "adoption_predictors_lagged_exact_one_year": true,
-    "adoption_previous_observed_coded_row_retained_as_sensitivity": true,
+    "adoption_primary_allows_asset_episode_change": true,
+    "adoption_prior_operation_requires_positive_prior_throughput": true,
     "adoption_risk_set_excludes_left_censored_generators": true,
-    "capacity_utilization_cap": 1.0,
-    "efficiency_ceiling_mwh_per_t": 0.8,
-    "efficiency_floor_mwh_per_t": 0.01,
+    "capacity_factor_ceiling": 1.2,
+    "capacity_factor_floor": 0.02,
+    "capacity_utilization_cap": 1.2,
+    "gross_generation_intensity_ceiling_mwh_per_t": 0.8,
+    "gross_generation_intensity_floor_mwh_per_t": 0.01,
+    "heating_value_plausible_range_mj_kg": [
+      3.0,
+      25.0
+    ],
     "post_fukushima_start": 2012,
     "pre_fukushima_end": 2011,
-    "regression_requires_official_facility_code": true,
+    "regression_outlier_method": "exclude_predeclared_engineering_bounds",
     "regression_requires_positive_output": true,
-    "regression_winsorization_method": "clip",
+    "regression_uses_stable_site_id": true,
     "technology_categories_normalized_to_compact_groups": true
   },
+  "input_sha256": {
+    "data/processed/incineration_panel_identified.csv": "ff6913f314b56e571ac87d3d208f83461cb59d69fdd57798779158bc907ea66b"
+  },
   "inputs": [
-    "data/processed/incineration_panel_enriched.csv"
+    "data/processed/incineration_panel_identified.csv"
   ],
   "metadata": {
-    "adoption_exact_year_events": 98,
-    "adoption_exact_year_rows": 10823,
-    "adoption_non_exact_events_excluded": 42,
-    "adoption_non_exact_rows_excluded": 894,
-    "adoption_previous_observed_events": 140,
-    "adoption_previous_observed_rows": 11717,
-    "missing_code_rows_2010_2012": 3718,
-    "multi_year_gap_events": 37,
-    "operating_generator_missing_code_rows_2010_2012": 899,
-    "regression_facilities": 1016,
-    "regression_rows": 5683,
-    "same_year_duplicate_code_events": 5
+    "annual_transition_rows": 19,
+    "fy2009_2013_official_code_overlap": 882,
+    "fy2009_2013_stable_site_overlap": 1135,
+    "fy2010_2012_coded_rows": 0,
+    "fy2010_2012_rows": 3716,
+    "fy2019_2020_changed_codes_on_linked_sites": 1064,
+    "fy2019_2020_official_code_overlap": 0,
+    "fy2019_2020_stable_site_overlap": 1064,
+    "missing_asset_episode_ids": 0,
+    "missing_stable_site_ids": 0,
+    "official_code_year_duplicate_groups": 83,
+    "stable_site_year_duplicates": 0
+  },
+  "output_sha256": {
+    "output/identifier_duplicates_by_year.csv": "9db4ac381ff82d9bd335af85c1fb1ef23f62a02c858e72448654109a6e6708c5",
+    "output/identifier_gap_audit.md": "87199dd7023dc5672be6bea144e908573f44de8430aead923c27d6a96ba9ef31",
+    "output/identifier_gap_bridges.csv": "116fcf99c88f690ae3ff88d02204e69d65fc6f874a1fc51c0a273cba4a87c45a",
+    "output/identifier_overlap_by_year.csv": "e290548149783fde484a3639ce510d5f784a308d48a24b2d2fac4a37d72fe59d"
   },
   "outputs": [
-    "output/identifier_gap_audit.md"
+    "output/identifier_gap_audit.md",
+    "output/identifier_overlap_by_year.csv",
+    "output/identifier_gap_bridges.csv",
+    "output/identifier_duplicates_by_year.csv"
   ],
   "python": "3.12.12",
+  "script": "code/analysis/06b_identifier_gap_audit.py",
+  "script_sha256": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
   "stage": "06b_identifier_gap_audit"
 }

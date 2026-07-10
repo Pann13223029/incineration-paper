@@ -14,7 +14,7 @@ paper's framing, methods, and interpretation.
 - Greenhouse Gas Inventory Office of Japan & Ministry of the Environment Japan. (2024). *National greenhouse gas inventory report of Japan 2024*. Center for Global Environmental Research, National Institute for Environmental Studies. https://cger.nies.go.jp/publications/report/i170/en/
 - Ministry of the Environment Japan. (2026). *General Waste Treatment Survey results: FY2024 municipal solid waste treatment survey*. Environmental Management Bureau, Ministry of the Environment Japan. https://www.env.go.jp/recycle/waste_tech/ippan/ (accessed 10 July 2026).
 - Sakai, S., Yoshida, H., Hirai, Y., Asari, M., Takigami, H., Takahashi, S., Tomoda, K., Peeler, M. V., Wejchert, J., Schmid-Unterseh, T., Douvan, A. R., Hathaway, R., Hylander, L. D., Fischer, C., Oh, G. J., Jinhui, L., & Chi, N. K. (2011). International comparative study of 3R and waste management policy developments. *Journal of Material Cycles and Waste Management*, *13*(2), 86-102. https://doi.org/10.1007/s10163-011-0009-x
-- Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste incineration plants in Japan: Current situation and future challenges. *Waste Management & Research*, *34*(4), 345-351. https://doi.org/10.1177/0734242X15617009
+- Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste incineration plants in Japan: Current situation and future challenges. *Waste Management & Research*, *34*(2), 148-155. https://doi.org/10.1177/0734242X15617009
 - Uno, S. (2015). Trends in Waste-to-Energy Technologies for High Efficiency Power Generation. *Material Cycles and Waste Management Research*, *26*(2), 114-119. https://doi.org/10.3985/mcwmr.26.114
 - Yamada, K., Ii, R., Yamamoto, M., Ueda, H., & Sakai, S. (2023). Japan's greenhouse gas reduction scenarios toward net zero by 2050 in the material cycles and waste management sector. *Journal of Material Cycles and Waste Management*, *25*(4), 1807-1823. https://doi.org/10.1007/s10163-023-01650-7
 
@@ -27,7 +27,7 @@ paper's framing, methods, and interpretation.
 - Grosso, M., Motta, A., & Rigamonti, L. (2010). Efficiency of energy recovery from waste incineration, in the light of the new Waste Framework Directive. *Waste Management*, *30*(7), 1238-1243. https://doi.org/10.1016/j.wasman.2010.02.036
 - Han, Q.-l., Liu, H.-q., Gong, Y.-y., Tao, J.-y., Sun, Y.-n., Wei, G.-x., Zhu, Y.-w., & Chen, G.-y. (2025). Strengthening pollutant control and resource recovery can enhance sustainable waste incineration in China. *Communications Earth & Environment*, *6*, Article 863. https://doi.org/10.1038/s43247-025-02859-0
 - Liu, B., Wang, P., Zhou, J., Guo, Y., Ma, S., Chen, W.-Q., Li, J., & Chang, V. W.-C. (2025). Refocusing on effectiveness over expansion in urban waste-energy-carbon development in China. *Nature Energy*, *10*, 215-225. https://doi.org/10.1038/s41560-024-01683-8
-- Münster, M., & Meibom, P. (2010). Long-term affected energy products of waste to energy, a consequential approach. *Waste Management*, *30*(12), 2510-2519. https://doi.org/10.1016/j.wasman.2010.04.015
+- Münster, M., & Meibom, P. (2010). Long-term affected energy production of waste to energy technologies identified by use of energy system analysis. *Waste Management*, *30*(12), 2510-2519. https://doi.org/10.1016/j.wasman.2010.04.015
 - Sasao, T. (2018). How does municipal solid waste policy affect heat and electricity produced by incinerators? *Detritus*, *2*, 133-141. https://doi.org/10.31025/2611-4135/2018.13650
 - Shino, Y. (2019). System analysis of MSW incinerator power generation performance. *Journal of the Japan Society of Material Cycles and Waste Management*, *30*, 113-121. https://doi.org/10.3985/jjsmcwm.30.113
 - Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving waste to energy rate by promoting an integrated municipal solid-waste management system. *Resources, Conservation and Recycling*, *136*, 289-296. https://doi.org/10.1016/j.resconrec.2018.05.005
@@ -43,6 +43,8 @@ paper's framing, methods, and interpretation.
 
 ## Methods
 
+- Firth, D. (1993). Bias reduction of maximum likelihood estimates. *Biometrika*, *80*(1), 27-38. https://doi.org/10.1093/biomet/80.1.27
+- Heinze, G., & Schemper, M. (2002). A solution to the problem of separation in logistic regression. *Statistics in Medicine*, *21*(16), 2409-2419. https://doi.org/10.1002/sim.1047
 - Wooldridge, J. M. (2010). *Econometric analysis of cross section and panel data* (2nd ed.). MIT Press.
 
 ## Use Rule

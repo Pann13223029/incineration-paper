@@ -1,72 +1,49 @@
-# Submission Checklist
+# Waste Management Submission Checklist
 
-This checklist converts the current paper repo into a practical
-`Waste Management` submission packet.
+Official source: [Waste Management guide for authors](https://www.sciencedirect.com/journal/waste-management/publish/guide-for-authors), checked 10 July 2026.
 
-Official source used for this checklist:
-- Elsevier `Waste Management` guide for authors:
-  https://www.sciencedirect.com/journal/waste-management/publish/guide-for-authors
+## Format Gates
 
-## Current Status
+- [ ] Full-length article main text is no more than 6,500 words. The journal excludes the abstract, references, nomenclature, acknowledgements, and appendices from this count.
+- [ ] Abstract is no more than 250 words, stands alone, and defines any necessary abbreviation at first use.
+- [ ] Main manuscript contains no more than eight figures and tables combined, unless the cover letter justifies an exception.
+- [ ] Title is concise and avoids unnecessary abbreviations or formulae.
+- [ ] One to seven English keywords are present.
+- [ ] A separate highlights file contains three to five bullets, each no more than 85 characters including spaces.
+- [ ] Equations are editable text, numbered consecutively, and cited in the prose.
+- [ ] Tables are editable, numbered, captioned, cited, and avoid vertical rules or duplicated results.
+- [ ] Figures are supplied as separate reproducible files and remain legible at publication size.
+- [ ] Editable `.tex` and/or `.docx` source accompanies the reading PDF; PDF alone is not an acceptable source.
 
-- manuscript draft exists:
-  - [paper.md](../manuscript/paper.md)
-- title page exists:
-  - [title-page.md](title-page.md)
-- highlights file exists:
-  - [highlights.md](highlights.md)
-- cover letter draft exists:
-  - [cover-letter.md](cover-letter.md)
-- supplement draft exists:
-  - [supplement.md](../supplement/supplement.md)
-- working references layer exists:
-  - [selected-references.md](../references/selected-references.md)
-  - [citation-plan.md](../references/citation-plan.md)
-- manuscript export command exists:
-  - `npm run paper:export`
-- LaTeX reading-PDF command exists:
-  - `npm run paper:build:latex`
-- clean manuscript PDF export exists:
-  - `paper/submission/waste-management-manuscript.pdf`
-- clean LaTeX reading PDF export exists when built:
-  - `paper/submission/waste-management-manuscript-latex.pdf`
+## Integrity Gates
 
-## Journal-Fit Checks
+- [ ] The title page contains the author name, full affiliation, current corresponding email, and complete postal address.
+- [ ] Funding and sponsor roles are stated, including an explicit no-specific-funding statement if applicable.
+- [ ] Competing interests are declared consistently in the manuscript and submission system.
+- [ ] The CRediT contribution statement reflects the human author's actual work.
+- [ ] Data and code availability distinguish public source workbooks, derived data, redistribution limits, and versioned code.
+- [ ] The manuscript discloses overlap with the thesis or related outputs if required by the venue.
+- [ ] OpenAI Codex and Anthropic Claude use is named in a declaration immediately before the references; purpose, human review, and author responsibility are stated.
+- [ ] AI tools are not listed as authors and no citation, result, or interpretation is accepted without human verification.
+- [ ] All citations have been checked against publisher or official records; see `paper/references/verification-notes.md`.
 
-- abstract at or below 250 words:
-  - current draft is approximately 237 words
-- keywords present:
-  - current manuscript has 6 keywords
-- numbered main sections present:
-  - yes
-- figures and tables embedded in manuscript:
-  - yes
-- combined main-text figure/table count within 8:
-  - current count is 8 formal items (4 figures and 4 tables), excluding the two review-facing bridge maps
-- professor-review word count within the internal 7,000-7,500-word target:
-  - current main text is about 7,224 words before acknowledgements and
-    references, excluding markdown tables, figure captions, and display equations
+## Repository Gates
 
-## Still Required Before Real Submission
+Run in this order after substantive analysis or manuscript changes:
 
-- rerun the reference-style check if the manuscript citations change
-- bridge-map decision for the current baseline:
-  - keep both bridge maps in the main manuscript for professor-review clarity
-  - move the research-question-to-model bridge to the supplement during journal
-    compression if the target format or editor pressures table count
-- compress approximately 500-1,000 words only after professor feedback if the
-  target journal requires a leaner article
-- confirm conflict-of-interest and funding statements in the submission system
-- keep the full AI disclosure aligned between Methods, the declaration, and any
-  separate journal submission field
-- rerun `npm run paper:export` after any manuscript change
-- rerun `npm run paper:build:latex` after any figure or layout change
-- confirm author metadata exactly as it should appear in submission
+```bash
+npm run analysis:rebuild
+npm run paper:sync
+npm run paper:check
+npm run claims:verify
+npm run paper:export:nopdf
+npm run paper:build:latex
+npm run repo:check
+git diff --check
+```
 
-## Nice-To-Have Before Submission
+Then inspect the generated PDF page by page, confirm no overfull LaTeX boxes, verify the final word/item counts, and compare the tracked share PDF with the manuscript commit being submitted.
 
-- `Waste Management`-specific editorial pass completed on current draft;
-  repeat only after substantive manuscript changes
-- a cleaner caption/figure numbering pass after conversion
-- one or two appendix tables copied directly into the supplement if reviewers
-  are likely to ask for them early
+## Current Evidence Boundary
+
+The paper may report reconstructed stable administrative lineages, first reported installed-generation-capacity events, gross output, generator design intensity, electrical capacity factor, and waste-loading measures. It must not infer verified physical closure, a uniquely identified retrofit, net electricity export, useful heat, R1 performance, lifecycle benefit, or causal effects of age and equipment sizing from the available administrative panel.

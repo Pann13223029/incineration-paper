@@ -3,11 +3,11 @@
 ## Article Information
 
 **Title**  
-Selective Entry and Structured Electricity-Recovery Performance in Japan's
-Waste-Incineration Fleet: A Facility-Level Panel Study
+Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's
+Municipal Waste-Incineration Fleet, FY2005-FY2024
 
 **Article type**  
-Full length article
+Full-length article
 
 **Target journal**  
 Waste Management
@@ -25,22 +25,21 @@ Email: `ph23p2dl@apu.ac.jp`
 
 ## Keywords
 
-waste incineration; waste-to-energy; Japan; energy recovery; facility panel;
-transition
+municipal solid waste; incineration; waste-to-energy; Japan; generator sizing;
+capacity factor; administrative record linkage
 
 ## Current Draft Metrics
 
-- abstract word count: approximately 237 words
-- main text before acknowledgements and references: approximately 7,224 words, excluding markdown
-  tables, figure captions, and display equations
+- abstract word count: 229
+- main-text word count: 5,722, excluding tables, figure captions, display
+  equations, acknowledgements, declarations, and references
 - main-text figures: 4
-- main-text tables: 4 formal tables, plus 2 review-facing bridge maps kept for
-  professor-review clarity
+- main-text tables: 2
 
 ## Notes
 
 - Secondary contact email if needed in the submission system:
   - `pann.phetra@gmail.com`
-- If the submission keeps AI-assisted drafting in the workflow, use
-  [ai-disclosure-template.md](ai-disclosure-template.md) to finalize the journal
-  disclosure statement.
+- The manuscript contains the required AI-use declaration; the separate
+  [ai-disclosure-template.md](ai-disclosure-template.md) is retained for the
+  submission system.

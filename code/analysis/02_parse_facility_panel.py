@@ -26,6 +26,11 @@ OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'output')
 os.makedirs(PROCESSED_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+CANONICAL_FISCAL_YEARS = tuple(range(2005, 2025))
+EXPECTED_FISCAL_YEAR_COUNT = 20
+if len(CANONICAL_FISCAL_YEARS) != EXPECTED_FISCAL_YEAR_COUNT:
+    raise RuntimeError("Canonical ingestion window must contain exactly 20 fiscal years")
+
 # Header keywords for auto-detection
 # Each entry: (standardized_name, [keywords_to_search], search_rows)
 COLUMN_DEFS = [
@@ -49,6 +54,25 @@ COLUMN_DEFS = [
     ('facility_type',        ['施設の種類'],                      ),
     ('sell_revenue_yen',     ['売電収入'],                        ),
 ]
+
+STANDARDIZED_FIELDS = tuple(field_name for field_name, _ in COLUMN_DEFS)
+# These fields first appear in FY2018. They remain in the panel, with nulls for
+# earlier years, but their absence from an early workbook is not a schema error.
+OPTIONAL_STANDARDIZED_FIELDS = ('power_sold_mwh', 'sell_revenue_yen')
+OPTIONAL_FIELD_FIRST_FISCAL_YEAR = {
+    'power_sold_mwh': 2018,
+    'sell_revenue_yen': 2018,
+}
+REQUIRED_STANDARDIZED_FIELDS = tuple(
+    field_name
+    for field_name in STANDARDIZED_FIELDS
+    if field_name not in OPTIONAL_STANDARDIZED_FIELDS
+)
+NUMERIC_FIELDS = (
+    'throughput_t_year', 'capacity_t_day', 'n_furnaces', 'year_started',
+    'power_capacity_kw', 'power_efficiency_pct', 'power_generated_mwh',
+    'power_sold_mwh', 'sell_revenue_yen', 'heating_value_kj_kg',
+)
 
 
 warnings.filterwarnings(
@@ -90,6 +114,13 @@ def find_data_start(df_raw):
     FY2005-2006: data starts at row 1-2 (headers in row 0)
     FY2007+: data starts at row 6 (title + multi-row headers in rows 0-5)
     """
+    if df_raw.empty or df_raw.shape[1] == 0:
+        raise ValueError("Cannot locate data rows in an empty workbook sheet")
+    if df_raw.shape[0] < 2:
+        raise ValueError(
+            f"Cannot locate data rows in a workbook sheet with only {df_raw.shape[0]} row"
+        )
+
     # Check if row 0 contains '都道府県' (direct header = old format)
     row0_text = ' '.join([normalize(df_raw.iloc[0, c]) for c in range(min(10, df_raw.shape[1]))])
     if '都道府県コード' in row0_text or '都道府県名' in row0_text:
@@ -105,17 +136,127 @@ def find_data_start(df_raw):
         return 6
 
 
+def resolve_workbook_path(fy):
+    """Return the one nonempty canonical workbook configured for a fiscal year."""
+    if fy not in CANONICAL_FISCAL_YEARS:
+        raise ValueError(
+            f"FY{fy} is outside the canonical FY{CANONICAL_FISCAL_YEARS[0]}-"
+            f"FY{CANONICAL_FISCAL_YEARS[-1]} ingestion window"
+        )
+
+    candidates = [
+        os.path.join(RAW_DIR, f'fy{fy}_incineration.{ext}')
+        for ext in ('xlsx', 'xls')
+    ]
+    existing = [path for path in candidates if os.path.isfile(path)]
+    if not existing:
+        raise FileNotFoundError(
+            f"Missing canonical raw workbook for FY{fy}; expected exactly one of: "
+            + ", ".join(candidates)
+        )
+    if len(existing) != 1:
+        raise ValueError(
+            f"Duplicate canonical raw workbooks for FY{fy}; expected exactly one, found: "
+            + ", ".join(sorted(existing))
+        )
+
+    path = existing[0]
+    byte_size = os.path.getsize(path)
+    if byte_size <= 0:
+        raise ValueError(f"Canonical raw workbook for FY{fy} is empty: {path}")
+    return path
+
+
+def expected_source_fields(fy):
+    """Return fields that must be detected in the source schema for a year."""
+    if fy not in CANONICAL_FISCAL_YEARS:
+        raise ValueError(
+            f"FY{fy} is outside the canonical FY{CANONICAL_FISCAL_YEARS[0]}-"
+            f"FY{CANONICAL_FISCAL_YEARS[-1]} ingestion window"
+        )
+    return (
+        *REQUIRED_STANDARDIZED_FIELDS,
+        *(
+            field_name
+            for field_name in OPTIONAL_STANDARDIZED_FIELDS
+            if fy >= OPTIONAL_FIELD_FIRST_FISCAL_YEAR[field_name]
+        ),
+    )
+
+
+def validate_year_frame(fy, frame):
+    """Enforce the annual parser output contract before concatenation."""
+    if not isinstance(frame, pd.DataFrame):
+        raise TypeError(
+            f"FY{fy} parser returned {type(frame).__name__}, expected pandas.DataFrame"
+        )
+    if frame.empty:
+        raise ValueError(f"FY{fy} parser produced zero facility rows")
+
+    missing_fields = [
+        field_name
+        for field_name in (*expected_source_fields(fy), 'fiscal_year')
+        if field_name not in frame.columns
+    ]
+    if missing_fields:
+        raise ValueError(
+            f"FY{fy} parser output is missing required standardized fields: "
+            + ", ".join(missing_fields)
+        )
+
+    parsed_years = sorted(frame['fiscal_year'].dropna().unique().tolist())
+    if parsed_years != [fy] or frame['fiscal_year'].isna().any():
+        raise ValueError(
+            f"FY{fy} parser output has invalid fiscal_year values: {parsed_years}"
+        )
+
+
+def validate_canonical_panel(panel):
+    """Require one nonempty annual contribution for every canonical fiscal year."""
+    if panel.empty:
+        raise ValueError("Canonical facility panel contains zero rows")
+
+    missing_fields = [
+        field_name
+        for field_name in (*STANDARDIZED_FIELDS, 'fiscal_year')
+        if field_name not in panel.columns
+    ]
+    if missing_fields:
+        raise ValueError(
+            "Canonical facility panel is missing standardized fields: "
+            + ", ".join(missing_fields)
+        )
+
+    actual_years = sorted(panel['fiscal_year'].dropna().unique().tolist())
+    expected_years = list(CANONICAL_FISCAL_YEARS)
+    missing_years = sorted(set(expected_years) - set(actual_years))
+    unexpected_years = sorted(set(actual_years) - set(expected_years))
+    if actual_years != expected_years or panel['fiscal_year'].isna().any():
+        raise ValueError(
+            "Canonical facility panel fiscal-year coverage failed: "
+            f"missing={missing_years or 'none'}, "
+            f"unexpected={unexpected_years or 'none'}, "
+            f"observed_year_count={len(actual_years)}, "
+            f"expected_year_count={EXPECTED_FISCAL_YEAR_COUNT}"
+        )
+
+    row_counts = panel.groupby('fiscal_year', sort=True).size()
+    empty_years = [fy for fy in CANONICAL_FISCAL_YEARS if row_counts.get(fy, 0) <= 0]
+    if empty_years:
+        raise ValueError(
+            "Canonical facility panel has fiscal years with zero rows: "
+            + ", ".join(f"FY{fy}" for fy in empty_years)
+        )
+
+
 def parse_year(fy):
     """Parse a single fiscal year's facility file."""
-    for ext in ['xlsx', 'xls']:
-        fpath = os.path.join(RAW_DIR, f'fy{fy}_incineration.{ext}')
-        if os.path.exists(fpath):
-            break
-    else:
-        return None
+    fpath = resolve_workbook_path(fy)
 
     engine = 'openpyxl' if fpath.endswith('.xlsx') else 'xlrd'
     df_raw = pd.read_excel(fpath, sheet_name=0, header=None, engine=engine)
+    if df_raw.empty or df_raw.shape[1] == 0:
+        raise ValueError(f"FY{fy} workbook first sheet is empty: {fpath}")
 
     # Auto-detect column positions
     col_map = {}
@@ -124,8 +265,24 @@ def parse_year(fy):
         if idx is not None:
             col_map[col_name] = idx
 
+    missing_required = [
+        field_name
+        for field_name in expected_source_fields(fy)
+        if field_name not in col_map
+    ]
+    if missing_required:
+        raise ValueError(
+            f"FY{fy} workbook is missing required standardized fields: "
+            + ", ".join(missing_required)
+        )
+
     # Find data start
     data_start = find_data_start(df_raw)
+    if data_start >= len(df_raw):
+        raise ValueError(
+            f"FY{fy} workbook has no rows at or after detected data start "
+            f"{data_start} (zero-based)"
+        )
     df_data = df_raw.iloc[data_start:].copy().reset_index(drop=True)
 
     # For FY2005-2006, prefecture is in col 1 (都道府県名) but auto-detect
@@ -148,27 +305,30 @@ def parse_year(fy):
             lambda x: pd.notna(x) and normalize(x) != ''
         )].reset_index(drop=True)
 
-    # Extract columns into standardized DataFrame
-    result = pd.DataFrame()
+    if df_data.empty:
+        raise ValueError(f"FY{fy} parser produced zero facility rows after header/footer filtering")
 
-    for col_name, col_idx in col_map.items():
-        if col_idx < df_data.shape[1]:
+    # Extract columns into standardized DataFrame
+    result = pd.DataFrame(index=df_data.index)
+
+    for col_name in STANDARDIZED_FIELDS:
+        col_idx = col_map.get(col_name)
+        if col_idx is None:
+            result[col_name] = np.nan
+        elif col_idx < df_data.shape[1]:
             result[col_name] = df_data.iloc[:, col_idx].values
         else:
-            result[col_name] = np.nan
+            raise ValueError(
+                f"FY{fy} mapped {col_name} to column {col_idx}, but the workbook "
+                f"has only {df_data.shape[1]} columns"
+            )
 
     # Set fiscal year AFTER columns are populated (avoids broadcast bug)
     result['fiscal_year'] = fy
 
     # Convert numeric columns
-    numeric_cols = [
-        'throughput_t_year', 'capacity_t_day', 'n_furnaces', 'year_started',
-        'power_capacity_kw', 'power_efficiency_pct', 'power_generated_mwh',
-        'power_sold_mwh', 'sell_revenue_yen', 'heating_value_kj_kg',
-    ]
-    for col in numeric_cols:
-        if col in result.columns:
-            result[col] = pd.to_numeric(result[col], errors='coerce')
+    for col in NUMERIC_FIELDS:
+        result[col] = pd.to_numeric(result[col], errors='coerce')
 
     # FY2005-2006 heating value may be in kcal/kg (values ~1000-3000)
     # FY2007+ uses kJ/kg (values ~4000-12000)
@@ -191,7 +351,34 @@ def parse_year(fy):
     if 'muni_code' in result.columns:
         result['muni_code'] = normalize_identifier(result['muni_code'])
 
+    validate_year_frame(fy, result)
     return result
+
+
+def parse_canonical_panel(report_progress=False):
+    """Parse and validate the complete FY2005-FY2024 panel."""
+    annual_frames = []
+    for fy in CANONICAL_FISCAL_YEARS:
+        if report_progress:
+            print(f"  FY{fy}...", end=" ", flush=True)
+        frame = parse_year(fy)
+        validate_year_frame(fy, frame)
+        annual_frames.append(frame)
+        if report_progress:
+            pct_power = (
+                frame['power_capacity_kw'].notna()
+                & frame['power_capacity_kw'].gt(0)
+            ).mean() * 100
+            print(f"{len(frame)} facilities, {pct_power:.1f}% with power gen")
+
+    if len(annual_frames) != EXPECTED_FISCAL_YEAR_COUNT:
+        raise ValueError(
+            f"Expected {EXPECTED_FISCAL_YEAR_COUNT} parsed annual frames, "
+            f"received {len(annual_frames)}"
+        )
+    panel = pd.concat(annual_frames, ignore_index=True)
+    validate_canonical_panel(panel)
+    return panel
 
 
 def write_panel_summary_report(panel, output_path):
@@ -271,22 +458,8 @@ def main():
     print("Parsing MOE Incineration Facility Data (Auto-detect)")
     print("=" * 60)
 
-    all_years = []
-    for fy in range(2005, 2025):
-        print(f"  FY{fy}...", end=" ", flush=True)
-        try:
-            df = parse_year(fy)
-            if df is not None:
-                # Quick validation: check power gen column looks right
-                pct_power = (df['power_capacity_kw'].notna() & (df['power_capacity_kw'] > 0)).mean() * 100 if 'power_capacity_kw' in df.columns else 0
-                print(f"{len(df)} facilities, {pct_power:.1f}% with power gen")
-                all_years.append(df)
-        except Exception as e:
-            print(f"ERROR: {e}")
-            import traceback
-            traceback.print_exc()
-
-    panel = pd.concat(all_years, ignore_index=True)
+    # Exceptions intentionally propagate: a partial panel must never be published.
+    panel = parse_canonical_panel(report_progress=True)
 
     # Compute derived variables
     panel['facility_age'] = panel['fiscal_year'] - panel['year_started']
@@ -304,9 +477,7 @@ def main():
 
     # Save
     out_path = os.path.join(PROCESSED_DIR, 'incineration_panel.csv')
-    summary_path = os.path.join(OUTPUT_DIR, 'panel_summary.md')
     panel.to_csv(out_path, index=False, encoding='utf-8-sig', float_format='%.15g')
-    write_panel_summary_report(panel, summary_path)
 
     # --- Summary ---
     print("\n" + "=" * 60)
@@ -348,11 +519,21 @@ def main():
         inputs=[os.path.relpath(RAW_DIR, os.path.join(SCRIPT_DIR, "..", ".."))],
         outputs=[
             os.path.relpath(out_path, os.path.join(SCRIPT_DIR, "..", "..")),
-            os.path.relpath(summary_path, os.path.join(SCRIPT_DIR, "..", "..")),
         ],
         metadata={
             "rows": int(len(panel)),
             "years": [int(panel['fiscal_year'].min()), int(panel['fiscal_year'].max())],
+            "canonical_fiscal_years": list(CANONICAL_FISCAL_YEARS),
+            "fiscal_year_count": int(panel['fiscal_year'].nunique()),
+            "rows_by_fiscal_year": {
+                str(fy): int(count)
+                for fy, count in panel.groupby('fiscal_year', sort=True).size().items()
+            },
+            "required_standardized_fields": list(REQUIRED_STANDARDIZED_FIELDS),
+            "optional_standardized_fields": list(OPTIONAL_STANDARDIZED_FIELDS),
+            "optional_field_first_fiscal_year": dict(
+                OPTIONAL_FIELD_FIRST_FISCAL_YEAR
+            ),
             "facilities_with_codes": int(panel['facility_code'].nunique()),
             "power_generation_rows": int(panel['has_power_gen'].sum()),
         },

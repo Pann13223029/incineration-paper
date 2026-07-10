@@ -1,0 +1,5 @@
+segment,facility_rows,stable_sites,design_capacity_t_day,throughput_t_year,gross_generation_mwh,facility_share_pct,design_capacity_share_pct,throughput_share_pct
+Installed capacity without positive output,9,9,2834,0,0,0.8875739645,1.6014081,0
+No positive throughput or generation,126,126,12446.56,0,0,12.4260355,7.033176429,0
+Operating generator,410,410,122094.7,24703005.33,10457490.37,40.43392505,68.99204006,80.09872796
+Operating non-generator,469,469,39593.996,6137690.847,0,46.25246548,22.37337541,19.90127204

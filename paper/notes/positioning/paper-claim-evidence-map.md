@@ -1,175 +1,72 @@
 # Paper Claim-To-Evidence Map
 
-This note protects the manuscript against over-cutting during thesis-to-paper
-compression.
+This map links each active manuscript claim to generated evidence and states the
+maximum interpretation that evidence supports. Generated files in `output/`
+remain authoritative.
 
-For each core claim, it records:
+## Evidence Chain
 
-- what the claim is
-- which current evidence artifact supports it
-- what must stay in main text
-- what can move to supplement
+| Claim | Primary evidence | Main-text minimum | Interpretation boundary |
+|:--|:--|:--|:--|
+| The longitudinal panel is auditable | [identity audit](../../../output/facility_identity_audit.md), [uncertain links](../../../output/identity_low_margin_links.csv), [identifier-gap audit](../../../output/identifier_gap_audit.md), [raw provenance](../../../output/raw_data_provenance.md) | State 23,593 retained records, 1,690 stable administrative lineages, 1,767 asset episodes, 16 exposed uncertain links, the code-regime problem, and deterministic guardrails | Reconstructed continuity is not proof of unchanged equipment, ownership, or physical-site continuity |
+| Facility participation understates activity coverage | [fleet decomposition](../../../output/fleet_decomposition.md), [FY2024 segments](../../../output/fy2024_fleet_segments.csv) | Report 41.1% of facilities, 80.1% of throughput, and 70.5% of design capacity | Do not infer unobserved technical feasibility or net energy potential |
+| First reported entry is scale-selective | [entry results](../../../output/adoption_results.md), [bootstrap coefficients](../../../output/adoption_bootstrap_coefficients.csv) | Define the event, show the broad and sensitivity frames, report 35/33/24 events, and give the 300-versus-100 t/day odds ratios of 6.13 and 6.25 | Association is not a causal effect of expanding a facility |
+| Age is not a defensible general entry headline | [entry results](../../../output/adoption_results.md), [transition estimates](../../../output/figure2_transition_effects.csv) | Report joint age p=0.380/0.186/0.051/0.357 for broad/prior/same-episode/identity-certain frames | Individual negative coefficients do not establish a monotonic or universal age pattern; inference is continuity-sensitive |
+| Gross output must be decomposed | [component results](../../../output/regression_results.md), [component table](../../../output/generator_component_results.csv), [robustness](../../../output/robustness_results.md) | Define generator design intensity and electrical capacity factor; report 6,511 rows and 493 stable administrative lineages | Gross MWh/t is an administrative output ratio, not thermodynamic efficiency |
+| Installed generator sizing changes the former gross-intensity pattern | [component results](../../../output/regression_results.md), [component table](../../../output/generator_component_results.csv) | Distinguish the 5,806-row plausible-heating-value diagnostic, which explicitly controls heating value, from the 6,511-row primary models; report legacy age -0.0349, capacity +0.1001, and utilization +0.6699, then sizing-adjusted age -0.0020 (p=0.2977), capacity -0.0092 (p=0.1991), utilization -0.0995 (p=0.2038), sizing +0.7532 (p<0.001), and R-squared 0.4737 to 0.8131 | This is a specification diagnostic, not causal mediation |
+| Pathways qualify entry interpretation | [entry results](../../../output/adoption_results.md), [pathway audit](../../../output/adoption_pathway_audit.csv), [post-entry trajectories](../../../output/post_adoption_trajectories.csv) | Distinguish continuity-lineage, rebuild/replacement-like, and forward-dated records; state that labels are administrative | Categories do not prove construction, retrofit, or replacement mechanisms |
+| Findings survive prespecified checks | [robustness](../../../output/robustness_results.md), [data-quality sensitivity](../../../output/data_quality_sensitivity.md), [claim verification](../../../output/claim_verification.md) | Summarize only checks that bear directly on entry sparsity, linkage, engineering bounds, or component specification | A robustness ladder cannot convert observational associations into causal estimates |
 
-## Claim 1: The fleet transition problem is empirically two-part
+## Required Main-Text Claim Sequence
 
-Claim:
+1. **Measurement baseline:** facility participation differs from throughput and
+   design-capacity coverage.
+2. **Entry result:** first reported installed-capacity entry is rare and strongly
+   associated with prior waste-processing scale.
+3. **Age restraint:** broad and identity-certain joint tests are null, while
+   the sparse same-episode result is borderline; age inference is continuity-sensitive.
+4. **Engineering result:** reported start-year cohorts differ mainly in installed
+   generator design intensity, while annual use is a separate component.
+5. **Diagnostic correction:** in the separate 5,806-row plausible-heating-value
+   frame with heating value controlled, age, processing capacity, and
+   utilization are no longer independently supported after installed sizing
+   enters the former gross-intensity model; this is specification evidence, not
+   causal mediation.
+6. **Integrated implication:** modernization cannot be evaluated from facility
+   counts or one gross-output ratio alone.
 
-- the paper must separate transition into generation from conditional
-  performance within the generating segment
+## Construct Definitions That Must Stay Visible
 
-Current evidence:
+- **Stable administrative lineage:** a deterministic history built from names,
+  municipality, timing, capacity, technology, and source-code evidence.
+- **Asset episode:** a segment within a stable administrative lineage separated by a material
+  start-year or configuration reset.
+- **Entry event:** first positive reported installed electrical-generation
+  capacity after observed non-generating history.
+- **Waste-processing design capacity:** tonnes of waste per day; this is the
+  entry scale predictor.
+- **Generator design intensity:** installed electrical kW per tonne/day of
+  waste-processing design capacity.
+- **Electrical capacity factor:** annual gross MWh relative to installed
+  electrical capacity operating at nameplate for the year.
+- **Gross generation intensity:** gross MWh per tonne of waste processed; a
+  descriptive product of design and operation, not an efficiency measure.
 
-- [sample_definition.md](../../evidence/current/sample_definition.md)
-- [adoption_results.md](../../evidence/current/adoption_results.md)
-- [regression_results.md](../../evidence/current/regression_results.md)
+## Red-Line Checks
 
-Must stay in main text:
+Reject a draft if it:
 
-- one sentence defining the adoption frame
-- one sentence defining the generator frame
-- one framework figure showing why one average fleet model is insufficient
+- treats source facility codes as stable longitudinal identifiers
+- equates the 41.1% facility share with the share of waste throughput
+- reports conventional maximum-likelihood logit as the primary sparse-event
+  estimator
+- turns individual age coefficients into a headline despite the joint tests
+- describes gross MWh/t as plant efficiency
+- omits installed generator sizing from interpretation of gross output
+- presents pathway labels or coefficients as causal mechanisms
+- cites a comparator without stating what was adapted and what remains original
 
-May move to supplement:
+## Update Rule
 
-- extra sample-construction detail
-- edge-case cleaning notes
-
-## Claim 2: Entry is scale-selective, while the age result is frame-specific
-
-Claim:
-
-- prior-year scale positively predicts entry in the broad asset and active-
-  conversion frames
-- negative age AMEs in the broad frame attenuate after requiring positive prior-
-  year throughput
-
-Current evidence:
-
-- [adoption_results.md](../../evidence/current/adoption_results.md)
-
-Must stay in main text:
-
-- adoption model sample counts
-- one adoption results table
-- one adoption figure or compact event-rate visualization
-- both broad and active model columns in the main results table
-- plain-language statement that scale is robust but age is frame-specific
-- concise disclosure that 109 of 141 first-adoption events occur in
-  FY2013-FY2019, without interpreting the cluster as an identified shock
-
-May move to supplement:
-
-- alternative lag structures
-- prior-technology adjustment
-- extended event-year detail
-- extra subgroup tables
-
-## Claim 3: Conditional generator performance is structured after observed technology adjustment
-
-Claim:
-
-- within the canonical generator frame, performance is structured by age/vintage,
-  scale, and utilization after common-year and observed-technology adjustment
-- engineering-oriented outcomes and lagged predictors preserve the signs
-
-Current evidence:
-
-- [regression_results.md](../../evidence/current/regression_results.md)
-- [sample_definition.md](../../evidence/current/sample_definition.md)
-- [data_quality_sensitivity.md](../../evidence/current/data_quality_sensitivity.md)
-
-Must stay in main text:
-
-- generator sample counts
-- one electricity-recovery results table
-- primary year- and technology-adjusted specification
-- the within / total variance ratio in prose or compact display
-- a concise interpretation of structured generator performance
-- short explanation that the canonical generator frame excludes 907 uncoded
-  operating-generator rows and that the supplement audits this exclusion
-
-May move to supplement:
-
-- fuller estimator comparisons
-- alternate engineering outcomes
-- extra robustness variants
-- expanded early/later coded-window detail
-
-## Claim 4: Entry and post-entry position are empirically linked but not causal
-
-Claim:
-
-- entrants begin near the middle of the same-year generator distribution on
-  average, with pathway-relevant subgroup differences and declining follow-up
-
-Current evidence:
-
-- [post_adoption_trajectories.csv](../../../output/post_adoption_trajectories.csv)
-- [adoption_results.md](../../evidence/current/adoption_results.md)
-
-Must stay in main text:
-
-- event-time zero through three trajectory summary
-- attrition from 125 to 71 represented events
-- explicit statement that the trajectory is not an entry treatment effect
-
-May move to supplement:
-
-- detailed prior-operating-status and pathway subgroup tables
-
-## Claim 5: The paper supports calibrated planning diagnostics
-
-Claim:
-
-- planning assessments should distinguish facilities outside electricity
-  recovery from operating generators because the observable constraints differ
-  across those two groups
-
-Current evidence:
-
-- [adoption_results.md](../../evidence/current/adoption_results.md)
-- [regression_results.md](../../evidence/current/regression_results.md)
-- [data_quality_sensitivity.md](../../evidence/current/data_quality_sensitivity.md)
-
-Must stay in main text:
-
-- one synthesis paragraph linking the two margins
-- one sentence marking this as an evidence-consistent interpretation, not a
-  uniquely identified mechanism
-- one sentence avoiding stronger claims that the data directly identify capital
-  replacement, policy-shock timing, or governance effects
-
-May move to supplement:
-
-- longer policy discussion
-- extended comparisons with alternative institutional channels
-
-## Claim 6: The pathway audit is supportive, not the paper's main novelty
-
-Claim:
-
-- the pathway audit bounds mechanism language without proving replacement,
-  refurbishment, or new build as the unique pathway
-
-Current evidence:
-
-- [adoption_results.md](../../evidence/current/adoption_results.md)
-
-Must stay in main text:
-
-- concise category summary
-- one sentence saying the audit supports calibrated interpretation rather than
-  mechanism proof
-
-May move to supplement:
-
-- rule detail
-- classification logic
-- extra audit tables
-
-## Use Rule
-
-Before cutting anything from the manuscript, check whether it protects one of
-the `Must stay in main text` items above.
-
-If yes, keep it or replace it with something equally clear.
+When analysis changes, update generated evidence first, then this map, then the
+manuscript and TeX source. No note may override a failed claim-verification check.

@@ -1,19 +1,20 @@
-# Table 2. Installed-capacity entry and coded-panel-exit hazards
+# Table 2. First reported installed-generation-capacity entry
 
-Main specification: exact one-fiscal-year lagged discrete-time logit hazard for first positive installed generation capacity, with prior-year age band, prior-year design capacity, fiscal-year indicators, actual elapsed at-risk duration, and facility-clustered standard errors. The active-conversion model additionally requires positive prior-year throughput. A separate hazard reports final coded-panel exit before FY2024; it is not a closure model. Effects are average marginal effects (AMEs) in percentage points. Baseline age band: 0-10 years.
+Firth bias-reduced discrete-time hazards use four calendar eras, flexible at-risk-duration bands, and log(1 + waste-processing design capacity / 100). Baseline age band: 0-9 years. Intervals are the 2.5th and 97.5th percentiles from 499 stable-lineage cluster-bootstrap replications.
 
-| Variable | Broad entry AME (pp) | Active conversion AME (pp) | Panel exit AME (pp) |
-|:--|--:|--:|--:|
-| Prior-year age 10-20 yrs (vs 0-10) | -1.41 (0.21) | -0.67 (0.21) | -0.42 (0.54) |
-| Prior-year age 20-30 yrs (vs 0-10) | -1.45 (0.33) | -0.56 (0.30) | 0.18 (0.57) |
-| Prior-year age 30+ yrs (vs 0-10) | -0.83 (0.35) | -0.29 (0.30) | 2.60 (0.85) |
-| Prior-year capacity (per 100 t/day) | 0.45 (0.15) | 0.44 (0.09) | -1.63 (0.32) |
-
-| Model summary | Broad entry | Active conversion |
+| Predictor | Broad exact-year log-odds (bootstrap 95% interval) | Prior-operation log-odds (bootstrap 95% interval) |
 |:--|--:|--:|
-| Observations | 10,823 | 9,215 |
-| Facilities | 1,911 | 1,663 |
-| Installed-capacity entry events | 98 | 58 |
-| Pseudo-R-squared | 0.1920 | Not used for comparison |
+| Prior age 10-19 years | -1.254 (-2.423, 0.664) | -1.336 (-2.445, 0.311) |
+| Prior age 20-29 years | -1.127 (-2.177, 0.869) | -1.389 (-2.505, 0.243) |
+| Prior age 30+ years | -1.309 (-2.702, 0.645) | -1.310 (-2.594, 0.423) |
+| Log waste-processing design capacity | 2.616 (1.971, 3.487) | 2.644 (1.909, 3.715) |
 
-*Notes: standard errors are in parentheses. Scale remains positive across both risk sets; the age gradient attenuates in the active-conversion frame. The panel-exit model contains 12,108 facility-years, 2,022 facilities, and 1,285 exits.*
+| Model summary | Broad exact-year | Prior operation |
+|:--|--:|--:|
+| Observations | 15,154 | 13,072 |
+| Stable administrative lineages | 1,137 | 1,019 |
+| Events | 35 | 33 |
+| Lineage-bootstrap joint age-band test, p-value | 0.380 | 0.186 |
+| Odds ratio, 300 versus 100 t/day | 6.13 | 6.25 |
+
+*Notes: the prior-operation frame is nested and is not an independent comparison group. Same-episode continuity (15,095 rows, 1,135 lineages, 24 events; joint age p = 0.051) and identity-certain (15,107 rows, 1,130 lineages, 35 events; p = 0.357) estimates are reported in the supplement. Results describe first reporting in annual administrative data; they do not identify a retrofit mechanism.*

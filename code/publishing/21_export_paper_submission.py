@@ -21,6 +21,7 @@ import re
 import shutil
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 from urllib.parse import quote
 
@@ -35,14 +36,14 @@ OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript.pdf"
 
 
 TITLE = (
-    "Selective Entry and Structured Electricity-Recovery Performance in Japan's "
-    "Waste-Incineration Fleet: A Facility-Level Panel Study"
+    "Coverage, Entry, and Engineering Components of Electricity Recovery in "
+    "Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024"
 )
 AUTHOR = "Pann Phetra"
 SUBJECT = "Waste Management manuscript export"
 KEYWORDS = (
-    "waste incineration, waste-to-energy, Japan, energy recovery, "
-    "facility panel, transition"
+    "municipal solid waste, incineration, waste-to-energy, Japan, generator "
+    "sizing, capacity factor, administrative record linkage"
 )
 
 
@@ -205,12 +206,20 @@ def export_docx() -> None:
         "-baseurl",
         baseurl,
     ]
+    OUT_DOCX.unlink(missing_ok=True)
     subprocess.run(command, check=True)
-    if not OUT_DOCX.exists():
+    if (
+        not OUT_DOCX.exists()
+        or not zipfile.is_zipfile(OUT_DOCX)
+        or OUT_DOCX.stat().st_mtime_ns < OUT_HTML.stat().st_mtime_ns
+    ):
         raise SystemExit(
-            "DOCX export did not produce an output file on this machine. "
+            "DOCX export did not produce a current, valid output file. "
             "Use --no-docx to generate Markdown and HTML only."
         )
+    with zipfile.ZipFile(OUT_DOCX) as archive:
+        if "word/document.xml" not in archive.namelist():
+            raise SystemExit("DOCX export is missing word/document.xml.")
 
 
 def export_pdf() -> None:
@@ -233,6 +242,7 @@ def export_pdf() -> None:
         f"--print-to-pdf={OUT_PDF}",
         html_url,
     ]
+    OUT_PDF.unlink(missing_ok=True)
     subprocess.run(command, check=True)
     if not OUT_PDF.exists():
         raise SystemExit(

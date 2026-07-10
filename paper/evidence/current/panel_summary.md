@@ -1,56 +1,38 @@
-# Incineration Facility Panel Dataset Summary
+# Stable-Lineage Panel Summary
 
-- **Observations:** 23,599
-- **Years:** FY2005 to FY2024 (20 years)
-- **Unique facilities:** 2,948
-- **Prefectures:** 47
-- **Columns:** 24
+The descriptive frame uses audited stable administrative facility lineages rather than official facility codes as longitudinal identifiers. Exact duplicate source records are collapsed before analysis.
 
-## Facilities per year
+- Facility-year records: 23,593
+- Stable administrative lineages: 1,690
+- Asset episodes: 1,767
+- Operating positive-output rows: 6,660 across 504 lineages
+- Engineering-valid generator rows: 6,511 across 493 lineages
+- Engineering-invalid positive-output rows: 149
+- Negative reported-age rows retained in source but excluded from age-dependent models: 355
 
-| FY | Facilities | % with power gen |
-|:---|:----------:|:----------------:|
-| 2005 | 1,318 | 21.6% |
-| 2006 | 1,301 | 22.7% |
-| 2007 | 1,307 | 22.7% |
-| 2008 | 1,307 | 23.1% |
-| 2009 | 1,310 | 23.8% |
-| 2010 | 1,245 | 24.5% |
-| 2011 | 1,251 | 24.9% |
-| 2012 | 1,222 | 26.0% |
-| 2013 | 1,199 | 26.9% |
-| 2014 | 1,207 | 27.9% |
-| 2015 | 1,192 | 29.4% |
-| 2016 | 1,154 | 31.5% |
-| 2017 | 1,139 | 32.8% |
-| 2018 | 1,128 | 33.9% |
-| 2019 | 1,093 | 35.1% |
-| 2020 | 1,087 | 35.5% |
-| 2021 | 1,060 | 37.3% |
-| 2022 | 1,038 | 38.9% |
-| 2023 | 1,027 | 39.8% |
-| 2024 | 1,014 | 41.1% |
+## Annual Count And Throughput Coverage
 
-## Key variable coverage
+|   fiscal_year |   facility_rows |   installed_capacity_share_pct |   positive_output_throughput_share_pct |
+|--------------:|----------------:|-------------------------------:|---------------------------------------:|
+|       2005.00 |         1318.00 |                          21.62 |                                  60.48 |
+|       2006.00 |         1301.00 |                          22.67 |                                  61.94 |
+|       2007.00 |         1306.00 |                          22.74 |                                  62.10 |
+|       2008.00 |         1305.00 |                          23.14 |                                  62.69 |
+|       2009.00 |         1309.00 |                          23.83 |                                  63.76 |
+|       2010.00 |         1244.00 |                          24.52 |                                  64.58 |
+|       2011.00 |         1250.00 |                          24.96 |                                  65.36 |
+|       2012.00 |         1222.00 |                          26.02 |                                  66.18 |
+|       2013.00 |         1199.00 |                          26.86 |                                  67.47 |
+|       2014.00 |         1207.00 |                          27.92 |                                  68.50 |
+|       2015.00 |         1192.00 |                          29.36 |                                  69.72 |
+|       2016.00 |         1154.00 |                          31.54 |                                  71.98 |
+|       2017.00 |         1139.00 |                          32.84 |                                  73.27 |
+|       2018.00 |         1128.00 |                          33.87 |                                  74.04 |
+|       2019.00 |         1093.00 |                          35.13 |                                  74.91 |
+|       2020.00 |         1087.00 |                          35.51 |                                  75.20 |
+|       2021.00 |         1060.00 |                          37.26 |                                  76.93 |
+|       2022.00 |         1038.00 |                          38.92 |                                  77.61 |
+|       2023.00 |         1027.00 |                          39.82 |                                  78.30 |
+|       2024.00 |         1014.00 |                          41.12 |                                  80.10 |
 
-| Variable | Coverage | Notes |
-|:---------|:--------:|:------|
-| throughput_t_year | 98.3% | Annual waste processed |
-| capacity_t_day | 99.8% | Design capacity |
-| year_started | 99.8% | Year operations began |
-| facility_age | 99.8% | Derived: fiscal_year - year_started |
-| heating_value_kj_kg | 96.2% | Energy content of waste |
-| power_capacity_kw | 35.4% | Only for power-gen facilities |
-| power_generated_mwh | 34.6% | Only for power-gen facilities |
-| power_sold_mwh | 7.9% | Only for power-gen facilities |
-| energy_efficiency_mwh_per_t | 33.2% | Derived: MWh / throughput |
-
-## Power-generating subsample
-
-| Metric | Value |
-|:-------|:------|
-| Observations | 6,950 |
-| Years | FY2005 to FY2024 |
-| power_generated_mwh coverage | 98.1% |
-| energy_efficiency_mwh_per_t coverage | 96.0% |
-| power_efficiency_pct coverage | 98.7% |
+Facility participation and throughput coverage have different denominators and must not be interpreted as interchangeable fleet shares.

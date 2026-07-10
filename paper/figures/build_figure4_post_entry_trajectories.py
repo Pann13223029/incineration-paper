@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Generate Figure 4 from the post-entry trajectory evidence."""
+"""Plot pathway profiles in the first complete fiscal year after entry."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -15,150 +19,176 @@ DATA_PATH = ROOT / "output" / "post_adoption_trajectories.csv"
 PNG_OUT = FIGURE_DIR / "figure4_post_entry_trajectories.png"
 PDF_OUT = FIGURE_DIR / "figure4_post_entry_trajectories.pdf"
 
+INK = "#20262d"
+MUTED = "#59636e"
+GRID = "#d9dee3"
+BLUE = "#0072b2"
+ORANGE = "#d55e00"
 
-def style_axes(ax, grid_axis: str = "y") -> None:
+PATHWAY_STYLES = {
+    "Continuity-lineage entry": {
+        "label": "Continuity-lineage",
+        "color": BLUE,
+        "marker": "o",
+        "offset": -0.105,
+    },
+    "Rebuild/replacement-like entry": {
+        "label": "Rebuild/replacement-like",
+        "color": ORANGE,
+        "marker": "s",
+        "offset": 0.105,
+    },
+}
+
+METRICS = (
+    ("mean_gross_rank_pct", "Gross MWh/t\nrank"),
+    ("mean_design_rank_pct", "Design intensity\nrank"),
+    ("mean_capacity_factor_rank_pct", "Capacity factor\nrank"),
+)
+
+
+def load_data() -> tuple[pd.DataFrame, int]:
+    if not DATA_PATH.exists():
+        raise SystemExit("Run the adoption analysis before Figure 4.")
+    data = pd.read_csv(DATA_PATH)
+    required = {
+        "series",
+        "pathway_category",
+        "event_time",
+        "events",
+        *(column for column, _ in METRICS),
+    }
+    missing = required.difference(data.columns)
+    if missing:
+        raise ValueError(f"Figure 4 input is missing columns: {sorted(missing)}")
+    first_year = data[
+        data["series"].eq("By pathway")
+        & data["event_time"].eq(1)
+        & data["pathway_category"].isin(PATHWAY_STYLES)
+    ].copy()
+    if len(first_year) != len(PATHWAY_STYLES) or first_year["pathway_category"].duplicated().any():
+        raise ValueError("Figure 4 requires one t=1 row for each focal pathway.")
+    metric_columns = [column for column, _ in METRICS]
+    if not first_year[metric_columns].apply(lambda col: col.between(0, 1)).all().all():
+        raise ValueError("Figure 4 percentile ranks must lie between 0 and 1.")
+    omitted = data[
+        data["series"].eq("By pathway")
+        & data["event_time"].eq(1)
+        & data["pathway_category"].eq("Forward-dated / placeholder entry")
+    ]
+    omitted_n = int(omitted["events"].iloc[0]) if len(omitted) == 1 else 0
+    return first_year, omitted_n
+
+
+def style_axes(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color("#66727f")
-    ax.spines["bottom"].set_color("#66727f")
-    ax.tick_params(colors="#33414d", labelsize=9.2)
-    ax.grid(axis=grid_axis, color="#dce3ea", linewidth=0.8)
+    ax.spines["left"].set_color(MUTED)
+    ax.spines["bottom"].set_color(MUTED)
+    ax.tick_params(colors=INK, labelsize=7.7, length=3)
+    ax.grid(axis="y", color=GRID, linewidth=0.65)
     ax.set_axisbelow(True)
 
 
 def build() -> None:
-    if not DATA_PATH.exists():
-        raise SystemExit("Run the adoption analysis before building Figure 4.")
-    data = pd.read_csv(DATA_PATH)
-    overall = data[data["series"].eq("All entrants")].sort_values("event_time")
-    status = data[data["series"].eq("Prior operating status")].copy()
-
+    data, omitted_n = load_data()
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "axes.titlesize": 11.5,
-            "axes.titleweight": "bold",
-            "axes.labelsize": 10.5,
+            "font.size": 8.3,
+            "axes.labelcolor": INK,
+            "text.color": INK,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
         }
     )
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.8, 4.5), dpi=200)
 
-    style_axes(ax1)
-    x = overall["event_time"].to_numpy()
-    entrant = overall["mean_mwh_t"].to_numpy()
-    entrant_ci = 1.96 * overall["se_mwh_t"].to_numpy()
-    incumbent = overall["mean_incumbent_mwh_t"].to_numpy()
-    ax1.errorbar(
-        x,
-        entrant,
-        yerr=entrant_ci,
-        color="#35689a",
-        marker="o",
-        markerfacecolor="white",
-        markeredgewidth=1.6,
-        capsize=3.5,
-        linewidth=1.8,
-        label="Entrants",
-    )
-    ax1.plot(
-        x,
-        incumbent,
-        color="#3f4a54",
-        linestyle="--",
-        marker="s",
-        markersize=4.5,
-        linewidth=1.4,
-        label="Same-year incumbents",
-    )
-    ax1.set_title(
-        "A. Electricity recovery after entry",
-        loc="left",
-        color="#22313f",
-        pad=16,
-    )
-    ax1.text(
-        0,
-        1.015,
-        "Means and 95% intervals; descriptive comparison",
-        transform=ax1.transAxes,
-        fontsize=8.5,
-        color="#53616d",
-        va="bottom",
-    )
-    ax1.set_xlabel("Years from installed-capacity entry")
-    ax1.set_ylabel("Bounded gross MWh per tonne")
-    ax1.set_xticks([0, 1, 2, 3])
-    ax1.set_ylim(0.24, 0.40)
-    ax1.legend(frameon=False, fontsize=8.4, loc="lower right")
+    fig, ax = plt.subplots(figsize=(3.7, 3.75), dpi=200)
+    style_axes(ax)
+    x = np.arange(len(METRICS), dtype=float)
 
-    style_axes(ax2)
-    status_specs = [
-        ("Operating prior year", "Operating prior year", "#35689a", "o", -1.0),
-        (
-            "Zero/missing prior throughput",
-            "Zero/missing prior throughput",
-            "#a35f2d",
-            "s",
-            -1.1,
-        ),
-        (
-            "No exact prior-year row",
-            "No exact prior-year row",
-            "#6f7b84",
-            "^",
-            1.3,
-        ),
-    ]
-    for value, label, color, marker, label_offset in status_specs:
-        subset = status[status["prior_operating_status"].eq(value)].sort_values(
-            "event_time"
-        )
-        ax2.errorbar(
-            subset["event_time"],
-            subset["mean_rank_pct"] * 100,
-            yerr=1.96 * subset["se_rank_pct"] * 100,
-            color=color,
-            marker=marker,
-            markerfacecolor="white",
-            markeredgewidth=1.4,
-            capsize=3,
-            linewidth=1.5,
+    for pathway, style in PATHWAY_STYLES.items():
+        row = data[data["pathway_category"].eq(pathway)].iloc[0]
+        values = np.array([float(row[column]) * 100 for column, _ in METRICS])
+        x_values = x + style["offset"]
+        label = f"{style['label']} (n={int(row['events'])})"
+        ax.scatter(
+            x_values,
+            values,
+            s=34,
+            marker=style["marker"],
+            facecolor="white",
+            edgecolor=style["color"],
+            linewidth=1.4,
             label=label,
+            zorder=3,
         )
-        final = subset.iloc[-1]
-        ax2.text(
-            3.08,
-            final["mean_rank_pct"] * 100 + label_offset,
-            label,
-            color=color,
-            fontsize=7.6,
-            va="center",
-        )
-    ax2.axhline(50, color="#3f4a54", linestyle="--", linewidth=1.0)
-    ax2.set_title(
-        "B. Within-year rank by prior status",
-        loc="left",
-        color="#22313f",
-        pad=16,
-    )
-    ax2.text(
-        0,
-        1.015,
-        "Mean percentile and 95% intervals",
-        transform=ax2.transAxes,
-        fontsize=8.5,
-        color="#53616d",
+        for x_value, value in zip(x_values, values):
+            ax.text(
+                x_value,
+                value + 3.2,
+                f"{value:.0f}",
+                color=style["color"],
+                fontsize=7.3,
+                fontweight="semibold",
+                ha="center",
+                va="bottom",
+            )
+
+    ax.axhline(50, color=INK, linewidth=0.9, linestyle=(0, (3, 2)), zorder=2)
+    ax.text(
+        -0.42,
+        51.7,
+        "50th percentile",
+        color=MUTED,
+        fontsize=6.8,
+        ha="left",
         va="bottom",
     )
-    ax2.set_xlabel("Years from installed-capacity entry")
-    ax2.set_ylabel("Mean generator percentile")
-    ax2.set_xticks([0, 1, 2, 3])
-    ax2.set_xlim(-0.15, 4.15)
-    ax2.set_ylim(20, 80)
+    handles, labels = ax.get_legend_handles_labels()
+    fig.text(
+        0.08,
+        0.965,
+        "First-year profile after generation entry",
+        fontsize=9.4,
+        fontweight="semibold",
+        ha="left",
+        va="top",
+    )
+    fig.text(
+        0.08,
+        0.91,
+        "Mean within-year percentiles among engineering-valid generators",
+        color=MUTED,
+        fontsize=7.1,
+        ha="left",
+        va="top",
+    )
+    ax.set_ylabel("Mean percentile rank", fontsize=8.1)
+    ax.set_ylim(0, 100)
+    ax.set_yticks([0, 20, 40, 60, 80, 100])
+    ax.set_xlim(-0.45, 2.55)
+    ax.set_xticks(x, [label for _, label in METRICS])
+    fig.legend(
+        handles,
+        labels,
+        loc="upper left",
+        bbox_to_anchor=(0.08, 0.87),
+        frameon=False,
+        fontsize=7.0,
+        handletextpad=0.4,
+        borderaxespad=0,
+        labelspacing=0.3,
+    )
+    omission = (
+        f"Placeholder/forward-dated pathway (n={omitted_n}) omitted for sparse support; "
+        "pathway contrasts are descriptive."
+    )
+    fig.text(0.08, 0.035, omission, color=MUTED, fontsize=6.5, ha="left", wrap=True)
 
-    fig.tight_layout(w_pad=2.5)
-    fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight", facecolor="white")
-    fig.savefig(PDF_OUT, bbox_inches="tight", facecolor="white")
+    fig.subplots_adjust(left=0.18, right=0.97, top=0.68, bottom=0.22)
+    fig.savefig(PNG_OUT, dpi=300, facecolor="white")
+    fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)
 
 

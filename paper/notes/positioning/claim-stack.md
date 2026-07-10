@@ -1,94 +1,107 @@
 # Paper Claim Stack
 
-## Dominant Headline
+Status: current professor-review framing. Numerical anchors must agree with the
+generated files in `output/`; this note is not an independent evidence source.
 
-Japan's waste-incineration transition combines **scale-selective observed entry**, a **risk-set-dependent age pattern**, and **structured post-entry electricity-recovery performance**.
+## One-Sentence Answer
 
-## Dominant Empirical Novelty
+Japan's incineration fleet shows a count-volume divergence: installed
+electricity generation is reported by 41.1% of FY2024 facilities, but those
+facilities represent 80.1% of recorded waste throughput and 70.5% of
+waste-processing design capacity; first reported entry is strongly
+scale-selective, while generator vintage differences operate mainly through
+installed generator sizing rather than an independent age-performance effect.
 
-This paper's main contribution is not that Japan is interesting on its own.
-It is that the paper **separates transition into generation from conditional
-performance within the generating segment in a national facility-level panel**.
+## Contribution
 
-That is the paper's primary originality claim.
+The paper combines one descriptive baseline with two analytical layers:
 
-## Core Claims In Order
+1. It distinguishes facility participation from throughput and design-capacity
+   coverage.
+2. It models sparse first reported entry into installed electrical-generation
+   capacity in reconstructed administrative-lineage histories.
+3. It decomposes gross generation per tonne into generator design intensity,
+   electrical capacity factor, and waste loading.
 
-1. Prior-year facility scale positively predicts installed-capacity entry in both the broad coded-asset and active-conversion risk sets.
-2. The broad-frame age gradient attenuates when positive prior-year throughput is required; age is therefore frame-specific rather than a universal operating-plant result.
-3. Conditional on generation, electricity recovery is structured by age/vintage, scale, and utilization after common-year and observed-technology adjustment.
-4. Entrants begin near the middle of the same-year generator distribution on average; entry and later performance are separate milestones.
-5. Planning interpretation should distinguish asset entry, active conversion, and performance among operating generators.
+The originality is this linked measurement design, not a claim that larger or
+newer facilities generate more electricity in the abstract.
+
+## Empirical Anchors
+
+| Layer | Current result | Defensible reading |
+|:--|:--|:--|
+| Identity | 23,593 retained records, 1,690 stable administrative lineages, 1,767 asset episodes; 16 accepted uncertain links exposed | Longitudinal units are reconstructed and audited rather than assumed from survey codes |
+| FY2024 fleet | 41.1% facility participation, 80.1% throughput coverage, 70.5% design-capacity coverage | A facility-count gap is not a waste-volume gap |
+| Entry description | 55 first observed capacity-entry events | Events are uncommon and pathway-heterogeneous |
+| Broad exact-year Firth frame | 15,154 lineage-years, 1,137 lineages, 35 events | Sparse-event inference requires bias reduction and restrained claims |
+| Prior-operation Firth frame | 13,072 lineage-years, 1,019 lineages, 33 events | Nested sensitivity requiring positive prior-year operation |
+| Continuity and linkage frames | Same episode: 15,095/1,135/24; identity certain: 15,107/1,130/35 rows/lineages/events | Age inference must be tested against continuity and linkage assumptions |
+| Scale contrast | Odds ratio 6.13 in the broad frame and 6.25 in the prior-operation frame for 300 versus 100 t/day | Scale selectivity is the stable entry result |
+| Age tests | Lineage-bootstrap joint p=0.380/0.186/0.051/0.357 across broad/prior/same-episode/identity-certain frames | Age coefficients do not support a universal headline and are continuity-sensitive |
+| Generator components | 6,511 engineering-valid rows across 493 stable administrative lineages | Generator sizing and annual use must be separated |
+| Sizing diagnostic | Separate 5,806-row plausible-heating-value frame with heating value controlled: legacy age -0.0349, capacity +0.1001, utilization +0.6699; after sizing, age -0.0020 (p=0.2977), capacity -0.0092 (p=0.1991), utilization -0.0995 (p=0.2038), sizing +0.7532 (p<0.001), and R-squared 0.4737 to 0.8131 | The former gross-MWh/t pattern is specification-sensitive after omitted generator sizing is added; this is not causal mediation and is distinct from the 6,511-row primary component analysis |
 
 ## Claim Hierarchy
 
-Treat these levels differently in the manuscript.
-
 ### Level 1: Main contribution
 
-- the paper separates adoption into generation from conditional performance in
-  one facility-level panel
+- Facility counts, waste-volume coverage, entry selection, and conditional
+  generator components answer different questions and should not be collapsed
+  into one modernization statistic.
 
-### Level 2: Headline substantive findings
+### Level 2: Headline findings
 
-- entry is scale-selective in both risk sets
-- the age association changes materially with the risk-set definition
-- conditional generator performance is structured by age/vintage, scale, and
-  utilization after year and technology adjustment
-- entrants begin near the same-year generator distribution middle on average
-- the paper reports the FY2013-FY2019 event-timing cluster as a data feature,
-  not as an identified policy shock
+- Generation is much more concentrated in high-throughput facilities than the
+  41.1% facility-participation statistic alone suggests.
+- Larger waste-processing facilities are substantially more likely to report
+  first installed generation capacity in both prespecified Firth frames.
+- The age terms are not jointly significant, and their differences across
+  frames are not statistically supported.
+- Older reported start-year cohorts have lower generator design intensity; the
+  separate 5,806-row diagnostic with plausible heating value and heating value
+  controlled no longer independently supports age, processing capacity, or
+  utilization after installed sizing is included. This is a specification
+  result, not causal mediation, and it is distinct from the 6,511-row primary
+  component models.
 
-### Level 3: Supporting interpretive findings
+### Level 3: Supporting findings
 
-- adjacent-year within-year ranks are highly correlated, without bounding
-  attainable plant-specific improvement
-- facilities outside electricity recovery and operating generators require
-  different planning diagnostics
-- the canonical generator frame is defensible because the supplement compares
-  coded rows with the 907 uncoded operating-generator rows
+- Reconstructed entry pathways help bound interpretation but do not establish
+  retrofit, replacement, or new-build mechanisms.
+- Electrical capacity factor captures annual generator use and should not be
+  treated as the same construct as installed sizing.
+- Adjacent-year persistence describes observed hierarchy; it does not bound
+  feasible improvement.
 
-### Level 4: Narrow broader lesson
+### Level 4: Transferable lesson
 
-- for similar fleet-transition studies, separating adoption from
-  conditional-performance dynamics may reveal patterns that a single average
-  fleet model obscures
+- Administrative infrastructure studies should validate longitudinal identity
+  and separate participation, activity-weighted coverage, installed design,
+  and annual operation before drawing transition conclusions.
 
-This broader lesson is a supporting payoff, not the main novelty claim.
+## Safe Interpretation
 
-## Main Safe Interpretation
+Use wording close to this:
 
-Use this sentence or stay very close to it:
+> The estimates are descriptive associations within histories reconstructed as
+> stable administrative lineages. Firth models address sparse first reported capacity entries, and
+> component models separate installed generator sizing from annual use. They do
+> not identify causal retrofit effects, policy shocks, thermodynamic efficiency,
+> or feasible generation potential at facilities without reported output.
 
-- `The estimates describe conditional associations within explicitly defined asset-entry, active-conversion, and identifiable-generator frames; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
+## Claims Not Supported
 
-## Claims To Avoid
-
-- replacement is uniquely identified as the mechanism
-- coefficients are clean causal structural effects
-- the study estimates unrestricted fleet-wide modernization
-- Japan automatically generalizes to every country
-- governance effects are directly estimated
-- the FY2013-FY2019 adoption cluster identifies a specific policy shock
-- the broad age gradient applies unchanged to operating-plant conversion
-- rank persistence establishes an upper bound on attainable improvement
-- the selected post-entry trajectory identifies an entry treatment effect
-
-## Gap Framing Rule
-
-The paper should frame its gap against three things:
-
-- fleet-average views that treat the incineration system too uniformly
-- generator-only studies that do not model entry into generation
-- transition stories that conflate entering generation with performing within
-  generation
-
-Do not rely on vague gap language such as:
-
-- `Japan has not been studied enough`
-- `few studies examine this issue`
+- age is a robust universal predictor of entry
+- the age pattern differs significantly between entry frames
+- administrative records identify a physical retrofit or replacement mechanism
+- gross generation per tonne is thermodynamic or lifecycle efficiency
+- the sizing diagnostic identifies a causal mechanism
+- every non-generating facility should install generation
+- facility participation equals the share of waste treated without generation
+- the estimates identify a policy intervention or an optimal investment order
 
 ## Writing Rule
 
-If a paragraph does not strengthen the dominant novelty claim or one of the
-headline substantive findings above, cut it or move it to supplement.
+Every main-text paragraph must either define a construct, establish an evidence
+link, explain the integrated contribution, or state a limitation needed to
+interpret a headline result. Move everything else to the supplement or notes.

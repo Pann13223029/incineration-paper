@@ -1,193 +1,169 @@
-# Reviewer Rubric For This Paper
+# Professor And Reviewer Rubric
 
-This note adapts general academic review frameworks into a paper-specific rubric
-for the current article direction:
+Use this rubric before professor review and again before any journal-oriented
+compression. Score each dimension from 0 to 2:
 
-- one integrated paper
-- Waste Management as the primary submission lane
-- empirical design contribution first
-- selective observed entry plus structured electricity-recovery performance as the named frame
+- **0:** absent, wrong, or materially misleading
+- **1:** present but unclear, weakly evidenced, or inconsistent
+- **2:** explicit, evidence-linked, and understandable without repository access
 
-Use this to judge drafts before adding more content.
+All hard gates must pass regardless of total score.
 
-## The Standard
+## 1. Professor Comprehension
 
-The paper should score well because it is:
+Key question: Can a knowledgeable outsider reconstruct the paper's logic?
 
-- empirically clear
-- structurally disciplined
-- cautious where identification is limited
-- useful beyond the Japan case without pretending to be universal
+Score 2 requires:
 
-It should not try to win by sounding broader than the design earns.
+- the count-volume puzzle appears before technical detail
+- stable administrative lineage, entry event, Firth regression, design intensity, capacity factor,
+  and gross MWh/t are defined in plain language
+- each equation is followed by its substantive meaning
+- the reader can distinguish 55 descriptive events from 35 and 33 modeled events
+- results are explained before implications are expanded
 
-## Paper-Specific Pass / Fail Checks
+## 2. Construct Validity
 
-The draft should clearly pass these concrete checks:
+Key question: Do variables measure what the prose says they measure?
 
-- the first page states the Japan puzzle, the analytical split, and the main
-  contribution
-- a framework figure appears on page 1 or page 2
-- the main text presents adoption first and electricity-recovery performance second
-- there is one core results table per margin
-- the pathway audit is concise in main text and detailed in supplement
-- the paper does not read like a shortened thesis
+Score 2 requires:
 
-If any of those fail, the draft is not ready for serious polishing.
+- facility participation, throughput coverage, and design-capacity coverage have
+  explicit denominators
+- installed electrical capacity is not confused with waste-processing capacity
+- gross MWh/t is not called thermodynamic efficiency
+- reported start year is treated as a vintage proxy
+- pathway labels remain administrative classifications
 
-## Dimension 1: Originality
+## 3. Longitudinal Identity Audit
 
-Key question:
-Does the paper make a clear contribution beyond a strong Japan case summary?
+Key question: Are site histories defensible despite source-code discontinuities?
 
-What strong looks like:
+Score 2 requires:
 
-- the paper clearly separates adoption into generation from conditional
-  performance within generators
-- the reader can see why that separation changes the substantive story
-- the contribution is framed as a design contribution first, not a sweeping new
-  theory
-- Japan serves as the proving ground for the design, not the sole reason the
-  paper matters
+- 23,593 records, 1,690 stable administrative lineages, and 1,767 asset episodes agree
+  across manuscript, supplement, tables, and evidence
+- the code-contradiction veto, adjacent-before-gap rule, symmetric episode resets,
+  duplicate collapse, canonical fingerprints, and low-margin audit are disclosed
+- golden same-link/separation and permutation/insertion tests pass
+- limitations distinguish administrative reconstruction from physical proof
 
-Failure signs:
+## 4. Sparse-Event Inference
 
-- the paper reads like two known analyses placed side by side
-- the novelty depends mostly on Japan as a case, not on the analytical split
-- the paper claims a new mechanism but does not identify it
-- the paper treats all supporting claims as equally novel
+Key question: Does the estimator match 35 and 33 entry events?
 
-## Dimension 2: Methodological Rigor
+Score 2 requires:
 
-Key question:
-Does the design answer the question it claims to answer?
+- the event and risk sets are defined before coefficients appear
+- Firth bias reduction is motivated and cited
+- the predictor set remains parsimonious
+- stable-lineage bootstrap intervals and joint tests are reported
+- scale odds ratios 6.13 and 6.25 are interpreted as associations
+- age joint p=0.380/0.186/0.051/0.357 are mapped to broad/prior/same-episode/identity-certain frames and prevent a universal age headline
 
-What strong looks like:
+## 5. Engineering Identity
 
-- the two analytical frames are defined cleanly
-- the adoption frame is explicit about observed transition risk
-- the generator frame is explicit about conditional performance
-- the paper is transparent that results are observational and not structural
-  causal estimates
-- the main text still gives one short sample / estimator / scope paragraph per
-  analytical layer
+Key question: Does the paper separate installed design from annual operation?
 
-Failure signs:
+Score 2 requires:
 
-- the main text blurs risk-set adoption with fleet-wide transition
-- the paper hides estimator limits instead of calibrating them
-- robustness detail is missing where a skeptical reader would expect it
-- main-text compression makes the design harder to trust
+- primary component analysis uses 6,511 rows across 493 stable administrative
+  lineages
+- generator design intensity and electrical capacity factor have equations,
+  units, and physical interpretations
+- gross generation intensity is shown as a composite quantity
+- the separate sizing diagnostic uses 5,806 engineering-valid rows with
+  plausible heating value and explicitly controls heating value, rather than
+  being conflated with the 6,511-row primary component models
+- the diagnostic reports legacy age -0.0349, capacity +0.1001, and utilization
+  +0.6699; after sizing, age -0.0020 (p=0.2977), capacity -0.0092 (p=0.1991),
+  utilization -0.0995 (p=0.2038), sizing +0.7532 (p<0.001), and R-squared
+  0.4737 to 0.8131
+- the diagnostic is described as specification evidence, not causal mediation
 
-## Dimension 3: Evidence Sufficiency
+## 6. Noncausal Discipline
 
-Key question:
-Do the main tables and figures support the central claims without needing the
-reader to dig through appendices first?
+Key question: Does every conclusion stay within the observational design?
 
-What strong looks like:
+Score 2 requires:
 
-- one framework figure explains the two-part design quickly
-- one main results table anchors the adoption margin
-- one main results table anchors the electricity-recovery margin
-- the pathway audit is summarized briefly but clearly
-- the core claims are supportable without opening the supplement
+- no coefficient is translated into a retrofit, aging, policy, or capacity-
+  expansion treatment effect
+- no technical potential or investment ranking is inferred for non-generators
+- persistence is not treated as a bound on attainable improvement
+- limitations name the external data needed for stronger identification
 
-Failure signs:
+## 7. Comparator Adaptation And Originality
 
-- too many claims rely on supplement-only information
-- figures are decorative rather than argumentative
-- the reader must reconstruct the evidence chain manually
+Key question: Can the professor see both intellectual lineage and independent
+contribution?
 
-## Dimension 4: Argument Coherence
+Score 2 requires:
 
-Key question:
-Does the paper feel like one integrated article?
+- the closest Japan, engineering, and methodological comparators are named
+- the paper states which framing, variable, or estimator principle was adapted
+- the current sample, question, and estimand differences are explicit
+- no paragraph implies that inspiration equals duplication
+- no novelty claim rests only on a later endpoint or national case label
 
-What strong looks like:
+## 8. Evidence And Narrative Consistency
 
-- the opening puzzle leads naturally to the two-part design
-- adoption results arrive first, efficiency results second
-- one synthesis paragraph explains why both halves belong together
-- the discussion interprets the combined finding rather than repeating results
-- the paper contains visible bridges against the `two adjacent studies` reading
+Key question: Does every public-facing artifact tell the same story?
 
-Failure signs:
+Score 2 requires:
 
-- the paper feels like two adjacent studies
-- the second half reads like a different paper
-- the discussion expands into policy before proving integration
-- the framework figure or synthesis paragraph arrives too late
+- abstract, RQs, equations, tables, figures, discussion, and conclusion use the
+  same constructs and samples
+- each high-risk number traces to generated evidence
+- figures have visible denominators, units, uncertainty, and sample sizes
+- the supplement adds audit depth without reversing the main text
+- claim verification, repository checks, TeX build, and visual PDF inspection
+  pass
 
-## Dimension 5: Writing Quality
+## 9. Significance Without Inflation
 
-Key question:
-Can a field-journal reader follow the argument without carrying thesis-level
-cognitive load?
+Key question: Is the contribution meaningful after all caveats are applied?
 
-What strong looks like:
+Score 2 requires:
 
-- the abstract is readable in one pass
-- the introduction states gap, design, and contribution early
-- prose avoids repeated caveat loops
-- methods are compressed without becoming vague
-- the draft sounds like an article rather than a defended thesis
+- the paper explains why count-volume divergence changes fleet diagnosis
+- scale selectivity is presented as quantified evidence, not merely intuition
+- the sizing result visibly corrects the former gross-output interpretation
+- the transferable lesson is about measurement and state definition, not a
+  universal policy prescription
 
-Failure signs:
+## Hard Gates
 
-- the paper sounds like a defended thesis rather than an article
-- paragraphs do multiple jobs at once
-- numeric detail is repeated in prose after already appearing in tables
-- the opening could fit almost any other paper in the field
+A draft fails review if any of the following is true:
 
-## Dimension 6: Literature Integration
+- source facility codes are used as longitudinal site identities
+- identity invariance or duplicate-collapse tests fail
+- 41.1% is presented as the share of waste without generation
+- ordinary logistic regression is the primary sparse-event estimator
+- individual age coefficients override the joint tests
+- gross MWh/t is described as engineering efficiency
+- installed generator sizing is omitted from the central gross-output diagnosis
+- causal mechanisms or policy rankings are asserted
+- comparator lineage is absent
+- active numbers differ across Markdown, TeX, tables, figures, and evidence
 
-Key question:
-Does the paper position itself against the right literature without bloating the
-main text?
+## Readiness Threshold
 
-What strong looks like:
+- Professor review: every hard gate passes, Dimensions 1-8 each score 2, and the
+  total is at least 17/18.
+- Journal compression: professor review threshold passes and the target journal's
+  current scope, length, figure, data, ethics, and disclosure requirements have
+  been checked directly.
 
-- the literature review is selective
-- the paper explains what prior work usually conflates
-- the gap is stated as a missing analytical separation, not a generic missing
-  case study
-- the literature contrast names fleet-average views, generator-only studies, and
-  conflated transition accounts
+## Fast Oral Test
 
-Failure signs:
+Without looking at notes, the author should answer in two minutes:
 
-- the literature section becomes a long survey
-- the paper tries to cite everything
-- the broader contribution disappears into topic background
+1. Why are 41.1% and 80.1% both correct?
+2. Why are there 55 descriptive events but only 35 in the main Firth model?
+3. What does the 6.13 odds ratio compare, and what does it not mean?
+4. Why is age not the entry headline?
+5. What is the engineering identity behind gross MWh/t?
+6. Which comparator principles were adapted, and what is original here?
 
-## Dimension 7: Significance And Impact
-
-Key question:
-Will a Waste Management reviewer think the paper matters?
-
-What strong looks like:
-
-- the paper says something useful about modernization across a major national
-  fleet
-- the result matters for how infrastructure transition is modeled
-- the broader lesson is methodological and transferable for similar
-  fleet-transition studies
-
-Failure signs:
-
-- the paper oversells a policy ranking it does not estimate
-- the paper only matters if the reader already cares about Japan
-- the portable lesson becomes too ambitious to defend
-
-## Fast Pre-Submission Test
-
-Before sending the paper anywhere, ask:
-
-1. Can a reader state the paper's contribution in one sentence?
-2. Can a reader explain why adoption and conditional performance must be split?
-3. Are the two main tables enough to support the central claims?
-4. Does the discussion interpret rather than overreach?
-5. Would the paper still sound honest if the supplement were never opened?
-
-If any answer is no, revise the draft before expanding it.
+Any hesitant or causal answer identifies the next revision target.

@@ -1,16 +1,9 @@
-"""
-05_panel_regression.py
-======================
-Canonical regression pipeline for the thesis analysis.
-
-This script consumes the shared estimation frame from panel_utils so the
-reported sample, transformations, and covariance assumptions are explicit.
-"""
+"""Stable-lineage engineering decomposition for operating waste generators."""
 
 from __future__ import annotations
 
 import os
-import warnings
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -18,645 +11,537 @@ import statsmodels.api as sm
 
 from panel_utils import (
     OUTPUT_DIR,
+    build_operating_power_frame,
     build_regression_frame,
     load_panel,
-    model_pvalues,
-    model_std_errors,
     sample_summary,
-    significance_stars,
+    within_total_variance_ratio,
     write_sample_definition_report,
     write_stage_manifest,
 )
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-warnings.filterwarnings("ignore", category=RuntimeWarning, module=r"linearmodels\..*")
 
-MODEL_VARS = [
-    "facility_age_years",
-    "capacity_100t",
-    "capacity_utilization_capped",
-    "heating_value_mj_kg",
-]
-
-MAIN_MODEL_LABELS = [
-    "Model 1 (Pooled OLS)",
-    "Model 2 (Year indicators)",
-    "Model 3 (RE)",
-    "Model 4 (Year indicators + RE)",
-]
-
-TECHNOLOGY_CATEGORICALS = [
-    "furnace_type_group",
-    "operation_mode_group",
-    "facility_type_group",
+COHORT_ORDER = ["Before 1990", "1990-1999", "2000-2009", "2010 or later"]
+TECHNOLOGY_CATEGORICALS = ["furnace_type_group", "facility_type_group"]
+FOCAL_COMPONENT_TERMS = [
+    "cohort_Before 1990",
+    "cohort_1990-1999",
+    "cohort_2000-2009",
+    "log_capacity_t_day",
 ]
 
 
-def load_regression_frame():
-    """Load the enriched panel and build the shared regression frame."""
-    panel = load_panel()
-    regression = build_regression_frame(panel)
-    summary = sample_summary(panel)
-
-    print(f"Regression frame: {len(regression):,} obs")
-    print(f"  Facilities: {regression['analysis_facility_id'].nunique():,}")
-    print(f"  Years: FY{regression['fiscal_year'].min()}-FY{regression['fiscal_year'].max()}")
-    print(
-        "  Within/total ratio (log-efficiency): "
-        f"{summary['regression_within_total_ratio']:.4f}"
+def clustered_ols(y: pd.Series, design: pd.DataFrame, groups: pd.Series):
+    return sm.OLS(y.astype(float), design.astype(float)).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": groups},
     )
 
-    return panel, regression, summary
+
+def common_design(frame: pd.DataFrame, *, include_utilization: bool) -> pd.DataFrame:
+    cohort = pd.Categorical(
+        frame["reported_start_year_cohort"],
+        categories=COHORT_ORDER,
+        ordered=True,
+    )
+    cohort_dummies = pd.get_dummies(
+        cohort,
+        prefix="cohort",
+        drop_first=False,
+        dtype=float,
+    ).drop(columns=["cohort_2010 or later"])
+    cohort_dummies.index = frame.index
+    technology = pd.get_dummies(
+        frame[TECHNOLOGY_CATEGORICALS],
+        prefix=["furnace", "facility"],
+        drop_first=True,
+        dtype=float,
+    )
+    years = pd.get_dummies(
+        frame["fiscal_year"],
+        prefix="fy",
+        drop_first=True,
+        dtype=float,
+    )
+    parts = [
+        frame[["log_capacity_t_day", "n_furnaces"]],
+        cohort_dummies,
+        technology,
+        years,
+    ]
+    if include_utilization:
+        parts.insert(1, frame[["capacity_utilization_raw"]])
+    return sm.add_constant(pd.concat(parts, axis=1), has_constant="add")
 
 
-def descriptive_stats(regression):
-    """Table 1: Summary statistics on the canonical regression frame."""
-    print("\n" + "=" * 60)
-    print("TABLE 1: Summary Statistics (Regression Frame)")
-    print("=" * 60)
+def output_design(frame: pd.DataFrame) -> pd.DataFrame:
+    base = common_design(frame, include_utilization=False)
+    direct = pd.DataFrame(
+        {
+            "log_throughput_t_year": np.log(frame["throughput_t_year"]),
+            "log_power_capacity_kw": np.log(frame["power_capacity_kw"]),
+        },
+        index=frame.index,
+    )
+    return pd.concat(
+        [
+            base.drop(columns=["log_capacity_t_day"]),
+            direct,
+        ],
+        axis=1,
+    )
 
-    desc_vars = {
-        "energy_efficiency_mwh_per_t": "Gross electricity generation (MWh/t, bounded)",
-        "log_efficiency": "log(Bounded gross MWh/t)",
-        "facility_age_years": "Facility Age (years)",
-        "capacity_t_day": "Capacity (t/day)",
-        "capacity_utilization_capped": "Capacity Utilization",
-        "heating_value_mj_kg": "Heating Value (MJ/kg)",
+
+def legacy_design(frame: pd.DataFrame, *, include_generator_sizing: bool) -> pd.DataFrame:
+    base = common_design(frame, include_utilization=True)
+    numeric = frame[
+        ["facility_age_years", "capacity_100t", "heating_value_mj_kg"]
+    ].copy()
+    design = pd.concat(
+        [
+            base.drop(columns=FOCAL_COMPONENT_TERMS, errors="ignore"),
+            numeric,
+        ],
+        axis=1,
+    )
+    if include_generator_sizing:
+        design["log_generator_design_intensity"] = frame[
+            "log_generator_design_intensity"
+        ]
+    return design
+
+
+def fit_component_models(frame: pd.DataFrame) -> dict[str, Any]:
+    groups = frame["analysis_facility_id"]
+    design_model = clustered_ols(
+        frame["log_generator_design_intensity"],
+        common_design(frame, include_utilization=False),
+        groups,
+    )
+    capacity_factor_model = clustered_ols(
+        frame["log_electrical_capacity_factor"],
+        common_design(frame, include_utilization=True),
+        groups,
+    )
+    output_model = clustered_ols(
+        np.log(frame["power_generated_mwh"]),
+        output_design(frame),
+        groups,
+    )
+
+    plausible = frame[frame["plausible_heating_value"]].copy()
+    legacy_model = clustered_ols(
+        plausible["log_efficiency_raw"],
+        legacy_design(plausible, include_generator_sizing=False),
+        plausible["analysis_facility_id"],
+    )
+    sizing_adjusted_model = clustered_ols(
+        plausible["log_efficiency_raw"],
+        legacy_design(plausible, include_generator_sizing=True),
+        plausible["analysis_facility_id"],
+    )
+    return {
+        "design_intensity": design_model,
+        "capacity_factor": capacity_factor_model,
+        "gross_output": output_model,
+        "legacy_gross_intensity": legacy_model,
+        "sizing_adjusted_gross_intensity": sizing_adjusted_model,
+        "legacy_frame": plausible,
     }
 
+
+def model_row(model, term: str) -> dict[str, float]:
+    coefficient = float(model.params[term])
+    standard_error = float(model.bse[term])
+    return {
+        "coefficient": coefficient,
+        "standard_error": standard_error,
+        "ci_low": coefficient - 1.96 * standard_error,
+        "ci_high": coefficient + 1.96 * standard_error,
+        "p_value": float(model.pvalues[term]),
+    }
+
+
+def write_summary_statistics(frame: pd.DataFrame) -> str:
+    variables = {
+        "energy_efficiency_raw_mwh_per_t": "Gross generation intensity (MWh/t)",
+        "generator_design_intensity_kw_per_t_day": "Generator sizing intensity (kW per t/day)",
+        "electrical_capacity_factor": "Electrical capacity factor",
+        "capacity_utilization_raw": "Waste-processing utilization",
+        "power_capacity_kw": "Installed electrical capacity (kW)",
+        "capacity_t_day": "Waste-processing design capacity (t/day)",
+    }
     rows = []
-    for var, label in desc_vars.items():
-        s = regression[var].dropna()
+    for variable, label in variables.items():
+        values = frame[variable].dropna()
         rows.append(
             {
                 "Variable": label,
-                "N": len(s),
-                "Mean": f"{s.mean():.3f}",
-                "Median": f"{s.median():.3f}",
-                "SD": f"{s.std():.3f}",
-                "Min": f"{s.min():.3f}",
-                "Max": f"{s.max():.3f}",
+                "N": len(values),
+                "Mean": values.mean(),
+                "Median": values.median(),
+                "SD": values.std(),
+                "Min": values.min(),
+                "Max": values.max(),
             }
         )
-
-    desc_df = pd.DataFrame(rows)
-    print(desc_df.to_string(index=False))
-
+    table = pd.DataFrame(rows)
     path = os.path.join(OUTPUT_DIR, "table1_summary_stats.md")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("# Table 1: Summary Statistics (Canonical Regression Frame)\n\n")
-        f.write(desc_df.to_markdown(index=False))
-        f.write(
-            "\n\n"
-            "*Note: heating value is a noisy administrative estimate derived from the "
-            "source files and retained as a control variable rather than interpreted "
-            "as a clean engineering measurement.*\n"
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write("# Generator Component Summary Statistics\n\n")
+        handle.write(table.to_markdown(index=False, floatfmt=".3f"))
+        handle.write(
+            "\n\nThe frame excludes predeclared implausible generation-intensity, "
+            "capacity-factor, utilization, generator-sizing, and reported-age records. "
+            "Values are not clipped into the model.\n"
         )
-    print(f"\n  Saved: {path}")
-
     return path
 
 
-def efficiency_by_age_group(regression):
-    """Table 2: bounded gross MWh/t by age group on the regression frame."""
-    print("\n" + "=" * 60)
-    print("TABLE 2: Gross Electricity Generation per Tonne by Facility Age Group")
-    print("=" * 60)
-
-    grouped = regression.copy()
-    grouped["age_group"] = pd.cut(
-        grouped["facility_age_years"],
-        bins=[0, 10, 20, 30, 100],
-        labels=["0-10 yrs", "10-20 yrs", "20-30 yrs", "30+ yrs"],
-        right=False,
-    )
-
-    table = grouped.groupby("age_group", observed=True).agg(
-        n_obs=("energy_efficiency_mwh_per_t", "count"),
-        mean_eff=("energy_efficiency_mwh_per_t", "mean"),
-        median_eff=("energy_efficiency_mwh_per_t", "median"),
-        mean_capacity=("capacity_t_day", "mean"),
-        mean_avoided=("avoided_co2_t", "mean"),
-        total_avoided=("avoided_co2_t", "sum"),
-    ).reset_index()
-    total_avoided = grouped["avoided_co2_t"].sum()
-    table["pct_of_total_avoided"] = (
-        table["total_avoided"] / total_avoided * 100
-    ).round(1)
-    table = table.drop(columns=["total_avoided"])
-
-    print(table.to_string(index=False))
-
-    path = os.path.join(OUTPUT_DIR, "table2_efficiency_by_age.md")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("# Table 2: Gross Electricity Generation per Tonne by Facility Age Group\n\n")
-        f.write(table.to_markdown(index=False))
-    print(f"\n  Saved: {path}")
-
-    return path
-
-
-def build_persistence_figure_data(regression):
-    """Write data-backed age-group intervals and adjacent-year rank persistence."""
-    frame = regression.copy()
-    frame["age_group"] = pd.cut(
-        frame["facility_age_years"],
-        bins=[0, 10, 20, 30, 100],
-        labels=["0-10 yrs", "10-20 yrs", "20-30 yrs", "30+ yrs"],
-        right=False,
-    )
-
-    age_dummies = pd.get_dummies(frame["age_group"], dtype=float)
-    mean_model = sm.OLS(frame["energy_efficiency_mwh_per_t"], age_dummies).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": frame["analysis_facility_id"]},
-    )
-    age_counts = frame.groupby("age_group", observed=True).agg(
-        observations=("energy_efficiency_mwh_per_t", "size"),
-        facilities=("analysis_facility_id", "nunique"),
-    )
-
-    rows = []
-    for label in age_dummies.columns:
-        mean = float(mean_model.params[label])
-        se = float(mean_model.bse[label])
-        rows.append(
-            {
-                "record_type": "age_mean",
-                "label": str(label),
-                "value": mean,
-                "ci_low": mean - 1.96 * se,
-                "ci_high": mean + 1.96 * se,
-                "observations": int(age_counts.loc[label, "observations"]),
-                "facilities": int(age_counts.loc[label, "facilities"]),
-                "year_start": np.nan,
-                "year_end": np.nan,
-            }
-        )
-
-    ranked = (
-        frame.groupby(["analysis_facility_id", "fiscal_year"], as_index=False)[
-            "log_efficiency"
-        ].mean()
-    )
-    ranked["rank_pct"] = ranked.groupby("fiscal_year")["log_efficiency"].rank(
-        pct=True,
-        method="average",
-    )
-    current = ranked[["analysis_facility_id", "fiscal_year", "rank_pct"]].rename(
-        columns={"fiscal_year": "year_start", "rank_pct": "rank_start"}
-    )
-    following = current.rename(
-        columns={"year_start": "year_end", "rank_start": "rank_end"}
-    )
-    pairs = current.merge(following, on="analysis_facility_id", how="inner")
-    pairs = pairs[pairs["year_end"].eq(pairs["year_start"] + 1)].copy()
-
-    annual = (
-        pairs.groupby(["year_start", "year_end"])
-        .apply(
-            lambda group: pd.Series(
-                {
-                    "value": group["rank_start"].corr(group["rank_end"]),
-                    "observations": len(group),
-                    "facilities": group["analysis_facility_id"].nunique(),
-                }
+def write_cohort_table(frame: pd.DataFrame) -> tuple[str, pd.DataFrame]:
+    table = (
+        frame.groupby("reported_start_year_cohort", observed=True)
+        .agg(
+            observations=("analysis_facility_id", "size"),
+            stable_sites=("analysis_facility_id", "nunique"),
+            median_gross_mwh_t=("energy_efficiency_raw_mwh_per_t", "median"),
+            median_generator_sizing=(
+                "generator_design_intensity_kw_per_t_day",
+                "median",
             ),
-            include_groups=False,
+            median_capacity_factor=("electrical_capacity_factor", "median"),
+            median_waste_utilization=("capacity_utilization_raw", "median"),
         )
         .reset_index()
     )
-    for row in annual.itertuples(index=False):
-        rows.append(
-            {
-                "record_type": "rank_correlation",
-                "label": f"FY{int(row.year_start)}-{str(int(row.year_end))[-2:]}",
-                "value": float(row.value),
-                "ci_low": np.nan,
-                "ci_high": np.nan,
-                "observations": int(row.observations),
-                "facilities": int(row.facilities),
-                "year_start": int(row.year_start),
-                "year_end": int(row.year_end),
-            }
+    path = os.path.join(OUTPUT_DIR, "table2_generator_components_by_cohort.md")
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write("# Generator Components By Reported Start-Year Cohort\n\n")
+        handle.write(table.to_markdown(index=False, floatfmt=".3f"))
+        handle.write(
+            "\n\nReported start-year cohort is an administrative design-vintage marker. "
+            "It is not a verified turbine or boiler installation date.\n"
         )
+    return path, table
 
-    output = pd.DataFrame(rows)
+
+def build_persistence_data(frame: pd.DataFrame) -> tuple[str, dict[str, float | int]]:
+    ranked = frame[
+        [
+            "analysis_facility_id",
+            "fiscal_year",
+            "energy_efficiency_raw_mwh_per_t",
+            "generator_design_intensity_kw_per_t_day",
+            "electrical_capacity_factor",
+        ]
+    ].copy()
+    metric_map = {
+        "gross_generation_intensity": "energy_efficiency_raw_mwh_per_t",
+        "generator_design_intensity": "generator_design_intensity_kw_per_t_day",
+        "electrical_capacity_factor": "electrical_capacity_factor",
+    }
+    output_rows: list[dict[str, float | int | str]] = []
+    summary: dict[str, float | int] = {}
+    for label, variable in metric_map.items():
+        metric = ranked[["analysis_facility_id", "fiscal_year", variable]].copy()
+        metric["rank_pct"] = metric.groupby("fiscal_year")[variable].rank(
+            pct=True,
+            method="average",
+        )
+        following = metric.rename(
+            columns={
+                "fiscal_year": "year_end",
+                "rank_pct": "rank_end",
+            }
+        )[["analysis_facility_id", "year_end", "rank_end"]]
+        pairs = metric.rename(
+            columns={"fiscal_year": "year_start", "rank_pct": "rank_start"}
+        ).merge(following, on="analysis_facility_id", how="inner")
+        pairs = pairs[pairs["year_end"].eq(pairs["year_start"] + 1)].copy()
+        annual = (
+            pairs.groupby(["year_start", "year_end"])
+            .apply(
+                lambda group: pd.Series(
+                    {
+                        "correlation": group["rank_start"].corr(group["rank_end"]),
+                        "pairs": len(group),
+                    }
+                ),
+                include_groups=False,
+            )
+            .reset_index()
+        )
+        for row in annual.itertuples(index=False):
+            output_rows.append(
+                {
+                    "metric": label,
+                    "year_start": int(row.year_start),
+                    "year_end": int(row.year_end),
+                    "rank_correlation": float(row.correlation),
+                    "pairs": int(row.pairs),
+                }
+            )
+        summary[f"{label}_pairs"] = int(len(pairs))
+        summary[f"{label}_sites"] = int(pairs["analysis_facility_id"].nunique())
+        summary[f"{label}_pooled_rank_correlation"] = float(
+            pairs["rank_start"].corr(pairs["rank_end"])
+        )
+        summary[f"{label}_median_annual_correlation"] = float(
+            annual["correlation"].median()
+        )
+    output = pd.DataFrame(output_rows)
     path = os.path.join(OUTPUT_DIR, "figure3_persistence.csv")
     output.to_csv(path, index=False, float_format="%.10g")
-
-    summary = {
-        "exact_adjacent_year_pairs": int(len(pairs)),
-        "facilities": int(pairs["analysis_facility_id"].nunique()),
-        "pooled_rank_correlation": float(pairs["rank_start"].corr(pairs["rank_end"])),
-        "median_annual_rank_correlation": float(annual["value"].median()),
-        "minimum_annual_rank_correlation": float(annual["value"].min()),
-        "maximum_annual_rank_correlation": float(annual["value"].max()),
-        "annual_transitions": int(len(annual)),
-    }
-    print(
-        "Rank persistence: "
-        f"pooled={summary['pooled_rank_correlation']:.3f}, "
-        f"median annual={summary['median_annual_rank_correlation']:.3f}, "
-        f"pairs={summary['exact_adjacent_year_pairs']:,}"
-    )
-    print(f"Saved: {path}")
     return path, summary
 
 
-def run_pooled_ols(regression):
-    """Model 1: Pooled OLS with facility-clustered standard errors."""
-    print("\n" + "=" * 60)
-    print("MODEL 1: Pooled OLS (clustered by facility)")
-    print("=" * 60)
-
-    y = regression["log_efficiency"]
-    X = sm.add_constant(regression[MODEL_VARS])
-
-    model = sm.OLS(y, X).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": regression["analysis_facility_id"]},
-    )
-    print(model.summary())
-    return model
-
-
-def run_ols_with_year_fe(regression):
-    """Model 2: OLS with year fixed effects and clustered SEs."""
-    print("\n" + "=" * 60)
-    print("MODEL 2: OLS with Year Fixed Effects")
-    print("=" * 60)
-
-    y = regression["log_efficiency"]
-    year_dummies = pd.get_dummies(
-        regression["fiscal_year"],
-        prefix="fy",
-        drop_first=True,
-        dtype=float,
-    )
-    X = sm.add_constant(pd.concat([regression[MODEL_VARS], year_dummies], axis=1))
-
-    model = sm.OLS(y, X).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": regression["analysis_facility_id"]},
-    )
-    print(f"  R-squared: {model.rsquared:.4f}")
-    print(f"  Adj R-squared: {model.rsquared_adj:.4f}")
-    print(f"  N: {int(model.nobs):,}")
-    return model
-
-
-def build_technology_adjusted_design(regression):
-    """Build the primary year-adjusted cross-facility design matrix."""
-    year_dummies = pd.get_dummies(
-        regression["fiscal_year"],
-        prefix="fy",
-        drop_first=True,
-        dtype=float,
-    )
-    technology_dummies = pd.get_dummies(
-        regression[TECHNOLOGY_CATEGORICALS],
-        prefix=["furnace", "operation", "facility"],
-        drop_first=True,
-        dtype=float,
-    )
-    return sm.add_constant(
-        pd.concat(
-            [
-                regression[MODEL_VARS],
-                regression[["n_furnaces"]],
-                technology_dummies,
-                year_dummies,
-            ],
-            axis=1,
-        )
-    )
-
-
-def run_primary_technology_adjusted_model(regression):
-    """Primary RQ2 model: year-adjusted OLS with plant-configuration controls."""
-    print("\n" + "=" * 60)
-    print("PRIMARY RQ2 MODEL: YEAR + TECHNOLOGY ADJUSTED OLS")
-    print("=" * 60)
-
-    X = build_technology_adjusted_design(regression)
-    model = sm.OLS(regression["log_efficiency"], X).fit(
-        cov_type="cluster",
-        cov_kwds={"groups": regression["analysis_facility_id"]},
-    )
-    print(f"  R-squared: {model.rsquared:.4f}")
-    print(f"  Adj R-squared: {model.rsquared_adj:.4f}")
-    print(f"  N: {int(model.nobs):,}")
-    for var in MODEL_VARS:
-        print(
-            f"  {var:<28} {float(model.params[var]):>8.4f}  "
-            f"SE={float(model.bse[var]):>7.4f}  p={float(model.pvalues[var]):>7.4f}"
-        )
-    return model
-
-
-def _fit_random_effects(regression, include_year_fe):
-    """Shared RE estimator helper."""
-    from linearmodels.panel import RandomEffects
-
-    pdata = regression.set_index(["analysis_facility_id", "fiscal_year"])
-    X = pdata[MODEL_VARS].copy()
-    if include_year_fe:
-        year_dummies = pd.get_dummies(
-            pdata.index.get_level_values("fiscal_year"),
-            prefix="fy",
-            drop_first=True,
-            dtype=float,
-        )
-        year_dummies.index = pdata.index
-        X = pd.concat([X, year_dummies], axis=1)
-    X = sm.add_constant(X)
-
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            "ignore",
-            category=RuntimeWarning,
-            module=r"linearmodels\..*",
-        )
-        return RandomEffects(pdata["log_efficiency"], X).fit(
-            cov_type="clustered",
-            cluster_entity=True,
-        )
-
-
-def run_random_effects(regression):
-    """Model 3: Random effects with clustered SEs."""
-    print("\n" + "=" * 60)
-    print("MODEL 3: Random Effects")
-    print("=" * 60)
-    model = _fit_random_effects(regression, include_year_fe=False)
-    print(f"  R-squared: {float(model.rsquared):.4f}")
-    print(f"  N: {int(model.nobs):,}")
-    for var in MODEL_VARS:
-        coef = float(model.params[var])
-        se = float(model_std_errors(model)[var])
-        p = float(model_pvalues(model)[var])
-        print(f"  {var:<28} {coef:>8.4f}  SE={se:>7.4f}  p={p:>7.4f}")
-    return model
-
-
-def run_random_effects_with_year_fe(regression):
-    """Model 4: Random effects plus year dummies, clustered by facility."""
-    print("\n" + "=" * 60)
-    print("MODEL 4: Random Effects + Year Fixed Effects")
-    print("=" * 60)
-    model = _fit_random_effects(regression, include_year_fe=True)
-    print(f"  R-squared: {float(model.rsquared):.4f}")
-    print(f"  N: {int(model.nobs):,}")
-    for var in MODEL_VARS:
-        coef = float(model.params[var])
-        se = float(model_std_errors(model)[var])
-        p = float(model_pvalues(model)[var])
-        print(f"  {var:<28} {coef:>8.4f}  SE={se:>7.4f}  p={p:>7.4f}")
-    return model
-
-
-def comparison_table(
-    models,
-    primary_model,
-    regression,
-    sample_report_path,
-    persistence_summary,
-):
-    """Write the primary RQ2 model and the supplemental estimator ladder."""
-    print("\n" + "=" * 60)
-    print("MODEL COMPARISON")
-    print("=" * 60)
-
-    path = os.path.join(OUTPUT_DIR, "regression_results.md")
-
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("# Regression Results: Structured Electricity Recovery\n\n")
-        f.write("DV: log of bounded gross electricity generation per tonne processed\n\n")
-        f.write("All reported standard errors are clustered by facility.\n\n")
-        f.write(
-            f"Canonical regression frame: {len(regression):,} observations across "
-            f"{regression['analysis_facility_id'].nunique():,} facilities.\n\n"
-        )
-        f.write(f"Sample definition: `{os.path.basename(sample_report_path)}`\n\n")
-        f.write("## Primary RQ2 Specification\n\n")
-        f.write(
-            "The primary estimand is a year-adjusted cross-facility comparison: "
-            "how gross MWh/t differs across generator age/vintage, scale, "
-            "utilization, heating value, and observed plant-configuration profiles "
-            "within common fiscal years. It is not a causal within-plant aging "
-            "effect. Both columns use facility-clustered standard errors.\n\n"
-        )
-        f.write(
-            "| Variable | Base year-adjusted model | Primary year + technology model |\n"
-        )
-        f.write("|:--|--:|--:|\n")
-        base_model = models[1]
-        for var in MODEL_VARS:
-            base_p = float(model_pvalues(base_model)[var])
-            primary_p = float(model_pvalues(primary_model)[var])
-            f.write(
-                f"| {var} | {float(base_model.params[var]):.4f}"
-                f"{significance_stars(base_p)} "
-                f"({float(model_std_errors(base_model)[var]):.4f}) | "
-                f"{float(primary_model.params[var]):.4f}"
-                f"{significance_stars(primary_p)} "
-                f"({float(model_std_errors(primary_model)[var]):.4f}) |\n"
+def write_regression_report(
+    frame: pd.DataFrame,
+    models: dict[str, Any],
+    persistence: dict[str, float | int],
+) -> tuple[str, pd.DataFrame]:
+    rows: list[dict[str, Any]] = []
+    terms = {
+        "cohort_Before 1990": "Reported start before 1990",
+        "cohort_1990-1999": "Reported start 1990-1999",
+        "cohort_2000-2009": "Reported start 2000-2009",
+        "log_capacity_t_day": "Log waste-processing design capacity",
+        "capacity_utilization_raw": "Waste-processing utilization",
+    }
+    for model_name in ["design_intensity", "capacity_factor"]:
+        model = models[model_name]
+        for term, label in terms.items():
+            if term not in model.params:
+                continue
+            rows.append(
+                {
+                    "model": model_name,
+                    "term": term,
+                    "label": label,
+                    **model_row(model, term),
+                    "observations": int(model.nobs),
+                    "r_squared": float(model.rsquared),
+                }
             )
-        f.write(
-            f"| Observations | {int(base_model.nobs):,} | "
-            f"{int(primary_model.nobs):,} |\n"
+    results = pd.DataFrame(rows)
+    csv_path = os.path.join(OUTPUT_DIR, "generator_component_results.csv")
+    results.to_csv(csv_path, index=False, float_format="%.10g")
+
+    legacy = models["legacy_gross_intensity"]
+    adjusted = models["sizing_adjusted_gross_intensity"]
+    path = os.path.join(OUTPUT_DIR, "regression_results.md")
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write("# Generator Design And Operating Component Results\n\n")
+        handle.write(
+            "The primary analysis separates installed generator sizing from annual "
+            "electrical capacity factor. Gross MWh/t is retained as a descriptive "
+            "product of design intensity, electrical capacity factor, and waste loading; "
+            "it is not labelled independent operational efficiency.\n\n"
         )
-        f.write(
-            f"| Facilities | {regression['analysis_facility_id'].nunique():,} | "
-            f"{regression['analysis_facility_id'].nunique():,} |\n"
+        handle.write("## Primary Component Models\n\n")
+        display = results[
+            [
+                "model",
+                "label",
+                "coefficient",
+                "standard_error",
+                "ci_low",
+                "ci_high",
+                "p_value",
+            ]
+        ]
+        handle.write(display.to_markdown(index=False, floatfmt=".4f"))
+        handle.write("\n\n")
+        handle.write(
+            f"- Engineering-valid rows: {len(frame):,} across "
+            f"{frame['analysis_facility_id'].nunique():,} stable administrative lineages.\n"
         )
-        f.write(
-            f"| R-squared | {float(base_model.rsquared):.4f} | "
-            f"{float(primary_model.rsquared):.4f} |\n\n"
+        handle.write(
+            f"- Design-intensity model R-squared: "
+            f"{models['design_intensity'].rsquared:.4f}.\n"
         )
-        f.write(
-            "Technology controls in the primary model are normalized furnace type, "
-            "operating mode, facility type, and number of furnaces. Fiscal-year "
-            "indicators are included in both columns.\n\n"
+        handle.write(
+            f"- Electrical-capacity-factor model R-squared: "
+            f"{models['capacity_factor'].rsquared:.4f}.\n"
         )
-
-        f.write("## Supplemental Estimator Ladder\n\n")
-        f.write("| Variable | " + " | ".join(MAIN_MODEL_LABELS) + " |\n")
-        f.write("|:---------|" + "|".join([":--------------------:"] * 4) + "|\n")
-
-        for var in MODEL_VARS:
-            row = [var]
-            for model in models:
-                coef = float(model.params[var])
-                p = float(model_pvalues(model)[var])
-                row.append(f"{coef:.4f}{significance_stars(p)}")
-            f.write("| " + " | ".join(row) + " |\n")
-
-            se_row = ["SE"]
-            for model in models:
-                se = float(model_std_errors(model)[var])
-                se_row.append(f"({se:.4f})")
-            f.write("| " + " | ".join(se_row) + " |\n")
-
-        f.write(
-            "| Observations | "
-            + " | ".join([f"{int(model.nobs):,}" for model in models])
-            + " |\n"
+        handle.write(
+            f"- Direct gross-output model elasticities: throughput "
+            f"{models['gross_output'].params['log_throughput_t_year']:.3f}; installed "
+            f"electrical capacity {models['gross_output'].params['log_power_capacity_kw']:.3f}.\n\n"
         )
-        f.write(
-            "| Facilities | "
-            + " | ".join([f"{regression['analysis_facility_id'].nunique():,}"] * 4)
-            + " |\n"
+        handle.write("## Why The Previous Gross-Intensity Regression Is Not Primary\n\n")
+        handle.write(
+            "A legacy-style gross-MWh/t model and the same model with installed "
+            "generator sizing demonstrate what the former specification combined. "
+            f"Both use {int(legacy.nobs):,} rows with plausible reported heating value "
+            "and include heating value as a control.\n\n"
         )
-        f.write(
-            "| R-squared | "
-            + " | ".join([f"{float(model.rsquared):.4f}" for model in models])
-            + " |\n"
+        diagnostic_terms = [
+            "facility_age_years",
+            "capacity_100t",
+            "capacity_utilization_raw",
+            "log_generator_design_intensity",
+        ]
+        diagnostic_rows = []
+        for term in diagnostic_terms:
+            diagnostic_rows.append(
+                {
+                    "term": term,
+                    "legacy_coefficient": (
+                        float(legacy.params[term]) if term in legacy.params else np.nan
+                    ),
+                    "legacy_p_value": (
+                        float(legacy.pvalues[term]) if term in legacy.params else np.nan
+                    ),
+                    "sizing_adjusted_coefficient": (
+                        float(adjusted.params[term]) if term in adjusted.params else np.nan
+                    ),
+                    "sizing_adjusted_p_value": (
+                        float(adjusted.pvalues[term]) if term in adjusted.params else np.nan
+                    ),
+                }
+            )
+        handle.write(pd.DataFrame(diagnostic_rows).to_markdown(index=False, floatfmt=".4f"))
+        handle.write("\n\n")
+        handle.write(
+            f"Gross-intensity model R-squared changes from {legacy.rsquared:.4f} to "
+            f"{adjusted.rsquared:.4f} after generator sizing is included. This is a "
+            "specification diagnostic, not a causal mediation analysis.\n\n"
         )
-        f.write(
-            "\n## Adjacent-Year Rank Persistence\n\n"
-            f"- Exact adjacent-year facility pairs: {persistence_summary['exact_adjacent_year_pairs']:,}\n"
-            f"- Facilities represented: {persistence_summary['facilities']:,}\n"
-            f"- Pooled adjacent-year rank correlation: {persistence_summary['pooled_rank_correlation']:.4f}\n"
-            f"- Median annual rank correlation: {persistence_summary['median_annual_rank_correlation']:.4f}\n"
-            f"- Annual range: {persistence_summary['minimum_annual_rank_correlation']:.4f} to "
-            f"{persistence_summary['maximum_annual_rank_correlation']:.4f}\n"
+        handle.write("## Adjacent-Year Rank Persistence\n\n")
+        for label in [
+            "gross_generation_intensity",
+            "generator_design_intensity",
+            "electrical_capacity_factor",
+        ]:
+            handle.write(
+                f"- {label.replace('_', ' ').title()}: "
+                f"r={persistence[f'{label}_pooled_rank_correlation']:.4f} across "
+                f"{persistence[f'{label}_pairs']:,} pairs and "
+                f"{persistence[f'{label}_sites']:,} lineages.\n"
+            )
+        handle.write(
+            "\nModels use fiscal-year indicators, coarse furnace/facility configuration "
+            "controls, and stable-lineage-clustered standard errors. Associations remain "
+            "descriptive and do not identify retrofit or operating interventions.\n"
         )
-
-    print(f"  Saved: {path}")
-    return path
+    return path, results
 
 
-def serialize_main_models(models):
-    """Return structured coefficient metadata for the four main models."""
-    payload = {
-        "labels": MAIN_MODEL_LABELS,
-        "coefficients": {},
-        "std_errors": {},
-        "pvalues": {},
-        "rsquared": [float(model.rsquared) for model in models],
-        "observations": [int(model.nobs) for model in models],
-    }
+def main() -> None:
+    panel = load_panel()
+    operating = build_operating_power_frame(panel)
+    frame = build_regression_frame(panel)
+    summary = sample_summary(panel)
 
-    for var in MODEL_VARS:
-        payload["coefficients"][var] = [float(model.params[var]) for model in models]
-        payload["std_errors"][var] = [float(model_std_errors(model)[var]) for model in models]
-        payload["pvalues"][var] = [float(model_pvalues(model)[var]) for model in models]
-
-    return payload
-
-
-def serialize_primary_model(model):
-    """Return structured metadata for the declared primary RQ2 model."""
-    return {
-        "label": "Year + technology adjusted OLS",
-        "estimand": "year-adjusted cross-facility generator comparison",
-        "technology_controls": [
-            "furnace_type_group",
-            "operation_mode_group",
-            "facility_type_group",
-            "n_furnaces",
-        ],
-        "coefficients": {var: float(model.params[var]) for var in MODEL_VARS},
-        "std_errors": {
-            var: float(model_std_errors(model)[var]) for var in MODEL_VARS
-        },
-        "pvalues": {var: float(model_pvalues(model)[var]) for var in MODEL_VARS},
-        "rsquared": float(model.rsquared),
-        "observations": int(model.nobs),
-    }
-
-
-def serialize_age_group_summary(path):
-    """Read the age-group markdown table into structured metadata."""
-    lines = [line.strip() for line in open(path, "r", encoding="utf-8")]
-    data_lines = [
-        line
-        for line in lines
-        if line.startswith("|")
-        and not set(line.replace("|", "").replace(":", "").replace("-", "").strip()) == set()
-    ]
-
-    rows = {}
-    for line in data_lines[1:]:
-        cells = [cell.strip() for cell in line.strip("|").split("|")]
-        if len(cells) < 7:
-            continue
-        key = cells[0]
-        rows[key] = {
-            "n_obs": int(cells[1]),
-            "mean_eff": float(cells[2]),
-            "median_eff": float(cells[3]),
-            "mean_capacity": float(cells[4]),
-            "mean_avoided": float(cells[5]),
-            "pct_of_total_avoided": float(cells[6]),
-        }
-    return rows
-
-
-def main():
-    panel, regression, summary = load_regression_frame()
-
-    sample_report_path = os.path.join(OUTPUT_DIR, "sample_definition.md")
-    write_sample_definition_report(sample_report_path, summary)
-    print(f"Sample report: {sample_report_path}")
-
-    summary_stats_path = descriptive_stats(regression)
-    age_table_path = efficiency_by_age_group(regression)
-    figure_data_path, persistence_summary = build_persistence_figure_data(regression)
-    m1 = run_pooled_ols(regression)
-    m2 = run_ols_with_year_fe(regression)
-    m3 = run_random_effects(regression)
-    m4 = run_random_effects_with_year_fe(regression)
-    primary_model = run_primary_technology_adjusted_model(regression)
-    models = [m1, m2, m3, m4]
-    results_path = comparison_table(
-        models,
-        primary_model,
-        regression,
-        sample_report_path,
-        persistence_summary,
-    )
+    sample_path = os.path.join(OUTPUT_DIR, "sample_definition.md")
+    write_sample_definition_report(sample_path, summary)
+    stats_path = write_summary_statistics(frame)
+    cohort_path, cohort_table = write_cohort_table(frame)
+    persistence_path, persistence = build_persistence_data(frame)
+    models = fit_component_models(frame)
+    report_path, results = write_regression_report(frame, models, persistence)
 
     manifest_path = write_stage_manifest(
         "05_panel_regression",
-        inputs=["data/processed/incineration_panel_enriched.csv"],
+        inputs=["data/processed/incineration_panel_identified.csv"],
         outputs=[
             "output/sample_definition.md",
             "output/table1_summary_stats.md",
-            "output/table2_efficiency_by_age.md",
+            "output/table2_generator_components_by_cohort.md",
             "output/figure3_persistence.csv",
+            "output/generator_component_results.csv",
             "output/regression_results.md",
         ],
         metadata={
-            "regression_obs": summary["regression_obs"],
-            "regression_facilities": summary["regression_facilities"],
-            "within_total_ratio": summary["regression_within_total_ratio"],
-            "pre_fukushima_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
-            "post_fukushima_within_total_ratio": summary["post_fukushima_within_total_ratio"],
-            "early_coded_window": [2005, 2009],
-            "later_coded_window": [2013, 2024],
-            "early_coded_within_total_ratio": summary["pre_fukushima_within_total_ratio"],
-            "later_coded_within_total_ratio": summary["post_fukushima_within_total_ratio"],
-            "main_models": serialize_main_models(models),
-            "primary_model": serialize_primary_model(primary_model),
-            "age_group_summary": serialize_age_group_summary(age_table_path),
-            "rank_persistence": persistence_summary,
-            "outputs": {
-                "sample_report": os.path.basename(sample_report_path),
-                "summary_stats": os.path.basename(summary_stats_path),
-                "age_table": os.path.basename(age_table_path),
-                "figure_data": os.path.basename(figure_data_path),
-                "regression_results": os.path.basename(results_path),
+            "operating_rows": int(len(operating)),
+            "engineering_valid_rows": int(len(frame)),
+            "stable_sites": int(frame["analysis_facility_id"].nunique()),
+            "within_total_log_gross_intensity": float(
+                within_total_variance_ratio(frame, "log_efficiency_raw")
+            ),
+            "within_total_log_design_intensity": float(
+                within_total_variance_ratio(
+                    frame,
+                    "log_generator_design_intensity",
+                )
+            ),
+            "within_total_log_capacity_factor": float(
+                within_total_variance_ratio(
+                    frame,
+                    "log_electrical_capacity_factor",
+                )
+            ),
+            "design_model": {
+                "rsquared": float(models["design_intensity"].rsquared),
+                "coefficients": {
+                    term: float(models["design_intensity"].params[term])
+                    for term in FOCAL_COMPONENT_TERMS
+                },
             },
+            "capacity_factor_model": {
+                "rsquared": float(models["capacity_factor"].rsquared),
+                "coefficients": {
+                    term: float(models["capacity_factor"].params[term])
+                    for term in [*FOCAL_COMPONENT_TERMS, "capacity_utilization_raw"]
+                },
+            },
+            "gross_output_elasticities": {
+                "throughput": float(
+                    models["gross_output"].params["log_throughput_t_year"]
+                ),
+                "installed_electrical_capacity": float(
+                    models["gross_output"].params["log_power_capacity_kw"]
+                ),
+            },
+            "legacy_age_coefficient": float(
+                models["legacy_gross_intensity"].params["facility_age_years"]
+            ),
+            "diagnostic_rows": int(models["legacy_gross_intensity"].nobs),
+            "diagnostic_includes_heating_value": True,
+            "sizing_adjusted_age_coefficient": float(
+                models["sizing_adjusted_gross_intensity"].params[
+                    "facility_age_years"
+                ]
+            ),
+            "legacy_rsquared": float(models["legacy_gross_intensity"].rsquared),
+            "sizing_adjusted_rsquared": float(
+                models["sizing_adjusted_gross_intensity"].rsquared
+            ),
+            "diagnostic_terms": {
+                term: {
+                    "legacy_coefficient": (
+                        float(models["legacy_gross_intensity"].params[term])
+                        if term in models["legacy_gross_intensity"].params
+                        else None
+                    ),
+                    "legacy_p_value": (
+                        float(models["legacy_gross_intensity"].pvalues[term])
+                        if term in models["legacy_gross_intensity"].pvalues
+                        else None
+                    ),
+                    "sizing_adjusted_coefficient": float(
+                        models["sizing_adjusted_gross_intensity"].params[term]
+                    ),
+                    "sizing_adjusted_p_value": float(
+                        models["sizing_adjusted_gross_intensity"].pvalues[term]
+                    ),
+                }
+                for term in [
+                    "facility_age_years",
+                    "capacity_100t",
+                    "capacity_utilization_raw",
+                    "log_generator_design_intensity",
+                ]
+            },
+            "persistence": persistence,
+            "cohort_rows": cohort_table.to_dict(orient="records"),
+            "component_result_rows": int(len(results)),
         },
     )
+    print(f"Engineering-valid frame: {len(frame):,} rows, {frame['analysis_facility_id'].nunique():,} lineages")
+    print(f"Saved: {report_path}")
     print(f"Manifest: {manifest_path}")
-
-    print("\n" + "=" * 60)
-    print("REGRESSION COMPLETE")
-    print("=" * 60)
 
 
 if __name__ == "__main__":

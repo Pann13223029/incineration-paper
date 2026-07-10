@@ -1,4 +1,8 @@
-# Grid Emission Factors by Utility Area
+# Optional Legacy Grid Emission Factors by Utility Area
+
+**Not canonical paper evidence.** Intermediate values are interpolated, the
+regional mapping is simplified, and avoided-emissions interpretation requires
+an independently verified marginal counterfactual.
 
 10 regional utilities × 20 years (FY2005-2024)
 

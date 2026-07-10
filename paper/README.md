@@ -1,112 +1,99 @@
 # Paper Workspace
 
-This directory is the active article layer. It contains the manuscript, supplement, figures, evidence snapshots, and submission package for the journal-style paper.
+This directory contains the active article, supplement, figures, evidence snapshot, presentation, and submission artifacts for the Japan municipal waste-incineration study.
 
 ## Current Role
 
-- Active writing target: `paper/manuscript/paper.md`
-- Final reading/PDF source: `paper/manuscript/paper.tex`
 - Target journal track: `Waste Management`
-- Current share PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf)
-- Evidence copies: `paper/evidence/current/`
+- Active prose: [`manuscript/paper.md`](manuscript/paper.md)
+- LaTeX reading source: [`manuscript/paper.tex`](manuscript/paper.tex)
+- Revision state: [`submission/current-status.md`](submission/current-status.md)
+- Canonical evidence: [`../output/`](../output/)
+- Synchronized evidence copies: [`evidence/`](evidence/)
+- Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf)
 
-The paper layer narrows and reorganizes the thesis evidence. It must not become a second source of empirical truth.
+The current empirical core and professor-facing package form a verified review baseline. The status page records the latest completed rebuild, evidence sync, claim checks, format gates, and visual PDF inspection; rerun those gates after any substantive change.
+
+## Paper Logic
+
+The article links three evidence blocks:
+
+1. FY2024 count-volume decomposition: 41.1% facility participation, 80.1% throughput coverage, and 70.5% waste-processing design-capacity share.
+2. First reported installed-capacity entry: 55 descriptive events, with the broad exact-year Firth model on 15,154 rows across 1,137 administrative lineages and 35 events.
+3. Conditional generator components: 6,511 engineering-valid rows across 493 lineages, separating installed generator design intensity from annual electrical capacity factor.
+
+The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events; same-episode continuity uses 15,095/1,135/24; and identity-certain linkage uses 15,107/1,130/35 rows/lineages/events. Administrative disappearance is not modeled. Gross MWh/t is not presented as a stand-alone efficiency measure.
 
 ## Start Here
 
 | Task | File |
 |:--|:--|
-| Read or edit the paper | [`manuscript/paper.md`](manuscript/paper.md) |
-| Check final PDF source | [`manuscript/paper.tex`](manuscript/paper.tex) |
-| Check current submission state | [`submission/current-status.md`](submission/current-status.md) |
-| Check paper claim discipline | [`notes/positioning/claim-stack.md`](notes/positioning/claim-stack.md) |
-| Prepare the next empirical revision and defense | [`notes/review/defense-red-team-revision-map.md`](notes/review/defense-red-team-revision-map.md) |
-| Explain comparator papers and method lineage to supervisor | [`notes/positioning/professor-comparator-method-lineage.md`](notes/positioning/professor-comparator-method-lineage.md) |
-| Check thesis-to-paper conversion logic | [`notes/positioning/thesis-to-paper-map.md`](notes/positioning/thesis-to-paper-map.md) |
-| Check reviewer risks | [`notes/review/reviewer-rubric.md`](notes/review/reviewer-rubric.md) |
-| Check supplement, abbreviation guide, and reviewer-response map | [`supplement/supplement.md`](supplement/supplement.md) |
-| Check synced evidence | [`evidence/`](evidence/) |
-| Present the paper in a Zoom meeting | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
+| Read or revise the article | [`manuscript/paper.md`](manuscript/paper.md) |
+| Check final PDF wording | [`manuscript/paper.tex`](manuscript/paper.tex) |
+| Check readiness and blockers | [`submission/current-status.md`](submission/current-status.md) |
+| Inspect synchronized evidence | [`evidence/README.md`](evidence/README.md) |
+| Trace claims to outputs | [`../output/claim_evidence_map.md`](../output/claim_evidence_map.md) |
+| Review source and identity audits | [`../output/raw_data_provenance.md`](../output/raw_data_provenance.md), [`../output/facility_identity_audit.md`](../output/facility_identity_audit.md) |
+| Review supplement detail | [`supplement/supplement.md`](supplement/supplement.md) |
+| Review comparator lineage | [`notes/positioning/professor-comparator-method-lineage.md`](notes/positioning/professor-comparator-method-lineage.md) |
+| Review current red-team plan | [`notes/review/defense-red-team-revision-map.md`](notes/review/defense-red-team-revision-map.md) |
+| Present the study | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
 
 ## Directory Roles
 
 | Path | Role |
 |:--|:--|
-| `manuscript/` | Active paper prose and LaTeX source. |
-| `figures/` | Paper figure scripts and rendered figure files. |
-| `tables/` | Paper-facing table drafts and extracted result tables. |
-| `notes/planning/` | Draft budgets, section checklists, and writing constraints. |
-| `notes/positioning/` | Claim architecture, comparator lineage, and thesis-to-paper logic. |
-| `notes/review/` | Editorial rubrics and red-team revision maps. |
-| `references/` | Selected references and citation plan. |
-| `slides/` | Paper-focused Zoom briefing deck, full speaker script, and presentation theme. |
-| `supplement/` | Supplement text and supplement planning. |
-| `submission/` | Local submission package outputs and administrative files. |
-| `share/` | Tracked PDF for reading from another machine. |
-| `evidence/` | Synced copies of selected canonical outputs from `../output/`. |
+| `manuscript/` | Markdown article source and synchronized LaTeX reading source. |
+| `supplement/` | Identity, estimator, robustness, and supporting detail. |
+| `figures/` | Figure builders plus rendered PDF/PNG assets. |
+| `tables/` | Paper-facing table drafts and extracts. |
+| `evidence/current/` | Generated copies of selected canonical `output/` artifacts. |
+| `notes/` | Planning, positioning, comparator, and review workspaces. |
+| `references/` | Selected references and citation planning. |
+| `slides/` | Zoom briefing deck, theme, and speaker script. |
+| `submission/` | Review and journal-package artifacts; not empirical sources. |
+| `share/` | Tracked cross-device reading and presentation PDFs. |
 
-## Paper Commands
+## Evidence Hierarchy
 
-Refresh paper-facing evidence copies:
+```text
+../output/* canonical evidence
+  -> evidence/current/* synchronized copies
+  -> manuscript and supplement interpretation
+  -> submission and share artifacts
+```
+
+If any numbers disagree, resolve the canonical output first. `stable_site_id` refers to an audited administrative facility lineage, not a proven immutable physical site.
+
+## Commands
 
 ```bash
 npm run paper:sync
-```
-
-Check that evidence copies are current:
-
-```bash
 npm run paper:check
-```
-
-Export Markdown, HTML, and DOCX submission files without relying on browser PDF:
-
-```bash
-npm run paper:export:nopdf
-```
-
-Build the authoritative LaTeX reading PDF:
-
-```bash
-npm run paper:build:latex
-```
-
-Run claim synchronization checks:
-
-```bash
 npm run claims:verify
-```
-
-Export the paper Zoom briefing deck:
-
-```bash
+npm run paper:export:nopdf
+npm run paper:build:latex
 npm run slides:paper
-```
-
-Export the shareable paper Zoom briefing PDF:
-
-```bash
 npm run slides:paper:pdf
 ```
 
-## Output Rules
+- `paper:sync` refreshes selected evidence copies.
+- `paper:check` fails when those copies are missing or stale.
+- `claims:verify` checks registered high-risk claims and stale wording.
+- `paper:export:nopdf` creates Markdown, HTML, and DOCX review files.
+- `paper:build:latex` creates the preferred reading PDF.
 
-- Use the [browser-compatible PDF link](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) for cross-device reading. If an embedded viewer fails, use the [direct GitHub download](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
-- Use `paper/share/paper-zoom-briefing.pdf` for Zoom screen sharing.
-- Use `paper/submission/waste-management-manuscript-latex.pdf` for local submission package review.
-- Use `paper/submission/waste-management-manuscript.docx` only when a DOCX workflow is needed.
-- Treat `paper/submission/waste-management-manuscript.pdf` as browser-export convenience only, not the preferred PDF.
+Use `share/waste-management-manuscript-latex.pdf` for cross-device reading, `submission/waste-management-manuscript-latex.pdf` for local package review, and `share/paper-zoom-briefing.pdf` for screen sharing. The browser-exported manuscript PDF is a convenience artifact, not the preferred build.
 
 ## Resume Workflow
 
-If paper work resumes after a pause:
+```bash
+npm run analysis:rebuild
+npm run paper:sync
+npm run paper:check
+npm run claims:verify
+npm run paper:export:nopdf
+npm run paper:build:latex
+```
 
-1. Run `npm run analysis:rebuild` if evidence may have changed.
-2. Run `npm run paper:sync`.
-3. Run `npm run paper:check`.
-4. Read `submission/current-status.md`.
-5. Edit `manuscript/paper.md` or `manuscript/paper.tex` as needed.
-6. Run `npm run claims:verify`.
-7. Rebuild artifacts with `npm run paper:export:nopdf` and `npm run paper:build:latex`.
-
-If the work is prose-only and no empirical claim changes, steps 1 and 2 can be skipped, but `claims:verify` should still pass before pushing.
+If only style changes and no empirical statement changes, the full analysis rebuild can be skipped. The evidence sync, claim check, and relevant artifact build must still be current before human review.

@@ -1,57 +1,58 @@
-"""
-08_verify_claims.py
-===================
-Verify that paper-facing claims stay synchronized with canonical outputs.
+"""Verify high-risk paper claims against current generated evidence.
 
-This script reads structured manifests and generated result artifacts, checks a
-curated set of headline claims in repo-facing documents, and fails hard on drift
-or known overclaim language.
+This verifier intentionally separates evidence-integrity checks from prose
+checks. Canonical numbers are recomputed from generated CSVs and compared with
+stage manifests before any manuscript wording is accepted.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
-import os
+import math
+import re
+import subprocess
 import sys
-from decimal import Decimal, ROUND_HALF_UP
+import unicodedata
 from pathlib import Path
+from typing import Any, Iterable
+
+import numpy as np
+import pandas as pd
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+ANALYSIS_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = REPO_ROOT / "output"
 MANIFEST_DIR = OUTPUT_DIR / "manifests"
-
-
-def write_stage_manifest(
-    stage_name: str,
-    inputs: list[str],
-    outputs: list[str],
-    metadata: dict,
-) -> Path:
-    """Write a lightweight manifest without importing the full analysis stack."""
-    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
-    path = MANIFEST_DIR / f"{stage_name}.json"
-    manifest = {
-        "stage": stage_name,
-        "python": sys.version.split()[0],
-        "inputs": inputs,
-        "outputs": outputs,
-        "metadata": metadata,
-    }
-    path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    return path
-
-README_PATH = REPO_ROOT / "README.md"
-ARCHITECTURE_PATH = REPO_ROOT / "ARCHITECTURE.md"
-MANUSCRIPT_MD_PATH = REPO_ROOT / "paper" / "manuscript" / "paper.md"
-MANUSCRIPT_TEX_PATH = REPO_ROOT / "paper" / "manuscript" / "paper.tex"
-SUPPLEMENT_PATH = REPO_ROOT / "paper" / "supplement" / "supplement.md"
 REPORT_PATH = OUTPUT_DIR / "claim_verification.md"
 CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
 
-CORE_MANIFESTS = [
+if str(ANALYSIS_DIR) not in sys.path:
+    sys.path.insert(0, str(ANALYSIS_DIR))
+
+from panel_utils import sha256_manifest_path, write_stage_manifest  # noqa: E402
+
+
+DOCUMENTS = {
+    "manuscript_md": REPO_ROOT / "paper" / "manuscript" / "paper.md",
+    "manuscript_tex": REPO_ROOT / "paper" / "manuscript" / "paper.tex",
+    "supplement": REPO_ROOT / "paper" / "supplement" / "supplement.md",
+    "professor_lineage": (
+        REPO_ROOT
+        / "paper"
+        / "notes"
+        / "positioning"
+        / "professor-comparator-method-lineage.md"
+    ),
+}
+
+CORE_STAGES = [
     "02_parse_facility_panel",
-    "03_grid_emission_factors",
+    "02a_build_facility_identity",
+    "02b_build_raw_data_manifest",
     "04_eda_facility",
+    "05_fleet_decomposition",
     "05a_power_adoption",
     "05_panel_regression",
     "06_robustness",
@@ -59,907 +60,1527 @@ CORE_MANIFESTS = [
     "06b_identifier_gap_audit",
 ]
 
-
-def load_manifest(stage: str) -> dict:
-    with open(MANIFEST_DIR / f"{stage}.json", "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def fmt_int(value: int) -> str:
-    return f"{value:,}"
+ADOPTION_FOCAL_TERMS = [
+    "age_10-19 yrs",
+    "age_20-29 yrs",
+    "age_30+ yrs",
+    "log_processing_capacity",
+]
 
 
-def fmt_pp_abs(value: float, decimals: int = 1) -> str:
-    return f"{abs(value) * 100:.{decimals}f}"
+def load_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def fmt_signed_pp(value: float, decimals: int = 2) -> str:
-    sign = "+" if value >= 0 else "−"
-    return f"{sign}{abs(value) * 100:.{decimals}f}"
+def load_manifest(stage: str) -> dict[str, Any]:
+    return load_json(MANIFEST_DIR / f"{stage}.json")
 
 
-def fmt_signed_decimal(value: float, decimals: int = 3) -> str:
-    sign = "+" if value >= 0 else "−"
-    scaled = Decimal(f"{abs(value):.{decimals + 1}f}")
-    quantum = Decimal("1").scaleb(-decimals)
-    return f"{sign}{format(scaled.quantize(quantum, rounding=ROUND_HALF_UP), f'.{decimals}f')}"
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
-def build_canonical_metrics() -> dict:
-    parse_manifest = load_manifest("02_parse_facility_panel")
-    adoption_manifest = load_manifest("05a_power_adoption")
-    regression_manifest = load_manifest("05_panel_regression")
-    robustness_manifest = load_manifest("06_robustness")
+def close(left: float, right: float, tolerance: float = 1e-6) -> bool:
+    return math.isclose(float(left), float(right), rel_tol=tolerance, abs_tol=tolerance)
 
-    age_ames = adoption_manifest["metadata"]["model"]["average_marginal_effects"]
-    age_effects = [
-        age_ames["age_10-20 yrs"]["ame"],
-        age_ames["age_20-30 yrs"]["ame"],
-        age_ames["age_30+ yrs"]["ame"],
-    ]
-    age_effects_sorted = sorted(age_effects, key=abs)
-    age_effects_signed = sorted(age_effects)
 
-    main_coeffs = regression_manifest["metadata"]["main_models"]["coefficients"]
-    main_age = main_coeffs["facility_age_years"]
-    main_capacity = main_coeffs["capacity_100t"]
-    main_util = main_coeffs["capacity_utilization_capped"]
+def clean_identifier(series: pd.Series) -> set[str]:
+    cleaned = series.dropna().astype("string").str.strip()
+    cleaned = cleaned[~cleaned.isin(["", "nan", "None", "<NA>"])]
+    return set(cleaned.tolist())
 
-    age_group_summary = regression_manifest["metadata"]["age_group_summary"]
-    positive_output = adoption_manifest["metadata"]["positive_output_event_sensitivity"]
-    active_conversion = adoption_manifest["metadata"][
-        "active_operating_conversion_sensitivity"
-    ]
-    panel_exit = adoption_manifest["metadata"]["panel_exit_diagnostic"]
-    post_entry = adoption_manifest["metadata"]["post_adoption_bridge"]
-    post_trajectory = adoption_manifest["metadata"]["post_adoption_trajectories"]
-    primary_model = regression_manifest["metadata"]["primary_model"]
-    engineering_validation = robustness_manifest["metadata"]["engineering_validation"]
-    rank_persistence = regression_manifest["metadata"]["rank_persistence"]
-    robustness_specs = robustness_manifest["metadata"]["specifications"]
-    pathway_counts = adoption_manifest["metadata"]["pathway_audit"]["counts"]
-    early_coded_window = regression_manifest["metadata"].get("early_coded_window", [2005, 2009])
-    later_coded_window = regression_manifest["metadata"].get("later_coded_window", [2013, 2024])
-    early_window_label = f"FY{early_coded_window[0]}–FY{early_coded_window[1]}"
-    later_window_label = f"FY{later_coded_window[0]}–FY{later_coded_window[1]}"
-    log_dv_robust_age = [
-        spec["facility_age_years_coef"]
-        for spec in robustness_specs
-        if spec["dv"] == "log_efficiency"
-    ]
 
-    return {
-        "source_manifest_python": sorted(
-            {load_manifest(stage)["python"] for stage in CORE_MANIFESTS}
-        ),
-        "full_panel_obs": parse_manifest["metadata"]["rows"],
-        "full_panel_facilities": parse_manifest["metadata"]["facilities_with_codes"],
-        "coded_full_fleet_obs": 19827,
-        "coded_full_fleet_facilities": parse_manifest["metadata"]["facilities_with_codes"],
-        "risk_set_obs": adoption_manifest["metadata"]["risk_set_obs"],
-        "risk_set_facilities": adoption_manifest["metadata"]["risk_set_facilities"],
-        "left_censored_generators": adoption_manifest["metadata"]["left_censored_generators"],
-        "events": adoption_manifest["metadata"]["events"],
-        "model_obs": adoption_manifest["metadata"]["model_obs"],
-        "model_facilities": adoption_manifest["metadata"]["model_facilities"],
-        "model_events": adoption_manifest["metadata"]["model_events"],
-        "zero_prior_throughput_events": adoption_manifest["metadata"][
-            "model_events_zero_or_missing_prior_throughput"
-        ],
-        "duration_row_count_mismatch": adoption_manifest["metadata"][
-            "elapsed_duration_row_count_mismatch"
-        ],
-        "model_pseudo_r2": adoption_manifest["metadata"]["model"][
-            "pseudo_r_squared"
-        ],
-        "lag_drop_first_rows": adoption_manifest["metadata"]["lag_drop_first_rows"],
-        "lag_drop_additional_missing_rows": adoption_manifest["metadata"][
-            "lag_drop_additional_missing_rows"
-        ],
-        "lag_drop_additional_missing_facilities": adoption_manifest["metadata"][
-            "lag_drop_additional_missing_facilities"
-        ],
-        "adoption_age_range_1dp": (
-            fmt_pp_abs(age_effects_sorted[0], 1),
-            fmt_pp_abs(age_effects_sorted[-1], 1),
-        ),
-        "adoption_age_range_2dp": (
-            fmt_signed_pp(age_effects_signed[0], 2),
-            fmt_signed_pp(age_effects_signed[-1], 2),
-        ),
-        "adoption_capacity_pp_1dp": fmt_pp_abs(
-            adoption_manifest["metadata"]["model"]["average_marginal_effects"][
-                "lag_capacity_100t"
-            ]["ame"],
-            1,
-        ),
-        "adoption_capacity_pp_2dp": fmt_signed_pp(
-            adoption_manifest["metadata"]["model"]["average_marginal_effects"][
-                "lag_capacity_100t"
-            ]["ame"],
-            2,
-        ),
-        "broad_age_ames_2dp": tuple(
-            fmt_signed_pp(age_ames[key]["ame"], 2)
-            for key in ("age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs")
-        ),
-        "active_model_obs": active_conversion["model_obs"],
-        "active_model_facilities": active_conversion["model_facilities"],
-        "active_model_events": active_conversion["model_events"],
-        "active_age_ames_2dp": tuple(
-            fmt_signed_pp(active_conversion["average_marginal_effects"][key]["ame"], 2)
-            for key in ("age_10-20 yrs", "age_20-30 yrs", "age_30+ yrs")
-        ),
-        "active_capacity_pp_2dp": fmt_signed_pp(
-            active_conversion["average_marginal_effects"]["lag_capacity_100t"]["ame"],
-            2,
-        ),
-        "positive_output_model_events": positive_output["model_events"],
-        "positive_output_capacity_pp_2dp": fmt_signed_pp(
-            positive_output["average_marginal_effects"]["lag_capacity_100t"]["ame"],
-            2,
-        ),
-        "panel_exit_nonadopters": panel_exit["universe"]["nonadopting_facilities"],
-        "panel_exit_before_end": panel_exit["universe"]["last_observed_before_2024"],
-        "panel_exit_before_end_pct": panel_exit["universe"]["last_observed_before_2024_pct"],
-        "panel_exit_model_obs": panel_exit["model_obs"],
-        "panel_exit_model_facilities": panel_exit["model_facilities"],
-        "panel_exit_events": panel_exit["events"],
-        "panel_exit_age30_pp_2dp": fmt_signed_pp(
-            panel_exit["average_marginal_effects"]["age_30+ yrs"]["ame"],
-            2,
-        ),
-        "panel_exit_capacity_pp_2dp": fmt_signed_pp(
-            panel_exit["average_marginal_effects"]["lag_capacity_100t"]["ame"],
-            2,
-        ),
-        "post_entry_positive_by_one": post_entry["positive_output_by_one_year"],
-        "post_entry_generator_within_three": post_entry[
-            "events_in_generator_frame_within_three_years"
-        ],
-        "trajectory_rows": post_trajectory["trajectory_rows"],
-        "trajectory_events": post_trajectory["events_represented"],
-        "trajectory_t0_rank_pct": post_trajectory["event_time_zero_mean_rank_pct"]
-        * 100,
-        "trajectory_t3_rank_pct": post_trajectory["event_time_three_mean_rank_pct"]
-        * 100,
-        "pathway_reset": pathway_counts["Reset / rebuild-like transition"],
-        "pathway_continuity": pathway_counts["In-place upgrade / continuity transition"],
-        "pathway_placeholder": pathway_counts["Forward-dated / placeholder entry"],
-        "pathway_timing_ambiguous": pathway_counts[
-            "Timing-ambiguous / non-adjacent coded row"
-        ],
-        "pathway_unresolved": pathway_counts["Unresolved / insufficient continuity"],
-        "regression_obs": regression_manifest["metadata"]["regression_obs"],
-        "regression_facilities": regression_manifest["metadata"]["regression_facilities"],
-        "primary_age": primary_model["coefficients"]["facility_age_years"],
-        "primary_capacity": primary_model["coefficients"]["capacity_100t"],
-        "primary_utilization": primary_model["coefficients"][
-            "capacity_utilization_capped"
-        ],
-        "primary_r2": primary_model["rsquared"],
-        "engineering_rows": engineering_validation["plausible_rows"],
-        "engineering_outcome_correlation": engineering_validation[
-            "thermal_reported_log_correlation"
-        ],
-        "within_total_ratio": regression_manifest["metadata"]["within_total_ratio"],
-        "early_ratio": regression_manifest["metadata"].get(
-            "early_coded_within_total_ratio",
-            regression_manifest["metadata"]["pre_fukushima_within_total_ratio"],
-        ),
-        "later_ratio": regression_manifest["metadata"].get(
-            "later_coded_within_total_ratio",
-            regression_manifest["metadata"]["post_fukushima_within_total_ratio"],
-        ),
-        "early_coded_window": early_coded_window,
-        "later_coded_window": later_coded_window,
-        "early_window_label": early_window_label,
-        "later_window_label": later_window_label,
-        "main_age_range": (
-            fmt_signed_decimal(max(main_age), 3),
-            fmt_signed_decimal(min(main_age), 3),
-        ),
-        "main_capacity_range": (
-            fmt_signed_decimal(min(main_capacity), 3),
-            fmt_signed_decimal(max(main_capacity), 3),
-        ),
-        "main_util_range": (
-            fmt_signed_decimal(min(main_util), 3),
-            fmt_signed_decimal(max(main_util), 3),
-        ),
-        "log_dv_robust_age_range": (
-            fmt_signed_decimal(max(log_dv_robust_age), 3),
-            fmt_signed_decimal(min(log_dv_robust_age), 3),
-        ),
-        "mean_eff_0_10": age_group_summary["0-10 yrs"]["mean_eff"],
-        "mean_eff_30_plus": age_group_summary["30+ yrs"]["mean_eff"],
-        "rank_pairs": rank_persistence["exact_adjacent_year_pairs"],
-        "rank_facilities": rank_persistence["facilities"],
-        "pooled_rank_correlation": rank_persistence["pooled_rank_correlation"],
+def parse_diagnostic_table(path: Path) -> dict[str, dict[str, float]]:
+    """Parse the generated legacy-versus-sizing diagnostic table."""
+    rows: dict[str, dict[str, float]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in line.split("|")[1:-1]]
+        if len(cells) != 5 or cells[0] not in {
+            "facility_age_years",
+            "capacity_100t",
+            "capacity_utilization_raw",
+            "log_generator_design_intensity",
+        }:
+            continue
+        values: list[float] = []
+        for value in cells[1:]:
+            values.append(float(value) if value.lower() != "nan" else math.nan)
+        rows[cells[0]] = {
+            "legacy_coefficient": values[0],
+            "legacy_p_value": values[1],
+            "sizing_adjusted_coefficient": values[2],
+            "sizing_adjusted_p_value": values[3],
+        }
+    required = {
+        "facility_age_years",
+        "capacity_100t",
+        "capacity_utilization_raw",
+        "log_generator_design_intensity",
     }
+    if set(rows) != required:
+        missing = sorted(required - set(rows))
+        raise ValueError(f"Regression diagnostic table is incomplete: {missing}")
+    return rows
 
 
-def make_claim_registry(metrics: dict) -> list[dict]:
-    return [
-        {
-            "id": "readme_topline_paragraph",
-            "targets": [
-                (
-                    README_PATH,
-                    f"{fmt_int(metrics['full_panel_obs'])} rows and "
-                    f"{fmt_int(metrics['full_panel_facilities'])} coded facilities",
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['risk_set_obs'])} facility-years, "
-                        f"{fmt_int(metrics['risk_set_facilities'])} facilities, and "
-                        f"{fmt_int(metrics['events'])} observed events"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['model_obs'])} rows, "
-                        f"{fmt_int(metrics['model_facilities'])} facilities, and "
-                        f"{fmt_int(metrics['model_events'])} events"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['zero_prior_throughput_events'])} of those events "
-                        "have zero or missing prior-year throughput"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['active_model_obs'])} rows, "
-                        f"{fmt_int(metrics['active_model_facilities'])} facilities, and "
-                        f"{fmt_int(metrics['active_model_events'])} events"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"({metrics['adoption_capacity_pp_2dp']} and "
-                        f"{metrics['active_capacity_pp_2dp']} percentage points per 100 t/day)"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        "broad age effects of "
-                        f"{metrics['broad_age_ames_2dp'][0]}, "
-                        f"{metrics['broad_age_ames_2dp'][1]}, and "
-                        f"{metrics['broad_age_ames_2dp'][2]} percentage points attenuate to "
-                        f"{metrics['active_age_ames_2dp'][0]}, "
-                        f"{metrics['active_age_ames_2dp'][1]}, and "
-                        f"{metrics['active_age_ames_2dp'][2]}"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['post_entry_positive_by_one'])} of "
-                        f"{fmt_int(metrics['events'])} entrants report positive output by the following year"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['regression_obs'])} rows across "
-                        f"{fmt_int(metrics['regression_facilities'])} facilities"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_signed_decimal(metrics['primary_age'], 4)} for age/vintage, "
-                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)} for capacity, and "
-                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} for utilization"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{metrics['pooled_rank_correlation']:.4f} across "
-                        f"{fmt_int(metrics['rank_pairs'])} exact pairs"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"{fmt_int(metrics['trajectory_rows'])}-row post-entry trajectory"
-                    ),
-                ),
-            ],
-        },
-        {
-            "id": "readme_headline_table",
-            "targets": [
-                (
-                    README_PATH,
-                    (
-                        f"| Broad asset-entry age AMEs | {metrics['broad_age_ames_2dp'][0]}, "
-                        f"{metrics['broad_age_ames_2dp'][1]}, and "
-                        f"{metrics['broad_age_ames_2dp'][2]} pp vs prior-year age 0–10 |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Active-conversion age AMEs | {metrics['active_age_ames_2dp'][0]}, "
-                        f"{metrics['active_age_ames_2dp'][1]}, and "
-                        f"{metrics['active_age_ames_2dp'][2]} pp; latter two not conventionally significant |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Entry scale AME | {metrics['adoption_capacity_pp_2dp']} pp broad and "
-                        f"{metrics['active_capacity_pp_2dp']} pp active per 100 t/day |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        "| Primary generator model | Age/vintage "
-                        f"{fmt_signed_decimal(metrics['primary_age'], 4)}; capacity "
-                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}; utilization "
-                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Early post-entry position | Mean same-year percentile "
-                        f"{metrics['trajectory_t0_rank_pct']:.1f} at event time zero and "
-                        f"{metrics['trajectory_t3_rank_pct']:.1f} at time three |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Pathway audit of entry events | {metrics['pathway_reset']} reset/rebuild-like, "
-                        f"{metrics['pathway_continuity']} continuity-like, "
-                        f"{metrics['pathway_placeholder']} forward-dated/placeholder, "
-                        f"{metrics['pathway_timing_ambiguous']} timing-ambiguous, "
-                        f"{metrics['pathway_unresolved']} unresolved |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Within/total variance ratio | {metrics['within_total_ratio']:.4f} (pooled), "
-                        f"{metrics['early_ratio']:.4f} (early coded), {metrics['later_ratio']:.4f} (later coded) |"
-                    ),
-                ),
-                (
-                    README_PATH,
-                    (
-                        f"| Adjacent-year rank persistence | {metrics['pooled_rank_correlation']:.4f} "
-                        f"across {fmt_int(metrics['rank_pairs'])} exact pairs |"
-                    ),
-                ),
-            ],
-        },
-        {
-            "id": "architecture_summary",
-            "targets": [
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"(23,599 observations, 2,948 unique facilities, FY2005–FY2024)"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"({fmt_int(metrics['risk_set_obs'])} facility-years, "
-                        f"{fmt_int(metrics['risk_set_facilities'])} facilities, "
-                        f"{fmt_int(metrics['events'])} installed-capacity entry events)"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{fmt_int(metrics['model_obs'])} facility-years across "
-                        f"{fmt_int(metrics['model_facilities'])} facilities and "
-                        f"{fmt_int(metrics['model_events'])} events"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{fmt_int(metrics['zero_prior_throughput_events'])} of "
-                        f"{fmt_int(metrics['model_events'])} exact-year events have zero or missing "
-                        "prior-year throughput"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{fmt_int(metrics['active_model_obs'])} rows, "
-                        f"{fmt_int(metrics['active_model_facilities'])} facilities, and "
-                        f"{fmt_int(metrics['active_model_events'])} events"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"broad age AMEs are {metrics['broad_age_ames_2dp'][0]}, "
-                        f"{metrics['broad_age_ames_2dp'][1]}, and "
-                        f"{metrics['broad_age_ames_2dp'][2]} pp; active-conversion AMEs "
-                        f"attenuate to {metrics['active_age_ames_2dp'][0]}, "
-                        f"{metrics['active_age_ames_2dp'][1]}, and "
-                        f"{metrics['active_age_ames_2dp'][2]} pp"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{metrics['adoption_capacity_pp_2dp'].replace('+', '')} pp in the broad frame and "
-                        f"{metrics['active_capacity_pp_2dp'].replace('+', '')} pp in the active frame"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{metrics['pathway_reset']} observed entry events as reset/rebuild-like, "
-                        f"{metrics['pathway_continuity']} as continuity/in-place-upgrade-like, "
-                        f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
-                        f"{metrics['pathway_timing_ambiguous']} as timing-ambiguous non-adjacent coded-row events, "
-                        f"and {metrics['pathway_unresolved']} as unresolved"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{fmt_int(metrics['post_entry_positive_by_one'])} of "
-                        f"{fmt_int(metrics['events'])} entrants report positive output by the following year"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{metrics['pooled_rank_correlation']:.4f} across "
-                        f"{fmt_int(metrics['rank_pairs'])} exact adjacent-year pairs"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, capacity "
-                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}, and utilization "
-                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)}"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"{fmt_int(metrics['trajectory_rows'])} observations across "
-                        f"{fmt_int(metrics['trajectory_events'])} events"
-                    ),
-                ),
-            ],
-        },
-        {
-            "id": "architecture_key_findings",
-            "targets": [
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"| Broad entry hazard, prior-year age bands | "
-                        f"{metrics['broad_age_ames_2dp'][0]}, {metrics['broad_age_ames_2dp'][1]}, "
-                        f"and {metrics['broad_age_ames_2dp'][2]} pp versus ages 0–10 | All p < 0.05 |"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"| Active-conversion age bands | {metrics['active_age_ames_2dp'][0]}, "
-                        f"{metrics['active_age_ames_2dp'][1]}, and "
-                        f"{metrics['active_age_ames_2dp'][2]} pp | Only ages 10–20 have p < 0.01 |"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        f"| Entry capacity | {metrics['adoption_capacity_pp_2dp']} pp broad; "
-                        f"{metrics['active_capacity_pp_2dp']} pp active per 100 t/day | Both p < 0.01 |"
-                    ),
-                ),
-                (
-                    ARCHITECTURE_PATH,
-                    (
-                        "| Primary generator model | Age/vintage "
-                        f"{fmt_signed_decimal(metrics['primary_age'], 4)}; capacity "
-                        f"{fmt_signed_decimal(metrics['primary_capacity'], 4)}; utilization "
-                        f"{fmt_signed_decimal(metrics['primary_utilization'], 4)} | All p < 0.001 |"
-                    ),
-                ),
-            ],
-        },
-    ]
+def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Recompute canonical metrics and return evidence audit assertions."""
+    assertions: list[dict[str, Any]] = []
 
-
-def make_forbidden_patterns() -> list[dict]:
-    return [
-        {
-            "id": "readme_mermaid",
-            "path": README_PATH,
-            "pattern": "```mermaid",
-            "reason": "README diagrams must be checked-in SVGs rather than viewer-dependent Mermaid blocks.",
-        },
-        {
-            "id": "stale_architecture_age_effect",
-            "path": ARCHITECTURE_PATH,
-            "pattern": "1.5–2.2 pp",
-            "reason": "Pre-hardening adoption age effect wording should not persist in the architecture doc.",
-        },
-        {
-            "id": "stale_architecture_capacity_effect",
-            "path": ARCHITECTURE_PATH,
-            "pattern": "+1.47 pp per 100 t/day",
-            "reason": "Pre-hardening adoption capacity effect wording should not persist in the architecture doc.",
-        },
-        {
-            "id": "stale_readme_previous_observed_main_model",
-            "path": README_PATH,
-            "pattern": "11,717 facility-years across 1,915 facilities and 140 events",
-            "reason": "README must present the exact one-fiscal-year adoption model as main, not the previous-observed-row sensitivity.",
-        },
-        {
-            "id": "stale_readme_fukushima_shorthand",
-            "path": README_PATH,
-            "pattern": "pre-Fuku",
-            "reason": "README must use early/later coded-window language rather than Fukushima shorthand.",
-        },
-        {
-            "id": "stale_manuscript_grid_control_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "grid-emission-factor control",
-            "reason": "The interpolated grid factor is not a core generator-performance covariate.",
-        },
-        {
-            "id": "stale_manuscript_grid_row_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "Grid EF",
-            "reason": "The core regression table must not restore the removed grid-factor row.",
-        },
-        {
-            "id": "stale_manuscript_grid_row_tex",
-            "path": MANUSCRIPT_TEX_PATH,
-            "pattern": "Grid EF",
-            "reason": "The LaTeX core regression table must match the current model.",
-        },
-        {
-            "id": "stale_supplement_grid_control",
-            "path": SUPPLEMENT_PATH,
-            "pattern": "grid-emission factor",
-            "reason": "The supplement must not describe the interpolated grid factor as a core covariate.",
-        },
-        {
-            "id": "stale_universal_age_headline_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "younger and larger facilities",
-            "reason": "The revised headline must distinguish robust scale selectivity from the frame-dependent age pattern.",
-        },
-        {
-            "id": "stale_universal_age_headline_tex",
-            "path": MANUSCRIPT_TEX_PATH,
-            "pattern": "younger and larger facilities",
-            "reason": "The LaTeX manuscript must preserve the broad-versus-active entry distinction.",
-        },
-        {
-            "id": "stale_entry_pseudo_r2_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "0.1829",
-            "reason": "The duration-adjusted broad entry model has pseudo-R2 0.1920.",
-        },
-        {
-            "id": "stale_entry_pseudo_r2_tex",
-            "path": MANUSCRIPT_TEX_PATH,
-            "pattern": "0.1829",
-            "reason": "The duration-adjusted broad entry model has pseudo-R2 0.1920.",
-        },
-        {
-            "id": "stale_persistence_overclaim_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "not easily erased",
-            "reason": "Observed rank persistence does not bound attainable intervention gains.",
-        },
-        {
-            "id": "stale_official_share_md",
-            "path": MANUSCRIPT_MD_PATH,
-            "pattern": "only 41.1%",
-            "reason": "National context must use the official FY2024 share of 41.9%; 41.1% is analytical only.",
-        },
-        {
-            "id": "stale_official_share_tex",
-            "path": MANUSCRIPT_TEX_PATH,
-            "pattern": "only 41.1\\%",
-            "reason": "National context must use the official FY2024 share of 41.9%; 41.1% is analytical only.",
-        },
-    ]
-
-
-def run_checks() -> tuple[list[dict], list[dict], dict]:
-    metrics = build_canonical_metrics()
-    texts = {
-        README_PATH: README_PATH.read_text(encoding="utf-8"),
-        ARCHITECTURE_PATH: ARCHITECTURE_PATH.read_text(encoding="utf-8"),
-        MANUSCRIPT_MD_PATH: MANUSCRIPT_MD_PATH.read_text(encoding="utf-8"),
-        MANUSCRIPT_TEX_PATH: MANUSCRIPT_TEX_PATH.read_text(encoding="utf-8"),
-        SUPPLEMENT_PATH: SUPPLEMENT_PATH.read_text(encoding="utf-8"),
-    }
-
-    passes = []
-    failures = []
-
-    if len(metrics["source_manifest_python"]) != 1:
-        failures.append(
+    def assert_evidence(check_id: str, condition: bool, detail: str) -> None:
+        assertions.append(
             {
-                "type": "manifest_consistency",
-                "id": "source_manifest_python",
-                "detail": (
-                    "Core stage manifests do not share one Python version: "
-                    + ", ".join(metrics["source_manifest_python"])
-                ),
+                "type": "evidence_integrity",
+                "id": check_id,
+                "passed": bool(condition),
+                "detail": detail,
             }
         )
+
+    manifests = {stage: load_manifest(stage) for stage in CORE_STAGES}
+    python_versions = sorted({manifest["python"] for manifest in manifests.values()})
+    assert_evidence(
+        "core_manifest_python",
+        len(python_versions) == 1,
+        f"Core manifest Python versions: {', '.join(python_versions)}",
+    )
+    current_code_hashes = {
+        str(path.relative_to(REPO_ROOT)): sha256_file(path)
+        for path in sorted(ANALYSIS_DIR.glob("*.py"))
+    }
+    manifest_hash_failures: list[str] = []
+    for stage, manifest in manifests.items():
+        script = manifest.get("script", "")
+        if (
+            not script
+            or manifest.get("script_sha256")
+            != sha256_file(REPO_ROOT / script)
+            or manifest.get("analysis_code_sha256") != current_code_hashes
+        ):
+            manifest_hash_failures.append(f"{stage}: code hash mismatch")
+        for kind in ("input", "output"):
+            paths = manifest.get(f"{kind}s", [])
+            recorded = manifest.get(f"{kind}_sha256", {})
+            if set(recorded) != set(paths):
+                manifest_hash_failures.append(f"{stage}: {kind} hash keys mismatch")
+                continue
+            for relative in paths:
+                try:
+                    current_hash = sha256_manifest_path(relative)
+                except (FileNotFoundError, subprocess.CalledProcessError):
+                    manifest_hash_failures.append(
+                        f"{stage}: missing {kind} {relative}"
+                    )
+                    continue
+                if recorded[relative] != current_hash:
+                    manifest_hash_failures.append(
+                        f"{stage}: {kind} hash mismatch for {relative}"
+                    )
+    assert_evidence(
+        "canonical_stage_hashes",
+        not manifest_hash_failures,
+        (
+            "All canonical stage script, analysis-code, input, and output hashes match."
+            if not manifest_hash_failures
+            else "; ".join(manifest_hash_failures[:20])
+        ),
+    )
+
+    # Raw-source provenance.
+    raw_manifest = pd.read_csv(OUTPUT_DIR / "raw_data_manifest.csv", dtype="string")
+    schema_map = pd.read_csv(OUTPUT_DIR / "raw_workbook_schema_map.csv", dtype="string")
+    present_raw = raw_manifest[raw_manifest["file_status"].eq("present")].copy()
+    configured_years = raw_manifest["fiscal_year"].nunique()
+    raw_hash_failures: list[str] = []
+    for row in present_raw.itertuples(index=False):
+        path = REPO_ROOT / row.repository_path
+        if not path.exists() or sha256_file(path) != row.sha256:
+            raw_hash_failures.append(row.filename)
+    schema_counts = schema_map.groupby("fiscal_year")["standardized_field"].nunique()
+    schema_duplicates = int(
+        schema_map.duplicated(["fiscal_year", "standardized_field"], keep=False).sum()
+    )
+    assert_evidence(
+        "raw_workbook_hashes",
+        not raw_hash_failures,
+        (
+            f"Recomputed SHA-256 for {len(present_raw)} workbooks; mismatches: "
+            f"{', '.join(raw_hash_failures) if raw_hash_failures else 'none'}"
+        ),
+    )
+    assert_evidence(
+        "raw_schema_grain",
+        schema_duplicates == 0 and schema_counts.nunique() == 1,
+        (
+            f"Schema-map duplicate year-fields: {schema_duplicates}; "
+            f"fields per year: {sorted(schema_counts.unique().tolist())}"
+        ),
+    )
+    assert_evidence(
+        "retrieval_time_boundary",
+        raw_manifest["retrieval_timestamp_utc"].eq("unavailable").all()
+        and raw_manifest["file_mtime_utc"].eq("unavailable_not_persisted").all()
+        and raw_manifest["repository_commit_timestamp"].ne("unavailable").all(),
+        (
+            "Original retrieval time and volatile checkout mtime are explicitly "
+            "unavailable; deterministic repository commit timestamps are separate."
+        ),
+    )
+    provenance_meta = manifests["02b_build_raw_data_manifest"]["metadata"]
+    assert_evidence(
+        "provenance_manifest_sync",
+        int(provenance_meta["present_workbooks"]) == len(present_raw)
+        and int(provenance_meta["configured_fiscal_years"]) == configured_years,
+        (
+            f"Provenance CSV has {len(present_raw)}/{configured_years} present/configured; "
+            "stage manifest agrees."
+        ),
+    )
+
+    # Stable administrative-lineage identity.
+    identified = pd.read_csv(
+        REPO_ROOT / "data" / "processed" / "incineration_panel_identified.csv",
+        dtype={
+            "facility_code": "string",
+            "stable_site_id": "string",
+            "asset_episode_id": "string",
+        },
+    )
+    identity_meta = manifests["02a_build_facility_identity"]["metadata"]
+    stable_sites = int(identified["stable_site_id"].nunique())
+    asset_episodes = int(identified["asset_episode_id"].nunique())
+    duplicate_site_year_rows = int(
+        identified.duplicated(["stable_site_id", "fiscal_year"], keep=False).sum()
+    )
+    maximum_years_per_site = int(
+        identified.groupby("stable_site_id")["fiscal_year"].nunique().max()
+    )
+    fy2019 = identified[identified["fiscal_year"].eq(2019)]
+    fy2020 = identified[identified["fiscal_year"].eq(2020)]
+    official_overlap = len(
+        clean_identifier(fy2019["facility_code"])
+        & clean_identifier(fy2020["facility_code"])
+    )
+    stable_overlap = len(
+        clean_identifier(fy2019["stable_site_id"])
+        & clean_identifier(fy2020["stable_site_id"])
+    )
+    collapsed_duplicate_rows = int(
+        (identified["source_record_multiplicity"].fillna(1).astype(int) - 1).sum()
+    )
+    low_margin = pd.read_csv(
+        OUTPUT_DIR / "identity_low_margin_links.csv",
+        dtype={
+            "source_record_id": "string",
+            "identity_predecessor_record_id": "string",
+            "identity_match_current_alternative_record_id": "string",
+            "identity_match_prior_competitor_record_id": "string",
+        },
+    )
+    matched = ~identified["identity_match_method"].eq("new_site")
+    minimum_match_score = float(identity_meta["minimum_match_score"])
+    minimum_unambiguous_margin = float(
+        identity_meta["minimum_unambiguous_margin"]
+    )
+    expected_uncertain = matched & identified["identity_match_margin"].lt(
+        minimum_unambiguous_margin
+    )
+    observed_uncertain = identified["identity_match_uncertain"].fillna(False).astype(bool)
+    strong_override = identified[
+        "identity_match_strong_evidence_override"
+    ].fillna(False).astype(bool)
+    low_margin_assignments = int(observed_uncertain.sum())
+    uncertain_lineages = int(
+        identified.loc[observed_uncertain, "stable_site_id"].nunique()
+    )
+    expected_uncertain_ids = set(
+        identified.loc[observed_uncertain, "source_record_id"].astype(str)
+    )
+    exposed_uncertain_ids = set(low_margin["source_record_id"].astype(str))
+    observed_minimum_margin = np.minimum(
+        identified.loc[matched, "identity_match_current_row_margin"].to_numpy(float),
+        identified.loc[matched, "identity_match_prior_record_margin"].to_numpy(float),
+    )
+    ordered_episodes = identified.sort_values(["asset_episode_id", "fiscal_year"])
+    continued_start_resets = int(
+        ordered_episodes.groupby("asset_episode_id")["year_started"]
+        .diff()
+        .abs()
+        .ge(3)
+        .sum()
+    )
+    identity_values = {
+        "raw_source_rows": int(identity_meta.get("raw_source_rows", len(identified))),
+        "retained_rows": len(identified),
+        "stable_sites": stable_sites,
+        "asset_episodes": asset_episodes,
+        "duplicate_site_year_rows": duplicate_site_year_rows,
+        "maximum_years_per_site": maximum_years_per_site,
+        "fy2020_official_code_overlap": official_overlap,
+        "fy2020_stable_site_overlap": stable_overlap,
+        "collapsed_exact_duplicate_rows": collapsed_duplicate_rows,
+        "low_margin_assignments": low_margin_assignments,
+        "uncertain_lineages": uncertain_lineages,
+    }
+    assert_evidence(
+        "stable_site_unique_grain",
+        duplicate_site_year_rows == 0,
+        f"Duplicate stable-lineage-year rows: {duplicate_site_year_rows}",
+    )
+    assert_evidence(
+        "identity_duplicate_and_episode_guards",
+        collapsed_duplicate_rows
+        == int(identity_meta["collapsed_exact_duplicate_rows"])
+        and identified["source_record_id"].is_unique
+        and continued_start_resets == 0,
+        (
+            f"Collapsed exact duplicate rows: {collapsed_duplicate_rows}; "
+            f"unique canonical record IDs: {identified['source_record_id'].is_unique}; "
+            f"continued episode start-year resets >=3 years: {continued_start_resets}."
+        ),
+    )
+    assert_evidence(
+        "identity_executable_guardrails",
+        int(identity_meta.get("golden_same_link_checks", 0)) >= 3
+        and int(identity_meta.get("golden_separation_checks", 0)) >= 3
+        and int(identity_meta.get("permutation_invariance_prefectures", 0)) >= 6
+        and int(identity_meta.get("insertion_invariance_prefectures", 0)) >= 6
+        and identified.loc[matched, "identity_match_score"].ge(
+            minimum_match_score
+        ).all()
+        and np.allclose(
+            observed_minimum_margin,
+            identified.loc[matched, "identity_match_margin"].to_numpy(float),
+        )
+        and expected_uncertain.equals(observed_uncertain)
+        and not (observed_uncertain & ~strong_override).any()
+        and low_margin_assignments
+        == int(identity_meta.get("uncertain_links_exposed", -1))
+        and len(low_margin) == low_margin_assignments
+        and not low_margin["source_record_id"].duplicated().any()
+        and expected_uncertain_ids == exposed_uncertain_ids
+        and low_margin["identity_match_strong_evidence_override"]
+        .fillna(False)
+        .astype(bool)
+        .all()
+        and int(identity_meta.get("accepted_subthreshold_links", -1)) == 0
+        and int(identity_meta.get("accepted_weak_ambiguous_links", -1)) == 0,
+        (
+            "Golden, permutation, insertion, threshold, two-sided-margin, and "
+            "uncertainty-exposure guardrails agree; "
+            f"{low_margin_assignments} accepted uncertain links across "
+            f"{uncertain_lineages} lineages are exposed exactly once."
+        ),
+    )
+    assert_evidence(
+        "identity_manifest_sync",
+        int(
+            identity_meta.get(
+                "retained_unique_source_records",
+                identity_meta.get("source_rows", len(identified)),
+            )
+        )
+        == len(identified)
+        and int(identity_meta["stable_sites"]) == stable_sites
+        and int(identity_meta["asset_episodes"]) == asset_episodes
+        and int(identity_meta["duplicate_site_year_rows"])
+        == duplicate_site_year_rows
+        and int(identity_meta["maximum_years_per_site"]) == maximum_years_per_site
+        and int(identity_meta["fy2020_official_code_overlap"]) == official_overlap
+        and int(identity_meta["fy2020_stable_site_overlap"]) == stable_overlap,
+        (
+            f"Recomputed {len(identified):,} retained records, {stable_sites} stable administrative lineages, "
+            f"{asset_episodes} asset episodes, "
+            f"and FY2019-FY2020 overlaps {official_overlap} official/{stable_overlap} stable."
+        ),
+    )
+    assert_evidence(
+        "official_code_regime_break",
+        official_overlap == 0 and stable_overlap > 0,
+        (
+            f"FY2019-FY2020 official-code overlap is {official_overlap}; "
+            f"administrative-lineage overlap is {stable_overlap}."
+        ),
+    )
+
+    # FY2024 fleet count-volume decomposition.
+    fleet = pd.read_csv(OUTPUT_DIR / "fleet_decomposition.csv")
+    fy2024_rows = fleet[fleet["fiscal_year"].eq(2024)]
+    if len(fy2024_rows) != 1:
+        raise ValueError(f"Expected one FY2024 fleet row, found {len(fy2024_rows)}")
+    fy2024 = fy2024_rows.iloc[0]
+    facility_participation = (
+        fy2024["installed_generation_facilities"] / fy2024["facilities"] * 100
+    )
+    throughput_coverage = (
+        fy2024["positive_output_throughput_t"] / fy2024["total_throughput_t"] * 100
+    )
+    valid_throughput_coverage = (
+        fy2024["valid_output_throughput_t"] / fy2024["total_throughput_t"] * 100
+    )
+    fleet_identity_error = float(
+        (fleet["fleet_valid_gross_mwh_t"] - fleet["identity_product_mwh_t"])
+        .abs()
+        .max()
+    )
+    fleet_meta = manifests["05_fleet_decomposition"]["metadata"]
+    segments = pd.read_csv(OUTPUT_DIR / "fy2024_fleet_segments.csv")
+    assert_evidence(
+        "fy2024_fleet_arithmetic",
+        close(facility_participation, fy2024["facility_participation_pct"])
+        and close(throughput_coverage, fy2024["throughput_coverage_pct"])
+        and close(
+            valid_throughput_coverage,
+            fy2024["engineering_valid_throughput_coverage_pct"],
+        ),
+        (
+            f"FY2024 recomputed facility/throughput/valid-throughput shares: "
+            f"{facility_participation:.6f}/{throughput_coverage:.6f}/"
+            f"{valid_throughput_coverage:.6f}%."
+        ),
+    )
+    assert_evidence(
+        "fleet_decomposition_identity",
+        fleet_identity_error < 1e-12,
+        f"Maximum fleet decomposition identity error: {fleet_identity_error:.3e}",
+    )
+    assert_evidence(
+        "fy2024_segment_totals",
+        int(segments["facility_rows"].sum()) == int(fy2024["facilities"])
+        and close(segments["facility_share_pct"].sum(), 100.0),
+        (
+            f"FY2024 segment rows sum to {int(segments['facility_rows'].sum())}; "
+            f"facility shares sum to {segments['facility_share_pct'].sum():.6f}%."
+        ),
+    )
+    assert_evidence(
+        "fleet_manifest_sync",
+        close(
+            fleet_meta["fy2024_facility_participation_pct"],
+            fy2024["facility_participation_pct"],
+        )
+        and close(
+            fleet_meta["fy2024_throughput_coverage_pct"],
+            fy2024["throughput_coverage_pct"],
+        )
+        and close(
+            fleet_meta["fy2024_installed_design_capacity_share_pct"],
+            fy2024["installed_design_capacity_share_pct"],
+        ),
+        "FY2024 fleet CSV and stage manifest headline metrics agree.",
+    )
+
+    # Firth adoption evidence.
+    transition = pd.read_csv(OUTPUT_DIR / "figure2_transition_effects.csv")
+    adoption_meta = manifests["05a_power_adoption"]["metadata"]
+    model_names = transition["model"].drop_duplicates().tolist()
+    broad_name = "Broad exact-year risk frame"
+    prior_name = "Prior-operation risk frame"
+    continuity_name = "Same-asset-episode continuity sensitivity"
+    identity_certain_name = "Identity-certain-lineage sensitivity"
+    broad = transition[transition["model"].eq(broad_name)]
+    prior = transition[transition["model"].eq(prior_name)]
+    continuity = transition[transition["model"].eq(continuity_name)]
+    identity_certain = transition[
+        transition["model"].eq(identity_certain_name)
+    ]
+    if broad.empty or prior.empty or continuity.empty or identity_certain.empty:
+        raise ValueError(f"Unexpected adoption model labels: {model_names}")
+    broad_capacity = broad[broad["term"].eq("log_processing_capacity")].iloc[0]
+    prior_capacity = prior[prior["term"].eq("log_processing_capacity")].iloc[0]
+    broad_rows = int(broad["observations"].iloc[0])
+    broad_sites = int(broad["sites"].iloc[0])
+    broad_events = int(broad["events"].iloc[0])
+    prior_rows = int(prior["observations"].iloc[0])
+    prior_sites = int(prior["sites"].iloc[0])
+    prior_events = int(prior["events"].iloc[0])
+    continuity_rows = int(continuity["observations"].iloc[0])
+    continuity_sites = int(continuity["sites"].iloc[0])
+    continuity_events = int(continuity["events"].iloc[0])
+    identity_certain_rows = int(identity_certain["observations"].iloc[0])
+    identity_certain_sites = int(identity_certain["sites"].iloc[0])
+    identity_certain_events = int(identity_certain["events"].iloc[0])
+    capacity_or_300_vs_100 = math.exp(
+        float(broad_capacity["coefficient"]) * math.log(2.0)
+    )
+    prior_capacity_or_300_vs_100 = math.exp(
+        float(prior_capacity["coefficient"]) * math.log(2.0)
+    )
+    bootstrap = pd.read_csv(OUTPUT_DIR / "adoption_bootstrap_coefficients.csv")
+    bootstrap_counts = bootstrap.groupby("model")["repetition"].nunique().to_dict()
+    pathways = pd.read_csv(OUTPUT_DIR / "adoption_pathway_audit.csv")
+    pathway_counts = pathways["pathway_category"].value_counts().to_dict()
+    bridge = pd.read_csv(OUTPUT_DIR / "post_adoption_bridge.csv")
+    trajectories = pd.read_csv(OUTPUT_DIR / "post_adoption_trajectories.csv")
+    exact_pathway_events = int(pathways["exact_one_year_lag"].fillna(False).astype(bool).sum())
+    assert_evidence(
+        "firth_method_and_sample_sync",
+        "Firth" in adoption_meta["bias_reduction"]
+        and broad_rows == int(adoption_meta["exact_model_rows"])
+        and broad_sites == int(adoption_meta["exact_model_sites"])
+        and broad_events == int(adoption_meta["exact_model_events"])
+        and prior_rows == int(adoption_meta["prior_operation_rows"])
+        and prior_sites == int(adoption_meta["prior_operation_sites"])
+        and prior_events == int(adoption_meta["prior_operation_events"])
+        and continuity_rows == int(adoption_meta["same_episode_continuity_rows"])
+        and continuity_sites == int(adoption_meta["same_episode_continuity_sites"])
+        and continuity_events == int(adoption_meta["same_episode_continuity_events"])
+        and identity_certain_rows == int(adoption_meta["identity_certain_rows"])
+        and identity_certain_sites == int(adoption_meta["identity_certain_sites"])
+        and identity_certain_events == int(adoption_meta["identity_certain_events"])
+        and int(adoption_meta["uncertain_identity_lineages"])
+        == identity_values["uncertain_lineages"],
+        (
+            f"Firth samples are {broad_rows}/{broad_sites}/{broad_events} broad and "
+            f"{prior_rows}/{prior_sites}/{prior_events} prior-operation and "
+            f"{continuity_rows}/{continuity_sites}/{continuity_events} same-episode "
+            f"and {identity_certain_rows}/{identity_certain_sites}/"
+            f"{identity_certain_events} identity-certain rows/lineages/events."
+        ),
+    )
+    adoption_config = manifests["05a_power_adoption"]["analysis_config"]
+    assert_evidence(
+        "adoption_estimand_configuration",
+        bool(adoption_config.get("adoption_exact_lag_requires_same_stable_lineage"))
+        and bool(adoption_config.get("adoption_primary_allows_asset_episode_change"))
+        and bool(
+            adoption_config.get(
+                "adoption_continuity_sensitivity_requires_same_asset_episode"
+            )
+        )
+        and broad_rows - continuity_rows
+        == int(adoption_meta["cross_episode_exact_rows"])
+        and broad_events - continuity_events
+        == int(adoption_meta["cross_episode_exact_events"]),
+        (
+            "Primary entry is broad administrative-lineage entry; same-episode "
+            f"sensitivity excludes {broad_rows - continuity_rows} rows and "
+            f"{broad_events - continuity_events} events."
+        ),
+    )
+    convergence = adoption_meta.get("model_convergence", {})
+    assert_evidence(
+        "firth_convergence",
+        set(convergence)
+        == {
+            "broad",
+            "prior_operation",
+            "same_episode_continuity",
+            "identity_certain",
+        }
+        and all(bool(item.get("converged")) for item in convergence.values()),
+        f"Firth convergence metadata: {convergence}",
+    )
+    assert_evidence(
+        "firth_estimates_finite",
+        len(transition) == 4 * len(ADOPTION_FOCAL_TERMS)
+        and np.isfinite(
+            transition[
+                [
+                    "coefficient",
+                    "standard_error_model_based",
+                    "bootstrap_ci_low",
+                    "bootstrap_ci_high",
+                ]
+            ].to_numpy(float)
+        ).all(),
+        (
+            f"All {len(transition)} focal Firth estimates and uncertainty fields are finite."
+        ),
+    )
+    joint_tests = adoption_meta.get("joint_age_tests", {})
+    assert_evidence(
+        "cluster_bootstrap_joint_tests",
+        set(joint_tests)
+        == {
+            "broad_cluster_bootstrap_covariance",
+            "prior_operation_cluster_bootstrap_covariance",
+            "same_episode_cluster_bootstrap_covariance",
+            "identity_certain_cluster_bootstrap_covariance",
+            "broad_model_based",
+            "prior_operation_model_based",
+            "same_episode_model_based",
+            "identity_certain_model_based",
+        }
+        and all(
+            len(values) == 4
+            and int(values[3]) == int(adoption_meta["bootstrap_repetitions"])
+            and np.isfinite(np.asarray(values, dtype=float)).all()
+            for key, values in joint_tests.items()
+            if "cluster_bootstrap" in key
+        ),
+        (
+            f"Cluster-bootstrap joint tests: {joint_tests}"
+        ),
+    )
+    assert_evidence(
+        "cluster_bootstrap_sync",
+        set(bootstrap_counts)
+        == {
+            "broad",
+            "prior_operation",
+            "same_episode_continuity",
+            "identity_certain",
+        }
+        and set(bootstrap_counts.values())
+        == {int(adoption_meta["bootstrap_repetitions"])}
+        and bootstrap["converged"].fillna(False).astype(bool).all()
+        and np.isfinite(bootstrap[ADOPTION_FOCAL_TERMS].to_numpy(float)).all(),
+        f"Stable-lineage bootstrap repetitions by model: {bootstrap_counts}",
+    )
+    assert_evidence(
+        "pathway_and_bridge_sync",
+        pathway_counts == adoption_meta["pathway_counts"]
+        and len(pathways) == int(adoption_meta["descriptive_events"])
+        and len(bridge) == int(adoption_meta["post_entry"]["exact_events"])
+        and exact_pathway_events == len(bridge),
+        (
+            f"Pathway events: {len(pathways)} descriptive, {exact_pathway_events} exact; "
+            f"bridge rows: {len(bridge)}."
+        ),
+    )
+    event_time_one = adoption_meta["post_entry"].get("event_time_one", {})
+    trajectory_sync = True
+    for row in trajectories.loc[trajectories["event_time"].eq(1)].to_dict(
+        orient="records"
+    ):
+        key = (
+            "all"
+            if row["series"] == "All exact-year entrants"
+            else str(row["pathway_category"])
+        )
+        recorded = event_time_one.get(key, {})
+        trajectory_sync &= (
+            int(recorded.get("rows", -1)) == int(row["rows"])
+            and int(recorded.get("events", -1)) == int(row["events"])
+            and close(recorded.get("mean_gross_mwh_t", math.nan), row["mean_gross_mwh_t"])
+            and close(
+                recorded.get("mean_gross_rank_pct", math.nan),
+                row["mean_gross_rank_pct"],
+            )
+            and close(
+                recorded.get("mean_design_rank_pct", math.nan),
+                row["mean_design_rank_pct"],
+            )
+            and close(
+                recorded.get("mean_capacity_factor_rank_pct", math.nan),
+                row["mean_capacity_factor_rank_pct"],
+            )
+        )
+    assert_evidence(
+        "post_entry_trajectory_sync",
+        trajectory_sync and len(event_time_one) == 4,
+        "Event-time-one pathway rows and component ranks match adoption metadata.",
+    )
+
+    # Generator design and operating components.
+    components = pd.read_csv(OUTPUT_DIR / "generator_component_results.csv")
+    regression_meta = manifests["05_panel_regression"]["metadata"]
+    diagnostic = parse_diagnostic_table(OUTPUT_DIR / "regression_results.md")
+    regression_report_text = (OUTPUT_DIR / "regression_results.md").read_text(
+        encoding="utf-8"
+    )
+    diagnostic_r2_match = re.search(
+        r"R-squared (?:rises|changes) from ([0-9.]+) to ([0-9.]+)",
+        regression_report_text,
+    )
+    if diagnostic_r2_match is None:
+        raise ValueError("Regression report is missing the diagnostic R-squared change")
+    report_legacy_r2, report_sizing_r2 = map(
+        float, diagnostic_r2_match.groups()
+    )
+    design = components[components["model"].eq("design_intensity")]
+    cohort_design = design[design["term"].str.startswith("cohort_")]
+    design_rows = int(design["observations"].iloc[0])
+    age_diagnostic = diagnostic["facility_age_years"]
+    utilization_diagnostic = diagnostic["capacity_utilization_raw"]
+    sizing_diagnostic = diagnostic["log_generator_design_intensity"]
+    assert_evidence(
+        "component_sample_sync",
+        design_rows == int(regression_meta["engineering_valid_rows"])
+        and components["observations"].nunique() == 1
+        and len(components) == int(regression_meta["component_result_rows"]),
+        (
+            f"Component output has {len(components)} terms on {design_rows} "
+            f"engineering-valid rows and {regression_meta['stable_sites']} stable administrative lineages."
+        ),
+    )
+    assert_evidence(
+        "component_estimates_finite",
+        set(components["model"])
+        == {"design_intensity", "capacity_factor"}
+        and len(cohort_design) == 3
+        and np.isfinite(
+            components[
+                [
+                    "coefficient",
+                    "standard_error",
+                    "ci_low",
+                    "ci_high",
+                    "p_value",
+                    "r_squared",
+                ]
+            ].to_numpy(float)
+        ).all(),
+        "All component-model focal estimates and uncertainty fields are finite.",
+    )
+    diagnostic_meta = regression_meta.get("diagnostic_terms", {})
+    diagnostic_sync = set(diagnostic_meta) == set(diagnostic)
+    for term, values in diagnostic.items():
+        recorded = diagnostic_meta.get(term, {})
+        for key, value in values.items():
+            recorded_value = recorded.get(key)
+            if math.isnan(value):
+                diagnostic_sync &= recorded_value is None
+            else:
+                diagnostic_sync &= recorded_value is not None and close(
+                    recorded_value, value, 1e-4
+                )
+    assert_evidence(
+        "diagnostic_manifest_sync",
+        diagnostic_sync
+        and close(regression_meta["legacy_rsquared"], report_legacy_r2, 1e-4)
+        and close(regression_meta["sizing_adjusted_rsquared"], report_sizing_r2, 1e-4),
+        (
+            "Generated diagnostic coefficients and p-values match the stage manifest "
+            f"for {len(diagnostic)} terms."
+        ),
+    )
+
+    metrics = {
+        "python_versions": python_versions,
+        "provenance": {
+            "configured_years": int(configured_years),
+            "present_workbooks": int(len(present_raw)),
+            "total_bytes": int(pd.to_numeric(present_raw["byte_size"]).sum()),
+        },
+        "identity": identity_values,
+        "fleet": {
+            "facilities": int(fy2024["facilities"]),
+            "installed_facilities": int(fy2024["installed_generation_facilities"]),
+            "facility_participation_pct": float(fy2024["facility_participation_pct"]),
+            "throughput_coverage_pct": float(fy2024["throughput_coverage_pct"]),
+            "installed_design_capacity_share_pct": float(
+                fy2024["installed_design_capacity_share_pct"]
+            ),
+            "engineering_valid_throughput_coverage_pct": float(
+                fy2024["engineering_valid_throughput_coverage_pct"]
+            ),
+            "conditional_valid_gross_mwh_t": float(
+                fy2024["conditional_valid_gross_mwh_t"]
+            ),
+            "fleet_valid_gross_mwh_t": float(fy2024["fleet_valid_gross_mwh_t"]),
+        },
+        "adoption": {
+            "bias_reduction": adoption_meta["bias_reduction"],
+            "bootstrap_repetitions": int(adoption_meta["bootstrap_repetitions"]),
+            "broad_rows": broad_rows,
+            "broad_sites": broad_sites,
+            "broad_events": broad_events,
+            "prior_rows": prior_rows,
+            "prior_sites": prior_sites,
+            "prior_events": prior_events,
+            "continuity_rows": continuity_rows,
+            "continuity_sites": continuity_sites,
+            "continuity_events": continuity_events,
+            "identity_certain_rows": identity_certain_rows,
+            "identity_certain_sites": identity_certain_sites,
+            "identity_certain_events": identity_certain_events,
+            "cross_episode_rows": int(adoption_meta["cross_episode_exact_rows"]),
+            "cross_episode_events": int(
+                adoption_meta["cross_episode_exact_events"]
+            ),
+            "descriptive_events": int(len(pathways)),
+            "exact_observed_events": int(len(bridge)),
+            "broad_capacity_coefficient": float(broad_capacity["coefficient"]),
+            "prior_capacity_coefficient": float(prior_capacity["coefficient"]),
+            "capacity_or_300_vs_100": capacity_or_300_vs_100,
+            "prior_capacity_or_300_vs_100": prior_capacity_or_300_vs_100,
+            "broad_age_joint_p_value": float(
+                joint_tests["broad_cluster_bootstrap_covariance"][2]
+            ),
+            "prior_age_joint_p_value": float(
+                joint_tests["prior_operation_cluster_bootstrap_covariance"][2]
+            ),
+            "continuity_age_joint_p_value": float(
+                joint_tests["same_episode_cluster_bootstrap_covariance"][2]
+            ),
+            "identity_certain_age_joint_p_value": float(
+                joint_tests["identity_certain_cluster_bootstrap_covariance"][2]
+            ),
+            "pathway_counts": pathway_counts,
+            "event_time_one": adoption_meta["post_entry"]["event_time_one"],
+        },
+        "components": {
+            "rows": design_rows,
+            "stable_sites": int(regression_meta["stable_sites"]),
+            "design_r_squared": float(regression_meta["design_model"]["rsquared"]),
+            "capacity_factor_r_squared": float(
+                regression_meta["capacity_factor_model"]["rsquared"]
+            ),
+            "legacy_age_coefficient": age_diagnostic["legacy_coefficient"],
+            "legacy_age_p_value": age_diagnostic["legacy_p_value"],
+            "sizing_age_coefficient": age_diagnostic["sizing_adjusted_coefficient"],
+            "sizing_age_p_value": age_diagnostic["sizing_adjusted_p_value"],
+            "sizing_utilization_coefficient": utilization_diagnostic[
+                "sizing_adjusted_coefficient"
+            ],
+            "sizing_utilization_p_value": utilization_diagnostic[
+                "sizing_adjusted_p_value"
+            ],
+            "sizing_coefficient": sizing_diagnostic["sizing_adjusted_coefficient"],
+            "legacy_r_squared": float(regression_meta["legacy_rsquared"]),
+            "sizing_r_squared": float(regression_meta["sizing_adjusted_rsquared"]),
+            "throughput_elasticity": float(
+                regression_meta["gross_output_elasticities"]["throughput"]
+            ),
+            "electrical_capacity_elasticity": float(
+                regression_meta["gross_output_elasticities"][
+                    "installed_electrical_capacity"
+                ]
+            ),
+            "before_1990_design_coefficient": float(
+                cohort_design.loc[
+                    cohort_design["term"].eq("cohort_Before 1990"), "coefficient"
+                ].iloc[0]
+            ),
+        },
+    }
+    return metrics, assertions
+
+
+def normalize_document(text: str) -> str:
+    normalized = unicodedata.normalize("NFKC", text)
+    normalized = normalized.replace("{,}", ",").replace(r"\%", "%")
+    normalized = normalized.replace("−", "-").replace("–", "-").replace("—", "-")
+    return normalized
+
+
+def number_pattern(value: float | int, decimals: Iterable[int] = ()) -> str:
+    if isinstance(value, int) or float(value).is_integer() and not tuple(decimals):
+        integer = int(value)
+        variants = {str(integer), f"{integer:,}"}
     else:
-        passes.append(
+        variants = set()
+        for places in decimals:
+            formatted = f"{float(value):.{places}f}"
+            variants.add(formatted)
+            if formatted.startswith("0."):
+                variants.add(formatted[1:])
+            if formatted.startswith("-0."):
+                variants.add("-." + formatted.split(".", maxsplit=1)[1])
+    return rf"(?<![\d.])(?:{'|'.join(re.escape(item) for item in sorted(variants, key=len, reverse=True))})(?!\d)"
+
+
+def contains_context_number(
+    text: str,
+    context_pattern: str,
+    value: float | int,
+    decimals: Iterable[int] = (),
+    window: int = 180,
+) -> bool:
+    number = number_pattern(value, decimals)
+    pattern = rf"(?:{context_pattern}).{{0,{window}}}{number}|{number}.{{0,{window}}}(?:{context_pattern})"
+    return re.search(pattern, text, flags=re.IGNORECASE | re.DOTALL) is not None
+
+
+def contains_number(text: str, value: float | int, decimals: Iterable[int] = ()) -> bool:
+    return re.search(number_pattern(value, decimals), text) is not None
+
+
+def add_requirement(
+    checks: list[dict[str, Any]],
+    check_id: str,
+    document_key: str,
+    condition: bool,
+    expectation: str,
+) -> None:
+    checks.append(
+        {
+            "type": "required_claim",
+            "id": check_id,
+            "document": document_key,
+            "path": DOCUMENTS[document_key],
+            "passed": bool(condition),
+            "detail": expectation,
+        }
+    )
+
+
+def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
+    checks: list[dict[str, Any]] = []
+    texts: dict[str, str] = {}
+    for key, path in DOCUMENTS.items():
+        required = key != "professor_lineage"
+        exists = path.exists()
+        checks.append(
             {
-                "type": "manifest_consistency",
-                "id": "source_manifest_python",
-                "detail": f"Core stage manifests share Python {metrics['source_manifest_python'][0]}",
+                "type": "document_presence",
+                "id": f"{key}_present",
+                "document": key,
+                "path": path,
+                "passed": exists or not required,
+                "detail": "Required document exists." if required else "Optional lineage checked when present.",
             }
         )
+        if exists:
+            texts[key] = normalize_document(path.read_text(encoding="utf-8"))
 
-    for claim in make_claim_registry(metrics):
-        missing = []
-        for path, snippet in claim["targets"]:
-            if snippet not in texts[path]:
-                missing.append({"path": path, "snippet": snippet})
-        if missing:
-            failures.append({"type": "claim", "id": claim["id"], "missing": missing})
-        else:
-            passes.append(
+    identity = metrics["identity"]
+    fleet = metrics["fleet"]
+    adoption = metrics["adoption"]
+    components = metrics["components"]
+
+    manuscript_keys = [key for key in ("manuscript_md", "manuscript_tex") if key in texts]
+    for key in manuscript_keys:
+        text = texts[key]
+        add_requirement(
+            checks,
+            "stable_site_identity",
+            key,
+            re.search(
+                r"(?:reconstruct|identit|resolver|link).{0,80}stable.{0,40}(?:site|lineage)|stable.{0,40}(?:site|lineage).{0,80}(?:reconstruct|identit|resolver|link)",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None
+            and contains_context_number(
+                text,
+                r"stable.{0,30}(?:sites?|lineages?)",
+                identity["stable_sites"],
+            )
+            and contains_context_number(
+                text, r"asset episodes?", identity["asset_episodes"]
+            ),
+            (
+                f"Explain administrative-lineage identity and report {identity['stable_sites']:,} lineages "
+                f"and {identity['asset_episodes']:,} asset episodes."
+            ),
+        )
+        add_requirement(
+            checks,
+            "official_code_break",
+            key,
+            re.search(
+                r"FY?2019.{0,120}FY?2020|FY?2020.{0,120}FY?2019",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None
+            and re.search(r"official.{0,40}(?:facility )?codes?", text, re.IGNORECASE)
+            is not None,
+            (
+                "Disclose the FY2019-FY2020 official-code regime break and explain why "
+                "official codes are not longitudinal identities."
+            ),
+        )
+        add_requirement(
+            checks,
+            "fy2024_count_volume",
+            key,
+            contains_context_number(
+                text,
+                r"facilit(?:y|ies).{0,40}(?:participation|share|count)|installed[- ]generation",
+                fleet["facility_participation_pct"],
+                (1,),
+            )
+            and contains_context_number(
+                text,
+                r"throughput|waste volume",
+                fleet["throughput_coverage_pct"],
+                (1,),
+            )
+            and contains_context_number(
+                text,
+                r"(?:waste-processing )?design capacity",
+                fleet["installed_design_capacity_share_pct"],
+                (1,),
+            ),
+            (
+                "Report the FY2024 count-volume contrast: "
+                f"{fleet['facility_participation_pct']:.1f}% facilities, "
+                f"{fleet['throughput_coverage_pct']:.1f}% throughput, and "
+                f"{fleet['installed_design_capacity_share_pct']:.1f}% design capacity."
+            ),
+        )
+        add_requirement(
+            checks,
+            "firth_method_and_frames",
+            key,
+            re.search(r"Firth|Jeffreys[- ]prior", text, re.IGNORECASE) is not None
+            and all(
+                contains_number(text, value)
+                for value in (
+                    adoption["broad_rows"],
+                    adoption["broad_sites"],
+                    adoption["broad_events"],
+                    adoption["prior_rows"],
+                    adoption["prior_sites"],
+                    adoption["prior_events"],
+                    adoption["continuity_rows"],
+                    adoption["continuity_sites"],
+                    adoption["continuity_events"],
+                    adoption["identity_certain_rows"],
+                    adoption["identity_certain_sites"],
+                    adoption["identity_certain_events"],
+                    adoption["bootstrap_repetitions"],
+                )
+            ),
+            (
+                "Name Firth/Jeffreys-prior bias reduction and report broad frame "
+                f"{adoption['broad_rows']:,}/{adoption['broad_sites']:,}/{adoption['broad_events']} "
+                "plus prior-operation frame "
+                f"{adoption['prior_rows']:,}/{adoption['prior_sites']:,}/{adoption['prior_events']} "
+                "and same-episode sensitivity "
+                f"{adoption['continuity_rows']:,}/{adoption['continuity_sites']:,}/"
+                f"{adoption['continuity_events']}; identity-certain sensitivity "
+                f"{adoption['identity_certain_rows']:,}/"
+                f"{adoption['identity_certain_sites']:,}/"
+                f"{adoption['identity_certain_events']}, with "
+                f"{adoption['bootstrap_repetitions']} "
+                "lineage bootstraps."
+            ),
+        )
+        add_requirement(
+            checks,
+            "adoption_joint_inference_and_scale",
+            key,
+            contains_context_number(
+                text,
+                r"broad.{0,80}joint age|joint age.{0,80}broad",
+                adoption["broad_age_joint_p_value"],
+                (3, 4),
+            )
+            and contains_context_number(
+                text,
+                r"prior[- ]operation.{0,80}joint age|joint age.{0,80}prior[- ]operation",
+                adoption["prior_age_joint_p_value"],
+                (3, 4),
+            )
+            and contains_context_number(
+                text,
+                r"same[- ](?:asset[- ])?episode|continuity sensitivity",
+                adoption["continuity_age_joint_p_value"],
+                (3, 4),
+            )
+            and contains_context_number(
+                text,
+                r"identity[- ]certain|identity uncertainty",
+                adoption["identity_certain_age_joint_p_value"],
+                (3, 4),
+            )
+            and contains_context_number(
+                text,
+                r"300.{0,30}100|100.{0,30}300|odds ratio|scale select",
+                adoption["capacity_or_300_vs_100"],
+                (2,),
+            ),
+            (
+                "Report lineage-bootstrap joint-age p-values for broad, prior-operation, "
+                "same-episode, and identity-certain "
+                f"frames ({adoption['broad_age_joint_p_value']:.3f}/"
+                f"{adoption['prior_age_joint_p_value']:.3f}/"
+                f"{adoption['continuity_age_joint_p_value']:.3f}/"
+                f"{adoption['identity_certain_age_joint_p_value']:.3f}) and scale contrast "
+                f"OR={adoption['capacity_or_300_vs_100']:.2f}."
+            ),
+        )
+        add_requirement(
+            checks,
+            "engineering_components",
+            key,
+            re.search(r"generator design intensity", text, re.IGNORECASE) is not None
+            and re.search(r"electrical capacity factor", text, re.IGNORECASE) is not None
+            and contains_context_number(text, r"engineering[- ]valid", components["rows"])
+            and contains_context_number(
+                text,
+                r"stable.{0,30}(?:sites?|lineages?)",
+                components["stable_sites"],
+            ),
+            (
+                "Separate generator design intensity from electrical capacity factor and "
+                f"report {components['rows']:,} engineering-valid rows across "
+                f"{components['stable_sites']} stable administrative lineages."
+            ),
+        )
+        add_requirement(
+            checks,
+            "sizing_diagnostic_conclusion",
+            key,
+            re.search(r"sizing|generator design intensity", text, re.IGNORECASE)
+            is not None
+            and contains_number(text, components["sizing_age_coefficient"], (3, 4))
+            and contains_number(text, components["sizing_age_p_value"], (3, 4))
+            and contains_number(text, components["legacy_r_squared"], (3, 4))
+            and contains_number(text, components["sizing_r_squared"], (3, 4)),
+            (
+                "State that the sizing-adjusted age coefficient is "
+                f"{components['sizing_age_coefficient']:.4f} (p="
+                f"{components['sizing_age_p_value']:.4f}) and that R-squared changes "
+                f"from {components['legacy_r_squared']:.4f} to "
+                f"{components['sizing_r_squared']:.4f}."
+            ),
+        )
+        t1 = adoption["event_time_one"]
+        all_t1 = t1["all"]
+        continuity_t1 = t1["Continuity-lineage entry"]
+        rebuild_t1 = t1["Rebuild/replacement-like entry"]
+        add_requirement(
+            checks,
+            "post_entry_pathway_results",
+            key,
+            contains_number(text, int(all_t1["events"]))
+            and contains_number(text, all_t1["mean_gross_rank_pct"] * 100, (1,))
+            and contains_number(text, int(continuity_t1["events"]))
+            and contains_number(
+                text, continuity_t1["mean_design_rank_pct"] * 100, (1,)
+            )
+            and contains_number(text, int(rebuild_t1["events"]))
+            and contains_number(
+                text, rebuild_t1["mean_design_rank_pct"] * 100, (1,)
+            ),
+            (
+                "Report event-time-one pathway counts and ranks from the generated "
+                "trajectory table."
+            ),
+        )
+
+    if "supplement" in texts:
+        text = texts["supplement"]
+        add_requirement(
+            checks,
+            "supplement_identity_audit",
+            "supplement",
+            all(
+                contains_number(text, value)
+                for value in (
+                    identity["stable_sites"],
+                    identity["asset_episodes"],
+                    identity["fy2020_official_code_overlap"],
+                    identity["fy2020_stable_site_overlap"],
+                )
+            )
+            and re.search(
+                r"duplicate stable[- ](?:site|lineage)[- ]years?",
+                text,
+                re.IGNORECASE,
+            )
+            is not None,
+            (
+                "Document identity audit counts, including official/stable FY2019-FY2020 "
+                f"overlaps {identity['fy2020_official_code_overlap']}/"
+                f"{identity['fy2020_stable_site_overlap']:,} and duplicate lineage-years."
+            ),
+        )
+        add_requirement(
+            checks,
+            "supplement_raw_provenance",
+            "supplement",
+            re.search(r"SHA-?256", text, re.IGNORECASE) is not None
+            and re.search(
+                r"retrieval (?:time|timestamp).{0,80}unavailable",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None
+            and re.search(r"schema|header mapping", text, re.IGNORECASE) is not None,
+            (
+                "Reference SHA-256 raw-file provenance, explicitly unavailable retrieval "
+                "timestamps, and workbook schema/header mappings."
+            ),
+        )
+        add_requirement(
+            checks,
+            "supplement_firth_inference",
+            "supplement",
+            re.search(r"Firth|Jeffreys[- ]prior", text, re.IGNORECASE) is not None
+            and contains_context_number(
+                text, r"bootstrap", adoption["bootstrap_repetitions"]
+            )
+            and contains_context_number(
+                text,
+                r"broad.{0,80}joint age|joint age.{0,80}broad",
+                adoption["broad_age_joint_p_value"],
+                (3, 4),
+            )
+            and contains_context_number(
+                text,
+                r"same[- ](?:asset[- ])?episode|continuity sensitivity",
+                adoption["continuity_age_joint_p_value"],
+                (3, 4),
+            ),
+            (
+                f"Document Firth estimation, {adoption['bootstrap_repetitions']} "
+                "cluster-bootstrap repetitions, broad joint-age p="
+                f"{adoption['broad_age_joint_p_value']:.3f}, and continuity "
+                f"sensitivity p={adoption['continuity_age_joint_p_value']:.3f}."
+            ),
+        )
+        add_requirement(
+            checks,
+            "supplement_component_diagnostic",
+            "supplement",
+            re.search(r"generator design intensity", text, re.IGNORECASE) is not None
+            and re.search(r"electrical capacity factor", text, re.IGNORECASE) is not None
+            and contains_number(text, components["sizing_age_p_value"], (3, 4)),
+            "Document both engineering components and the non-significant sizing-adjusted age result.",
+        )
+
+    if "professor_lineage" in texts:
+        text = texts["professor_lineage"]
+        add_requirement(
+            checks,
+            "lineage_current_design",
+            "professor_lineage",
+            re.search(
+                r"stable.{0,30}(?:site|lineage)",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None
+            and re.search(r"Firth|Jeffreys[- ]prior", text, re.IGNORECASE) is not None
+            and re.search(r"generator design intensity", text, re.IGNORECASE) is not None
+            and re.search(r"electrical capacity factor", text, re.IGNORECASE) is not None,
+            "Explain the current administrative-lineage, Firth, design-intensity, and capacity-factor design.",
+        )
+        add_requirement(
+            checks,
+            "lineage_current_headlines",
+            "professor_lineage",
+            contains_number(text, fleet["facility_participation_pct"], (1,))
+            and contains_number(text, fleet["throughput_coverage_pct"], (1,))
+            and contains_number(text, adoption["broad_age_joint_p_value"], (3, 4))
+            and contains_number(
+                text, adoption["continuity_age_joint_p_value"], (3, 4)
+            )
+            and contains_number(
+                text, adoption["identity_certain_age_joint_p_value"], (3, 4)
+            )
+            and contains_number(text, components["sizing_age_p_value"], (3, 4)),
+            (
+                "Report current count-volume, joint-age, continuity, and sizing-diagnostic headline "
+                "values in the professor lineage packet."
+            ),
+        )
+
+    stale_patterns = [
+        (
+            "panel_exit_claim",
+            r"panel[- ]exit|exit[- ]hazard|exit diagnostic|last observed before FY?2024",
+            "Panel-exit evidence is invalid after the official-code regime break and must not remain.",
+        ),
+        (
+            "active_conversion_frame",
+            r"active[- ]conversion|active operating conversion",
+            "The old active-conversion frame is replaced by the prior-operation sensitivity.",
+        ),
+        (
+            "coded_longitudinal_frame",
+            r"coded[- ]asset|coded[- ]panel|coded[- ]generator|coded facilities",
+            "Officially coded rows must not be framed as stable longitudinal units.",
+        ),
+        (
+            "stale_exact_event_count",
+            r"(?:10,823|10823).{0,100}(?:98 events?|1,911)|(?:98 events?).{0,100}(?:10,823|10823)",
+            "The superseded exact-code hazard sample must be removed.",
+        ),
+        (
+            "stale_active_sample",
+            r"(?:9,215|9215).{0,100}(?:58 events?|1,663)|(?:1,663).{0,100}(?:9,215|9215)",
+            "The superseded active-conversion sample must be removed.",
+        ),
+    ]
+
+    for key, text in texts.items():
+        path = DOCUMENTS[key]
+        for pattern_id, pattern, reason in stale_patterns:
+            matches = list(re.finditer(pattern, text, flags=re.IGNORECASE | re.DOTALL))
+            if not matches:
+                checks.append(
+                    {
+                        "type": "stale_phrase",
+                        "id": pattern_id,
+                        "document": key,
+                        "path": path,
+                        "passed": True,
+                        "detail": reason,
+                    }
+                )
+                continue
+            locations = sorted({text.count("\n", 0, match.start()) + 1 for match in matches})
+            checks.append(
                 {
-                    "type": "claim",
-                    "id": claim["id"],
-                    "detail": f"All snippets present across {len(claim['targets'])} target checks.",
+                    "type": "stale_phrase",
+                    "id": pattern_id,
+                    "document": key,
+                    "path": path,
+                    "passed": False,
+                    "detail": f"{reason} Matches at lines {locations[:12]}",
                 }
             )
 
-    for forbidden in make_forbidden_patterns():
-        text = texts[forbidden["path"]]
-        if forbidden["pattern"] in text:
-            failures.append(
+        high_risk_patterns = [
+            (
+                "official_code_as_stable_id",
+                r"(?:official )?(?:facility )?codes?.{0,100}(?:stable|track|identify|link).{0,80}(?:sites?|facilities|longitudinal)|group(?:ed|ing).{0,40}facility_code",
+                r"not|cannot|do not|unstable|break|reconstruct|rather than",
+                "Official facility codes cannot be asserted as stable longitudinal IDs.",
+            ),
+            (
+                "causal_regression_interpretation",
+                r"\b(?:age|capacity|utili[sz]ation|sizing)\b.{0,80}\b(?:causes?|caused|causal effect|leads? to)\b|\b(?:causes?|caused|causal effect)\b.{0,80}\b(?:age|capacity|utili[sz]ation|sizing)\b",
+                r"does not|do not|did not|cannot|not a causal|no causal|without causal",
+                "Observational regression terms must not be presented as causal effects.",
+            ),
+        ]
+        for pattern_id, pattern, exemption, reason in high_risk_patterns:
+            flagged: list[int] = []
+            for match in re.finditer(pattern, text, flags=re.IGNORECASE | re.DOTALL):
+                context = text[max(0, match.start() - 120) : min(len(text), match.end() + 120)]
+                if re.search(exemption, context, flags=re.IGNORECASE | re.DOTALL):
+                    continue
+                flagged.append(text.count("\n", 0, match.start()) + 1)
+            checks.append(
                 {
-                    "type": "forbidden_pattern",
-                    "id": forbidden["id"],
-                    "detail": forbidden["reason"],
-                    "path": forbidden["path"],
-                    "pattern": forbidden["pattern"],
+                    "type": "high_risk_claim",
+                    "id": pattern_id,
+                    "document": key,
+                    "path": path,
+                    "passed": not flagged,
+                    "detail": (
+                        reason
+                        if not flagged
+                        else f"{reason} Matches at lines {sorted(set(flagged))[:12]}"
+                    ),
                 }
             )
-        else:
-            passes.append(
-                {
-                    "type": "forbidden_pattern",
-                    "id": forbidden["id"],
-                    "detail": f"Forbidden pattern absent: {forbidden['pattern']}",
-                }
-            )
-
-    return passes, failures, metrics
+    return checks
 
 
-def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> None:
+def split_results(
+    evidence_assertions: list[dict[str, Any]],
+    document_checks: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    checks = evidence_assertions + document_checks
+    passes = [check for check in checks if check["passed"]]
+    failures = [check for check in checks if not check["passed"]]
+    return passes, failures
+
+
+def relative(path: Path | None) -> str:
+    if path is None:
+        return "n/a"
+    return path.relative_to(REPO_ROOT).as_posix()
+
+
+def write_report(
+    metrics: dict[str, Any],
+    passes: list[dict[str, Any]],
+    failures: list[dict[str, Any]],
+) -> None:
+    identity = metrics["identity"]
+    fleet = metrics["fleet"]
+    adoption = metrics["adoption"]
+    components = metrics["components"]
     lines = [
         "# Claim Verification Report",
         "",
-        "Repo-level check that paper-facing claims stay synchronized with canonical outputs.",
-        "",
-        f"- Core manifest Python: {metrics['source_manifest_python'][0] if len(metrics['source_manifest_python']) == 1 else ', '.join(metrics['source_manifest_python'])}",
-        f"- Full panel: {fmt_int(metrics['full_panel_obs'])} observations across {fmt_int(metrics['full_panel_facilities'])} facilities",
-        (
-            f"- Capacity-entry frame: risk set {fmt_int(metrics['risk_set_obs'])} / {fmt_int(metrics['risk_set_facilities'])}; "
-            f"model {fmt_int(metrics['model_obs'])} / {fmt_int(metrics['model_facilities'])} / {fmt_int(metrics['model_events'])} events"
-        ),
-        (
-            f"- Active-conversion frame: {fmt_int(metrics['active_model_obs'])} / "
-            f"{fmt_int(metrics['active_model_facilities'])} / "
-            f"{fmt_int(metrics['active_model_events'])} events"
-        ),
-        (
-            f"- Entry effects: capacity {metrics['adoption_capacity_pp_2dp']} pp broad and "
-            f"{metrics['active_capacity_pp_2dp']} pp active; broad age "
-            f"{'/'.join(metrics['broad_age_ames_2dp'])} pp versus active age "
-            f"{'/'.join(metrics['active_age_ames_2dp'])} pp"
-        ),
-        (
-            f"- Pathway audit: {metrics['pathway_reset']} reset/rebuild-like, "
-            f"{metrics['pathway_continuity']} continuity-like, "
-            f"{metrics['pathway_placeholder']} forward-dated/placeholder, "
-            f"{metrics['pathway_timing_ambiguous']} timing-ambiguous, "
-            f"{metrics['pathway_unresolved']} unresolved"
-        ),
-        (
-            f"- Regression frame: {fmt_int(metrics['regression_obs'])} observations across "
-            f"{fmt_int(metrics['regression_facilities'])} facilities; within/total ratio "
-            f"{metrics['within_total_ratio']:.4f} ({metrics['early_ratio']:.4f} early coded, "
-            f"{metrics['later_ratio']:.4f} later coded)"
-        ),
-        (
-            f"- Primary generator model: age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, "
-            f"capacity {fmt_signed_decimal(metrics['primary_capacity'], 4)}, "
-            f"utilization {fmt_signed_decimal(metrics['primary_utilization'], 4)}; "
-            f"R2 {metrics['primary_r2']:.4f}"
-        ),
-        (
-            f"- Post-entry trajectory: {fmt_int(metrics['trajectory_rows'])} rows across "
-            f"{fmt_int(metrics['trajectory_events'])} events"
-        ),
+        "This report verifies generated evidence first, then checks the manuscript, LaTeX, "
+        "supplement, and professor lineage against the resulting canonical metrics.",
         "",
         f"## Result: {'PASS' if not failures else 'FAIL'}",
         "",
         f"- Passed checks: {len(passes)}",
         f"- Failed checks: {len(failures)}",
         "",
-        "## Passed Checks",
+        "## Canonical Evidence",
+        "",
+        f"- Identity: {identity['retained_rows']:,} retained rows from "
+        f"{identity['raw_source_rows']:,} raw rows, {identity['stable_sites']:,} stable administrative lineages, "
+        f"{identity['asset_episodes']:,} asset episodes, {identity['duplicate_site_year_rows']} duplicate lineage-years.",
+        f"- FY2019-FY2020 continuity: {identity['fy2020_official_code_overlap']} official-code overlap "
+        f"versus {identity['fy2020_stable_site_overlap']:,} administrative-lineage overlap.",
+        f"- FY2024 fleet: {fleet['facility_participation_pct']:.1f}% facility participation, "
+        f"{fleet['throughput_coverage_pct']:.1f}% throughput coverage, "
+        f"{fleet['installed_design_capacity_share_pct']:.1f}% installed design-capacity share.",
+        f"- Firth entry frames: {adoption['broad_rows']:,}/{adoption['broad_sites']:,}/"
+        f"{adoption['broad_events']} broad and {adoption['prior_rows']:,}/"
+        f"{adoption['prior_sites']:,}/{adoption['prior_events']} prior-operation and "
+        f"{adoption['continuity_rows']:,}/{adoption['continuity_sites']:,}/"
+        f"{adoption['continuity_events']} same-episode and "
+        f"{adoption['identity_certain_rows']:,}/{adoption['identity_certain_sites']:,}/"
+        f"{adoption['identity_certain_events']} identity-certain rows/lineages/events.",
+        f"- Entry inference: OR {adoption['capacity_or_300_vs_100']:.2f} for 300 versus "
+        f"100 t/day; lineage-bootstrap joint-age p-values are "
+        f"{adoption['broad_age_joint_p_value']:.3f} broad, "
+        f"{adoption['prior_age_joint_p_value']:.3f} prior-operation, and "
+        f"{adoption['continuity_age_joint_p_value']:.3f} same-episode, and "
+        f"{adoption['identity_certain_age_joint_p_value']:.3f} identity-certain.",
+        f"- Components: {components['rows']:,} rows across {components['stable_sites']} stable administrative lineages; "
+        f"sizing-adjusted age {components['sizing_age_coefficient']:.4f} "
+        f"(p={components['sizing_age_p_value']:.4f}); R-squared "
+        f"{components['legacy_r_squared']:.4f} to {components['sizing_r_squared']:.4f}.",
+        "",
+        "## Failures",
         "",
     ]
-
-    for item in passes:
-        lines.append(f"- `{item['type']}` `{item['id']}`: {item['detail']}")
-
-    lines.extend(["", "## Failures", ""])
     if not failures:
         lines.append("- None")
     else:
-        for item in failures:
-            if item["type"] == "claim":
-                lines.append(f"- `claim` `{item['id']}`:")
-                for missing in item["missing"]:
-                    rel = os.path.relpath(missing["path"], REPO_ROOT)
-                    lines.append(f"  Missing in `{rel}`: `{missing['snippet']}`")
-            else:
-                rel = os.path.relpath(item.get("path", ""), REPO_ROOT) if item.get("path") else ""
-                detail = item.get("detail", "")
-                pattern = item.get("pattern")
-                if pattern:
-                    lines.append(
-                        f"- `{item['type']}` `{item['id']}` in `{rel}`: found forbidden pattern `{pattern}`. {detail}"
-                    )
-                else:
-                    lines.append(f"- `{item['type']}` `{item['id']}`: {detail}")
-
+        for failure in failures:
+            path = relative(failure.get("path"))
+            lines.append(
+                f"- `{failure['type']}::{failure['id']}` [{path}]: {failure['detail']}"
+            )
+    lines.extend(["", "## Passed Checks", ""])
+    for item in passes:
+        path = relative(item.get("path"))
+        lines.append(f"- `{item['type']}::{item['id']}` [{path}]: {item['detail']}")
     REPORT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def write_claim_map(metrics: dict) -> None:
+def write_claim_map(metrics: dict[str, Any]) -> None:
+    identity = metrics["identity"]
+    fleet = metrics["fleet"]
+    adoption = metrics["adoption"]
+    components = metrics["components"]
     lines = [
         "# Claim-to-Evidence Map",
         "",
-        "Curated bridge between the paper's claims and the canonical generated outputs.",
+        "This map identifies the generated artifacts behind the paper's defensible claims. "
+        "It does not elevate descriptive associations into causal effects.",
         "",
-        "Use this alongside `output/claim_verification.md`: the verifier confirms wording is synchronized, while this map explains which artifact supports which defended claim.",
+        "## Raw Sources And Longitudinal Identity",
         "",
-        "## Claim 1: The paper is empirically two-part",
+        f"Claim: the panel contains {identity['stable_sites']:,} reconstructed stable administrative lineages and "
+        f"{identity['asset_episodes']:,} asset episodes; official codes are not persistent across "
+        "the FY2019-FY2020 regime break.",
         "",
-        "Paper claim: the fleet transition question must be split into an installed-capacity entry layer and a conditional generator-performance layer.",
+        "Evidence: `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv`, "
+        "`output/raw_data_provenance.md`, `data/processed/facility_identity_crosswalk.csv`, "
+        "`output/facility_identity_audit.md`, and `output/identity_low_margin_links.csv`.",
         "",
-        "Evidence spine:",
-        f"- `output/adoption_results.md`: installed-capacity entry risk set of {fmt_int(metrics['risk_set_obs'])} facility-years across {fmt_int(metrics['risk_set_facilities'])} facilities, with {fmt_int(metrics['events'])} entry events.",
-        f"- `output/regression_results.md`: canonical generator frame of {fmt_int(metrics['regression_obs'])} facility-years across {fmt_int(metrics['regression_facilities'])} facilities.",
-        "- `paper/manuscript/paper.md` Sections 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
+        "## FY2024 Count-Volume Contrast",
         "",
-        "## Claim 2: Entry is scale-selective while its age pattern depends on the risk set",
+        f"Claim: installed-generation facilities are {fleet['facility_participation_pct']:.1f}% "
+        f"of recorded facilities but positive-output facilities handle "
+        f"{fleet['throughput_coverage_pct']:.1f}% of recorded throughput; installed-generation "
+        f"facilities hold {fleet['installed_design_capacity_share_pct']:.1f}% of waste-processing "
+        "design capacity.",
         "",
-        "Paper claim: prior-year scale predicts entry in both the broad asset and active-conversion frames, while the broad age gradient attenuates when positive prior-year throughput is required.",
+        "Evidence: `output/fleet_decomposition.csv`, `output/fy2024_fleet_segments.csv`, "
+        "and `output/fleet_decomposition.md`.",
         "",
-        "Evidence spine:",
-        f"- `output/adoption_results.md`: lagged logit hazard on {fmt_int(metrics['model_obs'])} facility-years across {fmt_int(metrics['model_facilities'])} facilities and {fmt_int(metrics['model_events'])} retained events.",
-        f"- `output/adoption_results.md`: {fmt_int(metrics['zero_prior_throughput_events'])} of {fmt_int(metrics['model_events'])} exact-year events have zero or missing prior-year throughput.",
-        f"- `output/adoption_results.md`: active conversion uses {fmt_int(metrics['active_model_obs'])} rows, {fmt_int(metrics['active_model_facilities'])} facilities, and {fmt_int(metrics['active_model_events'])} events.",
-        f"- `output/adoption_results.md`: capacity is {metrics['adoption_capacity_pp_2dp']} pp broad and {metrics['active_capacity_pp_2dp']} pp active per 100 t/day.",
-        f"- `output/adoption_results.md`: broad age AMEs {'/'.join(metrics['broad_age_ames_2dp'])} pp attenuate to {'/'.join(metrics['active_age_ames_2dp'])} pp.",
-        "- `output/adoption_results.md` event-rate tables use exact-lag prior-year profiles and show strongly increasing rates across capacity quartiles.",
-        "- `output/identifier_gap_audit.md`: exact one-fiscal-year lags are the main adoption frame; previous-observed-coded-row estimates are sensitivity evidence only.",
-        f"- `output/adoption_results.md`: the positive-output alternative retains {fmt_int(metrics['positive_output_model_events'])} exact-year events and a {metrics['positive_output_capacity_pp_2dp']} percentage-point capacity AME.",
+        "## First Reported Installed-Generation Capacity",
         "",
-        "## Claim 3: Capacity entry maps to operation but not automatically to superior performance",
+        f"Claim: Firth bias-reduced hazards use {adoption['broad_events']} exact-year events in "
+        f"the broad frame, {adoption['prior_events']} following positive prior-lineage "
+        f"operation, and {adoption['continuity_events']} in the same-episode sensitivity. "
+        f"The identity-certain sensitivity retains {adoption['identity_certain_events']} "
+        "events after excluding every lineage containing an accepted uncertain link. "
+        f"The 300-versus-100 t/day OR is {adoption['capacity_or_300_vs_100']:.2f}; "
+        "lineage-bootstrap joint-age p-values are "
+        f"{adoption['broad_age_joint_p_value']:.3f}, "
+        f"{adoption['prior_age_joint_p_value']:.3f}, and "
+        f"{adoption['continuity_age_joint_p_value']:.3f}, with identity-certain "
+        f"p={adoption['identity_certain_age_joint_p_value']:.3f}. The nested "
+        "frames are not interpreted as an equivalence test.",
         "",
-        "Paper claim: capacity entry is usually followed by positive output, entrants begin near the middle of the same-year generator distribution on average, and non-entry cannot be treated as continuous observation through FY2024.",
+        "Evidence: `output/figure2_transition_effects.csv`, "
+        "`output/adoption_bootstrap_coefficients.csv`, `output/adoption_pathway_audit.csv`, "
+        "and `output/adoption_results.md`.",
         "",
-        "Evidence spine:",
-        f"- `output/post_adoption_bridge.csv`: {fmt_int(metrics['post_entry_positive_by_one'])} of {fmt_int(metrics['events'])} entrants report positive output by the following year; {fmt_int(metrics['post_entry_generator_within_three'])} enter the canonical generator frame within three years.",
-        f"- `output/post_adoption_trajectories.csv`: {fmt_int(metrics['trajectory_rows'])} observations across {fmt_int(metrics['trajectory_events'])} events; mean same-year percentile is {metrics['trajectory_t0_rank_pct']:.1f} at event time zero and {metrics['trajectory_t3_rank_pct']:.1f} at time three.",
-        f"- `output/adoption_results.md`: {fmt_int(metrics['panel_exit_before_end'])} of {fmt_int(metrics['panel_exit_nonadopters'])} non-entrants ({metrics['panel_exit_before_end_pct']:.1f}%) are last observed before FY2024.",
-        f"- `output/figure2_transition_effects.csv`: age 30+ panel-exit AME {metrics['panel_exit_age30_pp_2dp']} pp and capacity AME {metrics['panel_exit_capacity_pp_2dp']} pp per 100 t/day.",
+        "## Generator Design And Annual Operation",
         "",
-        "## Claim 4: Capital-reset-like modernization is empirically prominent, but not uniquely identified",
+        f"Claim: the primary generator analysis separates generator design intensity from "
+        f"electrical capacity factor on {components['rows']:,} engineering-valid rows across "
+        f"{components['stable_sites']} stable administrative lineages. After generator "
+        f"sizing is added, the age coefficient is {components['sizing_age_coefficient']:.4f} "
+        f"(p={components['sizing_age_p_value']:.4f}); model R-squared changes from "
+        f"{components['legacy_r_squared']:.4f} to {components['sizing_r_squared']:.4f}.",
         "",
-        "Paper claim: the pathway audit supports a calibrated mechanism claim, not a proof that replacement is the only pathway.",
+        "Evidence: `output/generator_component_results.csv`, "
+        "`output/table2_generator_components_by_cohort.md`, `output/figure3_persistence.csv`, "
+        "and `output/regression_results.md`.",
         "",
-        "Evidence spine:",
-        f"- `output/adoption_results.md`: pathway audit counts {metrics['pathway_reset']} reset/rebuild-like, {metrics['pathway_continuity']} continuity/in-place-upgrade-like, {metrics['pathway_placeholder']} forward-dated/placeholder, {metrics['pathway_timing_ambiguous']} timing-ambiguous, {metrics['pathway_unresolved']} unresolved.",
-        "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, timing ambiguity, and unresolved placeholder cases.",
-        "- `paper/notes/positioning/claim-stack.md`: the claim stack keeps mechanism language calibrated.",
+        "## Prohibited Interpretations",
         "",
-        "## Claim 5: Conditional generator performance is structured after observed-technology adjustment",
-        "",
-        "Paper claim: within common fiscal years, gross MWh/t is lower at older-vintage plants and higher at larger, more utilized plants after adjustment for observed technology configuration.",
-        "",
-        "Evidence spine:",
-        f"- `output/regression_results.md`: primary coefficients are age/vintage {fmt_signed_decimal(metrics['primary_age'], 4)}, capacity {fmt_signed_decimal(metrics['primary_capacity'], 4)}, and utilization {fmt_signed_decimal(metrics['primary_utilization'], 4)}.",
-        f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['early_ratio']:.4f} in the early coded window ({metrics['early_window_label']}) and {metrics['later_ratio']:.4f} in the later coded window ({metrics['later_window_label']}).",
-        f"- `output/figure3_persistence.csv`: pooled adjacent-year within-year rank correlation is {metrics['pooled_rank_correlation']:.4f} across {fmt_int(metrics['rank_pairs'])} exact pairs.",
-        f"- `output/robustness_results.md`: engineering validation uses {fmt_int(metrics['engineering_rows'])} plausible rows; logged thermal conversion and reported efficiency correlate at {metrics['engineering_outcome_correlation']:.4f} and preserve the focal signs.",
-        "- `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.",
-        "- `output/identifier_gap_audit.md`: the canonical generator regression frame is an identifiable coded-generator panel, not a complete census of all operating generator rows.",
-        "",
-        "## Claim 6: The paper supports planning diagnostics, not an exclusive mechanism claim",
-        "",
-        "Paper claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.",
-        "",
-        "Evidence spine:",
-        "- `output/adoption_results.md`: scale selectivity survives both risk sets, age is frame-dependent, and older/smaller facilities are more likely to exit the coded panel.",
-        "- `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.",
-        "- `paper/supplement/supplement.md`: the supplement explicitly records the data-quality caveats and identification limits.",
-        "",
-        "## Reviewer Use",
-        "",
-        "1. Start with `paper/manuscript/paper.md` for the active narrative.",
-        "2. Use `output/claim_verification.md` to confirm the current wording matches the generated artifacts.",
-        "3. Use this file to see which exact output anchors each paper claim.",
-        "4. Use `paper/supplement/supplement.md` and `paper/notes/positioning/claim-stack.md` to keep the scope disciplined during review.",
+        "- Do not infer closure or exit from disappearance of an official facility code.",
+        "- Do not treat the prior-operation sensitivity as a separately identified active-conversion process.",
+        "- Do not label gross MWh/t as net efficiency, useful heat, R1 efficiency, or lifecycle benefit.",
+        "- Do not present age or waste-processing utilization as independent gross-performance effects after generator sizing.",
     ]
     CLAIM_MAP_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> None:
-    passes, failures, metrics = run_checks()
-    write_report(passes, failures, metrics)
+    metrics, evidence_assertions = build_metrics()
+    document_checks = build_document_checks(metrics)
+    passes, failures = split_results(evidence_assertions, document_checks)
+    write_report(metrics, passes, failures)
     write_claim_map(metrics)
 
+    manifest_inputs = [
+        "output/raw_data_manifest.csv",
+        "output/raw_workbook_schema_map.csv",
+        "output/raw_data_provenance.md",
+        "data/processed/incineration_panel_identified.csv",
+        "data/processed/facility_identity_crosswalk.csv",
+        "output/facility_identity_audit.md",
+        "output/identity_low_margin_links.csv",
+        "output/fleet_decomposition.csv",
+        "output/fy2024_fleet_segments.csv",
+        "output/figure2_transition_effects.csv",
+        "output/adoption_bootstrap_coefficients.csv",
+        "output/adoption_pathway_audit.csv",
+        "output/post_adoption_bridge.csv",
+        "output/post_adoption_trajectories.csv",
+        "output/generator_component_results.csv",
+        "output/regression_results.md",
+        "output/robustness_component_results.csv",
+        "output/data_quality_sample_flow.csv",
+        "output/data_quality_engineering_bounds.csv",
+        "output/data_quality_official_code_duplicates.csv",
+        "output/identifier_overlap_by_year.csv",
+        "output/identifier_gap_bridges.csv",
+        "output/identifier_duplicates_by_year.csv",
+    ]
+    manifest_inputs.extend(
+        f"output/manifests/{stage}.json" for stage in CORE_STAGES
+    )
+    manifest_inputs.extend(
+        relative(path) for path in DOCUMENTS.values() if path.exists()
+    )
     manifest_path = write_stage_manifest(
         "08_verify_claims",
-        inputs=[
-            "output/manifests/02_parse_facility_panel.json",
-            "output/manifests/03_grid_emission_factors.json",
-            "output/manifests/04_eda_facility.json",
-            "output/manifests/05a_power_adoption.json",
-            "output/manifests/05_panel_regression.json",
-            "output/manifests/06_robustness.json",
-            "output/manifests/06a_data_quality_sensitivity.json",
-            "output/manifests/06b_identifier_gap_audit.json",
-            "README.md",
-            "ARCHITECTURE.md",
-        ],
+        inputs=manifest_inputs,
         outputs=["output/claim_verification.md", "output/claim_evidence_map.md"],
         metadata={
             "passed_checks": len(passes),
             "failed_checks": len(failures),
-            "source_manifest_python": metrics["source_manifest_python"],
+            "failure_ids": [f"{item['type']}::{item['id']}" for item in failures],
+            "source_manifest_python": metrics["python_versions"],
+            "documents_checked": [
+                relative(path) for path in DOCUMENTS.values() if path.exists()
+            ],
         },
     )
 
     print(f"Claim verification report: {REPORT_PATH}")
     print(f"Claim-to-evidence map: {CLAIM_MAP_PATH}")
-    print(f"Manifest: {manifest_path}")
-
+    print(f"Stage manifest: {manifest_path}")
     if failures:
         print("\nCLAIM VERIFICATION FAILED\n")
         for item in failures:
-            print(f"- {item['type']}::{item['id']}")
+            path = relative(item.get("path"))
+            print(f"- {item['type']}::{item['id']} [{path}]: {item['detail']}")
         raise SystemExit(1)
-
     print("\nCLAIM VERIFICATION PASSED")
 
 

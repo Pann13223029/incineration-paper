@@ -1,89 +1,70 @@
-# Identifier Gap And Lag-Continuity Audit
-
-This audit documents the official facility-code gap that affects facility-level tracking.
-It is designed to answer a reviewer concern directly: whether the adoption model uses true prior-year lags or merely the previous observed coded row.
+# Official-Code Gaps And Administrative-Lineage Continuity Audit
 
 ## Bottom Line
 
-- The source panel has 3,718 rows without official facility codes in FY2010-FY2012.
-- The broader previous-observed-coded-row adoption frame contains 11,717 rows and 140 events.
-- The main exact-year adoption model keeps 10,823 rows and 98 events.
-- Non-exact lag rows excluded from the main adoption model: 894 rows and 42 events (5 same-year duplicate-code events; 37 multi-year-gap events).
-- Operating-generator rows missing official codes in FY2010-FY2012: 899; these rows are excluded from the canonical regression frame.
+- FY2010-FY2012 contain 3,716 rows and 0 non-missing official facility codes. Audited administrative-lineage IDs remain present for every row.
+- Across FY2009-FY2013, exact official-code overlap is 882, while the audited identity links 1,135 administrative lineages.
+- Across the FY2019-FY2020 code-regime reset, exact official-code overlap is 0, while administrative-lineage continuity restores 1,064 site links. Of those links, 1,064 have non-missing but changed official codes.
+- Duplicate stable-lineage-year groups: 0; missing asset-episode IDs: 0.
 
-Interpretation: the main adoption specification should be described as an exact one-fiscal-year lagged observed-transition model. The broader previous-observed-coded-row frame is useful as a sensitivity check but should not be used for the main prior-year claim.
+Official codes are therefore treated as annual administrative fields, not as longitudinal facility keys. Adoption lags, pathway continuity, clustering, and repeated-lineage checks use the audited administrative-lineage identifier.
 
-## Official Facility-Code Coverage By Fiscal Year
+## Annual Adjacent-Year Overlap
 
-|   fiscal_year |   rows |   coded_rows |   missing_code_rows |   coded_share_pct |
-|--------------:|-------:|-------------:|--------------------:|------------------:|
-|          2005 |   1318 |         1318 |                   0 |             100   |
-|          2006 |   1301 |         1301 |                   0 |             100   |
-|          2007 |   1307 |         1307 |                   0 |             100   |
-|          2008 |   1307 |         1279 |                  28 |              97.9 |
-|          2009 |   1310 |         1284 |                  26 |              98   |
-|          2010 |   1245 |            0 |                1245 |               0   |
-|          2011 |   1251 |            0 |                1251 |               0   |
-|          2012 |   1222 |            0 |                1222 |               0   |
-|          2013 |   1199 |         1199 |                   0 |             100   |
-|          2014 |   1207 |         1207 |                   0 |             100   |
-|          2015 |   1192 |         1192 |                   0 |             100   |
-|          2016 |   1154 |         1154 |                   0 |             100   |
-|          2017 |   1139 |         1139 |                   0 |             100   |
-|          2018 |   1128 |         1128 |                   0 |             100   |
-|          2019 |   1093 |         1093 |                   0 |             100   |
-|          2020 |   1087 |         1087 |                   0 |             100   |
-|          2021 |   1060 |         1060 |                   0 |             100   |
-|          2022 |   1038 |         1038 |                   0 |             100   |
-|          2023 |   1027 |         1027 |                   0 |             100   |
-|          2024 |   1014 |         1014 |                   0 |             100   |
+|   previous_fiscal_year |   fiscal_year |   previous_rows |   current_rows |   previous_coded_rows |   current_coded_rows |   previous_unique_official_codes |   current_unique_official_codes |   official_code_set_overlap |   stable_site_overlap |   linked_sites_same_official_code |   linked_sites_changed_official_code |   linked_sites_missing_code_either_year | official_code_overlap_pct_of_previous   |   stable_site_overlap_pct_of_previous |
+|-----------------------:|--------------:|----------------:|---------------:|----------------------:|---------------------:|---------------------------------:|--------------------------------:|----------------------------:|----------------------:|----------------------------------:|-------------------------------------:|----------------------------------------:|:----------------------------------------|--------------------------------------:|
+|                   2005 |          2006 |            1318 |           1301 |                  1318 |                 1301 |                             1315 |                            1301 |                        1267 |                  1273 |                              1264 |                                    9 |                                       0 | 96.3                                    |                                  96.6 |
+|                   2006 |          2007 |            1301 |           1306 |                  1301 |                 1306 |                             1301 |                            1287 |                        1262 |                  1285 |                              1262 |                                   23 |                                       0 | 97.0                                    |                                  98.8 |
+|                   2007 |          2008 |            1306 |           1305 |                  1306 |                 1277 |                             1287 |                            1217 |                        1123 |                  1278 |                              1141 |                                  109 |                                      28 | 87.3                                    |                                  97.9 |
+|                   2008 |          2009 |            1305 |           1309 |                  1277 |                 1283 |                             1217 |                            1225 |                        1178 |                  1271 |                              1231 |                                   14 |                                      26 | 96.8                                    |                                  97.4 |
+|                   2009 |          2010 |            1309 |           1244 |                  1283 |                    0 |                             1225 |                               0 |                           0 |                  1229 |                                 0 |                                    0 |                                    1229 | 0.0                                     |                                  93.9 |
+|                   2010 |          2011 |            1244 |           1250 |                     0 |                    0 |                                0 |                               0 |                           0 |                  1230 |                                 0 |                                    0 |                                    1230 | NA                                      |                                  98.9 |
+|                   2011 |          2012 |            1250 |           1222 |                     0 |                    0 |                                0 |                               0 |                           0 |                  1205 |                                 0 |                                    0 |                                    1205 | NA                                      |                                  96.4 |
+|                   2012 |          2013 |            1222 |           1199 |                     0 |                 1199 |                                0 |                            1199 |                           0 |                  1169 |                                 0 |                                    0 |                                    1169 | NA                                      |                                  95.7 |
+|                   2013 |          2014 |            1199 |           1207 |                  1199 |                 1207 |                             1199 |                            1207 |                        1184 |                  1185 |                              1182 |                                    3 |                                       0 | 98.7                                    |                                  98.8 |
+|                   2014 |          2015 |            1207 |           1192 |                  1207 |                 1192 |                             1207 |                            1192 |                        1159 |                  1158 |                              1124 |                                   34 |                                       0 | 96.0                                    |                                  95.9 |
+|                   2015 |          2016 |            1192 |           1154 |                  1192 |                 1154 |                             1192 |                            1154 |                        1138 |                  1138 |                              1119 |                                   19 |                                       0 | 95.5                                    |                                  95.5 |
+|                   2016 |          2017 |            1154 |           1139 |                  1154 |                 1139 |                             1154 |                            1139 |                        1112 |                  1112 |                              1075 |                                   37 |                                       0 | 96.4                                    |                                  96.4 |
+|                   2017 |          2018 |            1139 |           1128 |                  1139 |                 1128 |                             1139 |                            1128 |                        1101 |                  1104 |                              1062 |                                   42 |                                       0 | 96.7                                    |                                  96.9 |
+|                   2018 |          2019 |            1128 |           1093 |                  1128 |                 1093 |                             1128 |                            1093 |                        1077 |                  1081 |                              1044 |                                   37 |                                       0 | 95.5                                    |                                  95.8 |
+|                   2019 |          2020 |            1093 |           1087 |                  1093 |                 1087 |                             1093 |                            1087 |                           0 |                  1064 |                                 0 |                                 1064 |                                       0 | 0.0                                     |                                  97.3 |
+|                   2020 |          2021 |            1087 |           1060 |                  1087 |                 1060 |                             1087 |                            1060 |                        1039 |                  1044 |                              1039 |                                    5 |                                       0 | 95.6                                    |                                  96   |
+|                   2021 |          2022 |            1060 |           1038 |                  1060 |                 1038 |                             1060 |                            1038 |                        1027 |                  1028 |                              1026 |                                    2 |                                       0 | 96.9                                    |                                  97   |
+|                   2022 |          2023 |            1038 |           1027 |                  1038 |                 1027 |                             1038 |                            1027 |                        1011 |                  1015 |                              1011 |                                    4 |                                       0 | 97.4                                    |                                  97.8 |
+|                   2023 |          2024 |            1027 |           1014 |                  1027 |                 1014 |                             1027 |                            1014 |                        1002 |                  1003 |                              1002 |                                    1 |                                       0 | 97.6                                    |                                  97.7 |
 
-## Adoption Lag Gaps In Previous-Observed-Coded-Row Frame
+## Explicit Gap And Reset Bridges
 
-|   lag_gap_years |   rows |   events |   facilities |
-|----------------:|-------:|---------:|-------------:|
-|               0 |     67 |        5 |           29 |
-|               1 |  10823 |       98 |         1911 |
-|               2 |     14 |        1 |           14 |
-|               3 |      1 |        0 |            1 |
-|               4 |    716 |       24 |          714 |
-|               5 |      3 |        1 |            3 |
-|               6 |     69 |        4 |           69 |
-|               7 |     12 |        2 |           12 |
-|               8 |      4 |        2 |            4 |
-|               9 |      4 |        2 |            4 |
-|              10 |      2 |        0 |            2 |
-|              11 |      2 |        1 |            2 |
+| transition                                    |   previous_fiscal_year |   fiscal_year |   previous_rows |   current_rows |   previous_coded_rows |   current_coded_rows |   previous_unique_official_codes |   current_unique_official_codes |   official_code_set_overlap |   stable_site_overlap |   linked_sites_same_official_code |   linked_sites_changed_official_code |   linked_sites_missing_code_either_year |   official_code_overlap_pct_of_previous |   stable_site_overlap_pct_of_previous |
+|:----------------------------------------------|-----------------------:|--------------:|----------------:|---------------:|----------------------:|---------------------:|---------------------------------:|--------------------------------:|----------------------------:|----------------------:|----------------------------------:|-------------------------------------:|----------------------------------------:|----------------------------------------:|--------------------------------------:|
+| Bridge across FY2010-FY2012 official-code gap |                   2009 |          2013 |            1309 |           1199 |                  1283 |                 1199 |                             1225 |                            1199 |                         882 |                  1135 |                               795 |                                  317 |                                      23 |                                   72.00 |                                 86.71 |
+| FY2019-FY2020 official-code regime reset      |                   2019 |          2020 |            1093 |           1087 |                  1093 |                 1087 |                             1093 |                            1087 |                           0 |                  1064 |                                 0 |                                 1064 |                                       0 |                                    0.00 |                                 97.35 |
 
-## Operating-Generator Code Coverage By Fiscal Year
+## Same-Year Duplicate Checks
 
-|   fiscal_year |   operating_rows |   coded_operating_rows |   mean_efficiency_mwh_t |   missing_code_rows |   missing_code_share_pct |
-|--------------:|-----------------:|-----------------------:|------------------------:|--------------------:|-------------------------:|
-|          2005 |              274 |                    274 |                   0.26  |                   0 |                      0   |
-|          2006 |              280 |                    280 |                   0.266 |                   0 |                      0   |
-|          2007 |              285 |                    285 |                   0.271 |                   0 |                      0   |
-|          2008 |              287 |                    283 |                   0.275 |                   4 |                      1.4 |
-|          2009 |              297 |                    293 |                   0.279 |                   4 |                      1.3 |
-|          2010 |              295 |                      0 |                   0.29  |                 295 |                    100   |
-|          2011 |              300 |                      0 |                   0.296 |                 300 |                    100   |
-|          2012 |              304 |                      0 |                   0.302 |                 304 |                    100   |
-|          2013 |              306 |                    306 |                   0.307 |                   0 |                      0   |
-|          2014 |              314 |                    314 |                   0.307 |                   0 |                      0   |
-|          2015 |              328 |                    328 |                   0.312 |                   0 |                      0   |
-|          2016 |              345 |                    345 |                   0.323 |                   0 |                      0   |
-|          2017 |              354 |                    354 |                   0.333 |                   0 |                      0   |
-|          2018 |              361 |                    361 |                   0.344 |                   0 |                      0   |
-|          2019 |              370 |                    370 |                   0.363 |                   0 |                      0   |
-|          2020 |              375 |                    375 |                   0.363 |                   0 |                      0   |
-|          2021 |              384 |                    384 |                   0.374 |                   0 |                      0   |
-|          2022 |              394 |                    394 |                   0.374 |                   0 |                      0   |
-|          2023 |              399 |                    399 |                   0.378 |                   0 |                      0   |
-|          2024 |              408 |                    408 |                   0.383 |                   0 |                      0   |
+|   fiscal_year |   official_code_year_duplicate_groups |   rows_in_official_duplicate_groups |   max_rows_per_official_code |   stable_site_year_duplicate_groups |   rows_in_stable_site_duplicate_groups |   max_rows_per_stable_site |
+|--------------:|--------------------------------------:|------------------------------------:|-----------------------------:|------------------------------------:|---------------------------------------:|---------------------------:|
+|          2005 |                                     3 |                                   6 |                            2 |                                   0 |                                      0 |                          1 |
+|          2006 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2007 |                                    19 |                                  38 |                            2 |                                   0 |                                      0 |                          1 |
+|          2008 |                                    31 |                                  91 |                           23 |                                   0 |                                      0 |                          1 |
+|          2009 |                                    30 |                                  88 |                           23 |                                   0 |                                      0 |                          1 |
+|          2010 |                                     0 |                                   0 |                            0 |                                   0 |                                      0 |                          1 |
+|          2011 |                                     0 |                                   0 |                            0 |                                   0 |                                      0 |                          1 |
+|          2012 |                                     0 |                                   0 |                            0 |                                   0 |                                      0 |                          1 |
+|          2013 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2014 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2015 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2016 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2017 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2018 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2019 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2020 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2021 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2022 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2023 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
+|          2024 |                                     0 |                                   0 |                            1 |                                   0 |                                      0 |                          1 |
 
-## Implications For The Paper
+## Interpretation Guardrails
 
-- Use exact one-fiscal-year lags as the main adoption model.
-- Treat previous-observed-coded-row adoption estimates as sensitivity evidence only.
-- Treat pathway-audit mechanism labels as strongest only for adjacent-year events.
-- Describe the generator regression frame as an identifiable coded-generator panel, not a complete census of all operating generator rows.
-- Avoid strong Fukushima-window identification language unless a proxy-ID sensitivity later restores FY2010-FY2012 continuity.
+Administrative-lineage restoration is deterministic record linkage supported by names, municipality, reported start year, processing capacity, furnace count, and technology fields. It restores an auditable longitudinal grain but does not make every historical linkage certain. Asset-episode IDs remain separate so a rebuilt or replaced asset at the same site is not silently interpreted as unchanged equipment.

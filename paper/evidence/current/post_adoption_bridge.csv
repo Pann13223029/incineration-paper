@@ -1,5 +1,56 @@
-event_time,rows,events,mean_mwh_t,median_mwh_t
-0,125,125,0.3237215713,0.3512707789
-1,102,102,0.3375879984,0.3656001466
-2,91,91,0.3246305935,0.3614018483
-3,71,71,0.3387460369,0.3597842046
+analysis_facility_id,event_year,pathway_category,prior_site_operation,eligible_t0,observed_t0,positive_output_t0,eligible_t1,observed_t1,positive_output_t1,eligible_t2,observed_t2,positive_output_t2,eligible_t3,observed_t3,positive_output_t3
+site_023193e1d0b7,2006,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_090c6b82f03e,2015,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_110377f88627,2023,Rebuild/replacement-like entry,False,True,True,True,True,True,True,False,False,False,False,False,False
+site_1288f06eacb8,2015,Continuity-lineage entry,True,True,True,False,True,True,True,True,True,True,True,True,True
+site_28999b476293,2015,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_2ff0464f124e,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_314c9144da8a,2021,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_33783bb52e32,2015,Forward-dated / placeholder entry,False,True,True,False,True,True,True,True,True,True,True,True,True
+site_397d1384f59f,2020,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_46a5344f27b5,2010,Rebuild/replacement-like entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_49507e5c7b4e,2024,Continuity-lineage entry,True,True,True,True,False,False,False,False,False,False,False,False,False
+site_4a00a5bd7e56,2021,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_4bb62fd0b603,2022,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,False,False,False
+site_4d342980f1a6,2006,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_4f527b1e3732,2009,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_501ca8aa361f,2015,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_542ac5adf8e8,2021,Forward-dated / placeholder entry,False,True,True,False,True,True,True,True,True,True,True,True,True
+site_565be3564272,2022,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,False,False,False
+site_586fe6462fc8,2022,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,False,False,False
+site_616104f10a78,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_6958d603c8ad,2006,Rebuild/replacement-like entry,True,True,True,False,True,True,True,True,True,True,True,True,True
+site_69a0cc514b58,2014,Forward-dated / placeholder entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_69ba0a6aa21b,2022,Forward-dated / placeholder entry,False,True,True,True,True,True,True,True,True,True,False,False,False
+site_6a05a758c979,2015,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_751344d7173b,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_7c5860a0ae3c,2006,Forward-dated / placeholder entry,False,True,True,False,True,True,False,True,True,True,True,True,True
+site_8553effc770d,2017,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_8734c1302c1a,2021,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_93e54880f6ce,2024,Continuity-lineage entry,False,True,True,True,False,False,False,False,False,False,False,False,False
+site_96bbb0cc10e6,2021,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_aba00557c392,2022,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,False,False,False
+site_abbafb27b3a8,2018,Forward-dated / placeholder entry,False,True,True,False,True,True,False,True,True,False,True,True,False
+site_b1ea51d2a9de,2023,Forward-dated / placeholder entry,False,True,True,True,True,True,True,False,False,False,False,False,False
+site_b2a293b3f8a7,2017,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_b2eeb89b753e,2018,Forward-dated / placeholder entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_b34db3639319,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_b46782955f68,2006,Continuity-lineage entry,True,True,True,False,True,True,False,True,True,False,True,True,False
+site_b4a84489dafa,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_bd04b46dc65a,2019,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_bd4eaae2b97e,2021,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_ca85c1843bce,2014,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_cc9555b7aab4,2014,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_ce18fa6b9e97,2021,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_d1337e7f5c70,2016,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_d23b768d16db,2019,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_d3bda35fe022,2024,Continuity-lineage entry,True,True,True,True,False,False,False,False,False,False,False,False,False
+site_e0278c6bb85e,2016,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_e22135c6e858,2010,Rebuild/replacement-like entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_e25e6a6fd862,2008,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_e5d15c47cf90,2016,Continuity-lineage entry,False,True,True,True,True,True,True,True,True,True,True,True,True
+site_ebcd098807af,2009,Continuity-lineage entry,True,True,True,True,True,True,False,True,True,True,True,True,True
+site_f03c5cb634c1,2012,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_f7ab4d87540a,2017,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True
+site_f8e6313e052e,2016,Forward-dated / placeholder entry,False,True,True,False,True,True,False,True,True,True,True,True,True
+site_f91c01e2d37f,2015,Continuity-lineage entry,True,True,True,True,True,True,True,True,True,True,True,True,True

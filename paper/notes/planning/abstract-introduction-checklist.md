@@ -1,150 +1,128 @@
 # Abstract And Introduction Checklist
 
-This note adapts general writing guidance into a checklist for the current paper.
+Purpose: make the professor-facing draft understandable to a technically
+informed reader who does not already know the dataset, Firth regression, or
+waste-to-energy engineering terms.
 
-Use it when drafting or revising the abstract and first two pages.
+## Abstract Arc
 
-## Abstract Checklist
+Write the abstract in six moves:
 
-The abstract should answer five questions in order:
+1. **Puzzle:** Japan has many incinerators, but a facility count alone does not
+   show how much waste passes through generating facilities.
+2. **Data:** identify a national FY2005-FY2024 administrative panel whose
+   longitudinal site identities were reconstructed and audited.
+3. **Design:** distinguish fleet coverage, first reported installed-capacity
+   entry, and generator design/operation components.
+4. **Entry answer:** larger waste-processing facilities have substantially
+   higher entry odds; the age terms are not jointly supported.
+5. **Engineering answer:** reported start-year differences are concentrated in
+   installed generator sizing; in the separate 5,806-row, heating-value-
+   controlled specification diagnostic, age, processing capacity, and
+   utilization are no longer independently supported after sizing is included.
+6. **Meaning:** infrastructure transition cannot be judged from facility counts
+   or one gross-output ratio alone.
 
-1. What is the real empirical problem?
-2. Why is one average fleet view insufficient?
-3. What two-part design does the paper use?
-4. What are the two headline findings?
-5. What is the calibrated implication?
+## Abstract Number Budget
 
-### Required Elements
+Use no more than four numerical anchors:
 
-- one concrete sentence about Japan's incineration fleet
-- one sentence with case-specific institutional texture, not just generic energy
-  waste language
-- one sentence introducing the analytical split
-- one sentence on selective adoption into generation
-- one sentence on structured electricity-recovery performance among generators
-- one final sentence with a narrow broader lesson
+- 41.1% facility participation versus 80.1% throughput coverage
+- 35 exact-frame events, if sparse inference must be motivated numerically
+- odds ratio 6.13 for 300 versus 100 t/day
+- 6,511 engineering-valid generator-year observations, if space permits
 
-### Required Anchor Phrases
+The 70.5% design-capacity share, prior-operation frame, p-values, pathway counts,
+and model diagnostics can remain in the main text.
 
-These should appear verbatim or nearly verbatim in the opening layers.
-
-Originality sentence:
-
-- `This paper separates transition into generation from conditional performance within the generating segment in a national facility-level panel.`
-
-Safe interpretation sentence:
-
-- `The estimates describe conditional associations within the coded adoption frame and canonical identifiable generator frame; they do not identify physical retrofit mechanisms, policy effects, or the causal effect of changing age, scale, utilization, or technology.`
-
-### Writing Rules
-
-- prefer plain verbs over abstract nouns
-- keep only two or three numbers at most
-- do not explain the full estimator logic
-- do not present policy as an identified ranking
-- do not use `lock-in` as the first framing device
-
-### Good Abstract Test
-
-After one read, the reader should be able to say:
-
-- what the paper studies
-- how it studies it
-- what it finds
-- why it matters
-
-If not, simplify.
-
-## Introduction Checklist
-
-The introduction opening should move in this sequence:
-
-1. concrete Japan puzzle
-2. why the fleet should not be treated as one category
-3. the gap in existing framing
-4. the paper's two-part design
-5. the main contribution
-6. the paper roadmap
-
-## First Paragraph Rules
-
-The first paragraph should:
-
-- start with the empirical problem, not general sector history
-- be understandable without jargon
-- end with the analytical split or contribution
-
-It should not:
-
-- start with broad climate rhetoric
-- begin with long context about Japan's waste policy
-- delay the paper's contribution until the second page
-
-## Contribution Paragraph Rules
-
-The contribution paragraph should make three moves:
-
-1. state the design contribution
-2. state the substantive finding at a high level
-3. state the narrow broader methodological lesson
-
-Recommended contribution sentence:
-
-- `This paper separates transition into generation from conditional performance within the generating segment in a national facility-level panel.`
-
-## Gap Statement Rules
-
-The gap should be framed as:
-
-- prior work often treats the fleet too uniformly
-- generator-only studies do not model entry into generation
-- transition stories often obscure the difference between entering generation and
-  performing within generation
-- the paper fills that gap with a two-part panel design
-
-Avoid weaker gap language such as:
-
-- `Japan has not been studied enough`
-- `few studies look at this issue`
-
-Those are too generic on their own.
-
-## Tone Rules
+## Abstract Language Checks
 
 Use:
 
-- `separates`
-- `shows`
-- `finds`
-- `is most consistent with`
-- `suggests`
-- `for similar fleet-transition studies`
+- `first reported installed electrical-generation capacity`
+- `Firth bias-reduced discrete-time model`
+- `waste-processing design capacity`
+- `generator design intensity`
+- `electrical capacity factor`
+- `descriptive association`
 
 Avoid:
 
-- `proves`
-- `demonstrates conclusively`
-- `dominant mechanism`
-- `optimal policy`
+- implying that an administrative entry is necessarily a retrofit
+- calling gross MWh/t thermodynamic efficiency
+- making age the entry headline
+- saying the model identifies a policy effect or optimal investment
+- presenting the 41.1% facility share as the untreated waste-volume share
 
-## Introduction Red Flags
+## Introduction Sequence
 
-Revise if:
+### Paragraph 1: Count-volume puzzle
 
-- the first page contains more background than argument
-- the contribution appears after long literature setup
-- the introduction uses the same claim wording three times
-- the two halves of the paper are not clearly linked
-- the prose sounds like a thesis defense rather than a journal article
+- Give the 41.1%, 80.1%, and 70.5% FY2024 contrast.
+- Explain in plain language that large facilities process disproportionate
+  volumes.
+- End with why a single facility-count statistic is insufficient.
 
-## Final Test
+### Paragraph 2: Analytical problem
 
-A fresh reader should be able to answer these after page 2:
+- Distinguish participation, first entry, installed sizing, and annual use.
+- Explain that gross electricity per tonne combines these dimensions.
+- State why collapsing them can misdiagnose modernization.
 
-1. What is the puzzle?
-2. What is the paper's main contribution?
-3. Why are there two analytical layers?
-4. What is the main answer?
+### Paragraph 3: Prior work and comparator lineage
 
-If a reader cannot answer those questions, revise the opening before drafting
-further.
+- Name the closest Japan and engineering comparators.
+- State the principle adapted from each.
+- State how the current sample, estimands, and contribution differ.
+- Avoid claiming novelty merely because the panel reaches FY2024.
+
+### Paragraph 4: Data and identity
+
+- Explain why source facility codes cannot simply be followed through time.
+- State that 23,593 records form 1,690 audited stable administrative lineages and 1,767
+  asset episodes.
+- Keep the algorithm detail for methods and supplement.
+
+### Paragraph 5: Research questions
+
+State three distinct questions:
+
+1. How do facility participation, throughput coverage, and design-capacity
+   coverage differ?
+2. Which prior site characteristics are associated with first reported
+   installed-capacity entry?
+3. How do generator sizing and annual electrical capacity factor structure gross
+   generation among operating generators?
+
+### Paragraph 6: Answers and contribution
+
+- Lead with count-volume divergence.
+- State robust scale selectivity and restrained age inference.
+- State the generator-sizing result.
+- End with the integrated measurement contribution and noncausal boundary.
+
+## Jargon Test
+
+Define each term at first use:
+
+| Term | Plain-language explanation |
+|:--|:--|
+| Stable administrative lineage | Records judged to represent the same administrative facility history through time |
+| Asset episode | A period before or after a material reported facility reset |
+| Firth regression | A bias-reduced logistic method used because first entries are rare |
+| Design intensity | Installed generator kW relative to tonnes/day of waste-processing capacity |
+| Capacity factor | Actual annual generation relative to a full year at installed nameplate power |
+| Gross MWh/t | Electricity reported before plant use, divided by waste processed |
+
+## Professor-Comprehension Test
+
+After the first two pages, a reader should be able to answer:
+
+1. Why is 41.1% not the whole national story?
+2. What exactly counts as an entry event?
+3. Why is Firth inference used?
+4. Why is age not the main entry result?
+5. Why does installed generator sizing change the old gross-output conclusion?
+6. Which parts were adapted from comparator papers, and what is original here?
+
+If any answer is unclear, revise the opening before adding background.

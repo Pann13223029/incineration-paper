@@ -13,9 +13,11 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 STAGES = [
+    "02b_build_raw_data_manifest.py",
     "02_parse_facility_panel.py",
-    "03_grid_emission_factors.py",
+    "02a_build_facility_identity.py",
     "04_eda_facility.py",
+    "05_fleet_decomposition.py",
     "05a_power_adoption.py",
     "05_panel_regression.py",
     "06_robustness.py",

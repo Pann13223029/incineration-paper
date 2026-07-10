@@ -1,197 +1,157 @@
 # Paper Structure Checklist
 
-This checklist translates generic paper-structure advice into the specific shape
-this article needs.
+## Narrative Spine
 
-## Paper Type
+The paper is one integrated study with a descriptive baseline and two analytical
+layers:
 
-Use a compact empirical article structure:
+> Facility counts understate activity coverage; entry is rare and
+> scale-selective; among generators, installed sizing and annual use are
+> distinct components of gross output.
+
+Every section should advance that spine.
+
+## Recommended Structure
 
 1. Introduction
-2. Literature positioning
-3. Data and design
-4. Results
-5. Discussion
-6. Conclusion
-7. Supplement / appendix
-
-This should read like a field-journal article, not a thesis chapter sequence.
+2. Related evidence and comparator lineage
+3. Data, provenance, and administrative-lineage reconstruction
+4. Empirical design
+5. Results
+6. Discussion, limitations, and future validation
+7. Conclusion
 
 ## Title
 
-The title should:
+The title should name the fleet and signal the measurement contribution without
+promising causal mechanisms. A suitable pattern is:
 
-- name the empirical object
-- signal the two-part result
-- stay descriptive rather than theatrical
+> From Facility Counts to Generator Components: Entry and Electricity Recovery
+> in Japan's Waste-Incineration Fleet
 
-Target style, not mandatory wording:
+Avoid titles centered on efficiency, lock-in, optimization, or causal retrofit
+effects.
 
-- `Selective Entry and Structured Electricity-Recovery Performance in Japan's Waste-Incineration Fleet: A Facility-Level Panel Study`
+## Introduction Gate
 
-Avoid:
+By the end of page two, the reader must know:
 
-- titles led by `carbon lock-in`
-- titles that promise mechanism identification beyond the design
-- titles that sound like policy optimization papers
+- why 41.1% facility participation and 80.1% throughput coverage are different
+- why administrative lineages had to be reconstructed
+- the three research questions
+- why sparse entry and generator components require different models
+- the headline scale result and the restrained age result
+- what was adapted from prior papers and what is original
 
-## Abstract
+## Data And Identity
 
-Use a five-part arc:
+Keep in the main text:
 
-1. State the Japan puzzle.
-2. State the two-part design.
-3. State the adoption result.
-4. State the electricity-recovery result.
-5. State the calibrated implication and broader methodological lesson.
+- workbook years and source provenance
+- 23,593 retained records, 1,690 stable administrative lineages, and 1,767 asset episodes
+- the source-code discontinuity problem
+- a plain-language summary of matching evidence and executable guardrails
+- the distinction between a stable administrative lineage and an asset episode
 
-Keep only the highest-signal numbers.
-Keep the broader lesson narrow and tied to similar fleet-transition studies.
+Move to the supplement:
 
-## Introduction
+- matching weights and thresholds
+- low-margin records
+- golden-link examples
+- duplicate-collapse details
+- permutation and insertion invariance implementation
 
-The first page should accomplish four jobs:
+## Methods
 
-1. open with the concrete Japan puzzle
-2. state that the fleet should not be treated as a single category
-3. introduce the two-part design
-4. state the contribution and research questions
+### Fleet baseline
 
-By the end of the introduction opening, the reader should know:
+- Define facility participation, throughput coverage, and design-capacity share.
+- State every denominator.
+- Explain why these quantities answer different planning questions.
 
-- what the gap is
-- what this paper does
-- why it matters
+### Sparse entry model
 
-## Literature Positioning
+- Define first reported positive installed capacity after observed zero capacity.
+- Distinguish the 55-event descriptive universe from the 35-event exact model.
+- Explain the exact and prior-operation frames.
+- Show the discrete-time equation and describe Firth bias reduction.
+- State calendar-era, duration, age, and log-capacity terms.
+- Explain stable-lineage bootstrap uncertainty and joint tests.
 
-Keep this section short.
+### Generator components
 
-Its job is not to survey everything. Its job is to explain:
+- Define engineering-valid operating-generator rows.
+- Present generator design intensity and electrical capacity factor separately.
+- Show how gross MWh/t combines installed sizing, annual generator use, and waste
+  loading.
+- Identify reported start year as a vintage proxy, not physical aging.
+- Explain that the sizing-added gross model is a diagnostic.
 
-- what prior work typically studies
-- what it usually conflates
-- what this paper separates
+## Results Order
 
-If the section becomes a broad field review, cut it.
+1. **Fleet coverage:** 41.1% facilities, 80.1% throughput, 70.5% design capacity.
+2. **Entry:** 55 descriptive events; broad/prior/same-episode events of
+   35/33/24; scale odds ratios 6.13 and 6.25.
+3. **Age inference:** lineage-bootstrap joint p=0.380, 0.186, 0.051, and 0.357
+   for broad, prior-operation, same-episode, and identity-certain frames.
+4. **Components:** 6,511 rows across 493 stable administrative lineages; strong vintage pattern in
+   installed design intensity.
+5. **Sizing diagnostic:** in a separate 5,806-row frame with plausible heating
+   value and heating value controlled, legacy age -0.0349, capacity +0.1001,
+   and utilization +0.6699; after sizing, age -0.0020 (p=0.2977), capacity
+   -0.0092 (p=0.1991), utilization -0.0995 (p=0.2038), sizing +0.7532
+   (p<0.001), and R-squared 0.4737 to 0.8131. Treat this as a specification
+   diagnostic, not causal mediation or part of the 6,511-row primary models.
+6. **Pathways:** describe heterogeneity without assigning physical mechanisms.
 
-## Data And Design
+Do not lead with coefficients before explaining the construct and denominator.
 
-The methods section should have three compact parts:
+## Discussion Jobs
 
-1. adoption frame
-2. generator electricity-recovery frame
-3. identification and scope caveat paragraph
+The discussion should answer four questions:
 
-Each analytical layer should still get one short main-text paragraph on:
+1. What does the count-volume divergence change about the original problem?
+2. Why is scale selectivity meaningful even though causal mechanisms are not
+   identified?
+3. Why does separating installed sizing from annual use revise the old
+   gross-output interpretation?
+4. What external histories or engineering data would be needed for the next
+   causal or technical step?
 
-- sample definition
-- outcome
-- estimator family
-- scope boundary
+Include one compact comparator paragraph explaining adaptation rather than
+similarity by assertion.
 
-Keep in main text:
+## Conclusion Gate
 
-- what sample each layer uses
-- what outcome is modeled
-- what core predictors matter
-- what estimator family is used
-- why the two layers are needed
+The conclusion should state:
 
-Push out of main text:
+- the count-volume answer
+- robust scale selectivity and unsupported age headline
+- the generator-sizing reinterpretation
+- the narrow transferable measurement lesson
 
-- long cleaning-rule detail
-- extended winsorization explanations
-- full estimator-defense prose
-- pathway-audit coding rules
+It must not introduce a new mechanism, policy ranking, or emissions estimate.
 
-## Results
+## Main Text Versus Supplement
 
-Order matters:
+Main text must stand alone on the research questions, constructs, equations,
+samples, estimators, headline evidence, and interpretation limits.
 
-1. adoption result
-2. efficiency result
-3. synthesis paragraph
+The supplement should carry raw provenance detail, complete linkage audits,
+additional Firth diagnostics, engineering-bound sensitivities, pathway coding,
+and extended robustness results.
 
-Use:
+## Structural Failure Conditions
 
-- one page-1 or page-2 framework figure that explains the two-part design
-- one main results table for adoption
-- one main results table for electricity-recovery performance
-- one adoption-first results figure
-- one efficiency-structure figure only if it adds more than prose plus the main
-  efficiency table
+Revise before professor review if:
 
-Results prose should report what the evidence says, not debate implications
-early.
-
-The adoption section should include only a concise pathway-audit summary in main
-text. Coding rules and classification logic belong in the supplement.
-
-## Discussion
-
-The discussion should do three things only:
-
-1. explain what the two-part result means
-2. explain what the evidence is most consistent with
-3. explain what the paper still cannot identify
-
-Keep policy short and calibrated.
-Keep one concrete policy paragraph in the main text, but mark it explicitly as
-an evidence-consistent implication rather than an estimated ranking.
-
-The discussion should not expand into:
-
-- broad governance theory
-- long climate arithmetic
-- speculative global comparison
-
-## Conclusion
-
-Use a compact claim stack:
-
-1. the transition is selective on the adoption margin
-2. performance is bounded on the intensive margin
-3. this changes how the transition should be modeled
-4. the broader lesson is methodological, not universal
-
-The conclusion should feel decisive but not inflated.
-
-## Main Text Vs Supplement
-
-Main text:
-
-- problem
-- design
-- headline evidence
-- calibrated interpretation
-- one short sample-and-scope paragraph per analytical layer
-- one short policy-implication paragraph
-- one concise pathway-audit summary paragraph
-
-Supplement:
-
-- robustness detail
-- estimator comparisons
-- pathway-audit rule detail
-- sample edge cases
-- extra tables
-
-Rule:
-
-If a section exists mainly to preempt reviewer objections, it is probably a
-supplement section.
-
-## Structural Red Flags
-
-Revise if any of these appear:
-
-- the paper feels like two separate studies
-- the framework figure arrives too late to teach the reader how the paper works
-- the abstract contains too many counts and caveats
-- the introduction repeats the contribution several times
-- the results section contains long interpretation blocks
-- the discussion re-litigates methods instead of interpreting findings
-- the conclusion sounds broader than the evidence
-- the main text feels too thin because too much defensive material was pushed
-  into supplement
+- the paper treats the 41.1% count as the whole empirical problem
+- administrative-lineage reconstruction appears only in the supplement
+- 55 descriptive events and 35 modeled events are conflated
+- Firth regression is named but not motivated
+- individual age coefficients override the joint tests
+- gross MWh/t is described as efficiency
+- installed generator sizing is absent from the central interpretation
+- comparator influence is asserted without an adaptation map
+- limitations are repeated but the estimand remains unclear
+- tables, figures, abstract, and conclusion use different sample counts

@@ -11,19 +11,36 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 
 ## Synced Artifacts
 
+- `raw_data_provenance.md`
+- `raw_data_manifest.csv`
+- `raw_workbook_schema_map.csv`
+- `facility_identity_audit.md`
+- `identity_low_margin_links.csv`
+- `fleet_decomposition.md`
+- `fleet_decomposition.csv`
+- `fy2024_fleet_segments.csv`
 - `sample_definition.md`
 - `adoption_results.md`
 - `regression_results.md`
+- `generator_component_results.csv`
 - `robustness_results.md`
+- `robustness_component_results.csv`
 - `data_quality_sensitivity.md`
+- `data_quality_sample_flow.csv`
+- `data_quality_engineering_bounds.csv`
+- `data_quality_official_code_duplicates.csv`
 - `identifier_gap_audit.md`
+- `identifier_overlap_by_year.csv`
+- `identifier_gap_bridges.csv`
+- `identifier_duplicates_by_year.csv`
 - `claim_evidence_map.md`
 - `claim_verification.md`
 - `panel_summary.md`
 - `table1_summary_stats.md`
-- `table2_efficiency_by_age.md`
+- `table2_generator_components_by_cohort.md`
 - `adoption_pathway_audit.csv`
 - `figure2_transition_effects.csv`
+- `adoption_bootstrap_coefficients.csv`
 - `post_adoption_bridge.csv`
 - `post_adoption_trajectories.csv`
 - `figure3_persistence.csv`
