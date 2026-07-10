@@ -1685,7 +1685,7 @@ def main():
                     log_capacity_result["capacity_coefficient"]
                 ),
                 "log_capacity_pvalue": manifest_float(
-                    log_capacity_result["capacity_pvalue"]
+                    log_capacity_result["capacity_pvalue"], significant_digits=5
                 ),
                 "age_signs_negative": bool(log_capacity_result["age_signs_negative"]),
             },
