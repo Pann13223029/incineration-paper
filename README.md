@@ -14,7 +14,8 @@ Use this order if you are new to the repo:
 2. Check the current status: [`paper/submission/current-status.md`](paper/submission/current-status.md).
 3. Check the claim discipline: [`paper/notes/claim-stack.md`](paper/notes/claim-stack.md).
 4. Check the evidence map: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
-5. If you need the PDF, use the tracked share copy: [`paper/share/waste-management-manuscript-latex.pdf`](paper/share/waste-management-manuscript-latex.pdf).
+5. Open the current PDF with the [browser-compatible viewer](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf).
+6. If the browser viewer is unavailable, [download the PDF directly from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) or read the [Markdown manuscript](paper/manuscript/paper.md).
 
 For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). For assistant-specific rules, read [`AGENTS.md`](AGENTS.md).
 
@@ -55,7 +56,7 @@ Do not make the manuscript a second source of empirical truth. Paper prose stays
 | Claim synchronization status | [`output/claim_verification.md`](output/claim_verification.md) |
 | Claim-to-evidence bridge | [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
 | Active paper manuscript | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
-| Current reading PDF | [`paper/share/waste-management-manuscript-latex.pdf`](paper/share/waste-management-manuscript-latex.pdf) |
+| Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) · [Download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
 
 ## Reproducible Setup
 

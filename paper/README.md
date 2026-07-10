@@ -7,7 +7,7 @@ This directory is the active article layer. It contains the manuscript, suppleme
 - Active writing target: `paper/manuscript/paper.md`
 - Final reading/PDF source: `paper/manuscript/paper.tex`
 - Target journal track: `Waste Management`
-- Current share PDF: `paper/share/waste-management-manuscript-latex.pdf`
+- Current share PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf)
 - Evidence copies: `paper/evidence/current/`
 
 The paper layer narrows and reorganizes the thesis evidence. It must not become a second source of empirical truth.
@@ -88,7 +88,7 @@ npm run slides:paper:pdf
 
 ## Output Rules
 
-- Use `paper/share/waste-management-manuscript-latex.pdf` for cross-device reading.
+- Use the [browser-compatible PDF link](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) for cross-device reading. If an embedded viewer fails, use the [direct GitHub download](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
 - Use `paper/share/paper-zoom-briefing.pdf` for Zoom screen sharing.
 - Use `paper/submission/waste-management-manuscript-latex.pdf` for local submission package review.
 - Use `paper/submission/waste-management-manuscript.docx` only when a DOCX workflow is needed.
