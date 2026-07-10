@@ -49,6 +49,7 @@ REGRESSION_COLUMNS = [
     "avoided_co2_t",
     "energy_efficiency_raw_mwh_per_t",
     "energy_efficiency_mwh_per_t",
+    "log_efficiency_raw",
     "log_efficiency",
 ]
 
@@ -444,6 +445,7 @@ def build_operating_power_frame(panel: pd.DataFrame | None = None) -> pd.DataFra
     power["energy_efficiency_mwh_per_t"] = power[
         "energy_efficiency_raw_mwh_per_t"
     ].clip(lower=EFF_FLOOR, upper=EFF_CEIL)
+    power["log_efficiency_raw"] = np.log(power["energy_efficiency_raw_mwh_per_t"])
     power["log_efficiency"] = np.log(power["energy_efficiency_mwh_per_t"])
     power["capacity_100t"] = power["capacity_t_day"] / 100.0
     power["heating_value_mj_kg"] = power["heating_value_kj_kg"] / 1000.0
@@ -467,7 +469,6 @@ def build_regression_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
             "capacity_100t",
             "capacity_utilization_capped",
             "heating_value_mj_kg",
-            "grid_ef_kgco2_kwh",
             "log_efficiency",
         ]
     ).copy()

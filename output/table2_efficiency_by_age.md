@@ -1,4 +1,4 @@
-# Table 2: Energy Recovery Efficiency by Facility Age Group
+# Table 2: Gross Electricity Generation per Tonne by Facility Age Group
 
 | age_group   |   n_obs |   mean_eff |   median_eff |   mean_capacity |   mean_avoided |   pct_of_total_avoided |
 |:------------|--------:|-----------:|-------------:|----------------:|---------------:|-----------------------:|

@@ -9,14 +9,15 @@ Management*.
 
 The paper studies Japan's municipal waste-incineration fleet using a national
 facility-level panel for FY2005-FY2024. Its main contribution is a diagnostic
-fleet design: it separates observed transition into power generation from
+fleet design: it separates first reporting of installed generation capacity from
 conditional performance within the generating segment inside the same fleet,
 rather than treating modernization as one average process.
 
-The results show that observed entry into generation is selective rather than
-diffuse, while performance within the generating segment is strongly structured
-by age, scale, and utilization, with limited within-facility movement relative
-to cross-facility heterogeneity. Read together, those margins show why a single
+The results show that installed-capacity entry is selective rather than diffuse,
+that most entrants report positive output by the following year, and that coded-
+panel exit is a competing observed path. Within the generating segment,
+performance is strongly structured by age, scale, and utilization, and adjacent-
+year ranks are highly persistent. Read together, those margins show why a single
 fleet-average view can misstate where the modernization bottleneck actually
 lies.
 

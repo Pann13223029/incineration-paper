@@ -36,25 +36,26 @@ run `code/scripts/01_download_facility_data.py`.
 ### `processed/incineration_panel.csv`
 
 The base panel produced by `02_parse_facility_panel.py`. 23,599 facility-year
-observations across 2,949 unique facilities, FY2005–FY2024, 28 columns covering
+observations across 2,948 coded facilities, FY2005–FY2024, 28 columns covering
 facility identification, design capacity, throughput, waste composition,
 electricity generation, and facility age.
 
 ### `processed/incineration_panel_enriched.csv`
 
 The authoritative analysis file, produced by `03_grid_emission_factors.py` from
-the base panel. Adds regional grid emission factors (kg-CO₂/kWh) from METI and
-regional utility publications, matched at 100% via the prefecture-to-utility
-crosswalk below. This is the file consumed directly by the regression scripts
-(`05_panel_regression.py`, `06_robustness.py`).
+the base panel. It retains the facility variables used by the entry and
+generator-performance models and also contains a legacy contextual grid-factor
+series. The current main regressions do not use that interpolated grid series;
+fiscal-year indicators absorb common annual conditions without asking the grid
+factor to carry a facility-performance interpretation.
 
 ### `processed/grid_emission_factors.csv`
 
-Manually constructed from METI annual energy reports and regional utility
-disclosures. Ten Japanese utility areas × 20 fiscal years, with linear
-interpolation between anchor years where direct publications were unavailable.
-See `code/scripts/03_grid_emission_factors.py` for the full construction logic
-and source citations per anchor.
+Contextual series for ten Japanese utility areas across twenty fiscal years,
+with linear interpolation where direct annual values were unavailable. It is
+retained for legacy comparability and exploratory climate context, not as a core
+covariate or paper result. Any future carbon-accounting use should replace or
+independently verify the anchors against primary annual disclosures.
 
 ### `processed/prefecture_utility_crosswalk.csv`
 
@@ -74,6 +75,7 @@ involves year-specific column detection heuristics.
 # From raw Excel to final regression output:
 python code/scripts/02_parse_facility_panel.py     # raw -> incineration_panel.csv
 python code/scripts/03_grid_emission_factors.py    # + grid factors -> enriched
+python code/scripts/05a_power_adoption.py          # capacity entry and exit hazards
 python code/scripts/05_panel_regression.py         # main 4 specifications
 python code/scripts/06_robustness.py               # robustness specifications
 ```

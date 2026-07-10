@@ -75,12 +75,12 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 | Specification | Variable | Official coef. | Composite coef. |
 |:--|:--|--:|--:|
-| Pooled OLS | Facility age | -0.0279*** | -0.0279*** |
-| Pooled OLS | Capacity (100 t/day) | 0.0874*** | 0.0874*** |
-| Pooled OLS | Capacity utilization | 0.7468*** | 0.7468*** |
+| Pooled OLS | Facility age | -0.0277*** | -0.0277*** |
+| Pooled OLS | Capacity (100 t/day) | 0.0853*** | 0.0853*** |
+| Pooled OLS | Capacity utilization | 0.7462*** | 0.7462*** |
 | Year FE | Facility age | -0.0348*** | -0.0348*** |
-| Year FE | Capacity (100 t/day) | 0.1030*** | 0.1030*** |
-| Year FE | Capacity utilization | 0.7789*** | 0.7789*** |
+| Year FE | Capacity (100 t/day) | 0.1051*** | 0.1051*** |
+| Year FE | Capacity utilization | 0.7760*** | 0.7760*** |
 
 ## Heating-Value Plausibility Sensitivity
 
@@ -90,9 +90,9 @@ The composite sensitivity appends facility name to official codes that repeat wi
 
 | Sample | N | Facilities | Pooled age | Pooled capacity | Pooled utilization | Year-FE age | Year-FE capacity | Year-FE utilization |
 |:--|--:|--:|--:|--:|--:|--:|--:|--:|
-| Main frame | 5,683 | 1,016 | -0.0279 | 0.0874 | 0.7468 | -0.0348 | 0.1030 | 0.7789 |
-| HV > 0 and <= 30 MJ/kg | 5,154 | 960 | -0.0281 | 0.0876 | 0.7575 | -0.0351 | 0.1043 | 0.7932 |
-| HV 3-25 MJ/kg | 5,114 | 958 | -0.0282 | 0.0857 | 0.7601 | -0.0349 | 0.1029 | 0.7937 |
+| Main frame | 5,683 | 1,016 | -0.0277 | 0.0853 | 0.7462 | -0.0348 | 0.1051 | 0.7760 |
+| HV > 0 and <= 30 MJ/kg | 5,154 | 960 | -0.0280 | 0.0850 | 0.7533 | -0.0350 | 0.1071 | 0.7946 |
+| HV 3-25 MJ/kg | 5,114 | 958 | -0.0280 | 0.0832 | 0.7558 | -0.0349 | 0.1056 | 0.7950 |
 
 ## Interpretation
 

@@ -86,6 +86,9 @@ Current synced files:
 - `table1_summary_stats.md`
 - `table2_efficiency_by_age.md`
 - `adoption_pathway_audit.csv`
+- `figure2_transition_effects.csv`
+- `post_adoption_bridge.csv`
+- `figure3_persistence.csv`
 
 If any source file in `output/` changes materially, run `npm run paper:sync` before editing paper claims. If `paper:check` fails, sync first rather than manually editing copied evidence.
 
@@ -136,20 +139,23 @@ Reviewer-sensitive caveats are currently concentrated in:
 These lines are intentionally present because `code/scripts/08_verify_claims.py` checks them.
 
 - Full panel: (23,599 observations, 2,948 unique facilities, FY2005–FY2024)
-- Adoption risk set: (13,770 facility-years, 2,035 facilities, 141 observed first-adoption events)
-- Main adoption model: 10,823 facility-years across 1,911 facilities and 98 events
+- Installed-capacity entry risk set: (13,770 facility-years, 2,035 facilities, 141 installed-capacity entry events)
+- Main installed-capacity entry model: 10,823 facility-years across 1,911 facilities and 98 events
 - Count distinction: 141 is the descriptive adoption universe for event-rate summaries and pathway auditing; 98 is the stricter exact one-fiscal-year lagged hazard subset.
-- Adoption age pattern: facilities older than 10 years are 1.2–1.9 percentage points less likely to transition into generation.
-- Adoption capacity pattern: prior-year capacity raises transition probability by about 0.45 percentage points per 100 t/day.
-- Pathway audit: 50 observed transitions as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved.
+- Entry age pattern: facilities older than 10 years are 1.2–1.9 percentage points less likely to report installed-capacity entry.
+- Entry capacity pattern: prior-year capacity raises entry probability by about 0.45 percentage points per 100 t/day.
+- Output bridge: 135 of 141 entrants report positive output by the following year; 137 enter the canonical generator frame within three years.
+- Panel attrition: 1,305 of 1,894 non-entrants (68.9%) are last observed before FY2024; this is coded-panel exit, not verified closure.
+- Pathway audit: 50 observed entry events as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved.
+- Generator persistence: the pooled within-year percentile-rank correlation is 0.9325 across 4,368 exact adjacent-year pairs.
 
 | Evidence block | Current finding | Check |
 |:--|:--|:--|
-| Adoption hazard, prior-year age bands | Facilities older than 10 years are 1.2–1.9 pp less likely than 0–10-year facilities to record transition in the next fiscal year | p < 0.05 in every reported age-band coefficient |
-| Adoption hazard, prior-year capacity | +0.45 pp per 100 t/day | p < 0.05 |
-| Facility age effect | −0.019 to −0.035 in the four main specifications | p < 0.001 in every reported main specification |
-| Design capacity effect | +0.041 to +0.103 in the four main specifications | Positive in every main specification |
-| Capacity utilization effect | +0.541 to +0.779 in the four main specifications | Positive in every main specification |
+| Capacity-entry hazard, prior-year age bands | Facilities older than 10 years are 1.2–1.9 pp less likely than 0–10-year facilities to report positive installed capacity in the next fiscal year | p < 0.05 in every reported age-band coefficient |
+| Capacity-entry hazard, prior-year capacity | +0.45 pp per 100 t/day | p < 0.05 |
+| Facility age effect | −0.014 to −0.035 in the four main specifications | p < 0.001 in every reported main specification |
+| Design capacity effect | +0.034 to +0.105 in the four main specifications | Positive in every main specification |
+| Capacity utilization effect | +0.543 to +0.776 in the four main specifications | Positive in every main specification |
 
 ## Legacy Thesis Boundary
 

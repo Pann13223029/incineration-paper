@@ -24,7 +24,9 @@ from panel_utils import (
     build_adoption_frame,
     build_adoption_model_frame,
     build_adoption_pathway_audit,
+    build_regression_frame,
     load_panel,
+    normalize_analysis_facility_id,
     sample_summary,
     significance_stars,
     write_stage_manifest,
@@ -116,6 +118,252 @@ def event_tables(adoption: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     cap_table = cap_table.drop(columns=["annual_event_rate"])
 
     return age_table, cap_table
+
+
+def build_positive_output_sensitivity(panel: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Build an alternative adoption frame using positive electricity output."""
+    output_panel = panel.copy()
+    output_panel["has_power_gen"] = output_panel["power_generated_mwh"].fillna(0).gt(0)
+    output_adoption = build_adoption_frame(output_panel)
+    output_model = build_adoption_model_frame(adoption=output_adoption)
+    return output_adoption, output_model
+
+
+def build_panel_exit_frame(adoption: pd.DataFrame) -> pd.DataFrame:
+    """Build a next-year panel-exit hazard without treating known code gaps as exits."""
+    frame = adoption.sort_values(["analysis_facility_id", "fiscal_year"]).copy()
+    group = frame.groupby("analysis_facility_id", sort=False)
+    frame["next_observed_year"] = group["fiscal_year"].shift(-1)
+    frame["has_future_observation"] = frame["next_observed_year"].notna()
+    frame["panel_exit_next_year"] = (
+        ~frame["has_future_observation"]
+        & frame["fiscal_year"].lt(2024)
+        & frame["adopt_power_this_year"].eq(0)
+    )
+
+    exact_next_year = frame["next_observed_year"].sub(frame["fiscal_year"]).eq(1)
+    eligible = (
+        frame["adopt_power_this_year"].eq(0)
+        & frame["fiscal_year"].lt(2024)
+        & (exact_next_year | ~frame["has_future_observation"])
+    )
+    result = frame.loc[eligible].copy()
+    result["lag_age_band"] = result["age_band"]
+    result["lag_capacity_100t"] = result["capacity_100t"]
+    result["adopt_power_this_year"] = result["panel_exit_next_year"].astype(int)
+    return result.dropna(
+        subset=["lag_age_band", "lag_capacity_100t", "prefecture"]
+    ).copy()
+
+
+def summarize_panel_exit_universe(adoption: pd.DataFrame) -> dict[str, int | float]:
+    """Summarize non-adopters that end observation before the panel closes."""
+    rows = []
+    for facility_id, group in adoption.groupby("analysis_facility_id", sort=False):
+        if int(group["adopt_power_this_year"].sum()) > 0:
+            continue
+        last = group.sort_values("fiscal_year").iloc[-1]
+        rows.append(
+            {
+                "analysis_facility_id": facility_id,
+                "last_year": int(last["fiscal_year"]),
+                "age": float(last["facility_age_years"]),
+                "capacity": float(last["capacity_t_day"]),
+            }
+        )
+    nonadopters = pd.DataFrame(rows)
+    early_exit = nonadopters[nonadopters["last_year"].lt(2024)]
+    observed_to_end = nonadopters[nonadopters["last_year"].eq(2024)]
+    return {
+        "nonadopting_facilities": int(len(nonadopters)),
+        "last_observed_before_2024": int(len(early_exit)),
+        "last_observed_before_2024_pct": float(len(early_exit) / len(nonadopters) * 100),
+        "early_exit_median_age": float(early_exit["age"].median()),
+        "early_exit_median_capacity": float(early_exit["capacity"].median()),
+        "observed_to_2024_median_age": float(observed_to_end["age"].median()),
+        "observed_to_2024_median_capacity": float(
+            observed_to_end["capacity"].median()
+        ),
+    }
+
+
+def fit_log_capacity_sensitivity(reg: pd.DataFrame) -> dict[str, object]:
+    """Fit the main hazard with log-transformed capacity to reduce leverage."""
+    age_dummies = pd.get_dummies(
+        reg["lag_age_band"],
+        prefix="age",
+        drop_first=True,
+        dtype=float,
+    )
+    log_capacity = np.log1p(reg["lag_capacity_t_day"]).rename("log1p_capacity_t_day")
+    year_dummies = pd.get_dummies(
+        reg["fiscal_year"],
+        prefix="fy",
+        drop_first=True,
+        dtype=float,
+    )
+    X = sm.add_constant(pd.concat([age_dummies, log_capacity, year_dummies], axis=1))
+    y = reg["adopt_power_this_year"].astype(float)
+    model = fit_logit_hazard(X, y, groups=reg["analysis_facility_id"])
+    return {
+        "label": "Exact-year: log-transformed capacity + year FE",
+        "model": model,
+        "n": int(model.nobs),
+        "events": int(y.sum()),
+        "capacity_coefficient": float(model.params["log1p_capacity_t_day"]),
+        "capacity_pvalue": float(model.pvalues["log1p_capacity_t_day"]),
+        "age_signs_negative": all(float(model.params[var]) < 0 for var in AGE_VARIABLES),
+    }
+
+
+def build_post_adoption_bridge(
+    panel: pd.DataFrame,
+    adoption: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, int | float]]:
+    """Trace capacity-entry events into observed output and generator performance."""
+    events = (
+        adoption.loc[
+            adoption["adopt_power_this_year"].eq(1),
+            ["analysis_facility_id", "fiscal_year"],
+        ]
+        .drop_duplicates()
+        .rename(columns={"fiscal_year": "event_year"})
+    )
+
+    observed = panel.copy()
+    observed["analysis_facility_id"] = normalize_analysis_facility_id(
+        observed["facility_code"]
+    )
+    observed["positive_output"] = observed["power_generated_mwh"].fillna(0).gt(0)
+    observed = (
+        observed.dropna(subset=["analysis_facility_id"])
+        .groupby(["analysis_facility_id", "fiscal_year"], as_index=False)
+        .agg(
+            has_capacity=("has_power_gen", "max"),
+            positive_output=("positive_output", "max"),
+        )
+    )
+
+    event_checks = []
+    for event in events.itertuples(index=False):
+        facility = observed[
+            observed["analysis_facility_id"].eq(event.analysis_facility_id)
+        ].set_index("fiscal_year")
+
+        def observed_value(year: int, column: str) -> bool:
+            if year not in facility.index:
+                return False
+            return bool(facility.loc[year, column])
+
+        event_checks.append(
+            {
+                "analysis_facility_id": event.analysis_facility_id,
+                "event_year": int(event.event_year),
+                "positive_output_event_year": observed_value(
+                    int(event.event_year), "positive_output"
+                ),
+                "positive_output_by_one_year": any(
+                    observed_value(year, "positive_output")
+                    for year in range(int(event.event_year), int(event.event_year) + 2)
+                ),
+                "positive_output_by_three_years": any(
+                    observed_value(year, "positive_output")
+                    for year in range(int(event.event_year), int(event.event_year) + 4)
+                ),
+                "next_year_observed": int(event.event_year) + 1 in facility.index,
+                "capacity_flag_next_year": observed_value(
+                    int(event.event_year) + 1, "has_capacity"
+                ),
+            }
+        )
+    checks = pd.DataFrame(event_checks)
+
+    regression = build_regression_frame(panel)
+    post = events.merge(regression, on="analysis_facility_id", how="left")
+    post["event_time"] = post["fiscal_year"] - post["event_year"]
+    post = post[post["event_time"].between(0, 3)].copy()
+    event_time = (
+        post.groupby("event_time")
+        .agg(
+            rows=("log_efficiency", "size"),
+            events=("analysis_facility_id", "nunique"),
+            mean_mwh_t=("energy_efficiency_mwh_per_t", "mean"),
+            median_mwh_t=("energy_efficiency_mwh_per_t", "median"),
+        )
+        .reset_index()
+    )
+
+    first_post = (
+        post.sort_values(["analysis_facility_id", "event_time"])
+        .groupby("analysis_facility_id", as_index=False)
+        .first()
+    )
+    incumbents = regression.merge(events, on="analysis_facility_id", how="left")
+    incumbents = incumbents[
+        incumbents["event_year"].isna()
+        | incumbents["fiscal_year"].lt(incumbents["event_year"])
+    ]
+    incumbent_year_means = incumbents.groupby("fiscal_year")[
+        "energy_efficiency_mwh_per_t"
+    ].mean()
+    first_post["same_year_incumbent_mean"] = first_post["fiscal_year"].map(
+        incumbent_year_means
+    )
+
+    summary = {
+        "capacity_events": int(len(events)),
+        "positive_output_event_year": int(checks["positive_output_event_year"].sum()),
+        "positive_output_by_one_year": int(checks["positive_output_by_one_year"].sum()),
+        "positive_output_by_three_years": int(checks["positive_output_by_three_years"].sum()),
+        "next_year_reversals": int(
+            (checks["next_year_observed"] & ~checks["capacity_flag_next_year"]).sum()
+        ),
+        "events_in_generator_frame_within_three_years": int(
+            first_post["analysis_facility_id"].nunique()
+        ),
+        "first_post_entry_mean_mwh_t": float(
+            first_post["energy_efficiency_mwh_per_t"].mean()
+        ),
+        "same_year_incumbent_mean_mwh_t": float(
+            first_post["same_year_incumbent_mean"].mean()
+        ),
+        "mean_difference_mwh_t": float(
+            (
+                first_post["energy_efficiency_mwh_per_t"]
+                - first_post["same_year_incumbent_mean"]
+            ).mean()
+        ),
+    }
+    return event_time, summary
+
+
+def write_transition_figure_data(
+    capacity_result: dict[str, object],
+    exit_result: dict[str, object],
+) -> str:
+    """Write the model-derived point and interval data used by Figure 2."""
+    rows = []
+    for outcome, result in [
+        ("Capacity entry", capacity_result),
+        ("Panel exit", exit_result),
+    ]:
+        for row in result["marginal_effects"].itertuples(index=False):
+            rows.append(
+                {
+                    "outcome": outcome,
+                    "variable": row.variable,
+                    "label": AGE_LABEL_MAP[row.variable],
+                    "ame_pp": row.ame * 100.0,
+                    "se_pp": row.se * 100.0,
+                    "ci_low_pp": (row.ame - 1.96 * row.se) * 100.0,
+                    "ci_high_pp": (row.ame + 1.96 * row.se) * 100.0,
+                    "pvalue": row.pvalue,
+                }
+            )
+    output = pd.DataFrame(rows)
+    path = os.path.join(OUTPUT_DIR, "figure2_transition_effects.csv")
+    output.to_csv(path, index=False, float_format="%.10g")
+    return path
 
 
 def build_design_matrix(
@@ -448,6 +696,7 @@ def write_results(
     previous_observed_result: dict[str, object],
     robustness_results: list[dict[str, object]],
     reg: pd.DataFrame,
+    transition_diagnostics: dict[str, object],
 ) -> None:
     """Write a markdown report for the adoption stage."""
     event_years = (
@@ -476,11 +725,12 @@ def write_results(
     model_table = pd.DataFrame(model_rows)
 
     with open(path, "w", encoding="utf-8") as f:
-        f.write("# Extensive-Margin Results: Observed Transition Into Power Generation\n\n")
+        f.write("# Extensive-Margin Results: Installed-Generation-Capacity Entry\n\n")
         f.write(
-            "This stage models the observed first transition into power generation "
-            "among coded facilities first observed without it, separating the "
-            "extensive margin from conditional generator performance.\n\n"
+            "This stage models first observed reporting of positive installed "
+            "power-generation capacity among coded facilities first observed without "
+            "it, separating the entry margin from conditional generator "
+            "performance.\n\n"
         )
         f.write("## Risk Set\n\n")
         f.write(
@@ -488,29 +738,29 @@ def write_results(
             f"across {summary['coded_full_fleet_facilities']:,} facilities\n"
         )
         f.write(
-            f"- Left-censored facilities already generating in first observed year: "
+            f"- Left-censored facilities already reporting positive capacity in first observed year: "
             f"{summary['left_censored_generators']:,}\n"
         )
         f.write(
-            f"- Adoption risk set: {summary['adoption_risk_obs']:,} facility-years "
+            f"- Installed-capacity entry risk set: {summary['adoption_risk_obs']:,} facility-years "
             f"across {summary['adoption_risk_facilities']:,} facilities\n"
         )
         f.write(
-            f"- Observed first-adoption events in FY2005-FY2024: "
+            f"- Observed installed-capacity entry events in FY2005-FY2024: "
             f"{summary['adoption_events']:,}\n"
         )
         f.write(
-            f"- First-adoption events concentrated in FY2013-FY2019: "
+            f"- Installed-capacity entry events concentrated in FY2013-FY2019: "
             f"{events_2013_2019:,} of {summary['adoption_events']:,}\n"
         )
         f.write(
             "- Interpretation: the time clustering is reported as an event-timing "
             "feature of the administrative panel, not as evidence of a uniquely "
             "identified policy shock or reporting change. The main hazard includes "
-            "year fixed effects.\n\n"
+            "fiscal-year indicators.\n\n"
         )
 
-        f.write("## Adoption Model Frame\n\n")
+        f.write("## Installed-Capacity Entry Model Frame\n\n")
         f.write(
             f"- Main exact-year lagged model frame: {summary['adoption_model_obs']:,} observations "
             f"across {summary['adoption_model_facilities']:,} facilities\n"
@@ -548,7 +798,7 @@ def write_results(
                 columns={
                     "age_band": "Age band",
                     "risk_obs": "Risk-set obs",
-                    "first_adoptions": "First adoptions",
+                    "first_adoptions": "Capacity-entry events",
                     "mean_capacity_t_day": "Mean capacity (t/day)",
                     "annual_event_rate_pct": "Annual event rate (%)",
                 }
@@ -565,7 +815,7 @@ def write_results(
                 columns={
                     "capacity_quartile": "Capacity quartile",
                     "risk_obs": "Risk-set obs",
-                    "first_adoptions": "First adoptions",
+                    "first_adoptions": "Capacity-entry events",
                     "mean_capacity_t_day": "Mean capacity (t/day)",
                     "annual_event_rate_pct": "Annual event rate (%)",
                 }
@@ -573,13 +823,13 @@ def write_results(
         )
         f.write("\n\n")
 
-        f.write("## Adoption Hazard Model\n\n")
+        f.write("## Installed-Capacity Entry Hazard Model\n\n")
         f.write(
             "Main specification: exact one-fiscal-year lagged discrete-time logit hazard "
-            "with prior-year age band and prior-year design capacity, year fixed "
-            "effects, and facility-clustered standard errors. The more saturated "
+            "with prior-year age band and prior-year design capacity, fiscal-year "
+            "indicators, and facility-clustered standard errors. The more saturated "
             "year + prefecture fixed-effects model is retained as sensitivity "
-            "evidence because first-adoption events are sparse. Reported effects "
+            "evidence because entry events are sparse. Reported effects "
             "are average marginal effects in percentage points. Baseline "
             "prior-year age band: 0-10 years.\n\n"
         )
@@ -588,7 +838,7 @@ def write_results(
             "\n\n"
             f"- Observations: {int(model.nobs):,}\n"
             f"- Facilities: {reg['analysis_facility_id'].nunique():,}\n"
-            f"- First-adoption events: {int(reg['adopt_power_this_year'].sum()):,}\n"
+            f"- Installed-capacity entry events: {int(reg['adopt_power_this_year'].sum()):,}\n"
             f"- Events per parameter: {diagnostics['events_per_parameter']:.2f} "
             f"({diagnostics['events']} events / {diagnostics['parameters']} parameters)\n"
             f"- Zero-event fiscal-year levels in main frame: "
@@ -649,6 +899,111 @@ def write_results(
             "model are reported as sensitivity checks.*\n\n"
         )
 
+        output_result = transition_diagnostics["positive_output_result"]
+        output_me = output_result["marginal_effects"].set_index("variable")
+        output_adoption = transition_diagnostics["positive_output_adoption"]
+        output_model = transition_diagnostics["positive_output_model"]
+        f.write("### Event-definition and capacity functional-form checks\n\n")
+        f.write(
+            "The main event is first observed reporting of positive installed "
+            "power-generation capacity. An alternative event definition uses positive "
+            "electricity output. The positive-output risk set contains "
+            f"{len(output_adoption):,} facility-years across "
+            f"{output_adoption['analysis_facility_id'].nunique():,} facilities and "
+            f"{int(output_adoption['adopt_power_this_year'].sum()):,} events. Its exact-year "
+            f"model retains {len(output_model):,} observations and "
+            f"{int(output_model['adopt_power_this_year'].sum()):,} events. The alternative "
+            "definition strengthens rather than reverses the main pattern:\n\n"
+        )
+        output_rows = []
+        for variable in REPORTED_VARIABLES:
+            row = output_me.loc[variable]
+            output_rows.append(
+                {
+                    "Variable": AGE_LABEL_MAP[variable],
+                    "Positive-output AME (pp)": f"{row['ame'] * 100:.2f}",
+                    "SE (pp)": f"{row['se'] * 100:.2f}",
+                }
+            )
+        f.write(pd.DataFrame(output_rows).to_markdown(index=False))
+        f.write("\n\n")
+
+        p99_result = transition_diagnostics["p99_capacity_result"]
+        p99_me = p99_result["marginal_effects"].set_index("variable")
+        log_result = transition_diagnostics["log_capacity_result"]
+        f.write(
+            "Capacity functional-form checks also preserve the finding. Capping "
+            "prior-year capacity at its model-frame 99th percentile gives a capacity "
+            f"AME of {p99_me.loc['lag_capacity_100t', 'ame'] * 100:.2f} pp per 100 t/day. "
+            "Replacing linear capacity with log(1 + t/day) produces a positive "
+            f"coefficient of {log_result['capacity_coefficient']:.3f} "
+            f"(p = {log_result['capacity_pvalue']:.3g}), while all age-band coefficients "
+            "remain negative. These are leverage and functional-form checks, not new "
+            "headline specifications.\n\n"
+        )
+
+        exit_result = transition_diagnostics["exit_result"]
+        exit_me = exit_result["marginal_effects"].set_index("variable")
+        exit_frame = transition_diagnostics["exit_frame"]
+        exit_universe = transition_diagnostics["exit_universe"]
+        f.write("## Competing Panel-Exit Diagnostic\n\n")
+        f.write(
+            f"Among {exit_universe['nonadopting_facilities']:,} facilities with no "
+            "installed-capacity event, "
+            f"{exit_universe['last_observed_before_2024']:,} "
+            f"({exit_universe['last_observed_before_2024_pct']:.1f}%) are last observed "
+            "before FY2024. "
+            "A separate next-year hazard treats final disappearance from the coded panel "
+            "before FY2024 as panel exit. It excludes known non-adjacent code-gap intervals "
+            "rather than labeling them as exits. This diagnostic contains "
+            f"{len(exit_frame):,} facility-years across "
+            f"{exit_frame['analysis_facility_id'].nunique():,} facilities and "
+            f"{int(exit_frame['panel_exit_next_year'].sum()):,} panel-exit events. "
+            "The age-30+ AME is "
+            f"{exit_me.loc['age_30+ yrs', 'ame'] * 100:+.2f} pp, while the capacity AME "
+            f"is {exit_me.loc['lag_capacity_100t', 'ame'] * 100:+.2f} pp per 100 t/day. "
+            "Older non-generators are therefore more likely to disappear from the coded "
+            "panel, and larger ones are less likely to do so. Panel exit is not equated "
+            "with verified closure because identifier changes, consolidation, and reporting "
+            "loss remain possible.\n\n"
+        )
+
+        bridge = transition_diagnostics["post_adoption_summary"]
+        bridge_table = transition_diagnostics["post_adoption_table"]
+        f.write("## Post-Adoption Bridge\n\n")
+        f.write(
+            f"Of {bridge['capacity_events']:,} installed-capacity events, "
+            f"{bridge['positive_output_event_year']:,} record positive electricity output "
+            f"in the event year, {bridge['positive_output_by_one_year']:,} by one year, "
+            f"and {bridge['positive_output_by_three_years']:,} within the observed event-to-"
+            "three-year window. Only "
+            f"{bridge['next_year_reversals']:,} events reverse the capacity flag in an "
+            "observed next year. Within three years, "
+            f"{bridge['events_in_generator_frame_within_three_years']:,} events appear in "
+            "the canonical operating-generator frame. Their first observed mean electricity "
+            f"recovery is {bridge['first_post_entry_mean_mwh_t']:.3f} MWh/t, compared with "
+            f"a same-year incumbent-generator benchmark of "
+            f"{bridge['same_year_incumbent_mean_mwh_t']:.3f} MWh/t. This closes the empirical "
+            "bridge between the two margins without treating entry as a causal determinant "
+            "of later performance.\n\n"
+        )
+        f.write(
+            bridge_table.assign(
+                event_time=lambda df: df["event_time"].astype(int),
+                mean_mwh_t=lambda df: df["mean_mwh_t"].map(lambda x: f"{x:.3f}"),
+                median_mwh_t=lambda df: df["median_mwh_t"].map(lambda x: f"{x:.3f}"),
+            ).rename(
+                columns={
+                    "event_time": "Years from capacity event",
+                    "rows": "Generator rows",
+                    "events": "Events represented",
+                    "mean_mwh_t": "Mean MWh/t",
+                    "median_mwh_t": "Median MWh/t",
+                }
+            ).to_markdown(index=False)
+        )
+        f.write("\n\n")
+
         f.write("## Transition Pathway Audit\n\n")
         f.write(
             "A conservative event-level audit classifies each observed adoption "
@@ -678,10 +1033,10 @@ def write_results(
         )
 
         f.write("\n### Event Year Distribution\n\n")
-        f.write(event_years.rename("First adoptions").to_markdown())
+        f.write(event_years.rename("Capacity-entry events").to_markdown())
         f.write(
             "\n\n"
-            "*Interpretation: observed transition into power generation is more common "
+            "*Interpretation: first reporting of positive installed generation capacity is more common "
             "among facilities that were younger and larger in the previous fiscal year "
             "under the exact-year model. The pathway audit suggests that capital-side "
             "modernization is empirically present in adjacent-year events, but the evidence "
@@ -690,7 +1045,7 @@ def write_results(
 
 
 def main():
-    _, adoption, adoption_model, previous_observed_model, pathway_audit, summary = load_adoption_data()
+    panel, adoption, adoption_model, previous_observed_model, pathway_audit, summary = load_adoption_data()
     age_table, cap_table = event_tables(adoption)
     main_result = run_adoption_hazard(adoption_model)
     model = main_result["model"]
@@ -734,6 +1089,50 @@ def main():
             include_pref_fe=False,
         ),
     ]
+    positive_output_adoption, positive_output_model = build_positive_output_sensitivity(panel)
+    positive_output_result = fit_reported_logit_spec(
+        positive_output_model,
+        label="Exact-year positive-output event: year FE",
+        include_year_fe=True,
+        include_pref_fe=False,
+    )
+    exit_frame = build_panel_exit_frame(adoption)
+    exit_universe = summarize_panel_exit_universe(adoption)
+    exit_result = fit_reported_logit_spec(
+        exit_frame,
+        label="Next-year panel-exit hazard: year FE",
+        include_year_fe=True,
+        include_pref_fe=False,
+    )
+    p99_capacity_frame = adoption_model.copy()
+    capacity_p99 = float(p99_capacity_frame["lag_capacity_100t"].quantile(0.99))
+    p99_capacity_frame["lag_capacity_100t"] = p99_capacity_frame[
+        "lag_capacity_100t"
+    ].clip(upper=capacity_p99)
+    p99_capacity_result = fit_reported_logit_spec(
+        p99_capacity_frame,
+        label="Exact-year: capacity capped at p99 + year FE",
+        include_year_fe=True,
+        include_pref_fe=False,
+    )
+    log_capacity_result = fit_log_capacity_sensitivity(adoption_model)
+    post_adoption_table, post_adoption_summary = build_post_adoption_bridge(panel, adoption)
+    figure2_path = write_transition_figure_data(main_result, exit_result)
+    post_adoption_path = os.path.join(OUTPUT_DIR, "post_adoption_bridge.csv")
+    post_adoption_table.to_csv(post_adoption_path, index=False, float_format="%.10g")
+    transition_diagnostics = {
+        "positive_output_adoption": positive_output_adoption,
+        "positive_output_model": positive_output_model,
+        "positive_output_result": positive_output_result,
+        "exit_frame": exit_frame,
+        "exit_universe": exit_universe,
+        "exit_result": exit_result,
+        "p99_capacity_result": p99_capacity_result,
+        "capacity_p99": capacity_p99,
+        "log_capacity_result": log_capacity_result,
+        "post_adoption_table": post_adoption_table,
+        "post_adoption_summary": post_adoption_summary,
+    }
     pathway_summary = pathway_summary_table(pathway_audit)
 
     results_path = os.path.join(OUTPUT_DIR, "adoption_results.md")
@@ -755,9 +1154,12 @@ def main():
         previous_observed_result,
         robustness_results,
         reg,
+        transition_diagnostics,
     )
     print(f"\nSaved: {results_path}")
     print(f"Saved: {audit_path}")
+    print(f"Saved: {figure2_path}")
+    print(f"Saved: {post_adoption_path}")
 
     marginal_effect_meta = {
         row["variable"]: {
@@ -778,6 +1180,8 @@ def main():
         outputs=[
             "output/adoption_results.md",
             "output/adoption_pathway_audit.csv",
+            "output/figure2_transition_effects.csv",
+            "output/post_adoption_bridge.csv",
         ],
         metadata={
             "risk_set_obs": int(len(adoption)),
@@ -852,6 +1256,62 @@ def main():
             "pathway_audit": {
                 "events": int(len(pathway_audit)),
                 "counts": pathway_counts,
+            },
+            "positive_output_event_sensitivity": {
+                "risk_set_obs": int(len(positive_output_adoption)),
+                "risk_set_facilities": int(
+                    positive_output_adoption["analysis_facility_id"].nunique()
+                ),
+                "events": int(positive_output_adoption["adopt_power_this_year"].sum()),
+                "model_obs": int(len(positive_output_model)),
+                "model_facilities": int(
+                    positive_output_model["analysis_facility_id"].nunique()
+                ),
+                "model_events": int(positive_output_model["adopt_power_this_year"].sum()),
+                "average_marginal_effects": {
+                    row["variable"]: {
+                        "ame": manifest_float(row["ame"]),
+                        "se": manifest_float(row["se"]),
+                        "pvalue": manifest_float(row["pvalue"]),
+                    }
+                    for _, row in positive_output_result["marginal_effects"].iterrows()
+                },
+            },
+            "panel_exit_diagnostic": {
+                "universe": {
+                    key: manifest_float(value) if isinstance(value, float) else int(value)
+                    for key, value in exit_universe.items()
+                },
+                "model_obs": int(len(exit_frame)),
+                "model_facilities": int(exit_frame["analysis_facility_id"].nunique()),
+                "events": int(exit_frame["panel_exit_next_year"].sum()),
+                "average_marginal_effects": {
+                    row["variable"]: {
+                        "ame": manifest_float(row["ame"]),
+                        "se": manifest_float(row["se"]),
+                        "pvalue": manifest_float(row["pvalue"]),
+                    }
+                    for _, row in exit_result["marginal_effects"].iterrows()
+                },
+            },
+            "capacity_functional_form": {
+                "p99_capacity_100t": manifest_float(capacity_p99),
+                "p99_capacity_ame": manifest_float(
+                    p99_capacity_result["marginal_effects"].set_index("variable").loc[
+                        "lag_capacity_100t", "ame"
+                    ]
+                ),
+                "log_capacity_coefficient": manifest_float(
+                    log_capacity_result["capacity_coefficient"]
+                ),
+                "log_capacity_pvalue": manifest_float(
+                    log_capacity_result["capacity_pvalue"]
+                ),
+                "age_signs_negative": bool(log_capacity_result["age_signs_negative"]),
+            },
+            "post_adoption_bridge": {
+                key: manifest_float(value) if isinstance(value, float) else int(value)
+                for key, value in post_adoption_summary.items()
             },
             "specification_sensitivity": [
                 {

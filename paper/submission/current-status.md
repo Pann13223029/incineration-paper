@@ -13,7 +13,7 @@ This paper workspace is a private side project derived from the defended thesis 
 | Current review mode | Professor comprehension first; peer-review-safe wording preserved |
 | Main figures | 3 |
 | Main-text tables | 4 formal tables, plus 2 review-facing bridge maps kept for professor-review clarity |
-| Supplement | Present and updated with data-quality, identifier, event-timing, abbreviation, and reviewer-response caveats |
+| Supplement | Present and updated with event-definition, panel-exit, post-entry, persistence, data-quality, and estimator diagnostics |
 | Title page, highlights, cover letter | Present |
 | Evidence sync | Managed by `npm run paper:sync` |
 | Claim verification | Managed by `npm run claims:verify` |
@@ -26,6 +26,10 @@ The current repo includes:
 - duplicate official-code and heating-value sensitivity checks
 - operating-generator inclusion audit showing 907 uncoded operating-generator rows, concentrated in FY2010-FY2012
 - event-timing disclosure showing 109 of 141 observed first-adoption events occur in FY2013-FY2019 without treating that cluster as an identified policy shock
+- precise main event definition as first positive installed generation capacity
+- positive-output event sensitivity with 146 exact-year events and the same age/scale pattern
+- post-entry bridge showing 135 of 141 capacity entrants report positive output by the following year and 137 appear in the canonical generator frame within three years
+- competing panel-exit diagnostic covering 1,285 final coded-panel exits without equating administrative disappearance with physical closure
 - quantified FY2024 power-generation share of 41.1% in the abstract and introduction
 - explicit adoption-hazard and electricity-recovery regression equations in the
   main manuscript
@@ -37,8 +41,8 @@ The current repo includes:
 - explicit two-margin contribution wording clarifying that the novelty is not
   simply that age and scale matter, but that entry and post-entry performance
   show distinct fleet constraints
-- reader-facing regression guide explaining AMEs, log coefficients, fixed
-  effects, random effects, and clustered standard errors
+- reader-facing regression guide explaining AMEs, log coefficients, fiscal-year
+  indicators, random effects, facility fixed effects as a different estimand, and clustered standard errors
 - stronger methods-defense wording explaining parsimony in the sparse adoption
   hazard and the descriptive purpose of the OLS/year-FE/RE model ladder
 - official MOE/e-Stat source citation updated to the FY2024 survey release and
@@ -47,6 +51,9 @@ The current repo includes:
   dependence
 - within-between electricity-recovery sensitivity added to separate
   cross-facility means from within-facility deviations
+- adjacent-year percentile-rank persistence of 0.9325 across 4,368 exact pairs
+- unclipped-log outcome sensitivity and explicit gross MWh/t and utilization definitions
+- interpolated grid emissions factor removed from the core regressions
 - supplement abbreviation guide and reviewer-response map for predictable
   concerns about adoption events, random effects, uncoded rows, heating value,
   and planning implications
@@ -74,7 +81,7 @@ The current repo includes:
 
 - journal-system metadata beyond local submission files
 - final journal-specific formatting
-- any new empirical analysis beyond the current sensitivity checks
+- new causal, closure-history, net-export, heat-recovery, or engineering-frontier analysis
 - human editorial review of tone, concision, and target-journal fit
 
 ## Resume Workflow
@@ -113,5 +120,5 @@ If the edit is purely stylistic and does not touch evidence or claims, `analysis
 3. Whether journal mode should move the research-question-to-model bridge from
    the main text into the supplement.
 4. Whether to expand or compress the supplement for the actual target journal.
-5. Whether to revise the AI disclosure statement for the actual submission context.
+5. Whether the journal submission should retain the current full AI disclosure wording or adapt it to the submission form without reducing its scope.
 6. Whether to start a true journal-submission workflow from this private baseline.

@@ -17,6 +17,13 @@
     "data/processed/incineration_panel_enriched.csv"
   ],
   "metadata": {
+    "capacity_functional_form": {
+      "age_signs_negative": true,
+      "log_capacity_coefficient": 1.42384,
+      "log_capacity_pvalue": 3.49164e-15,
+      "p99_capacity_100t": 4.0,
+      "p99_capacity_ame": 0.00876845
+    },
     "cloglog_robustness": {
       "coefficients": {
         "lag_age_10_20": -2.87093,
@@ -119,6 +126,42 @@
     "model_obs": 10823,
     "non_exact_lag_events_excluded": 42,
     "non_exact_lag_rows_excluded": 894,
+    "panel_exit_diagnostic": {
+      "average_marginal_effects": {
+        "age_10-20 yrs": {
+          "ame": -0.00419848,
+          "pvalue": 0.433726,
+          "se": 0.00536319
+        },
+        "age_20-30 yrs": {
+          "ame": 0.00175737,
+          "pvalue": 0.758091,
+          "se": 0.00570597
+        },
+        "age_30+ yrs": {
+          "ame": 0.0260372,
+          "pvalue": 0.00231295,
+          "se": 0.00854577
+        },
+        "lag_capacity_100t": {
+          "ame": -0.0163477,
+          "pvalue": 2.30896e-07,
+          "se": 0.00316046
+        }
+      },
+      "events": 1285,
+      "model_facilities": 2022,
+      "model_obs": 12108,
+      "universe": {
+        "early_exit_median_age": 24.0,
+        "early_exit_median_capacity": 50.0,
+        "last_observed_before_2024": 1305,
+        "last_observed_before_2024_pct": 68.9018,
+        "nonadopting_facilities": 1894,
+        "observed_to_2024_median_age": 29.0,
+        "observed_to_2024_median_capacity": 60.0
+      }
+    },
     "pathway_audit": {
       "counts": {
         "Forward-dated / placeholder entry": 12,
@@ -128,6 +171,47 @@
         "Unresolved / insufficient continuity": 1
       },
       "events": 141
+    },
+    "positive_output_event_sensitivity": {
+      "average_marginal_effects": {
+        "age_10-20 yrs": {
+          "ame": -0.0306277,
+          "pvalue": 7.87962e-24,
+          "se": 0.00304295
+        },
+        "age_20-30 yrs": {
+          "ame": -0.0391789,
+          "pvalue": 1.02261e-19,
+          "se": 0.00431176
+        },
+        "age_30+ yrs": {
+          "ame": -0.02718,
+          "pvalue": 2.73867e-14,
+          "se": 0.00357156
+        },
+        "lag_capacity_100t": {
+          "ame": 0.0067462,
+          "pvalue": 9.52557e-06,
+          "se": 0.00152365
+        }
+      },
+      "events": 189,
+      "model_events": 146,
+      "model_facilities": 1972,
+      "model_obs": 10937,
+      "risk_set_facilities": 2110,
+      "risk_set_obs": 13963
+    },
+    "post_adoption_bridge": {
+      "capacity_events": 141,
+      "events_in_generator_frame_within_three_years": 137,
+      "first_post_entry_mean_mwh_t": 0.328161,
+      "mean_difference_mwh_t": 0.000242409,
+      "next_year_reversals": 3,
+      "positive_output_by_one_year": 135,
+      "positive_output_by_three_years": 138,
+      "positive_output_event_year": 128,
+      "same_year_incumbent_mean_mwh_t": 0.327919
     },
     "previous_observed_model_events": 140,
     "previous_observed_model_facilities": 1915,
@@ -313,7 +397,9 @@
   },
   "outputs": [
     "output/adoption_results.md",
-    "output/adoption_pathway_audit.csv"
+    "output/adoption_pathway_audit.csv",
+    "output/figure2_transition_effects.csv",
+    "output/post_adoption_bridge.csv"
   ],
   "python": "3.12.12",
   "stage": "05a_power_adoption"

@@ -42,6 +42,9 @@ def write_stage_manifest(
 
 README_PATH = REPO_ROOT / "README.md"
 ARCHITECTURE_PATH = REPO_ROOT / "ARCHITECTURE.md"
+MANUSCRIPT_MD_PATH = REPO_ROOT / "paper" / "manuscript" / "paper.md"
+MANUSCRIPT_TEX_PATH = REPO_ROOT / "paper" / "manuscript" / "paper.tex"
+SUPPLEMENT_PATH = REPO_ROOT / "paper" / "supplement" / "supplement.md"
 REPORT_PATH = OUTPUT_DIR / "claim_verification.md"
 CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
 
@@ -103,6 +106,10 @@ def build_canonical_metrics() -> dict:
     main_util = main_coeffs["capacity_utilization_capped"]
 
     age_group_summary = regression_manifest["metadata"]["age_group_summary"]
+    positive_output = adoption_manifest["metadata"]["positive_output_event_sensitivity"]
+    panel_exit = adoption_manifest["metadata"]["panel_exit_diagnostic"]
+    post_entry = adoption_manifest["metadata"]["post_adoption_bridge"]
+    rank_persistence = regression_manifest["metadata"]["rank_persistence"]
     robustness_specs = robustness_manifest["metadata"]["specifications"]
     pathway_counts = adoption_manifest["metadata"]["pathway_audit"]["counts"]
     early_coded_window = regression_manifest["metadata"].get("early_coded_window", [2005, 2009])
@@ -157,6 +164,29 @@ def build_canonical_metrics() -> dict:
             ]["ame"],
             2,
         ),
+        "positive_output_model_events": positive_output["model_events"],
+        "positive_output_capacity_pp_2dp": fmt_signed_pp(
+            positive_output["average_marginal_effects"]["lag_capacity_100t"]["ame"],
+            2,
+        ),
+        "panel_exit_nonadopters": panel_exit["universe"]["nonadopting_facilities"],
+        "panel_exit_before_end": panel_exit["universe"]["last_observed_before_2024"],
+        "panel_exit_before_end_pct": panel_exit["universe"]["last_observed_before_2024_pct"],
+        "panel_exit_model_obs": panel_exit["model_obs"],
+        "panel_exit_model_facilities": panel_exit["model_facilities"],
+        "panel_exit_events": panel_exit["events"],
+        "panel_exit_age30_pp_2dp": fmt_signed_pp(
+            panel_exit["average_marginal_effects"]["age_30+ yrs"]["ame"],
+            2,
+        ),
+        "panel_exit_capacity_pp_2dp": fmt_signed_pp(
+            panel_exit["average_marginal_effects"]["lag_capacity_100t"]["ame"],
+            2,
+        ),
+        "post_entry_positive_by_one": post_entry["positive_output_by_one_year"],
+        "post_entry_generator_within_three": post_entry[
+            "events_in_generator_frame_within_three_years"
+        ],
         "pathway_reset": pathway_counts["Reset / rebuild-like transition"],
         "pathway_continuity": pathway_counts["In-place upgrade / continuity transition"],
         "pathway_placeholder": pathway_counts["Forward-dated / placeholder entry"],
@@ -197,6 +227,9 @@ def build_canonical_metrics() -> dict:
         ),
         "mean_eff_0_10": age_group_summary["0-10 yrs"]["mean_eff"],
         "mean_eff_30_plus": age_group_summary["30+ yrs"]["mean_eff"],
+        "rank_pairs": rank_persistence["exact_adjacent_year_pairs"],
+        "rank_facilities": rank_persistence["facilities"],
+        "pooled_rank_correlation": rank_persistence["pooled_rank_correlation"],
     }
 
 
@@ -214,7 +247,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     (
                         f"{fmt_int(metrics['risk_set_obs'])} facility-years across "
                         f"{fmt_int(metrics['risk_set_facilities'])} facilities, with "
-                        f"{fmt_int(metrics['events'])} observed first-adoption events"
+                        f"{fmt_int(metrics['events'])} installed-capacity entry events"
                     ),
                 ),
                 (
@@ -235,6 +268,21 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     README_PATH,
                     f"{metrics['adoption_capacity_pp_2dp']} percentage points",
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"{fmt_int(metrics['post_entry_positive_by_one'])} of "
+                        f"{fmt_int(metrics['events'])} entrants report positive output by the following year"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"{fmt_int(metrics['panel_exit_before_end'])} of "
+                        f"{fmt_int(metrics['panel_exit_nonadopters'])} non-entrants "
+                        f"({metrics['panel_exit_before_end_pct']:.1f}%) are last observed before FY2024"
+                    ),
                 ),
                 (
                     README_PATH,
@@ -279,6 +327,13 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                         f"{metrics['later_ratio']:.4f} in {metrics['later_window_label']}"
                     ),
                 ),
+                (
+                    README_PATH,
+                    (
+                        f"{fmt_int(metrics['rank_pairs'])} exact adjacent-year pairs "
+                        f"is {metrics['pooled_rank_correlation']:.4f}"
+                    ),
+                ),
             ],
         },
         {
@@ -287,21 +342,21 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     README_PATH,
                     (
-                        f"| Adoption age effect | {metrics['adoption_age_range_2dp'][0]} to "
+                        f"| Capacity-entry age effect | {metrics['adoption_age_range_2dp'][0]} to "
                         f"{metrics['adoption_age_range_2dp'][1]} percentage points vs prior-year age 0–10 |"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"| Adoption capacity effect | {metrics['adoption_capacity_pp_2dp']} percentage points "
+                        f"| Capacity-entry scale effect | {metrics['adoption_capacity_pp_2dp']} percentage points "
                         "per 100 t/day of prior-year capacity |"
                     ),
                 ),
                 (
                     README_PATH,
                     (
-                        f"| Pathway audit of adoption events | {metrics['pathway_reset']} reset/rebuild-like, "
+                        f"| Pathway audit of entry events | {metrics['pathway_reset']} reset/rebuild-like, "
                         f"{metrics['pathway_continuity']} continuity-like, "
                         f"{metrics['pathway_placeholder']} forward-dated/placeholder, "
                         f"{metrics['pathway_timing_ambiguous']} timing-ambiguous, "
@@ -313,6 +368,13 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     (
                         f"| Within/total variance ratio | {metrics['within_total_ratio']:.4f} (pooled), "
                         f"{metrics['early_ratio']:.4f} (early coded), {metrics['later_ratio']:.4f} (later coded) |"
+                    ),
+                ),
+                (
+                    README_PATH,
+                    (
+                        f"| Adjacent-year rank persistence | {metrics['pooled_rank_correlation']:.4f} "
+                        f"across {fmt_int(metrics['rank_pairs'])} exact pairs |"
                     ),
                 ),
             ],
@@ -331,7 +393,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     (
                         f"({fmt_int(metrics['risk_set_obs'])} facility-years, "
                         f"{fmt_int(metrics['risk_set_facilities'])} facilities, "
-                        f"{fmt_int(metrics['events'])} observed first-adoption events)"
+                        f"{fmt_int(metrics['events'])} installed-capacity entry events)"
                     ),
                 ),
                 (
@@ -346,7 +408,7 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                     ARCHITECTURE_PATH,
                     (
                         f"{metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} "
-                        "percentage points less likely to transition into generation"
+                        "percentage points less likely to report installed-capacity entry"
                     ),
                 ),
                 (
@@ -356,11 +418,25 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"{metrics['pathway_reset']} observed transitions as reset/rebuild-like, "
+                        f"{metrics['pathway_reset']} observed entry events as reset/rebuild-like, "
                         f"{metrics['pathway_continuity']} as continuity/in-place-upgrade-like, "
                         f"{metrics['pathway_placeholder']} as forward-dated or placeholder entries, "
                         f"{metrics['pathway_timing_ambiguous']} as timing-ambiguous non-adjacent coded-row events, "
                         f"and {metrics['pathway_unresolved']} as unresolved"
+                    ),
+                ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"{fmt_int(metrics['post_entry_positive_by_one'])} of "
+                        f"{fmt_int(metrics['events'])} entrants report positive output by the following year"
+                    ),
+                ),
+                (
+                    ARCHITECTURE_PATH,
+                    (
+                        f"{metrics['pooled_rank_correlation']:.4f} across "
+                        f"{fmt_int(metrics['rank_pairs'])} exact adjacent-year pairs"
                     ),
                 ),
             ],
@@ -371,15 +447,15 @@ def make_claim_registry(metrics: dict) -> list[dict]:
                 (
                     ARCHITECTURE_PATH,
                     (
-                        "| Adoption hazard, prior-year age bands | Facilities older than 10 years are "
+                        "| Capacity-entry hazard, prior-year age bands | Facilities older than 10 years are "
                         f"{metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely than 0–10-year facilities "
-                        "to record transition in the next fiscal year | p < 0.05 in every reported age-band coefficient |"
+                        "to report positive installed capacity in the next fiscal year | p < 0.05 in every reported age-band coefficient |"
                     ),
                 ),
                 (
                     ARCHITECTURE_PATH,
                     (
-                        f"| Adoption hazard, prior-year capacity | {metrics['adoption_capacity_pp_2dp']} pp per 100 t/day | p < 0.05 |"
+                        f"| Capacity-entry hazard, prior-year capacity | {metrics['adoption_capacity_pp_2dp']} pp per 100 t/day | p < 0.05 |"
                     ),
                 ),
                 (
@@ -440,6 +516,30 @@ def make_forbidden_patterns() -> list[dict]:
             "pattern": "pre-Fuku",
             "reason": "README must use early/later coded-window language rather than Fukushima shorthand.",
         },
+        {
+            "id": "stale_manuscript_grid_control_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "grid-emission-factor control",
+            "reason": "The interpolated grid factor is not a core generator-performance covariate.",
+        },
+        {
+            "id": "stale_manuscript_grid_row_md",
+            "path": MANUSCRIPT_MD_PATH,
+            "pattern": "Grid EF",
+            "reason": "The core regression table must not restore the removed grid-factor row.",
+        },
+        {
+            "id": "stale_manuscript_grid_row_tex",
+            "path": MANUSCRIPT_TEX_PATH,
+            "pattern": "Grid EF",
+            "reason": "The LaTeX core regression table must match the current model.",
+        },
+        {
+            "id": "stale_supplement_grid_control",
+            "path": SUPPLEMENT_PATH,
+            "pattern": "grid-emission factor",
+            "reason": "The supplement must not describe the interpolated grid factor as a core covariate.",
+        },
     ]
 
 
@@ -448,6 +548,9 @@ def run_checks() -> tuple[list[dict], list[dict], dict]:
     texts = {
         README_PATH: README_PATH.read_text(encoding="utf-8"),
         ARCHITECTURE_PATH: ARCHITECTURE_PATH.read_text(encoding="utf-8"),
+        MANUSCRIPT_MD_PATH: MANUSCRIPT_MD_PATH.read_text(encoding="utf-8"),
+        MANUSCRIPT_TEX_PATH: MANUSCRIPT_TEX_PATH.read_text(encoding="utf-8"),
+        SUPPLEMENT_PATH: SUPPLEMENT_PATH.read_text(encoding="utf-8"),
     }
 
     passes = []
@@ -522,11 +625,11 @@ def write_report(passes: list[dict], failures: list[dict], metrics: dict) -> Non
         f"- Core manifest Python: {metrics['source_manifest_python'][0] if len(metrics['source_manifest_python']) == 1 else ', '.join(metrics['source_manifest_python'])}",
         f"- Full panel: {fmt_int(metrics['full_panel_obs'])} observations across {fmt_int(metrics['full_panel_facilities'])} facilities",
         (
-            f"- Adoption frame: risk set {fmt_int(metrics['risk_set_obs'])} / {fmt_int(metrics['risk_set_facilities'])}; "
+            f"- Capacity-entry frame: risk set {fmt_int(metrics['risk_set_obs'])} / {fmt_int(metrics['risk_set_facilities'])}; "
             f"model {fmt_int(metrics['model_obs'])} / {fmt_int(metrics['model_facilities'])} / {fmt_int(metrics['model_events'])} events"
         ),
         (
-            f"- Adoption effects: age {metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely; "
+            f"- Capacity-entry effects: age {metrics['adoption_age_range_1dp'][0]}–{metrics['adoption_age_range_1dp'][1]} pp less likely; "
             f"capacity {metrics['adoption_capacity_pp_2dp']} pp per 100 t/day"
         ),
         (
@@ -587,18 +690,18 @@ def write_claim_map(metrics: dict) -> None:
         "",
         "Use this alongside `output/claim_verification.md`: the verifier confirms wording is synchronized, while this map explains which artifact supports which defended claim.",
         "",
-        "## Claim 1: The thesis is empirically two-part",
+        "## Claim 1: The paper is empirically two-part",
         "",
-        "Paper claim: the fleet transition question must be split into an extensive-margin adoption layer and a conditional generator-performance layer.",
+        "Paper claim: the fleet transition question must be split into an installed-capacity entry layer and a conditional generator-performance layer.",
         "",
         "Evidence spine:",
-        f"- `output/adoption_results.md`: observed first-adoption risk set of {fmt_int(metrics['risk_set_obs'])} facility-years across {fmt_int(metrics['risk_set_facilities'])} facilities, with {fmt_int(metrics['events'])} observed transition events.",
+        f"- `output/adoption_results.md`: installed-capacity entry risk set of {fmt_int(metrics['risk_set_obs'])} facility-years across {fmt_int(metrics['risk_set_facilities'])} facilities, with {fmt_int(metrics['events'])} entry events.",
         f"- `output/regression_results.md`: canonical generator frame of {fmt_int(metrics['regression_obs'])} facility-years across {fmt_int(metrics['regression_facilities'])} facilities.",
         "- `paper/manuscript/paper.md` Sections 1, 3, and 4: architecture is framed explicitly as extensive margin first, intensive margin second.",
         "",
-        "## Claim 2: Observed transition into generation is selective rather than diffuse",
+        "## Claim 2: Installed-capacity entry is selective rather than diffuse",
         "",
-        "Paper claim: among coded facilities first observed without generation, younger and larger facilities are more likely to record observed transition into generation.",
+        "Paper claim: among coded facilities first observed without installed generation capacity, younger and larger facilities are more likely to first report positive capacity.",
         "",
         "Evidence spine:",
         f"- `output/adoption_results.md`: lagged logit hazard on {fmt_int(metrics['model_obs'])} facility-years across {fmt_int(metrics['model_facilities'])} facilities and {fmt_int(metrics['model_events'])} retained events.",
@@ -606,8 +709,18 @@ def write_claim_map(metrics: dict) -> None:
         f"- `output/adoption_results.md`: prior-year capacity effect is {metrics['adoption_capacity_pp_2dp']} percentage points per 100 t/day.",
         "- `output/adoption_results.md` event-rate tables: event rates collapse after age 10 and rise sharply across capacity quartiles.",
         "- `output/identifier_gap_audit.md`: exact one-fiscal-year lags are the main adoption frame; previous-observed-coded-row estimates are sensitivity evidence only.",
+        f"- `output/adoption_results.md`: the positive-output alternative retains {fmt_int(metrics['positive_output_model_events'])} exact-year events and a {metrics['positive_output_capacity_pp_2dp']} percentage-point capacity AME.",
         "",
-        "## Claim 3: Capital-reset-like modernization is empirically prominent, but not uniquely identified",
+        "## Claim 3: Capacity entry usually maps to observed operation, while panel exit is a competing path",
+        "",
+        "Paper claim: the capacity event is usually followed by positive output, but non-entry cannot be treated as continuous observation through FY2024.",
+        "",
+        "Evidence spine:",
+        f"- `output/post_adoption_bridge.csv`: {fmt_int(metrics['post_entry_positive_by_one'])} of {fmt_int(metrics['events'])} entrants report positive output by the following year; {fmt_int(metrics['post_entry_generator_within_three'])} enter the canonical generator frame within three years.",
+        f"- `output/adoption_results.md`: {fmt_int(metrics['panel_exit_before_end'])} of {fmt_int(metrics['panel_exit_nonadopters'])} non-entrants ({metrics['panel_exit_before_end_pct']:.1f}%) are last observed before FY2024.",
+        f"- `output/figure2_transition_effects.csv`: age 30+ panel-exit AME {metrics['panel_exit_age30_pp_2dp']} pp and capacity AME {metrics['panel_exit_capacity_pp_2dp']} pp per 100 t/day.",
+        "",
+        "## Claim 4: Capital-reset-like modernization is empirically prominent, but not uniquely identified",
         "",
         "Paper claim: the pathway audit supports a calibrated mechanism claim, not a proof that replacement is the only pathway.",
         "",
@@ -616,23 +729,24 @@ def write_claim_map(metrics: dict) -> None:
         "- `output/adoption_results.md`: explicit rule set based on `year_started` reset, mature-to-new age reset, continuity, timing ambiguity, and unresolved placeholder cases.",
         "- `paper/notes/claim-stack.md`: the claim stack keeps mechanism language calibrated.",
         "",
-        "## Claim 4: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement",
+        "## Claim 5: Conditional generator performance is shaped more by cross-facility structure than by large within-facility movement",
         "",
         "Paper claim: within the generator sample, age, scale, and utilization matter strongly, while most observed variation remains between facilities rather than within facilities over time.",
         "",
         "Evidence spine:",
         "- `output/regression_results.md`: age coefficients remain negative, capacity positive, and utilization positive across the four main specifications.",
         f"- `output/claim_verification.md`: within/total ratio is {metrics['within_total_ratio']:.4f}, with {metrics['early_ratio']:.4f} in the early coded window ({metrics['early_window_label']}) and {metrics['later_ratio']:.4f} in the later coded window ({metrics['later_window_label']}).",
+        f"- `output/figure3_persistence.csv`: pooled adjacent-year within-year rank correlation is {metrics['pooled_rank_correlation']:.4f} across {fmt_int(metrics['rank_pairs'])} exact pairs.",
         "- `output/robustness_results.md`: sign pattern remains stable across the reported robustness set.",
         "- `output/data_quality_sensitivity.md`: duplicate-ID and heating-value sensitivity checks preserve the same headline sign pattern.",
         "- `output/identifier_gap_audit.md`: the canonical generator regression frame is an identifiable coded-generator panel, not a complete census of all operating generator rows.",
         "",
-        "## Claim 5: The paper supports planning diagnostics, not an exclusive mechanism claim",
+        "## Claim 6: The paper supports planning diagnostics, not an exclusive mechanism claim",
         "",
         "Paper claim: planning assessments should distinguish facilities outside electricity recovery from operating generators because the observable constraints differ across those two groups.",
         "",
         "Evidence spine:",
-        "- `output/adoption_results.md`: old and small facilities rarely record observed transition into generation.",
+        "- `output/adoption_results.md`: installed-capacity entry is concentrated among younger and larger facilities, while older/smaller facilities are more likely to exit the coded panel.",
         "- `output/regression_results.md`: utilization is strongly positive, so operational levers are preserved rather than dismissed.",
         "- `paper/supplement/supplement.md`: the supplement explicitly records the data-quality caveats and identification limits.",
         "",

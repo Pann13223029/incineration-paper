@@ -26,6 +26,9 @@ SOURCE_FILES = [
     "table1_summary_stats.md",
     "table2_efficiency_by_age.md",
     "adoption_pathway_audit.csv",
+    "figure2_transition_effects.csv",
+    "post_adoption_bridge.csv",
+    "figure3_persistence.csv",
 ]
 
 

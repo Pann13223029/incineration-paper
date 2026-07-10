@@ -10,8 +10,8 @@ Specifications:
 4. Later coded-window OLS with year FE
 5. Small capacity tercile (pooled OLS)
 6. Large capacity tercile (pooled OLS)
-7. Raw DV pooled OLS
-8. Raw DV OLS with year FE
+7. Unclipped-log DV pooled OLS
+8. Unclipped-log DV OLS with year indicators
 9. Within-between correlated-RE-style OLS with year FE
 """
 
@@ -38,7 +38,6 @@ CORE_IVS = [
     "capacity_100t",
     "capacity_utilization_capped",
     "heating_value_mj_kg",
-    "grid_ef_kgco2_kwh",
 ]
 EARLY_CODED_END = 2009
 LATER_CODED_START = 2013
@@ -199,13 +198,13 @@ def main():
             results.append(result)
 
     print("\n" + "=" * 60)
-    print("TEST 3: Raw Dependent Variable")
+    print("TEST 3: Unclipped-Log Dependent Variable")
     print("=" * 60)
     for label, year_fe in [
-        ("R7: Raw DV pooled OLS", False),
-        ("R8: Raw DV year FE", True),
+        ("R7: Unclipped-log DV pooled OLS", False),
+        ("R8: Unclipped-log DV with year indicators", True),
     ]:
-        result = run_ols(frame, label, dv="energy_efficiency_mwh_per_t", include_year_fe=year_fe)
+        result = run_ols(frame, label, dv="log_efficiency_raw", include_year_fe=year_fe)
         if result:
             results.append(result)
 

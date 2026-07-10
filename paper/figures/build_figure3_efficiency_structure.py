@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a formal Figure 3 for the paper manuscript."""
+"""Generate Figure 3 from canonical generator-performance output."""
 
 from __future__ import annotations
 
@@ -7,90 +7,145 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
-PNG_OUT = ROOT / "figure3_efficiency_structure.png"
-PDF_OUT = ROOT / "figure3_efficiency_structure.pdf"
+ROOT = Path(__file__).resolve().parents[2]
+FIGURE_DIR = Path(__file__).resolve().parent
+DATA_PATH = ROOT / "output" / "figure3_persistence.csv"
+PNG_OUT = FIGURE_DIR / "figure3_efficiency_structure.png"
+PDF_OUT = FIGURE_DIR / "figure3_efficiency_structure.pdf"
 
 
-AGE_LABELS = ["0-10", "10-20", "20-30", "30+"]
-AGE_EFF = np.array([0.400, 0.338, 0.272, 0.183])
-
-VAR_LABELS = ["Full coded", "FY2005-2009", "FY2013-2024"]
-VAR_VALUES = np.array([0.1499, 0.1795, 0.0956])
-
-
-def style_axes(ax) -> None:
+def style_axes(ax, grid_axis: str = "y") -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_color("#66727f")
     ax.spines["bottom"].set_color("#66727f")
-    ax.tick_params(colors="#33414d", labelsize=10.5)
-    ax.grid(axis="y", color="#dce3ea", linewidth=0.8)
+    ax.tick_params(colors="#33414d", labelsize=9.2)
+    ax.grid(axis=grid_axis, color="#dce3ea", linewidth=0.8)
     ax.set_axisbelow(True)
 
 
 def build() -> None:
+    if not DATA_PATH.exists():
+        raise SystemExit("Run the generator regression analysis before building Figure 3.")
+    data = pd.read_csv(DATA_PATH)
+    age = data[data["record_type"].eq("age_mean")].copy()
+    rank = data[data["record_type"].eq("rank_correlation")].copy()
+
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "axes.titlesize": 12.5,
+            "axes.titlesize": 11.5,
             "axes.titleweight": "bold",
+            "axes.labelsize": 10.5,
         }
     )
-
     fig, (ax1, ax2) = plt.subplots(
         1,
         2,
-        figsize=(10.8, 4.2),
+        figsize=(10.8, 4.5),
         dpi=200,
-        constrained_layout=True,
-        gridspec_kw={"width_ratios": [1.05, 0.95]},
+        gridspec_kw={"width_ratios": [0.9, 1.25]},
     )
 
     style_axes(ax1)
-    ax1.set_title("A. Mean MWh/t by generator age group", loc="left", color="#22313f")
-    ax1.set_ylabel("Winsorized MWh per tonne")
-    x_age = np.arange(len(AGE_LABELS))
-    colors_age = ["#345d94", "#5f84b8", "#88a8cf", "#b7cae1"]
-    bars1 = ax1.bar(x_age, AGE_EFF, color=colors_age, edgecolor="#4a5763", linewidth=0.6, width=0.62)
-    ax1.set_xticks(x_age, AGE_LABELS)
-    ax1.set_ylim(0, 0.46)
-    for rect, value in zip(bars1, AGE_EFF):
+    x_age = np.arange(len(age))
+    yerr = np.vstack(
+        [age["value"] - age["ci_low"], age["ci_high"] - age["value"]]
+    )
+    ax1.errorbar(
+        x_age,
+        age["value"],
+        yerr=yerr,
+        fmt="o",
+        color="#35689a",
+        ecolor="#35689a",
+        markerfacecolor="white",
+        markeredgewidth=1.8,
+        markersize=8,
+        capsize=4,
+        linewidth=1.6,
+    )
+    for x_value, mean in zip(x_age, age["value"]):
         ax1.text(
-            rect.get_x() + rect.get_width() / 2,
-            rect.get_height() + 0.012,
-            f"{value:.3f}",
+            x_value,
+            mean + 0.028,
+            f"{mean:.3f}",
             ha="center",
-            va="bottom",
-            fontsize=10,
+            fontsize=8.7,
+            color="#263440",
             fontweight="bold",
-            color="#22313f",
         )
+    ax1.set_title(
+        "A. Mean gross electricity per tonne",
+        loc="left",
+        color="#22313f",
+        pad=16,
+    )
+    ax1.text(
+        0,
+        1.015,
+        "Facility-clustered 95% confidence intervals",
+        transform=ax1.transAxes,
+        fontsize=8.5,
+        color="#53616d",
+        va="bottom",
+    )
+    ax1.set_ylabel("Bounded MWh per tonne")
+    ax1.set_xticks(x_age, [label.replace(" yrs", "") for label in age["label"]])
+    ax1.set_xlabel("Generator age group (years)")
+    ax1.set_ylim(0, 0.47)
 
     style_axes(ax2)
-    ax2.set_title("B. Within-to-total variance ratio", loc="left", color="#22313f")
-    ax2.set_ylabel("Ratio")
-    x_var = np.arange(len(VAR_LABELS))
-    colors_var = ["#7a67c7", "#5c4ab3", "#a899e0"]
-    bars2 = ax2.bar(x_var, VAR_VALUES, color=colors_var, edgecolor="#4a5763", linewidth=0.6, width=0.62)
-    ax2.set_xticks(x_var, VAR_LABELS)
-    ax2.set_ylim(0, 0.22)
-    for rect, value in zip(bars2, VAR_VALUES):
-        ax2.text(
-            rect.get_x() + rect.get_width() / 2,
-            rect.get_height() + 0.008,
-            f"{value:.4f}",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            fontweight="bold",
-            color="#22313f",
-        )
+    x_rank = np.arange(len(rank))
+    ax2.scatter(
+        x_rank,
+        rank["value"],
+        marker="s",
+        s=38,
+        facecolors="white",
+        edgecolors="#a35f2d",
+        linewidths=1.5,
+        zorder=3,
+    )
+    median_corr = float(rank["value"].median())
+    ax2.axhline(
+        median_corr,
+        color="#263440",
+        linestyle="--",
+        linewidth=1.0,
+        label=f"Median annual = {median_corr:.3f}",
+    )
+    ax2.set_title(
+        "B. Adjacent-year facility rank persistence",
+        loc="left",
+        color="#22313f",
+        pad=16,
+    )
+    ax2.text(
+        0,
+        1.015,
+        "Spearman rank correlation; focused vertical scale",
+        transform=ax2.transAxes,
+        fontsize=8.5,
+        color="#53616d",
+        va="bottom",
+    )
+    ax2.set_ylabel("Rank correlation")
+    period_labels = [
+        f"{str(int(start))[-2:]}-{str(int(end))[-2:]}"
+        for start, end in zip(rank["year_start"], rank["year_end"])
+    ]
+    ax2.set_xticks(x_rank, period_labels, rotation=45, ha="right")
+    ax2.set_xlabel("Fiscal-year pair")
+    ax2.set_ylim(0.84, 1.0)
+    ax2.legend(frameon=False, fontsize=8.5, loc="lower right")
 
-    fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight")
-    fig.savefig(PDF_OUT, bbox_inches="tight")
+    fig.tight_layout(w_pad=2.4)
+    fig.savefig(PNG_OUT, dpi=300, bbox_inches="tight", facecolor="white")
+    fig.savefig(PDF_OUT, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
 

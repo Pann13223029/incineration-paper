@@ -130,11 +130,11 @@ def build() -> None:
         [
             (
                 "Question",
-                "Who first reports\npower generation?",
+                "Who first reports installed\ngeneration capacity?",
             ),
             (
                 "Sample",
-                "At-risk non-generators\n13,770 rows | 2,035 facilities | 141 events",
+                "At-risk no-capacity facilities\n13,770 rows | 2,035 facilities | 141 events",
             ),
             (
                 "Model",
@@ -142,7 +142,7 @@ def build() -> None:
             ),
             (
                 "Claim",
-                "Selective entry,\nnot a causal retrofit effect",
+                "Selective capacity entry;\noutput bridge and exit diagnostic",
             ),
         ],
     )
@@ -157,7 +157,7 @@ def build() -> None:
         [
             (
                 "Question",
-                "How much electricity\nis recovered per tonne?",
+                "How much gross electricity\nis generated per tonne?",
             ),
             (
                 "Sample",
@@ -165,7 +165,7 @@ def build() -> None:
             ),
             (
                 "Model",
-                "Logged MWh/t panel regressions\npooled, year-FE, RE, year-FE + RE",
+                "Logged MWh/t panel regressions\npooled, year indicators, RE, combined",
             ),
             (
                 "Claim",
@@ -181,8 +181,8 @@ def build() -> None:
         ax,
         x + 0.16,
         y + h - 0.026,
-        "One national fleet, two linked margins.\n"
-        "An average-fleet view would conflate entry with post-entry performance.",
+        "One national fleet, two linked margins connected by observed output.\n"
+        "An average-fleet view would conflate capacity entry with performance.",
         size=9.8,
     )
 

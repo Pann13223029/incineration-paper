@@ -4,7 +4,7 @@ This is a private, paper-focused derivative workspace for the Japan waste-incine
 
 The paper's working claim is narrow:
 
-> Japan's incineration-fleet transition is better read as two linked but distinct margins: selective observed entry into electricity generation and structured electricity-recovery performance among operating generators.
+> Japan's incineration-fleet transition is better read as two linked but distinct margins: selective first reporting of installed generation capacity and structured electricity-recovery performance among operating generators.
 
 ## Start Here
 
@@ -22,14 +22,15 @@ For architecture and workflow rules, read [`ARCHITECTURE.md`](ARCHITECTURE.md). 
 
 These facts are generated from the canonical pipeline and checked by `code/scripts/08_verify_claims.py`.
 
-The current evidence base covers 23,599 observations across 2,948 facilities. The adoption risk set contains 13,770 facility-years across 2,035 facilities, with 141 observed first-adoption events. The exact one-fiscal-year lagged adoption model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Use these counts deliberately: 141 is the descriptive adoption universe for event-rate summaries and the pathway audit, while 98 is the stricter exact-year hazard subset. Relative to prior-year age 0-10, older facilities are 1.2–1.9 percentage points less likely to record observed transition into generation, while prior-year capacity adds +0.45 percentage points per 100 t/day. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.019 to −0.035, capacity from +0.041 to +0.103, and utilization from +0.541 to +0.779. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024.
+The current evidence base covers 23,599 observations across 2,948 facilities. The entry risk set contains 13,770 facility-years across 2,035 facilities, with 141 installed-capacity entry events. The exact one-fiscal-year lagged entry model uses 10,823 facility-years across 1,911 facilities and 98 retained events. Use these counts deliberately: 141 is the descriptive event universe, while 98 is the stricter exact-year hazard subset. Relative to prior-year age 0-10, older facilities are 1.2–1.9 percentage points less likely to report positive installed capacity, while prior-year capacity adds +0.45 percentage points per 100 t/day. The event is operationally meaningful but not identical to output: 135 of 141 entrants report positive output by the following year. Attrition is also explicit: 1,305 of 1,894 non-entrants (68.9%) are last observed before FY2024, which is treated as panel exit rather than verified closure. The pathway audit classifies 50 as reset/rebuild-like, 36 as continuity/in-place-upgrade-like, 12 as forward-dated or placeholder entries, 42 as timing-ambiguous non-adjacent coded-row events, and 1 as unresolved. The canonical generator performance frame contains 5,683 facility-years across 1,016 facilities. Across the main electricity-recovery specifications, facility-age coefficients range from −0.014 to −0.035, capacity from +0.034 to +0.105, and utilization from +0.543 to +0.776. The within/total variance ratio is 0.1499, falling from 0.1795 in FY2005–FY2009 to 0.0956 in FY2013–FY2024. The pooled within-year rank correlation across 4,368 exact adjacent-year pairs is 0.9325.
 
 | Headline | Current value |
 |:--|:--|
-| Adoption age effect | −1.94 to −1.24 percentage points vs prior-year age 0–10 |
-| Adoption capacity effect | +0.45 percentage points per 100 t/day of prior-year capacity |
-| Pathway audit of adoption events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
+| Capacity-entry age effect | −1.94 to −1.24 percentage points vs prior-year age 0–10 |
+| Capacity-entry scale effect | +0.45 percentage points per 100 t/day of prior-year capacity |
+| Pathway audit of entry events | 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved |
 | Within/total variance ratio | 0.1499 (pooled), 0.1795 (early coded), 0.0956 (later coded) |
+| Adjacent-year rank persistence | 0.9325 across 4,368 exact pairs |
 
 ## Repository Logic
 

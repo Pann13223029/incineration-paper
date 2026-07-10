@@ -4,28 +4,32 @@ Repo-level check that paper-facing claims stay synchronized with canonical outpu
 
 - Core manifest Python: 3.12.12
 - Full panel: 23,599 observations across 2,948 facilities
-- Adoption frame: risk set 13,770 / 2,035; model 10,823 / 1,911 / 98 events
-- Adoption effects: age 1.2–1.9 pp less likely; capacity +0.45 pp per 100 t/day
+- Capacity-entry frame: risk set 13,770 / 2,035; model 10,823 / 1,911 / 98 events
+- Capacity-entry effects: age 1.2–1.9 pp less likely; capacity +0.45 pp per 100 t/day
 - Pathway audit: 50 reset/rebuild-like, 36 continuity-like, 12 forward-dated/placeholder, 42 timing-ambiguous, 1 unresolved
 - Regression frame: 5,683 observations across 1,016 facilities; within/total ratio 0.1499 (0.1795 early coded, 0.0956 later coded)
 
 ## Result: PASS
 
-- Passed checks: 10
+- Passed checks: 14
 - Failed checks: 0
 
 ## Passed Checks
 
 - `manifest_consistency` `source_manifest_python`: Core stage manifests share Python 3.12.12
-- `claim` `readme_topline_paragraph`: All snippets present across 11 target checks.
-- `claim` `readme_headline_table`: All snippets present across 4 target checks.
-- `claim` `architecture_summary`: All snippets present across 6 target checks.
+- `claim` `readme_topline_paragraph`: All snippets present across 14 target checks.
+- `claim` `readme_headline_table`: All snippets present across 5 target checks.
+- `claim` `architecture_summary`: All snippets present across 8 target checks.
 - `claim` `architecture_key_findings`: All snippets present across 5 target checks.
 - `forbidden_pattern` `readme_mermaid`: Forbidden pattern absent: ```mermaid
 - `forbidden_pattern` `stale_architecture_age_effect`: Forbidden pattern absent: 1.5–2.2 pp
 - `forbidden_pattern` `stale_architecture_capacity_effect`: Forbidden pattern absent: +1.47 pp per 100 t/day
 - `forbidden_pattern` `stale_readme_previous_observed_main_model`: Forbidden pattern absent: 11,717 facility-years across 1,915 facilities and 140 events
 - `forbidden_pattern` `stale_readme_fukushima_shorthand`: Forbidden pattern absent: pre-Fuku
+- `forbidden_pattern` `stale_manuscript_grid_control_md`: Forbidden pattern absent: grid-emission-factor control
+- `forbidden_pattern` `stale_manuscript_grid_row_md`: Forbidden pattern absent: Grid EF
+- `forbidden_pattern` `stale_manuscript_grid_row_tex`: Forbidden pattern absent: Grid EF
+- `forbidden_pattern` `stale_supplement_grid_control`: Forbidden pattern absent: grid-emission factor
 
 ## Failures
 

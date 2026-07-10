@@ -1,7 +1,7 @@
 # Highlights
 
-- One paper separates observed WtE entry from conditional generator performance
-- Within the coded risk set, generation entry is concentrated in younger, larger facilities
+- One paper separates installed-capacity entry from conditional generator performance
+- Capacity entry is concentrated in younger, larger facilities and usually precedes output
+- Older non-entrants are more likely to disappear from the coded panel
 - Generator electricity recovery declines with age and rises with scale and utilization
-- Most performance variation lies between facilities, not within facilities
-- The split helps municipal planning distinguish entry decisions from performance management
+- Adjacent-year generator performance ranks correlate at 0.93

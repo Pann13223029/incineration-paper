@@ -21,7 +21,7 @@ author guidelines. The point is to force discipline early.
 
 Working main-text target:
 
-- roughly 5,000-6,500 words before references and supplement
+- roughly 6,000-7,000 words in the professor-review draft before references and supplement
 
 Do not let the first paper draft drift back toward thesis scale.
 

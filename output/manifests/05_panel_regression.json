@@ -64,41 +64,35 @@
     "main_models": {
       "coefficients": {
         "capacity_100t": [
-          0.08735527,
-          0.1030071,
-          0.04047997,
-          0.05191892
+          0.08532065,
+          0.1050954,
+          0.0340017,
+          0.05215074
         ],
         "capacity_utilization_capped": [
-          0.7468359,
-          0.7788971,
-          0.6198638,
-          0.5411447
+          0.7462036,
+          0.7759958,
+          0.5800845,
+          0.5434396
         ],
         "facility_age_years": [
-          -0.02788743,
-          -0.0348117,
-          -0.01876036,
-          -0.03323101
-        ],
-        "grid_ef_kgco2_kwh": [
-          0.3182298,
-          -0.4465969,
-          1.63332,
-          -0.1951104
+          -0.02769904,
+          -0.03477447,
+          -0.01362644,
+          -0.03321383
         ],
         "heating_value_mj_kg": [
-          0.001013158,
-          0.003243701,
-          0.0005674892,
-          0.001175129
+          0.0008316296,
+          0.003303871,
+          -0.0001308703,
+          0.001169621
         ]
       },
       "labels": [
         "Model 1 (Pooled OLS)",
-        "Model 2 (Year FE)",
+        "Model 2 (Year indicators)",
         "Model 3 (RE)",
-        "Model 4 (Year FE + RE)"
+        "Model 4 (Year indicators + RE)"
       ],
       "observations": [
         5683,
@@ -108,83 +102,81 @@
       ],
       "pvalues": {
         "capacity_100t": [
-          3.900373e-26,
-          1.019497e-32,
-          9.658053e-07,
-          6.434627e-08
+          7.651484e-25,
+          2.982159e-33,
+          5.186569e-05,
+          5.521771e-08
         ],
         "capacity_utilization_capped": [
-          1.489076e-07,
-          7.123225e-09,
-          5.429746e-10,
-          1.007852e-08
+          1.386463e-07,
+          9.230592e-09,
+          9.492597e-08,
+          7.656014e-09
         ],
         "facility_age_years": [
-          5.97757e-37,
-          4.415645e-54,
-          7.971401e-14,
+          9.480976e-38,
+          9.909943e-54,
+          3.068767e-08,
           0.0
         ],
-        "grid_ef_kgco2_kwh": [
-          0.1515114,
-          0.0999041,
-          0.0,
-          0.3531152
-        ],
         "heating_value_mj_kg": [
-          0.6624273,
-          0.1212302,
-          0.6354952,
-          0.256327
+          0.7176567,
+          0.112772,
+          0.9193401,
+          0.2583025
         ]
       },
       "rsquared": [
-        0.2470108,
-        0.3721473,
-        0.1646512,
-        0.307631
+        0.2453298,
+        0.3698725,
+        0.1148315,
+        0.3074031
       ],
       "std_errors": {
         "capacity_100t": [
-          0.008260707,
-          0.008647018,
-          0.008254685,
-          0.009590625
+          0.008289942,
+          0.008747389,
+          0.00839516,
+          0.00958483
         ],
         "capacity_utilization_capped": [
-          0.1421487,
-          0.1345712,
-          0.09970515,
-          0.0943094
+          0.1416744,
+          0.1350899,
+          0.1085668,
+          0.09394534
         ],
         "facility_age_years": [
-          0.002196008,
-          0.002248166,
-          0.002504841,
-          0.002096499
-        ],
-        "grid_ef_kgco2_kwh": [
-          0.2218845,
-          0.2714349,
-          0.1965283,
-          0.2101034
+          0.002156832,
+          0.00225334,
+          0.002457341,
+          0.002096736
         ],
         "heating_value_mj_kg": [
-          0.002320753,
-          0.002093209,
-          0.001197153,
-          0.001035146
+          0.00229991,
+          0.002083336,
+          0.001292297,
+          0.001034581
         ]
       }
     },
     "outputs": {
       "age_table": "table2_efficiency_by_age.md",
+      "figure_data": "figure3_persistence.csv",
       "regression_results": "regression_results.md",
       "sample_report": "sample_definition.md",
       "summary_stats": "table1_summary_stats.md"
     },
     "post_fukushima_within_total_ratio": 0.0956,
     "pre_fukushima_within_total_ratio": 0.1795,
+    "rank_persistence": {
+      "annual_transitions": 14,
+      "exact_adjacent_year_pairs": 4368,
+      "facilities": 915,
+      "maximum_annual_rank_correlation": 0.9763404,
+      "median_annual_rank_correlation": 0.9322892,
+      "minimum_annual_rank_correlation": 0.8848166,
+      "pooled_rank_correlation": 0.9324573
+    },
     "regression_facilities": 1016,
     "regression_obs": 5683,
     "within_total_ratio": 0.1499
@@ -193,6 +185,7 @@
     "output/sample_definition.md",
     "output/table1_summary_stats.md",
     "output/table2_efficiency_by_age.md",
+    "output/figure3_persistence.csv",
     "output/regression_results.md"
   ],
   "python": "3.12.12",
