@@ -242,7 +242,12 @@ def cluster_bootstrap_coefficients(
         row.update(
             {
                 column: (
-                    float(fit.params[column]) if column in fit.params else np.nan
+                    # LAPACK implementations can differ below the precision used
+                    # for inference or reporting. Canonicalize at the analysis
+                    # boundary so tracked evidence rebuilds identically across OSes.
+                    float(np.round(fit.params[column], 8))
+                    if column in fit.params
+                    else np.nan
                 )
                 for column in design_columns
             }

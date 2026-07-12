@@ -17,7 +17,7 @@
     "code/analysis/08_verify_claims.py": "8b29cade8bacaa9fde1ba48faf249e2eb0c1b33fce09ac1946a8e0bda76bca62",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
-    "code/analysis/rare_event_utils.py": "7377b3cded06073ffda5fcb1cf827042ee6c47588d1453783b0220d4c9305a67"
+    "code/analysis/rare_event_utils.py": "7fd67db86620a985a34d51383b993c254657c6c843f6607f55f03ee99a045191"
   },
   "analysis_config": {
     "adoption_continuity_sensitivity_requires_same_asset_episode": true,
@@ -244,10 +244,10 @@
     "uncertain_identity_lineages": 14
   },
   "output_sha256": {
-    "output/adoption_bootstrap_coefficients.csv": "fb9714815f83ca764d8d01dc23fe53012d3687cf9cf84ff7a9e5e0b70a6bdf6a",
+    "output/adoption_bootstrap_coefficients.csv": "400496b8bd0f2e8a90a037c1b37bab9d4bcb8cafdd261dd31c0b109eb524be59",
     "output/adoption_pathway_audit.csv": "9468f648dd4089eff9aa652e8210091a7bf0814e083628cb6b71b890110e7d36",
     "output/adoption_results.md": "d5b4d1edc4418954cf8f9553d9e53fd2dd3212fb032bc6dece77a1c1ae5b9cbf",
-    "output/figure2_transition_effects.csv": "319e11df25da9a87c023075992aac52da2a52f9064d45f3546b43b4bf2bb9013",
+    "output/figure2_transition_effects.csv": "545edddb1447cc031aef8ac3a86e1a5f2eff59473b89ca7d874b8db7541b4192",
     "output/post_adoption_bridge.csv": "59b4862c0b9eea757413b7141d442b61c81c6795d2cc37a6058ffce6b4a8cc1b",
     "output/post_adoption_trajectories.csv": "3a1dc2c2c25fd30df6ecb111e3c3f2186299de800a55192b3576e89d37e6cedc"
   },
