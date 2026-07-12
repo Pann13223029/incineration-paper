@@ -245,7 +245,7 @@ def cluster_bootstrap_coefficients(
                     # LAPACK implementations can differ below the precision used
                     # for inference or reporting. Canonicalize at the analysis
                     # boundary so tracked evidence rebuilds identically across OSes.
-                    float(np.round(fit.params[column], 8))
+                    float(np.round(fit.params[column], 6))
                     if column in fit.params
                     else np.nan
                 )

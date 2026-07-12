@@ -10,14 +10,14 @@
     "code/analysis/05_fleet_decomposition.py": "fec958fa2ec4af913a466078d070212b9b526ec2065cbfa28545451f23308811",
     "code/analysis/05_panel_regression.py": "0e6146391e4f83e945a9929359ee4c81f886a064350c22bcbefb8a6ce22b15d1",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/06_robustness.py": "6ab5cab93577bfc1d8826954304b05151586bda622450c38d376adeaa1848e4a",
+    "code/analysis/06_robustness.py": "1fd01889c762f5e341c555ad45710930d1b5a68836a07782e20615e6632a19a7",
     "code/analysis/06a_data_quality_sensitivity.py": "f6e5535cdaf3eac031dfd96c9d51cc0c8325b53848d3a20fa2654ce092d06651",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
     "code/analysis/08_verify_claims.py": "8b29cade8bacaa9fde1ba48faf249e2eb0c1b33fce09ac1946a8e0bda76bca62",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
-    "code/analysis/rare_event_utils.py": "7fd67db86620a985a34d51383b993c254657c6c843f6607f55f03ee99a045191"
+    "code/analysis/rare_event_utils.py": "fb2c41ec244c7a006928826152d4a73e0faeeb2e617fb25a49017025772e7513"
   },
   "analysis_config": {
     "adoption_continuity_sensitivity_requires_same_asset_episode": true,

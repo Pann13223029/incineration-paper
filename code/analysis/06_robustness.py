@@ -497,7 +497,7 @@ def main() -> None:
 
     rows.extend(run_within_site_models(main_frame))
     results = pd.DataFrame(rows)
-    results.to_csv(RESULTS_PATH, index=False, float_format="%.10g")
+    results.to_csv(RESULTS_PATH, index=False, float_format="%.9g")
 
     bound_rows = []
     for label, bounds in BOUND_SETS.items():
