@@ -34,7 +34,7 @@ Use this checklist to keep the 18-slide professor briefing aligned with the cano
 - [ ] Define stable administrative lineage as a record-linkage construct, not a verified physical asset.
 - [ ] Say rows, lineages, and events in that order for each Firth frame.
 - [ ] Define Firth in one sentence, then return to the substantive entry question.
-- [ ] State that age inference is null in the broad and identity-certain frames and borderline with 24 events under same-episode continuity.
+- [ ] State that age inference is null in the broad and identity-certain frames and near but above 0.05 with 24 events under same-episode continuity.
 - [ ] Read the gross-MWh/t identity slowly and define every component.
 - [ ] Use Figure 3 to replace an age-only story with a generator-sizing interpretation.
 - [ ] Call Figure 4 a selected descriptive rank comparison, not a pathway effect.

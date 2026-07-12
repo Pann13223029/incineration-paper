@@ -48,6 +48,9 @@ jobs:
       - name: Validate repository layout
         run: npm run repo:check
 
+      - name: Run analytical benchmark tests
+        run: npm run analysis:test
+
       - name: Rebuild canonical analysis outputs
         run: .venv/bin/python code/analysis/07_rebuild_analysis.py
 

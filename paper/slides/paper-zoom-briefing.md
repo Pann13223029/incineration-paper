@@ -290,13 +290,13 @@ Script cue: Lead with the scale contrast, then state why the age evidence does n
 <div class="three-col">
   <div class="claim-card good">
     <p class="eyebrow">Supported</p>
-    <p class="big">Entry is rare and strongly scale-selective.</p>
+    <p class="big">Entry is rare and strongly associated with processing scale.</p>
     <p class="small">A 300-versus-100 t/day contrast has about six times the conditional odds in both frames.</p>
   </div>
   <div class="claim-card boundary">
     <p class="eyebrow">Not supported</p>
     <p class="big">No defensible age-only rule.</p>
-    <p class="small">Broad and identity-certain tests are null; the 24-event same-episode result is borderline.</p>
+    <p class="small">Broad and identity-certain tests are null; the 24-event same-episode result is near but above 0.05.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Observed pathways · 55 events</p>
@@ -345,7 +345,7 @@ Script cue: Define every component before interpreting cohort differences.
     <p class="eyebrow">Primary component frame</p>
     <p class="kpi">6,511</p>
     <p class="kpi-label">generator-years</p>
-    <p class="kpi-note">Positive capacity, throughput, and output within predeclared engineering bounds.</p>
+    <p class="kpi-note">Positive capacity, throughput, and output within predefined engineering bounds.</p>
   </div>
   <div class="kpi-card">
     <p class="eyebrow">Repeated histories</p>

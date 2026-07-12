@@ -11,19 +11,20 @@ capacity, and components of gross megawatt-hours per tonne (MWh/t). In FY2024,
 80.1% of throughput, and installed-capacity facilities held 70.5% of processing
 design capacity. Entry was sparse: 55 descriptive events, 35 broad exact-year
 events, and 33 after positive prior-year operation. Firth bias-reduced models
-show scale selection: conditional odds ratios comparing 300 with 100 tonnes per
+show a strong positive association with processing scale: conditional odds
+ratios comparing 300 with 100 tonnes per
 day are 6.13 and 6.25. Lineage-bootstrap joint age tests do not support a general
 independent association in the broad, prior-operation, or identity-certain
 frames (*p*=0.380, 0.186, and 0.357); a 24-event same-episode sensitivity is
-borderline (*p*=0.051). Among 6,511 engineering-valid generator-years across 493
+near but above 0.05 (*p*=0.051). Among 6,511 engineering-valid generator-years across 493
 lineages, reported start-year cohorts differ sharply in generator sizing. In a
 heating-controlled diagnostic, adding design intensity makes former age,
 processing-scale, and waste-utilization associations with gross MWh/t small and
 non-significant. Gross MWh/t is therefore an accounting outcome, not an
-independent operating-performance measure. Continuity-lineage entrants begin
-below rebuild/replacement-like entrants in descriptive first-complete-year
-component ranks. The evidence establishes count-volume divergence,
-scale-selective entry, and a design-vintage hierarchy, but not physical project
+independent operating-performance measure. An exploratory pathway comparison
+places continuity-lineage entrants below rebuild/replacement-like entrants in
+descriptive first-complete-year component ranks. The evidence establishes
+count-volume divergence, scale-associated entry, and a design-vintage hierarchy, but not physical project
 histories or causal effects.
 
 **Keywords:** municipal solid waste; incineration; waste-to-energy; Japan;
@@ -96,7 +97,7 @@ The three research questions (RQs) are:
 > first reporting positive capacity, and does the evidence change after the
 > risk set is restricted to lineages with positive prior-year waste throughput?
 
-> **RQ3: Engineering components and early pathway outcomes.** Among operating
+> **RQ3: Engineering components and exploratory pathway outcomes.** Among operating
 > generators, how do generator design intensity, electrical capacity factor,
 > and waste-processing utilization combine to produce gross MWh/t; how are
 > those components associated with reported design vintage and processing
@@ -217,7 +218,7 @@ years contain codes, yet the sets have zero overlap. The latter break is a
 complete recode, not evidence that the entire fleet was replaced. Across that
 transition, the identity resolver restores 1,064 adjacent-year lineage links,
 equivalent to 97.3% of FY2019 records. Across the longer FY2009-FY2013 bridge,
-882 official codes overlap while 1,136 stable lineages are linked.
+882 official codes overlap while 1,135 stable lineages are linked.
 
 The resolver therefore constructs a *stable administrative lineage*: a sequence
 of records judged to describe the same continuing administrative facility or
@@ -507,7 +508,7 @@ coefficients previously attributed to age, scale, or utilization are stable
 after the omitted installed-sizing component is represented.
 
 Robustness checks split the period into FY2005-FY2014 and FY2015-FY2024, give
-each lineage equal total weight, and apply conservative and broad predeclared
+each lineage equal total weight, and apply conservative and broad predefined
 engineering bounds. Asset-episode fixed effects and exact-adjacent first
 differences are used only for operating components that vary meaningfully
 within an episode. Design intensity is predominantly a between-asset attribute,
@@ -536,8 +537,9 @@ Installed-capacity participation rises steadily from 21.6% of facility records
 in FY2005 to 41.1% in FY2024. Positive-output facilities already handle a much
 larger share of waste: throughput coverage rises from 60.5% to 80.1% over the
 same period. The design-capacity share at installed-capacity facilities moves
-from 56.0% to 70.5%. Figure 1 therefore shows persistent improvement under all
-three denominators, but also a persistent count-volume gap.
+from 56.0% to 70.5%. Figure 1 therefore shows long-run increases with
+year-to-year variation under all three denominators, alongside a persistent
+count-volume gap.
 
 The FY2024 cross-section makes the distinction concrete. The administrative
 panel contains 1,014 facility records, of which 417 report positive installed
@@ -550,7 +552,7 @@ report no positive output. Because output and installed-capacity flags are not
 identical, these segment counts should not be forced into a single binary
 partition.
 
-After the predeclared output and capacity-factor checks, valid generator rows
+After the predefined output and capacity-factor checks, valid generator rows
 cover 79.7% of FY2024 throughput. Their throughput-weighted conditional gross
 intensity is 0.425 MWh/t. Multiplying 0.797 by 0.425 gives 0.338 MWh per total
 fleet tonne, exactly matching valid gross generation divided by all recorded
@@ -566,7 +568,7 @@ cost. Its contribution is denominator discipline: 41.1%, 80.1%, and 70.5%
 answer different questions, and no one of them is a sufficient measure of the
 remaining opportunity.
 
-### 4.2 RQ2: entry is rare and strongly scale-selective
+### 4.2 RQ2: entry is rare and strongly associated with processing scale
 
 The descriptive risk set contains 55 first reported installed-capacity entries.
 The pathway audit classifies 35 as continuity-lineage entries, 11 as
@@ -582,9 +584,9 @@ This sparse count is central to interpretation. The Firth model addresses
 finite-estimate and first-order bias problems, but it cannot create information
 that the panel does not contain.
 
-Observed rates already show strong scale ordering. Entry occurs in 1 of 3,855
-risk rows in the smallest processing-capacity quartile (0.026%), 2 of 4,176 in
-the second quartile (0.048%), 9 of 3,702 in the third (0.243%), and 23 of 3,424
+Observed rates already show strong scale ordering. Entry occurs in 1 of 3,854
+risk rows in the smallest processing-capacity quartile (0.026%), 2 of 4,175 in
+the second quartile (0.048%), 9 of 3,702 in the third (0.243%), and 23 of 3,423
 in the largest (0.672%). Because risk duration, calendar period, and age differ
 across these groups, the adjusted model is needed before interpreting the
 gradient.
@@ -603,14 +605,15 @@ Age requires more caution. Relative to age 0-9, broad-frame coefficients are
 -1.254 for age 10-19, -1.127 for age 20-29, and -1.309 for age 30 or more.
 Their broad-frame cluster-bootstrap intervals each include zero. Prior-operation
 point estimates are similarly negative, and its three percentile intervals
-also include zero. The coefficients are correlated, so the pre-specified
-summary is the joint test based on lineage-bootstrap covariance. The age terms
+also include zero. The coefficients are correlated, so the designated summary
+is the joint test based on lineage-bootstrap covariance. The age terms
 are not jointly significant in the broad frame (chi-square=3.08, 3 df,
 *p*=0.3800), the prior-operation frame (chi-square=4.81, 3 df, *p*=0.1863), or
 the identity-certain frame (chi-square=3.24, 3 df, *p*=0.3566).
 
 The same-episode continuity result is more fragile. Its joint bootstrap test is
-at the conventional boundary (chi-square=7.78, 3 df, *p*=0.0508) with only 24
+near but above the conventional 0.05 threshold (chi-square=7.78, 3 df,
+*p*=0.0508) with only 24
 events, whereas the corresponding fitted-model covariance gives *p*=0.0099.
 That discrepancy shows that uncertainty is sensitive both to the continuity
 definition and to within-lineage dependence. It is not evidence of a stable
@@ -683,9 +686,9 @@ waste-utilization coefficient is 0.6699; all have *p*<0.001. After adding log
 generator design intensity, the corresponding coefficients become -0.0020
 (*p*=0.2977), -0.0092 (*p*=0.1991), and -0.0995 (*p*=0.2038). The sizing coefficient
 is 0.7532 (*p*<0.001), and model $R^2$ rises from 0.4737 to 0.8131. This is not a
-causal decomposition. It is strong evidence that the former age, scale, and
-utilization interpretation was unstable because installed generator sizing had
-been omitted.
+causal decomposition. It shows that the former age, scale, and utilization
+interpretation is sensitive to whether installed generator sizing is
+represented.
 
 Adjacent-year rank persistence is highest for generator design intensity:
 0.995 across 5,963 pairs from 470 lineages. Gross-intensity rank persistence is
@@ -706,7 +709,7 @@ positive association between utilization and electrical capacity factor. Those
 checks strengthen the component description but do not resolve simultaneous
 changes in throughput, maintenance, installed capacity, and output.
 
-### 4.4 Early outcomes differ descriptively by observed pathway
+### 4.4 Exploratory pathway comparison
 
 The first-complete-year comparison asks where entrants sit in the same-year
 generator distribution, not what entry causes. Across all exact-year entrants
@@ -726,8 +729,8 @@ to interpret.
 
 ![Figure 4. First-complete-year mean within-year percentile ranks for continuity-lineage and rebuild/replacement-like entrants. The contrast is descriptive; the sparse forward-dated/placeholder pathway is omitted.](../figures/figure4_post_entry_trajectories.png)
 
-The lower gross-intensity position of continuity-lineage entrants is driven
-primarily by lower generator sizing, with a smaller capacity-factor difference.
+The larger pathway difference aligns more closely with generator sizing than
+with capacity factor.
 That pattern is consistent with the broader component results, but it is not an
 estimated effect of pathway. Pathway assignment is based on reported resets,
 follow-up is selective, and there is no counterfactual match between otherwise
@@ -743,7 +746,7 @@ installed segment holds 70.5% of processing design capacity. Japan therefore
 combines incomplete diffusion across records with substantial volume coverage;
 non-generating records are not equal-sized unused opportunities.
 
-Entry is strongly scale-selective in both frames, but the model does not show
+Entry is strongly associated with processing scale in both frames, but the model does not show
 that enlarging a facility would produce entry. Scale can proxy for unobserved
 municipal, technical, and financial conditions. Age is weaker evidence:
 individual estimates are negative, broad and identity-certain joint tests are
@@ -751,8 +754,8 @@ non-significant, and the same-episode result lies at the conventional threshold
 with fewer events. This sensitivity is evidence against a simple age-only
 narrative, not evidence for one preferred continuity definition.
 
-Gross MWh/t also changes meaning after decomposition. Its cohort hierarchy is
-mainly a generator-sizing hierarchy; older reported cohorts do not have
+Gross MWh/t also changes meaning after decomposition. Its observed cohort
+hierarchy aligns primarily with generator sizing; older reported cohorts do not have
 uniformly lower annual capacity factors. Once sizing is included, the other
 legacy coefficients no longer carry a distinct gross-intensity interpretation.
 This is the value of adapting comparator work on hierarchy and multi-activity
@@ -818,15 +821,17 @@ Japan's municipal-incineration fleet looks different when the denominator and
 engineering structure are made explicit. In FY2024, installed capacity appears
 in 41.1% of facility records, while positive-output facilities handle 80.1% of
 throughput and installed-capacity facilities represent 70.5% of processing
-design capacity. First reported capacity entry is sparse and strongly
-scale-selective, with 300-versus-100 t/day odds ratios near six in both modeled
+design capacity. First reported capacity entry is sparse and strongly associated
+with processing scale, with 300-versus-100 t/day odds ratios near six in both modeled
 frames. Broad and identity-certain age tests are non-significant, while a
-same-episode sensitivity is borderline with only 24 events; age inference is
+same-episode sensitivity is near but above 0.05 with only 24 events; age inference is
 therefore continuity-sensitive rather than generally established. Among operating generators,
-gross MWh/t mainly reflects generator sizing and design vintage; it does not
+the observed gross-MWh/t cohort hierarchy aligns primarily with generator sizing
+and design vintage; it does not
 support an independent operating or age interpretation once sizing is included.
-Continuity-lineage entrants begin below rebuild/replacement-like entrants in
-first-complete-year component ranks, but that contrast remains descriptive.
+An exploratory comparison places continuity-lineage entrants below
+rebuild/replacement-like entrants in first-complete-year component ranks, but
+that small, selected contrast remains descriptive.
 
 The paper's contribution is therefore not a claim that every non-generator is
 an equal opportunity or that newer facilities simply perform better. It is a

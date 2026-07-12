@@ -30,8 +30,8 @@ capacity factor; administrative record linkage
 
 ## Current Draft Metrics
 
-- abstract word count: 229
-- main-text word count: 5,722, excluding tables, figure captions, display
+- abstract word count: 242
+- main-text word count: 5,741, excluding tables, figure captions, display
   equations, acknowledgements, declarations, and references
 - main-text figures: 4
 - main-text tables: 2

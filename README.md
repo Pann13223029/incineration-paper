@@ -86,6 +86,7 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 npm install
 
+npm run analysis:test
 npm run analysis:rebuild
 npm run paper:sync
 npm run paper:check
@@ -98,6 +99,7 @@ npm run repo:check
 | Command | Purpose |
 |:--|:--|
 | `analysis:rebuild` | Run the canonical empirical pipeline from parsing through claim checks. |
+| `analysis:test` | Benchmark the custom Firth estimator against a closed-form separated table and an independent optimizer. |
 | `paper:sync` | Copy selected canonical outputs into `paper/evidence/current/`. |
 | `paper:check` | Fail if required evidence is missing or synchronized copies are stale. |
 | `claims:verify` | Check registered high-risk claims and stale-language guards. |

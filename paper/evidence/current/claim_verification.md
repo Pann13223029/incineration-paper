@@ -4,15 +4,17 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 
 ## Result: PASS
 
-- Passed checks: 80
+- Passed checks: 85
 - Failed checks: 0
 
 ## Canonical Evidence
 
 - Identity: 23,593 retained rows from 23,599 raw rows, 1,690 stable administrative lineages, 1,767 asset episodes, 0 duplicate lineage-years.
 - FY2019-FY2020 continuity: 0 official-code overlap versus 1,064 administrative-lineage overlap.
+- FY2009-FY2013 bridge: 882 official-code overlap versus 1,135 administrative-lineage overlap.
 - FY2024 fleet: 41.1% facility participation, 80.1% throughput coverage, 70.5% installed design-capacity share.
 - Firth entry frames: 15,154/1,137/35 broad and 13,072/1,019/33 prior-operation and 15,095/1,135/24 same-episode and 15,107/1,130/35 identity-certain rows/lineages/events.
+- Entry capacity-quartile risk rows: 3,854/4,175/3,702/3,423.
 - Entry inference: OR 6.13 for 300 versus 100 t/day; lineage-bootstrap joint-age p-values are 0.380 broad, 0.186 prior-operation, and 0.051 same-episode, and 0.357 identity-certain.
 - Components: 6,511 rows across 493 stable administrative lineages; sizing-adjusted age -0.0020 (p=0.2977); R-squared 0.4737 to 0.8131.
 
@@ -37,6 +39,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::fleet_decomposition_identity` [n/a]: Maximum fleet decomposition identity error: 0.000e+00
 - `evidence_integrity::fy2024_segment_totals` [n/a]: FY2024 segment rows sum to 1014; facility shares sum to 100.000000%.
 - `evidence_integrity::fleet_manifest_sync` [n/a]: FY2024 fleet CSV and stage manifest headline metrics agree.
+- `evidence_integrity::adoption_capacity_quartile_counts` [n/a]: Exact-frame capacity-quartile rows/events: {'Q1 smallest': {'risk_rows': 3854, 'events': 1}, 'Q2': {'risk_rows': 4175, 'events': 2}, 'Q3': {'risk_rows': 3702, 'events': 9}, 'Q4 largest': {'risk_rows': 3423, 'events': 23}}
 - `evidence_integrity::firth_method_and_sample_sync` [n/a]: Firth samples are 15154/1137/35 broad and 13072/1019/33 prior-operation and 15095/1135/24 same-episode and 15107/1130/35 identity-certain rows/lineages/events.
 - `evidence_integrity::adoption_estimand_configuration` [n/a]: Primary entry is broad administrative-lineage entry; same-episode sensitivity excludes 59 rows and 11 events.
 - `evidence_integrity::firth_convergence` [n/a]: Firth convergence metadata: {'broad': {'converged': True, 'iterations': 18}, 'identity_certain': {'converged': True, 'iterations': 18}, 'prior_operation': {'converged': True, 'iterations': 21}, 'same_episode_continuity': {'converged': True, 'iterations': 28}}
@@ -54,17 +57,21 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `document_presence::professor_lineage_present` [paper/notes/positioning/professor-comparator-method-lineage.md]: Optional lineage checked when present.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.md]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
+- `required_claim::official_code_gap_bridge` [paper/manuscript/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
 - `required_claim::firth_method_and_frames` [paper/manuscript/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
 - `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.md]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/paper.md]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/paper.md]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
+- `required_claim::official_code_gap_bridge` [paper/manuscript/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
 - `required_claim::firth_method_and_frames` [paper/manuscript/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
 - `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.tex]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/paper.tex]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/paper.tex]: Report event-time-one pathway counts and ranks from the generated trajectory table.

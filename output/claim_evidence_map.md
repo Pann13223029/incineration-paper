@@ -4,7 +4,7 @@ This map identifies the generated artifacts behind the paper's defensible claims
 
 ## Raw Sources And Longitudinal Identity
 
-Claim: the panel contains 1,690 reconstructed stable administrative lineages and 1,767 asset episodes; official codes are not persistent across the FY2019-FY2020 regime break.
+Claim: the panel contains 1,690 reconstructed stable administrative lineages and 1,767 asset episodes; official codes are not persistent across the FY2019-FY2020 regime break. Across FY2009-FY2013, 882 official codes overlap while 1,135 administrative lineages are linked.
 
 Evidence: `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv`, `output/raw_data_provenance.md`, `data/processed/facility_identity_crosswalk.csv`, `output/facility_identity_audit.md`, and `output/identity_low_margin_links.csv`.
 

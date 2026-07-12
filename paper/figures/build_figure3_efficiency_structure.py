@@ -98,7 +98,7 @@ def build() -> None:
         }
     )
 
-    fig, axes = plt.subplots(2, 1, figsize=(3.7, 5.0), dpi=200, sharex=True)
+    fig, axes = plt.subplots(2, 1, figsize=(3.9, 4.6), dpi=200, sharex=True)
     x = np.arange(len(data), dtype=float)
 
     design = data["median_generator_sizing"].to_numpy(dtype=float)
@@ -156,14 +156,14 @@ def build() -> None:
     fig.suptitle(
         "Generator components by reported cohort",
         x=0.08,
-        y=0.97,
+        y=0.985,
         ha="left",
         fontsize=9.5,
         fontweight="semibold",
     )
     fig.text(
         0.08,
-        0.932,
+        0.945,
         "Engineering-valid facility-years; medians",
         color=MUTED,
         fontsize=7.4,
@@ -171,7 +171,7 @@ def build() -> None:
     )
     fig.text(
         0.08,
-        0.035,
+        0.025,
         f"Lineage counts, oldest to newest: {site_counts}.\n"
         "Counts are non-additive because lineages can span cohorts.\n"
         "Start year is not a verified equipment date.",
@@ -181,7 +181,7 @@ def build() -> None:
         linespacing=1.25,
     )
 
-    fig.subplots_adjust(left=0.22, right=0.97, top=0.86, bottom=0.20, hspace=0.48)
+    fig.subplots_adjust(left=0.21, right=0.97, top=0.84, bottom=0.25, hspace=0.38)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)

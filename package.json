@@ -7,6 +7,7 @@
     "paper:check": ".venv/bin/python code/publishing/20_sync_paper_assets.py --check",
     "paper:sync": ".venv/bin/python code/publishing/20_sync_paper_assets.py",
     "claims:verify": ".venv/bin/python code/analysis/08_verify_claims.py",
+    "analysis:test": ".venv/bin/python -m unittest discover -s code/tests -p 'test_*.py'",
     "analysis:rebuild": ".venv/bin/python code/analysis/07_rebuild_analysis.py",
     "paper:export": ".venv/bin/python code/publishing/21_export_paper_submission.py",
     "paper:export:nopdf": ".venv/bin/python code/publishing/21_export_paper_submission.py --no-pdf",

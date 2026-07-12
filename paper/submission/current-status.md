@@ -1,6 +1,6 @@
 # Current Paper Status
 
-The corrected empirical pipeline and professor-facing manuscript package form a verified review baseline as of 10 July 2026. Analysis reconstruction, evidence synchronization, claim verification, format validation, LaTeX compilation, and visual PDF review have passed. This is ready for substantive professor review, but it is not yet a journal-submission decision or a substitute for human sign-off.
+The corrected empirical pipeline and professor-facing manuscript package form a verified review baseline as of 12 July 2026. Analysis reconstruction, estimator benchmarks, evidence synchronization, claim verification, format validation, LaTeX compilation, and visual PDF review have passed. This is ready for substantive professor review, but it is not yet a journal-submission decision or a substitute for human sign-off.
 
 ## Readiness
 
@@ -13,7 +13,7 @@ The corrected empirical pipeline and professor-facing manuscript package form a 
 | Figures | Four regenerated academic figures; manuscript rendering inspected |
 | Evidence snapshot | 33 canonical artifacts synchronized; `paper:check` passes |
 | Claim verification | Passed for evidence integrity, Markdown, LaTeX, supplement, and professor packet |
-| Reading PDF | Rebuilt as a 22-page LaTeX PDF; every page visually inspected |
+| Reading PDF | Rebuilt as a 21-page LaTeX PDF; every page visually inspected |
 | Presentation | Rebuilt as an 18-slide PDF; every slide visually inspected |
 | Preferred PDF path | `paper/share/waste-management-manuscript-latex.pdf` |
 
@@ -40,6 +40,7 @@ Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration
 ## Completed Technical Gates
 
 - Full raw-to-claims rebuild completed with exact workbook, code, input, and output hashes.
+- The custom Firth estimator matches a closed-form separated-table solution and an independently optimized penalized likelihood.
 - All four Firth models converged with all 499 requested whole-lineage bootstrap replications.
 - Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
 - `paper:check`, `claims:verify`, and `repo:check` passed after final evidence sync.

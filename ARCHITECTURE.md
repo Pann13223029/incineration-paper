@@ -43,10 +43,10 @@ The Markdown and LaTeX manuscripts must agree semantically. Neither manuscript m
 
 ```text
 data/raw/facility_annual/*
-  -> 02_parse_facility_panel.py
-       parse 23,599 source rows
   -> 02b_build_raw_data_manifest.py
        hash workbooks and record URLs, sheets, headers, and selected columns
+  -> 02_parse_facility_panel.py
+       parse 23,599 source rows
   -> 02a_build_facility_identity.py
        collapse exact duplicates; retain 23,593 records; build audited lineages
   -> 04_eda_facility.py
@@ -123,6 +123,7 @@ If a source changes, run `npm run paper:sync`; do not edit its copy. `npm run pa
 | Command | Contract |
 |:--|:--|
 | `npm run analysis:rebuild` | Execute the full empirical stage sequence and regenerate canonical evidence. |
+| `npm run analysis:test` | Run closed-form and independent-optimizer benchmarks for the custom Firth estimator. |
 | `npm run paper:sync` | Refresh the selected paper-facing evidence snapshot. |
 | `npm run paper:check` | Fail on missing or stale snapshot files. |
 | `npm run claims:verify` | Check registered numerical claims, required disclosures, and stale wording. |
@@ -142,6 +143,7 @@ CI should call the same orchestrator and package commands rather than duplicate 
 | Paper prose without empirical changes | `npm run claims:verify` and the relevant artifact build |
 | New or revised empirical claim | Confirm `output/*`, then run `npm run claims:verify` |
 | Sample, identity, or model change | `npm run analysis:rebuild`, `npm run paper:sync`, `npm run paper:check`, `npm run claims:verify` |
+| Estimator implementation change | `npm run analysis:test`, then the full sample/model gate above |
 | Submission refresh | `npm run paper:export:nopdf` and `npm run paper:build:latex` |
 | Pre-push | `npm run repo:check`, `npm run paper:check`, `npm run claims:verify`, `git diff --check` |
 

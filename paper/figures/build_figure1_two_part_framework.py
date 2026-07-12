@@ -32,7 +32,7 @@ SERIES = (
         BLUE,
         "-",
         "o",
-        1.8,
+        0.8,
     ),
     (
         "throughput_coverage_pct",
@@ -44,11 +44,11 @@ SERIES = (
     ),
     (
         "installed_design_capacity_share_pct",
-        "Design capacity",
+        "Capacity",
         ORANGE,
         (0, (4, 2)),
         "^",
-        2.3,
+        -2.2,
     ),
 )
 
@@ -95,7 +95,7 @@ def build() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(3.7, 3.25), dpi=200)
+    fig, ax = plt.subplots(figsize=(4.6, 3.1), dpi=200)
     style_axes(ax)
 
     years = data["fiscal_year"]
@@ -116,17 +116,17 @@ def build() -> None:
             zorder=3,
         )
         final = float(values.iloc[-1])
-        ax.text(
-            2023.65,
-            final + label_offset,
+        ax.annotate(
             f"{label} {final:.1f}%",
+            xy=(2024, final),
+            xytext=(2024.65, final + label_offset),
             color=color,
-            fontsize=7.7,
+            fontsize=7.5,
             fontweight="semibold",
-            ha="right",
+            ha="left",
             va="center",
             clip_on=False,
-            bbox={"facecolor": "white", "edgecolor": "none", "pad": 0.5, "alpha": 0.9},
+            arrowprops={"arrowstyle": "-", "color": color, "linewidth": 0.8},
         )
 
     ax.set_title(
@@ -147,7 +147,7 @@ def build() -> None:
     )
     ax.set_xlabel("Fiscal year", fontsize=8.2)
     ax.set_ylabel("Share of fleet total (%)", fontsize=8.2)
-    ax.set_xlim(2005, 2024.8)
+    ax.set_xlim(2005, 2033)
     ax.set_ylim(0, 100)
     ax.set_xticks([2005, 2010, 2015, 2020, 2024])
     ax.set_yticks([0, 20, 40, 60, 80, 100])

@@ -31,7 +31,12 @@ CLAIM_MAP_PATH = OUTPUT_DIR / "claim_evidence_map.md"
 if str(ANALYSIS_DIR) not in sys.path:
     sys.path.insert(0, str(ANALYSIS_DIR))
 
-from panel_utils import sha256_manifest_path, write_stage_manifest  # noqa: E402
+from panel_utils import (  # noqa: E402
+    build_adoption_frame,
+    build_adoption_model_frame,
+    sha256_manifest_path,
+    write_stage_manifest,
+)
 
 
 DOCUMENTS = {
@@ -263,6 +268,8 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     )
     fy2019 = identified[identified["fiscal_year"].eq(2019)]
     fy2020 = identified[identified["fiscal_year"].eq(2020)]
+    fy2009 = identified[identified["fiscal_year"].eq(2009)]
+    fy2013 = identified[identified["fiscal_year"].eq(2013)]
     official_overlap = len(
         clean_identifier(fy2019["facility_code"])
         & clean_identifier(fy2020["facility_code"])
@@ -270,6 +277,14 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     stable_overlap = len(
         clean_identifier(fy2019["stable_site_id"])
         & clean_identifier(fy2020["stable_site_id"])
+    )
+    gap_official_overlap = len(
+        clean_identifier(fy2009["facility_code"])
+        & clean_identifier(fy2013["facility_code"])
+    )
+    gap_stable_overlap = len(
+        clean_identifier(fy2009["stable_site_id"])
+        & clean_identifier(fy2013["stable_site_id"])
     )
     collapsed_duplicate_rows = int(
         (identified["source_record_multiplicity"].fillna(1).astype(int) - 1).sum()
@@ -324,6 +339,8 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         "maximum_years_per_site": maximum_years_per_site,
         "fy2020_official_code_overlap": official_overlap,
         "fy2020_stable_site_overlap": stable_overlap,
+        "fy2009_fy2013_official_code_overlap": gap_official_overlap,
+        "fy2009_fy2013_stable_site_overlap": gap_stable_overlap,
         "collapsed_exact_duplicate_rows": collapsed_duplicate_rows,
         "low_margin_assignments": low_margin_assignments,
         "uncertain_lineages": uncertain_lineages,
@@ -519,6 +536,35 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     bridge = pd.read_csv(OUTPUT_DIR / "post_adoption_bridge.csv")
     trajectories = pd.read_csv(OUTPUT_DIR / "post_adoption_trajectories.csv")
     exact_pathway_events = int(pathways["exact_one_year_lag"].fillna(False).astype(bool).sum())
+    adoption_frame = build_adoption_frame(identified)
+    exact_frame = build_adoption_model_frame(
+        identified,
+        adoption_frame,
+        exact_year_only=True,
+    )
+    quartile_labels = ["Q1 smallest", "Q2", "Q3", "Q4 largest"]
+    exact_frame["capacity_quartile"] = pd.qcut(
+        exact_frame["lag_capacity_t_day"],
+        4,
+        labels=quartile_labels,
+        duplicates="drop",
+    )
+    quartile_counts = (
+        exact_frame.groupby("capacity_quartile", observed=True)
+        .agg(
+            risk_rows=("adopt_power_this_year", "size"),
+            events=("adopt_power_this_year", "sum"),
+        )
+        .astype(int)
+        .to_dict(orient="index")
+    )
+    assert_evidence(
+        "adoption_capacity_quartile_counts",
+        set(quartile_counts) == set(quartile_labels)
+        and sum(item["risk_rows"] for item in quartile_counts.values()) == broad_rows
+        and sum(item["events"] for item in quartile_counts.values()) == broad_events,
+        f"Exact-frame capacity-quartile rows/events: {quartile_counts}",
+    )
     assert_evidence(
         "firth_method_and_sample_sync",
         "Firth" in adoption_meta["bias_reduction"]
@@ -815,6 +861,7 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
                 joint_tests["identity_certain_cluster_bootstrap_covariance"][2]
             ),
             "pathway_counts": pathway_counts,
+            "capacity_quartile_counts": quartile_counts,
             "event_time_one": adoption_meta["post_entry"]["event_time_one"],
         },
         "components": {
@@ -982,6 +1029,26 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
         )
         add_requirement(
             checks,
+            "official_code_gap_bridge",
+            key,
+            contains_context_number(
+                text,
+                r"FY?2009.{0,60}FY?2013|FY?2013.{0,60}FY?2009|longer.{0,30}bridge",
+                identity["fy2009_fy2013_official_code_overlap"],
+            )
+            and contains_context_number(
+                text,
+                r"FY?2009.{0,60}FY?2013|FY?2013.{0,60}FY?2009|longer.{0,30}bridge",
+                identity["fy2009_fy2013_stable_site_overlap"],
+            ),
+            (
+                "Report the FY2009-FY2013 bridge exactly: "
+                f"{identity['fy2009_fy2013_official_code_overlap']} overlapping official codes and "
+                f"{identity['fy2009_fy2013_stable_site_overlap']:,} linked administrative lineages."
+            ),
+        )
+        add_requirement(
+            checks,
             "fy2024_count_volume",
             key,
             contains_context_number(
@@ -1089,6 +1156,41 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{adoption['continuity_age_joint_p_value']:.3f}/"
                 f"{adoption['identity_certain_age_joint_p_value']:.3f}) and scale contrast "
                 f"OR={adoption['capacity_or_300_vs_100']:.2f}."
+            ),
+        )
+        quartiles = adoption["capacity_quartile_counts"]
+        add_requirement(
+            checks,
+            "adoption_capacity_quartile_counts",
+            key,
+            contains_context_number(
+                text,
+                r"smallest.{0,50}(?:quartile|processing)|Q1",
+                quartiles["Q1 smallest"]["risk_rows"],
+            )
+            and contains_context_number(
+                text,
+                r"second quartile|Q2",
+                quartiles["Q2"]["risk_rows"],
+            )
+            and contains_context_number(
+                text,
+                r"third(?: quartile)?|Q3",
+                quartiles["Q3"]["risk_rows"],
+                window=80,
+            )
+            and contains_context_number(
+                text,
+                r"largest(?: quartile)?|Q4",
+                quartiles["Q4 largest"]["risk_rows"],
+                window=80,
+            ),
+            (
+                "Report exact capacity-quartile risk rows: "
+                f"{quartiles['Q1 smallest']['risk_rows']:,}, "
+                f"{quartiles['Q2']['risk_rows']:,}, "
+                f"{quartiles['Q3']['risk_rows']:,}, and "
+                f"{quartiles['Q4 largest']['risk_rows']:,}."
             ),
         )
         add_requirement(
@@ -1406,6 +1508,8 @@ def write_report(
         f"{identity['asset_episodes']:,} asset episodes, {identity['duplicate_site_year_rows']} duplicate lineage-years.",
         f"- FY2019-FY2020 continuity: {identity['fy2020_official_code_overlap']} official-code overlap "
         f"versus {identity['fy2020_stable_site_overlap']:,} administrative-lineage overlap.",
+        f"- FY2009-FY2013 bridge: {identity['fy2009_fy2013_official_code_overlap']} official-code overlap "
+        f"versus {identity['fy2009_fy2013_stable_site_overlap']:,} administrative-lineage overlap.",
         f"- FY2024 fleet: {fleet['facility_participation_pct']:.1f}% facility participation, "
         f"{fleet['throughput_coverage_pct']:.1f}% throughput coverage, "
         f"{fleet['installed_design_capacity_share_pct']:.1f}% installed design-capacity share.",
@@ -1416,6 +1520,12 @@ def write_report(
         f"{adoption['continuity_events']} same-episode and "
         f"{adoption['identity_certain_rows']:,}/{adoption['identity_certain_sites']:,}/"
         f"{adoption['identity_certain_events']} identity-certain rows/lineages/events.",
+        "- Entry capacity-quartile risk rows: "
+        + "/".join(
+            f"{adoption['capacity_quartile_counts'][label]['risk_rows']:,}"
+            for label in ("Q1 smallest", "Q2", "Q3", "Q4 largest")
+        )
+        + ".",
         f"- Entry inference: OR {adoption['capacity_or_300_vs_100']:.2f} for 300 versus "
         f"100 t/day; lineage-bootstrap joint-age p-values are "
         f"{adoption['broad_age_joint_p_value']:.3f} broad, "
@@ -1460,7 +1570,9 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         "",
         f"Claim: the panel contains {identity['stable_sites']:,} reconstructed stable administrative lineages and "
         f"{identity['asset_episodes']:,} asset episodes; official codes are not persistent across "
-        "the FY2019-FY2020 regime break.",
+        "the FY2019-FY2020 regime break. Across FY2009-FY2013, "
+        f"{identity['fy2009_fy2013_official_code_overlap']} official codes overlap while "
+        f"{identity['fy2009_fy2013_stable_site_overlap']:,} administrative lineages are linked.",
         "",
         "Evidence: `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv`, "
         "`output/raw_data_provenance.md`, `data/processed/facility_identity_crosswalk.csv`, "

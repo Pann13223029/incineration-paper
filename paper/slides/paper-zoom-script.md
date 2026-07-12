@@ -11,7 +11,7 @@ Reset the audience with this sentence:
 The audience should leave with four conclusions:
 
 - Facility participation is not waste-volume coverage: in FY2024 the analytical shares are 41.1% of facility records, 80.1% of throughput, and 70.5% of processing design capacity.
-- First installed-capacity entry is rare and strongly scale-selective, but the joint age evidence is uncertain in both risk sets.
+- First installed-capacity entry is rare and strongly associated with processing scale, but the joint age evidence is uncertain in both risk sets.
 - Gross MWh/t is an accounting outcome produced by installed generator sizing, annual electrical capacity factor, and waste-processing utilization.
 - The evidence is descriptive and diagnostic. It does not identify retrofit effects, pathway effects, or optimal investments.
 
@@ -120,7 +120,7 @@ The broad exact-year Firth model is narrower: 15,154 adjacent-year, complete-cov
 
 A same-episode sensitivity has 15,095 rows, 1,135 lineages, and 24 events. An identity-certain sensitivity has 15,107 rows, 1,130 lineages, and all 35 events. The low event counts, not the large row counts, govern inferential strength.
 
-The engineering component frame is different again. It contains 6,511 positive-throughput, positive-output generator-years across 493 stable lineages after predeclared engineering checks.
+The engineering component frame is different again. It contains 6,511 positive-throughput, positive-output generator-years across 493 stable lineages after predefined engineering checks.
 
 Entry is defined as first reporting positive installed electrical capacity. It is not automatically a physical project date. Installed capacity and output are closely related but not identical administrative states.
 
@@ -148,7 +148,7 @@ The scale odds ratios are 6.13 in the broad exact-year frame and 6.25 after requ
 
 Age is weaker and continuity-sensitive evidence. The lineage-bootstrap joint age p-values are .3800 in the broad frame, .1863 after prior operation, .0508 under same-episode continuity, and .3566 after excluding identity-uncertain lineages. The same-episode frame has only 24 events, and its model-based covariance gives a stronger p-value than its lineage-bootstrap covariance.
 
-The pre-specified interpretation follows the lineage-bootstrap joint tests, not isolated point estimates or individual intervals. Therefore, the paper does not claim a general independent age pattern. The borderline continuity result is disclosed as sensitivity, not promoted as the preferred model.
+The designated interpretation follows the lineage-bootstrap joint tests, not isolated point estimates or individual intervals. Therefore, the paper does not claim a general independent age pattern. The near-threshold continuity result is disclosed as sensitivity, not promoted as the preferred model.
 
 An odds ratio near six does not mean a sixfold probability and does not show that increasing a facility from 100 to 300 t/day would cause entry. Entry is rare, and scale can proxy for many unobserved municipal, financial, and technical conditions.
 
@@ -158,7 +158,7 @@ Transition: The next slide separates the supported scale conclusion from the uns
 
 The supported RQ2 conclusion is narrow: first reporting of installed capacity is rare and strongly concentrated among larger processing facilities in both modeled risk sets.
 
-The result does not support an age-only screening rule. Negative point estimates do not override the null broad and identity-certain tests or the sparse, borderline same-episode result.
+The result does not support an age-only screening rule. Negative point estimates do not override the null broad and identity-certain tests or the sparse, near-threshold same-episode result.
 
 The 55 descriptive events show multiple administrative pathways: 35 continuity-lineage events, 11 rebuild/replacement-like events, and nine forward-dated or placeholder events. In the bridge to output, 47 of the 55 report positive gross generation in the event year and 51 do so by the following observed fiscal year.
 
@@ -184,7 +184,7 @@ Transition: The primary generator analysis therefore models design intensity and
 
 ## Slide 11: Engineering Frame Separates Design From Operation
 
-The initial operating-generator frame has 6,660 rows with positive throughput and positive gross output. The predeclared checks exclude rather than clip 149 rows, leaving 6,511 engineering-valid generator-years across 493 stable lineages.
+The initial operating-generator frame has 6,660 rows with positive throughput and positive gross output. The predefined checks exclude rather than clip 149 rows, leaving 6,511 engineering-valid generator-years across 493 stable lineages.
 
 The checks require gross intensity between 0.01 and 0.80 MWh/t, electrical capacity factor between 0.02 and 1.20, processing utilization between 0.02 and 1.20, generator design intensity between 0.1 and 100 kW per t/day, and complete non-negative age and model fields.
 
@@ -230,7 +230,7 @@ Six forward-dated or placeholder observations are omitted from the plotted contr
 
 The continuity-versus-rebuild difference is largest for generator design intensity, with a smaller capacity-factor difference. That is consistent with the broader component result, but it is not an estimated pathway effect. The groups are small, pathway assignment is administrative, follow-up is selected, and there is no counterfactual matching.
 
-Transition: The main component interpretation survives several predeclared sensitivity checks, but those checks do not change its noncausal status.
+Transition: The main component interpretation survives several predefined sensitivity checks, but those checks do not change its noncausal status.
 
 ## Slide 15: Stress Tests Preserve the Component Interpretation
 
