@@ -5,14 +5,17 @@ This directory contains the active article, supplement, figures, evidence snapsh
 ## Current Role
 
 - Target journal track: `Waste Management`
-- Active prose: [`manuscript/paper.md`](manuscript/paper.md)
-- LaTeX reading source: [`manuscript/paper.tex`](manuscript/paper.tex)
+- Public journal prose: [`manuscript/paper.md`](manuscript/paper.md)
+- Public LaTeX source: [`manuscript/paper.tex`](manuscript/paper.tex)
+- Professor prose: [`manuscript/professor/paper.md`](manuscript/professor/paper.md)
+- Professor LaTeX source: [`manuscript/professor/paper.tex`](manuscript/professor/paper.tex)
 - Revision state: [`submission/current-status.md`](submission/current-status.md)
 - Canonical evidence: [`../output/`](../output/)
 - Synchronized evidence copies: [`evidence/`](evidence/)
-- Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf)
+- Journal-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf)
+- Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/professor-review-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/professor-review-manuscript-latex.pdf)
 
-The current empirical core and professor-facing package form a verified review baseline. The status page records the latest completed rebuild, evidence sync, claim checks, format gates, and visual PDF inspection; rerun those gates after any substantive change.
+The shared empirical core, focused public draft, and preserved professor package form the current review baseline. The status page records completed rebuilds, evidence sync, claim checks, format gates, and visual PDF inspection; rerun those gates after any substantive change.
 
 ## Paper Logic
 
@@ -28,8 +31,9 @@ The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events;
 
 | Task | File |
 |:--|:--|
-| Read or revise the article | [`manuscript/paper.md`](manuscript/paper.md) |
-| Check final PDF wording | [`manuscript/paper.tex`](manuscript/paper.tex) |
+| Read or revise the public article | [`manuscript/paper.md`](manuscript/paper.md) |
+| Check public PDF wording | [`manuscript/paper.tex`](manuscript/paper.tex) |
+| Review the comprehensive professor version | [`manuscript/professor/paper.md`](manuscript/professor/paper.md) |
 | Check readiness and blockers | [`submission/current-status.md`](submission/current-status.md) |
 | Inspect synchronized evidence | [`evidence/README.md`](evidence/README.md) |
 | Trace claims to outputs | [`../output/claim_evidence_map.md`](../output/claim_evidence_map.md) |
@@ -43,7 +47,7 @@ The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events;
 
 | Path | Role |
 |:--|:--|
-| `manuscript/` | Markdown article source and synchronized LaTeX reading source. |
+| `manuscript/` | Public journal sources plus the comprehensive professor profile. |
 | `supplement/` | Identity, estimator, robustness, and supporting detail. |
 | `figures/` | Figure builders plus rendered PDF/PNG assets. |
 | `tables/` | Paper-facing table drafts and extracts. |
@@ -73,6 +77,7 @@ npm run paper:check
 npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run paper:build:professor
 npm run slides:paper
 npm run slides:paper:pdf
 ```
@@ -81,9 +86,13 @@ npm run slides:paper:pdf
 - `paper:check` fails when those copies are missing or stale.
 - `claims:verify` checks registered high-risk claims and stale wording.
 - `paper:export:nopdf` creates Markdown, HTML, and DOCX review files.
-- `paper:build:latex` creates the preferred reading PDF.
+- `paper:build:latex` creates the public journal reading PDF.
+- `paper:build:professor` creates the comprehensive professor reading PDF.
 
-Use `share/waste-management-manuscript-latex.pdf` for cross-device reading, `submission/waste-management-manuscript-latex.pdf` for local package review, and `share/paper-zoom-briefing.pdf` for screen sharing. The browser-exported manuscript PDF is a convenience artifact, not the preferred build.
+Use `share/waste-management-manuscript-latex.pdf` for the public journal draft,
+`share/professor-review-manuscript-latex.pdf` for comprehensive supervision,
+`submission/waste-management-manuscript-latex.pdf` for local package review,
+and `share/paper-zoom-briefing.pdf` for screen sharing.
 
 ## Resume Workflow
 
@@ -94,6 +103,7 @@ npm run paper:check
 npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run paper:build:professor
 ```
 
 If only style changes and no empirical statement changes, the full analysis rebuild can be skipped. The evidence sync, claim check, and relevant artifact build must still be current before human review.

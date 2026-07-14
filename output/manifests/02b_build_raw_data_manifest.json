@@ -14,7 +14,7 @@
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
-    "code/analysis/08_verify_claims.py": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
+    "code/analysis/08_verify_claims.py": "d89279430853c41552c7f6acca63adc480e2602a7e96a18d52ad2b33adf082a1",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "fb2c41ec244c7a006928826152d4a73e0faeeb2e617fb25a49017025772e7513"

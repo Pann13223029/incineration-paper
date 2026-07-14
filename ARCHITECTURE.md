@@ -32,10 +32,16 @@ When two files disagree, use this order:
 2. `data/processed/incineration_panel_identified.csv` and `data/processed/facility_identity_crosswalk.csv` establish the audited analytical grain and lineage fields.
 3. Generated `output/*.md`, `output/*.csv`, and `output/manifests/*.json` establish samples, estimates, and diagnostics.
 4. `paper/evidence/current/*` is a byte-synchronized convenience copy of selected output files.
-5. `paper/manuscript/paper.md`, `paper/manuscript/paper.tex`, and the supplement interpret the evidence.
+5. The public and professor manuscript profiles plus the shared supplement interpret the evidence.
 6. `paper/submission/*` and `paper/share/*` are distribution artifacts only.
 
-The Markdown and LaTeX manuscripts must agree semantically. Neither manuscript may override a generated result.
+Each profile's Markdown and LaTeX sources must agree semantically. Both profiles
+use the same canonical evidence; neither may override a generated result.
+
+The root `paper/manuscript/paper.*` sources own the public journal draft.
+`paper/manuscript/professor/paper.*` preserves the comprehensive supervision
+profile. The profiles may differ in explanation and placement, but not in
+definitions, estimates, uncertainty, or evidence boundaries.
 
 ## Canonical Stage Flow
 
@@ -129,9 +135,14 @@ If a source changes, run `npm run paper:sync`; do not edit its copy. `npm run pa
 | `npm run claims:verify` | Check registered numerical claims, required disclosures, and stale wording. |
 | `npm run paper:export:nopdf` | Export Markdown, HTML, and DOCX from the Markdown manuscript. |
 | `npm run paper:build:latex` | Build figures and the LaTeX reading PDF. |
+| `npm run paper:build:professor` | Build the comprehensive professor reading PDF. |
 | `npm run repo:check` | Check ownership paths, Markdown links, and journal-format gates. |
 
-The authoritative reading PDF is built from `paper/manuscript/paper.tex` and copied to `paper/share/waste-management-manuscript-latex.pdf`. The HTML/DOCX export is useful for review and submission packaging but is not the preferred PDF route.
+The public reading PDF is built from `paper/manuscript/paper.tex` and copied to
+`paper/share/waste-management-manuscript-latex.pdf`. The professor reading PDF
+is built from `paper/manuscript/professor/paper.tex` and copied to
+`paper/share/professor-review-manuscript-latex.pdf`. The HTML/DOCX export follows
+the public Markdown profile.
 
 CI should call the same orchestrator and package commands rather than duplicate a private stage list. Platform-sensitive figure binaries and convenience PDFs may differ at the byte level; source data, analytical tables, and claim checks must not drift.
 
@@ -144,7 +155,8 @@ CI should call the same orchestrator and package commands rather than duplicate 
 | New or revised empirical claim | Confirm `output/*`, then run `npm run claims:verify` |
 | Sample, identity, or model change | `npm run analysis:rebuild`, `npm run paper:sync`, `npm run paper:check`, `npm run claims:verify` |
 | Estimator implementation change | `npm run analysis:test`, then the full sample/model gate above |
-| Submission refresh | `npm run paper:export:nopdf` and `npm run paper:build:latex` |
+| Public submission refresh | `npm run paper:export:nopdf` and `npm run paper:build:latex` |
+| Professor reading refresh | `npm run paper:build:professor` |
 | Pre-push | `npm run repo:check`, `npm run paper:check`, `npm run claims:verify`, `git diff --check` |
 
 ## Verification Boundary

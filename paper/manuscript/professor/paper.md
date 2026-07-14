@@ -1,27 +1,31 @@
-# From Facility Counts to Generator Components: Electricity Recovery in Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024
+# Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024
 
 ## Abstract
 
-Facility counts can misstate the activity covered by electricity recovery. We
-link 23,593 Japanese municipal-incinerator records for fiscal year (FY)
-2005-FY2024 into 1,690 audited stable administrative lineages and 1,767 reported
-asset episodes. We then distinguish fleet coverage, first reported installed-
-capacity entry, and engineering components of gross megawatt-hours per tonne
-(MWh/t). In FY2024, 41.1% of records reported installed capacity, while positive-
-output facilities handled 80.1% of throughput and installed-capacity facilities
-held 70.5% of processing design capacity. Among lineages first observed without
-capacity, entry was sparse: 35 events entered the broad exact-year model and 33
-remained after requiring positive prior-year operation. Firth bias-reduced
-models gave conditional odds ratios of 6.13 and 6.25 when comparing 300 with 100
-tonnes per day, whereas age inference changed across continuity definitions.
-Among 6,511 engineering-valid generator-years across 493 lineages, reported
-start-year cohorts differed much more in generator sizing than in annual
-electrical capacity factor. Gross MWh/t is algebraically determined by generator
-sizing, capacity factor, and waste loading; regressions among these shared
-quantities remain descriptive rather than causal. The evidence therefore changes
-fleet diagnosis by separating facility counts from activity coverage and
-installed design from annual operation. It does not identify physical project
-histories, recoverable potential, or intervention effects.
+Facility counts can misstate electricity-recovery coverage. We link 23,593
+Japanese municipal-incinerator records for fiscal year (FY) 2005-FY2024 into
+1,690 audited stable administrative lineages and 1,767 asset episodes, then
+examine count-versus-volume coverage, first reporting of installed electrical
+capacity, and components of gross megawatt-hours per tonne (MWh/t). In FY2024,
+41.1% of records reported installed capacity, positive-output facilities handled
+80.1% of throughput, and installed-capacity facilities held 70.5% of processing
+design capacity. Entry was sparse: 55 descriptive events, 35 broad exact-year
+events, and 33 after positive prior-year operation. Firth bias-reduced models
+show a strong positive association with processing scale: conditional odds
+ratios comparing 300 with 100 tonnes per
+day are 6.13 and 6.25. Lineage-bootstrap joint age tests do not support a general
+independent association in the broad, prior-operation, or identity-certain
+frames (*p*=0.380, 0.186, and 0.357); a 24-event same-episode sensitivity is
+continuity-sensitive (*p*=0.051 with 499 lineage-bootstrap replications). Among 6,511 engineering-valid generator-years across 493
+lineages, reported start-year cohorts differ sharply in generator sizing. In a
+heating-controlled diagnostic, adding design intensity makes former age,
+processing-scale, and waste-utilization associations with gross MWh/t small and
+non-significant. Gross MWh/t is therefore an accounting outcome, not an
+independent operating-performance measure. An exploratory pathway comparison
+places continuity-lineage entrants below rebuild/replacement-like entrants in
+descriptive first-complete-year component ranks. The evidence shows
+count-volume divergence, scale-associated entry, and a reported start-year cohort hierarchy in generator sizing, but not physical project
+histories or causal effects.
 
 **Keywords:** municipal solid waste; incineration; waste-to-energy; Japan;
 generator sizing; capacity factor; administrative record linkage
@@ -74,9 +78,7 @@ gross generation intensity into observable engineering components. The aim is
 descriptive and diagnostic. The study does not estimate the effect of a
 specific equipment project, infer a physical closure from administrative
 absence, or calculate net electricity export, useful heat, lifecycle emissions,
-or recoverable technical potential. Its primary contribution is a measurement
-architecture that defines fleet denominators, administrative transitions, and
-engineering components before interpreting electricity-recovery performance.
+or recoverable technical potential.
 
 ### 1.1 Research questions
 
@@ -95,11 +97,12 @@ The three research questions (RQs) are:
 > first reporting positive capacity, and does the evidence change after the
 > risk set is restricted to lineages with positive prior-year waste throughput?
 
-> **RQ3: Engineering components.** Among operating
+> **RQ3: Engineering components and exploratory pathway outcomes.** Among operating
 > generators, how do generator design intensity, electrical capacity factor,
 > and waste-processing utilization combine to produce gross MWh/t; how are
 > those components associated with reported design vintage and processing
-> scale?
+> scale; and how do first-complete-year component ranks differ descriptively
+> between continuity-lineage and rebuild/replacement-like entries?
 
 The sequence matters. RQ1 establishes the denominator problem at fleet level.
 RQ2 then asks which observed non-generating lineages enter the installed-capacity
@@ -108,9 +111,9 @@ and asks what produces differences within the generating segment. Figure 1
 shows the annual count, throughput, and design-capacity coverage measures that
 anchor this sequence.
 
-![Figure 1. Facility participation, positive-output throughput coverage, and installed-capacity design-capacity coverage in Japan's municipal-incineration records, FY2005-FY2024. The denominators are intentionally different and should not be read as interchangeable shares.](../figures/figure1_two_part_framework.png)
+![Figure 1. Facility participation, positive-output throughput coverage, and installed-capacity design-capacity coverage in Japan's municipal-incineration records, FY2005-FY2024. The denominators are intentionally different and should not be read as interchangeable shares.](../../figures/figure1_two_part_framework.png)
 
-## 2. Research Gap and Analytical Contribution
+## 2. Analytical Foundation and Comparator Adaptation
 
 ### 2.1 From one fleet average to three estimands
 
@@ -135,29 +138,39 @@ simultaneously. It also permits newer cohorts to report higher gross MWh/t
 because of larger generators even when older generators do not have lower
 annual capacity factors. Section 3 states that identity explicitly.
 
-### 2.2 Unresolved questions in the Japanese administrative series
+### 2.2 What is adapted from high-profile and close comparators
 
-The closest Japanese studies establish that facility scale, operating mode,
-waste policy, and waste properties matter for heat and electricity output
-(Sasao, 2018), and that generation per unit waste does not by itself recover the
-thermal conversion process observed in detailed plant data (Shino, 2019). Those
-studies do not reconstruct a national facility history across identifier breaks
-or distinguish later first reporting of installed capacity from outcomes among
-facilities already generating.
+High-profile studies supply research logic, not a ready-made model. Cui et al.
+(2026) foreground facility hierarchy, Liu et al. (2025) emphasize effectiveness
+over expansion, and Han et al. (2025) place recovery beside other sustainability
+dimensions. This paper asks where hierarchy appears in Japan without estimating
+an optimization frontier, city energy-carbon system, or pollutant outcomes.
 
-International facility studies evaluate multiple plant activities or revenue
-performance (Chen et al., 2012; Yeh, 2020). Recent high-profile studies combine
-richer engineering, environmental, and system data to evaluate hierarchy,
-effectiveness, or sustainability outcomes (Cui et al., 2026; Han et al., 2025;
-Liu et al., 2025). The Japanese administrative workbooks used here cannot
-support comparable optimization, lifecycle, pollutant, or welfare estimands.
+Sasao (2018) supports repeated Japanese facility observations and explicit
+output questions. Shino (2019) makes generation relative to waste input an
+important observable. This paper retains that observable but treats it as an
+accounting intensity requiring decomposition.
 
-They can answer three narrower questions that remain unresolved for this
-national series: how coverage changes with the denominator, which observed
-non-generating lineages later first report installed capacity, and whether gross
-MWh/t differences are expressed through installed sizing or annual capacity use.
-The contribution is therefore an identity-aware, component-based diagnosis of
-the observed fleet rather than a new efficiency frontier or investment ranking.
+Chen et al. (2012) and Yeh (2020) motivate separating activities within
+operating plants. This study adds an entry risk set and uses component
+regressions because the available fields do not support a comparable network or
+revenue frontier across all years.
+
+**Table 1. Transparent adaptation of comparator research logic**
+
+| Comparator | Research logic used here | Adaptation in this paper | Outside this paper's estimand |
+|:--|:--|:--|:--|
+| Cui et al. (2026) | Examine hierarchy rather than only a fleet mean | Separate generator design intensity from annual capacity factor and waste loading | Plant optimization or a transferable frontier |
+| Liu et al. (2025) | Distinguish effective system coverage from equipment expansion | Compare facility participation with throughput and design-capacity coverage | Urban energy-carbon effectiveness or welfare effects |
+| Han et al. (2025) | Keep resource recovery distinct from other sustainability outcomes | State gross electricity boundaries and avoid a total-sustainability score | Pollutant-control, health, or lifecycle assessment |
+| Sasao (2018) | Use repeated Japanese facility data for policy-relevant output questions | Construct a first-entry event history and explicit risk sets | Replication of the original policy specification |
+| Shino (2019) | Treat electricity per waste input as an informative observable | Decompose gross MWh/t into sizing, capacity factor, and waste loading | Treating the ratio as an independent engineering score |
+| Chen et al. (2012); Yeh (2020) | Recognize multiple plant activities and persistent heterogeneity | Model observable components and within-year ranks | Data-envelopment or revenue-frontier estimation |
+
+The adaptation changes the unit and estimands to fit Japanese administrative
+data. Its distinctive elements are audited lineages, count-volume coverage,
+sparse first entry, and an exact engineering identity; its conclusions are
+narrower than studies with process, cost, emissions, or city-system data.
 
 ## 3. Data and Methods
 
@@ -263,10 +276,10 @@ implicit.
 
 ### 3.3 Analytical frames and estimands
 
-The three RQs use related but non-identical samples. Table 1 prevents their
+The three RQs use related but non-identical samples. Table 2 prevents their
 denominators from being blended.
 
-**Table 1. Analytical frames after identity and data-quality checks**
+**Table 2. Analytical frames after identity and data-quality checks**
 
 | Frame | Facility-year rows | Stable lineages | Events | Estimand |
 |:--|--:|--:|--:|:--|
@@ -288,10 +301,12 @@ available. The complete-covariate frame further drops 120 rows with missing
 lagged age or processing capacity, and 22 non-adjacent rows are excluded from
 the exact-year model; none of those 22 rows contains an event.
 
-Separately, an audit classifies all 55 descriptive events from administrative
-continuity, reported resets, and forward-dated records. These pathway labels do
-not verify physical project mechanisms. Their exploratory outcome comparison is
-reported only in the supplement.
+The 55 descriptive events, the 35 complete-covariate events, and the pathway
+categories answer different bookkeeping questions. Coincidentally, the pathway
+audit also identifies 35 continuity-lineage events. That count should not be
+conflated with the 35 events in the exact-year regression sample. The former is
+a pathway classification among observed entries; the latter is a covariate
+completeness restriction.
 
 ### 3.4 RQ1: coverage definitions and fleet identity
 
@@ -451,9 +466,6 @@ Gross MWh/t is thus a ratio produced jointly by installed sizing, annual use of
 that electrical capacity, and annual waste loading. The identity does not say
 that any one component is exogenous. For example, throughput, capacity factor,
 maintenance, and waste composition may be jointly determined during a year.
-The derived quantities also share numerators and denominators. Associations or
-changes in model fit among them are therefore partly mechanical and are used to
-describe reported structure, not to identify an engineering mechanism.
 
 The primary sample requires positive installed capacity, throughput, and gross
 output. Values are excluded rather than clipped if gross intensity falls
@@ -503,6 +515,17 @@ engineering bounds. Asset-episode fixed effects and exact-adjacent first
 differences are used only for operating components that vary meaningfully
 within an episode. Design intensity is predominantly a between-asset attribute,
 so within-episode change is not presented as its primary estimand.
+
+Finally, event pathways are classified from observed administrative continuity.
+A continuity-lineage entry remains in the same lineage and asset episode across
+adjacent years without a reported reset. A rebuild/replacement-like entry has an
+asset-episode, reported-start-year, or mature-to-new age reset. A
+forward-dated/placeholder entry has a future start year or new-build placeholder
+name. These labels are descriptive evidence rules. They do not verify the
+physical project mechanism. First-complete-year outcomes are compared as
+within-fiscal-year percentile ranks among engineering-valid generators, which
+reduces confounding by fleet-wide time trends but does not remove selection into
+each pathway.
 
 ## 4. Results
 
@@ -601,11 +624,7 @@ prior-operation estimates for readability; the same-episode and
 identity-certain coefficient sets remain in the supplement and generated
 evidence.
 
-The lineage-bootstrap joint age results are: broad *p*=0.3800,
-prior-operation *p*=0.1863, same-episode *p*=0.0508, and identity-certain
-*p*=0.3566. The broad 300-versus-100 t/day odds ratio is 6.13.
-
-![Figure 2. Firth bias-reduced estimates for first reported installed-capacity entry in the broad exact-year and prior-operation frames. Capacity is shown as the 300-versus-100 t/day contrast; intervals come from 499 stable-lineage bootstrap replications.](../figures/figure2_selective_transition.png)
+![Figure 2. Firth bias-reduced estimates for first reported installed-capacity entry in the broad exact-year and prior-operation frames. Capacity is shown as the 300-versus-100 t/day contrast; intervals come from 499 stable-lineage bootstrap replications.](../../figures/figure2_selective_transition.png)
 
 The supported RQ2 conclusion is narrow but clear. First reported capacity entry
 is rare and strongly concentrated among larger waste-processing facilities.
@@ -615,7 +634,7 @@ same-episode result depends on a stricter continuity rule and sparse events.
 Age should not be used as if the model had identified an equipment-project
 response.
 
-### 4.3 RQ3: cohort differences are expressed mainly through reported sizing
+### 4.3 RQ3: the gross-intensity hierarchy is principally a sizing hierarchy
 
 The engineering-valid generator frame has 6,511 observations from 493 stable
 lineages. Median gross intensity is 0.327 MWh/t, median generator design
@@ -631,7 +650,7 @@ MWh/t. Median electrical capacity factors are 0.619, 0.625, 0.561, and 0.664;
 they do not show a comparable monotonic vintage gradient. Figure 3 separates
 these two components visually.
 
-![Figure 3. Descriptive median generator design intensity and electrical capacity factor by reported facility start-year cohort among engineering-valid generator-years. The points do not show adjusted estimates or uncertainty intervals. Reported start year is not a verified generator installation date.](../figures/figure3_efficiency_structure.png)
+![Figure 3. Median generator design intensity and electrical capacity factor by reported facility start-year cohort among engineering-valid generator-years. Reported start year is a design-vintage marker, not a verified generator installation date.](../../figures/figure3_efficiency_structure.png)
 
 The adjusted component models reinforce the descriptive pattern. Relative to
 the 2010-or-later cohort, log generator design intensity coefficients are
@@ -661,18 +680,17 @@ furnace count, and year. The model $R^2$ is 0.914. It confirms that both waste
 loading and installed kW are central to annual output, but it is not a production
 function with exogenous inputs.
 
-Because the components are algebraically coupled, a specification diagnostic
-compares gross-intensity models on the
+The most important diagnostic compares gross-intensity specifications on the
 5,806-row plausible-heating-value subset. In the
 legacy-style model without generator design intensity, the reported-age
 coefficient is -0.0349, the processing-capacity coefficient is 0.1001, and the
 waste-utilization coefficient is 0.6699; all have *p*<0.001. After adding log
 generator design intensity, the corresponding coefficients become -0.0020
 (*p*=0.2977), -0.0092 (*p*=0.1991), and -0.0995 (*p*=0.2038). The sizing coefficient
-is 0.7532 (*p*<0.001). This is not independent evidence of a mechanism or a
-causal decomposition: design intensity participates directly in the accounting
-identity. The diagnostic shows that the former age, scale, and utilization
-interpretation is specification-dependent once installed sizing is represented.
+is 0.7532 (*p*<0.001), and model $R^2$ rises from 0.4737 to 0.8131. This is not a
+causal decomposition. It shows that the former age, scale, and utilization
+interpretation is sensitive to whether installed generator sizing is
+represented.
 
 Adjacent-year rank persistence is highest for generator design intensity:
 0.995 across 5,963 pairs from 470 lineages. Gross-intensity rank persistence is
@@ -692,6 +710,33 @@ of 0.533. Within-asset-episode models also retain a
 positive association between utilization and electrical capacity factor. Those
 checks strengthen the component description but do not resolve simultaneous
 changes in throughput, maintenance, installed capacity, and output.
+
+### 4.4 Exploratory pathway comparison
+
+The first-complete-year comparison asks where entrants sit in the same-year
+generator distribution, not what entry causes. Across all exact-year entrants
+with available engineering-valid outcomes at event time plus one, 44 lineages
+have mean gross-intensity rank 51.6%, generator-design rank 48.1%, and
+capacity-factor rank 56.3%. The pooled average is therefore near the middle of
+the contemporaneous generator distribution.
+
+Pathways are heterogeneous. At event time plus one, 27 continuity-lineage
+entrants average 0.260 MWh/t and rank at 40.2% for gross intensity, 36.8% for
+generator design intensity, and 53.8% for electrical capacity factor. Eleven
+rebuild/replacement-like entrants average 0.442 MWh/t and rank at 72.5%, 66.1%,
+and 65.5%, respectively. Figure 4 displays these component ranks. Six
+forward-dated/placeholder observations are omitted from the plotted contrast
+because that category is too sparse and its administrative timing is difficult
+to interpret.
+
+![Figure 4. First-complete-year mean within-year percentile ranks for continuity-lineage and rebuild/replacement-like entrants. The contrast is descriptive; the sparse forward-dated/placeholder pathway is omitted.](../../figures/figure4_post_entry_trajectories.png)
+
+The larger pathway difference aligns more closely with generator sizing than
+with capacity factor.
+That pattern is consistent with the broader component results, but it is not an
+estimated effect of pathway. Pathway assignment is based on reported resets,
+follow-up is selective, and there is no counterfactual match between otherwise
+equivalent projects.
 
 ## 5. Discussion
 
@@ -715,8 +760,8 @@ Gross MWh/t also changes meaning after decomposition. Its observed cohort
 hierarchy aligns primarily with generator sizing; older reported cohorts do not have
 uniformly lower annual capacity factors. Once sizing is included, the other
 legacy coefficients no longer carry a distinct gross-intensity interpretation.
-This is the value of defining the accounting structure before assigning an
-operating interpretation to a gross-output ratio.
+This is the value of adapting comparator work on hierarchy and multi-activity
+production while respecting the narrower Japanese fields.
 
 ### 5.2 Evidence-bound implications
 
@@ -767,11 +812,10 @@ capacity factor, maintenance, and output are jointly determined. Controls,
 fixed effects, and adjacent differences do not create exogenous variation; the
 equations remain accounting identities and conditional descriptions.
 
-Linking procurement, construction, generator, net-export, heat-use, outage, and
-waste-composition records would enable the project-specific questions this
-panel cannot answer. Exploratory administrative pathway comparisons remain in
-the supplement because their small selected groups do not support a main-text
-mechanism claim.
+Finally, the pathway contrast is small and selected, and reported resets do not
+verify physical replacement. Linking procurement, construction, generator,
+net-export, heat-use, outage, and waste-composition records would enable the
+project-specific questions this panel cannot answer.
 
 ## 6. Conclusion
 
@@ -785,17 +829,20 @@ frames. Broad and identity-certain age tests are non-significant, while a
 same-episode sensitivity uses only 24 events and differs sharply between
 bootstrap and fitted-model covariance; age inference is
 therefore continuity-sensitive rather than generally established. Among operating generators,
-the observed gross-MWh/t cohort hierarchy is expressed primarily through
-reported generator sizing; it does not
+the observed gross-MWh/t cohort hierarchy aligns primarily with generator sizing
+and design vintage; it does not
 support an independent operating or age interpretation once sizing is included.
+An exploratory comparison places continuity-lineage entrants below
+rebuild/replacement-like entrants in first-complete-year component ranks, but
+that small, selected contrast remains descriptive.
 
 The paper's contribution is therefore not a claim that every non-generator is
 an equal opportunity or that newer facilities simply perform better. It is a
 defensible measurement architecture: reconstruct lineages before transitions,
 separate counts from waste volume, use sparse-event methods for entry, and
 decompose gross output before interpreting hierarchy. That architecture gives a
-clear foundation for deciding which next question requires engineering,
-capital-history, or causal evidence.
+professor or later reviewer a clear foundation for deciding which next question
+requires engineering, capital-history, or causal evidence.
 
 ## Acknowledgements
 
@@ -828,12 +875,11 @@ involve human participants, animal subjects, or private personal data.
 
 The facility-level source data are derived from the Ministry of the Environment
 Japan General Waste Treatment Survey, which is publicly released by the Ministry
-and e-Stat. Analysis code, machine-readable result manifests, derived tables,
-figure-generation scripts, and manuscript figures are available in the
-versioned public repository at
-https://github.com/Pann13223029/incineration-paper. Raw source workbooks can be
-obtained from the Ministry and e-Stat portals; redistribution of archived source
-copies remains subject to the source providers' terms.
+of the Environment. Subject to source-file redistribution conditions, the author
+will deposit the analysis code, machine-readable result manifests, derived
+tables, figure-generation scripts, and manuscript figures in a versioned
+repository associated with the submitted paper. Raw source workbooks can be
+obtained from the Ministry and e-Stat portals.
 
 ## Declaration of Generative AI and AI-Assisted Technologies in the Manuscript Preparation Process
 

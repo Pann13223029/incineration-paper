@@ -36,7 +36,7 @@ OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript.pdf"
 
 
 TITLE = (
-    "Coverage, Entry, and Engineering Components of Electricity Recovery in "
+    "From Facility Counts to Generator Components: Electricity Recovery in "
     "Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024"
 )
 AUTHOR = "Pann Phetra"

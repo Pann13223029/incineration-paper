@@ -1,23 +1,32 @@
 # Current Paper Status
 
-The corrected empirical pipeline and professor-facing manuscript package form a verified review baseline as of 13 July 2026. Analysis reconstruction, estimator benchmarks, evidence synchronization, claim verification, format validation, LaTeX compilation, and visual PDF review have passed. This is ready for substantive professor review, but it is not yet a journal-submission decision or a substitute for human sign-off.
+The repository now maintains two manuscript profiles over one empirical
+pipeline as of 14 July 2026. The journal-facing public draft presents the
+focused measurement contribution, while the preserved professor-facing version
+retains the fuller methodological, comparator, diagnostic, and defense context.
+Both profiles use the same generated evidence and claim-verification rules.
+The public draft is ready for structured review, not journal submission.
 
 ## Readiness
 
 | Item | Current state |
 |:--|:--|
-| Repository | Private paper workspace at `https://github.com/Pann13223029/incineration-paper` |
+| Repository | Public review workspace at `https://github.com/Pann13223029/incineration-paper` |
 | Target journal track | `Waste Management` |
 | Empirical pipeline | Corrected identity, fleet, entry, component, robustness, quality, and claim stages implemented |
-| Manuscript and supplement | Reconciled with the corrected four-frame entry and component evidence |
-| Figures | Four regenerated academic figures; manuscript rendering inspected |
+| Journal-facing draft | Focused 19-page draft: 213-word abstract, 5,909 conservative main-text words, three figures, and one table |
+| Professor-facing draft | Preserved comprehensive 21-page version with four figures, two tables, and expanded method context |
+| Shared supplement | Reconciled with the corrected four-frame entry and component evidence |
+| Figures | Public draft uses three academic figures; exploratory pathway evidence remains outside its main text |
 | Evidence snapshot | 33 canonical artifacts synchronized; `paper:check` passes |
-| Claim verification | Passed for evidence integrity, Markdown, LaTeX, supplement, and professor packet |
-| Reading PDF | Rebuilt as a 21-page LaTeX PDF; every page visually inspected |
-| Presentation | Rebuilt as an 18-slide PDF; every slide visually inspected |
-| Preferred PDF path | `paper/share/waste-management-manuscript-latex.pdf` |
+| Claim verification | Profile-aware checks pass for journal and professor Markdown and LaTeX sources |
+| Journal PDF | `paper/share/waste-management-manuscript-latex.pdf` |
+| Professor PDF | `paper/share/professor-review-manuscript-latex.pdf` |
+| Frozen professor baseline | Git tag `professor-review-v1` at `4ac9afe` |
 
-Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
+Journal-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
+
+Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/professor-review-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/professor-review-manuscript-latex.pdf).
 
 ## Corrected Evidence Baseline
 
@@ -43,15 +52,18 @@ Current PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration
 - The custom Firth estimator matches a closed-form separated-table solution and an independently optimized penalized likelihood.
 - All four Firth models converged with all 499 requested whole-lineage bootstrap replications.
 - Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
-- `paper:check`, `claims:verify`, and `repo:check` passed after final evidence sync.
-- The LaTeX manuscript and presentation PDFs were rebuilt and visually inspected page by page.
+- The journal and professor LaTeX profiles compile independently from shared evidence.
+- Profile-aware `paper:check`, `claims:verify`, and repository-layout gates pass after evidence sync.
+- The 19-page journal-facing PDF was visually inspected page by page for crop, overlap, spacing, and figure legibility.
 - The submission Markdown, HTML, and DOCX were regenerated; the DOCX archive is structurally valid.
 
 ## Next Human Actions
 
-1. Obtain professor feedback on the three-estimand architecture, continuity-sensitive age inference, and comparator lineage.
-2. Record requested substantive changes before journal-oriented compression or reframing.
-3. Re-run the complete verification sequence after any analytical or numerical revision.
+1. Complete blinded human validation of the administrative-linkage and event-transition sample, with professor or second-reviewer adjudication for high-impact cases.
+2. Freeze and run the lower-degree-of-freedom entry model, influence diagnostics, and at least 1,999 whole-lineage bootstrap replications.
+3. Recast the engineering analysis around raw installed-capacity and gross-output quantities before finalizing the component claim.
+4. Obtain professor feedback from the comprehensive profile before accepting the shorter journal-facing framing.
+5. Resolve raw-workbook redistribution terms, licensing, citation metadata, and fresh-clone preflight behavior before public release is treated as archival publication.
 
 ## Deferred Scope
 
@@ -73,8 +85,11 @@ npm run paper:check
 npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run paper:build:professor
 npm run repo:check
 git diff --check
 ```
 
-Submission readiness begins only after this sequence passes and the rebuilt PDF receives human visual review.
+Submission readiness begins only after this sequence passes, the P0 scientific
+workstreams are complete, and both the rebuilt PDF and substantive claims
+receive human review.

@@ -64,6 +64,10 @@ The orchestrator runs parsing, provenance, identity, enrichment, descriptive ana
 
 Generated analytical facts belong in `output/`; selected paper-facing copies belong in `paper/evidence/current/` after `npm run paper:sync`. Do not hand-edit processed or generated files to force agreement with manuscript prose.
 
+The public journal and professor-facing manuscript profiles consume the same
+processed data and canonical outputs. No profile-specific data or model branch
+is permitted.
+
 ## Attribution
 
 Cite the MOE survey and e-Stat statistics code `00650101` when using the source records. Cite the paper for the derived identity reconstruction, samples, and analysis.

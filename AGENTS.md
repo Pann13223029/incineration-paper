@@ -17,7 +17,8 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 | Generator component results | `output/regression_results.md`, `output/generator_component_results.csv` | Separate design intensity from electrical capacity factor. |
 | Robustness and quality | `output/robustness_results.md`, `output/data_quality_sensitivity.md`, `output/identifier_gap_audit.md` | Keep limitations visible. |
 | Claim synchronization | `output/claim_verification.md`, `output/claim_evidence_map.md` | Run `npm run claims:verify` after claim edits. |
-| Active prose | `paper/manuscript/paper.md`, `paper/manuscript/paper.tex` | Keep Markdown and LaTeX semantically synchronized. |
+| Public journal prose | `paper/manuscript/paper.md`, `paper/manuscript/paper.tex` | Keep Markdown and LaTeX semantically synchronized. |
+| Professor prose | `paper/manuscript/professor/paper.md`, `paper/manuscript/professor/paper.tex` | Preserve comprehensive explanation while using the same empirical evidence. |
 | Paper-facing evidence | `paper/evidence/current/` | Generated copies; never hand-edit. |
 | Thesis baseline | `legacy/` | Reference-only unless explicitly targeted. |
 
@@ -67,7 +68,8 @@ If regenerated outputs disagree, stop and resolve the pipeline before updating p
 | Prose only | `npm run claims:verify`; rebuild the affected artifact |
 | Empirical claim | Check canonical output; run `npm run claims:verify` |
 | Analysis, identity, or sample logic | `npm run analysis:rebuild`, `npm run paper:sync`, `npm run paper:check`, `npm run claims:verify` |
-| Submission artifacts | `npm run paper:export:nopdf`, `npm run paper:build:latex` |
+| Public submission artifacts | `npm run paper:export:nopdf`, `npm run paper:build:latex` |
+| Professor reading artifact | `npm run paper:build:professor` |
 | Before push | `npm run repo:check`, `npm run paper:check`, `npm run claims:verify`, `git diff --check` |
 
 `code/analysis/07_rebuild_analysis.py` is the canonical stage orchestrator. Do not maintain an alternative hidden stage sequence.

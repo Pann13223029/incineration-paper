@@ -48,6 +48,7 @@ npm run paper:check
 npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run paper:build:professor
 npm run repo:check
 ```
 

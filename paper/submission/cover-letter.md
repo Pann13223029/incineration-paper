@@ -2,10 +2,9 @@
 
 Dear Editors,
 
-Please consider the enclosed manuscript, *Coverage, Entry, and Engineering
-Components of Electricity Recovery in Japan's Municipal Waste-Incineration
-Fleet, FY2005-FY2024*, for publication as a full-length article in *Waste
-Management*.
+Please consider the enclosed manuscript, *From Facility Counts to Generator
+Components: Electricity Recovery in Japan's Municipal Waste-Incineration Fleet,
+FY2005-FY2024*, for publication as a full-length article in *Waste Management*.
 
 The study links 23,593 Japanese municipal-incinerator records into 1,690 audited
 administrative facility lineages. It addresses a practical measurement problem:

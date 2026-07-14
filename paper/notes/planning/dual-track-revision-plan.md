@@ -1,6 +1,6 @@
 # Dual-Track Scientific Revision Plan
 
-**Status:** Approved plan required before implementation
+**Status:** Implementation active; public-draft pass complete, P0 scientific validation pending
 
 **Baseline:** `4ac9afe` on 14 July 2026
 
@@ -47,18 +47,18 @@ No manuscript profile may contain a manually maintained alternative result.
 
 ### Two controlled prose profiles
 
-Implementation should migrate toward this ownership model:
+The implemented ownership model is:
 
-| Profile | Purpose | Planned ownership |
+| Profile | Purpose | Current ownership |
 |:--|:--|:--|
 | Professor | Comprehensive review, supervision, oral defense, method explanation | `paper/manuscript/professor/` |
-| Journal | Submission-oriented scientific article | `paper/manuscript/journal/` |
+| Journal | Public, submission-oriented scientific article | `paper/manuscript/paper.md` and `paper/manuscript/paper.tex` |
 | Shared supplement | Full audit trail and robustness evidence | `paper/supplement/` |
 | Shared evidence | Generated results only | `output/`, `paper/evidence/current/` |
 
-Until that migration passes validation, the current
-`paper/manuscript/paper.md` and `paper/manuscript/paper.tex` remain the
-authoritative professor-facing source.
+The root manuscript sources are the public journal profile. The professor
+sources are preserved separately and build to a distinct reading PDF. Both are
+checked against the same canonical outputs.
 
 ### Baseline preservation
 
@@ -88,16 +88,16 @@ Before scientific revisions begin:
 
 | ID | Workstream | Priority | Dependency | Current state |
 |:--|:--|:--|:--|:--|
-| W0 | Freeze baseline and implement dual-profile ownership | P0 | None | Pending |
+| W0 | Freeze baseline and implement dual-profile ownership | P0 | None | Complete |
 | W1 | Independently validate administrative linkage | P0 | W0 | Pending |
-| W2 | Decide and state the primary scientific contribution | P0 | W1 findings | Pending |
+| W2 | Decide and state the primary scientific contribution | P0 | W1 findings | Provisional public rewrite; final gate pending W1 |
 | W3 | Simplify and stress-test sparse entry inference | P0 | W1 | Pending |
 | W4 | Recast engineering models around raw quantities | P0 | W0 | Pending |
-| W5 | Demote or strengthen pathway analysis | P1 | W1, W3 | Pending |
-| W6 | Rebuild novelty and comparator positioning | P1 | W2, W4 | Pending |
-| W7 | Revise figures, tables, and reader explanation | P1 | W3-W6 | Pending |
-| W8 | Produce professor and journal manuscripts in parallel | P1 | W2-W7 | Pending |
-| W9 | Resolve public release and reproducibility governance | P1 | W0 | Pending |
+| W5 | Demote or strengthen pathway analysis | P1 | W1, W3 | Public-main-text demotion complete; scientific review pending |
+| W6 | Rebuild novelty and comparator positioning | P1 | W2, W4 | Public gap rewrite complete; systematic search pending |
+| W7 | Revise figures, tables, and reader explanation | P1 | W3-W6 | Public placement pass complete; Figure 3 uncertainty redesign pending |
+| W8 | Produce professor and journal manuscripts in parallel | P1 | W2-W7 | Profiles and builds complete; final scientific reconciliation pending |
+| W9 | Resolve public release and reproducibility governance | P1 | W0 | Availability aligned; licensing and fresh-clone work pending |
 | W10 | Full validation, external-style rereview, and decision | P0 final gate | W1-W9 | Pending |
 
 ## W0 - Freeze Baseline And Establish Dual Profiles
@@ -659,6 +659,8 @@ wait for the primary analyses to stabilize.
 
 ## Immediate Next Action
 
-Implement W0 only: freeze the `4ac9afe` professor baseline, define the dual-
-profile directory and build contract, and add cross-profile verification tests.
-Do not alter models or manuscript claims until that preservation gate passes.
+Begin W1: generate the blinded administrative-linkage validation packet,
+prioritizing all modeled entry events, uncertain links, major code-break
+bridges, and a stratified comparison sample. Do not change the primary model
+until human linkage review establishes whether any lineage or event must be
+corrected.

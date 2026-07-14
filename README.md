@@ -12,7 +12,7 @@ Gross generation intensity in MWh per tonne is an administrative output ratio. I
 
 ## Start Here
 
-1. Read the active manuscript: [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
+1. Read the public journal draft: [`paper/manuscript/paper.md`](paper/manuscript/paper.md).
 2. Check the revision state: [`paper/submission/current-status.md`](paper/submission/current-status.md).
 3. Read the generated evidence summary: [`output/sample_definition.md`](output/sample_definition.md).
 4. Trace claims to evidence: [`output/claim_evidence_map.md`](output/claim_evidence_map.md).
@@ -74,7 +74,8 @@ Do not hand-edit generated evidence to make prose agree with a preferred result.
 | Generator component models | [`output/regression_results.md`](output/regression_results.md), [`output/generator_component_results.csv`](output/generator_component_results.csv) |
 | Robustness and data quality | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
 | Claim verification | [`output/claim_verification.md`](output/claim_verification.md), [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
-| Active prose | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
+| Public journal prose | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
+| Comprehensive professor prose | [`paper/manuscript/professor/paper.md`](paper/manuscript/professor/paper.md), [`paper/manuscript/professor/paper.tex`](paper/manuscript/professor/paper.tex) |
 | Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
 
 ## Reproduce And Verify
@@ -93,6 +94,7 @@ npm run paper:check
 npm run claims:verify
 npm run paper:export:nopdf
 npm run paper:build:latex
+npm run paper:build:professor
 npm run repo:check
 ```
 
@@ -104,7 +106,8 @@ npm run repo:check
 | `paper:check` | Fail if required evidence is missing or synchronized copies are stale. |
 | `claims:verify` | Check registered high-risk claims and stale-language guards. |
 | `paper:export:nopdf` | Build portable Markdown, HTML, and DOCX submission artifacts. |
-| `paper:build:latex` | Build figures and the authoritative LaTeX reading PDF. |
+| `paper:build:latex` | Build figures and the public journal reading PDF. |
+| `paper:build:professor` | Build the comprehensive professor reading PDF. |
 | `repo:check` | Validate required paths, Markdown links, and journal-format gates. |
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for stage ownership and [`AGENTS.md`](AGENTS.md) for editing rules.

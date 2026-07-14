@@ -3,7 +3,7 @@
 ## Article Information
 
 **Title**  
-Coverage, Entry, and Engineering Components of Electricity Recovery in Japan's
+From Facility Counts to Generator Components: Electricity Recovery in Japan's
 Municipal Waste-Incineration Fleet, FY2005-FY2024
 
 **Article type**  
@@ -30,11 +30,11 @@ capacity factor; administrative record linkage
 
 ## Current Draft Metrics
 
-- abstract word count: 247
-- main-text word count: 5,770, excluding tables, figure captions, display
+- abstract word count: 213
+- main-text word count: 5,528, excluding tables, figure captions, display
   equations, acknowledgements, declarations, and references
-- main-text figures: 4
-- main-text tables: 2
+- main-text figures: 3
+- main-text tables: 1
 
 ## Notes
 

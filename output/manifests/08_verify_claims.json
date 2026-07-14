@@ -14,7 +14,7 @@
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
-    "code/analysis/08_verify_claims.py": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
+    "code/analysis/08_verify_claims.py": "d89279430853c41552c7f6acca63adc480e2602a7e96a18d52ad2b33adf082a1",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "fb2c41ec244c7a006928826152d4a73e0faeeb2e617fb25a49017025772e7513"
@@ -61,16 +61,16 @@
     "output/identifier_gap_bridges.csv": "116fcf99c88f690ae3ff88d02204e69d65fc6f874a1fc51c0a273cba4a87c45a",
     "output/identifier_overlap_by_year.csv": "e290548149783fde484a3639ce510d5f784a308d48a24b2d2fac4a37d72fe59d",
     "output/identity_low_margin_links.csv": "b43cf8948793ba607faf5f9a1e971d36177a11919032f6c2c077a6fa03fd213f",
-    "output/manifests/02_parse_facility_panel.json": "7a22e5d58c4df7a55292be58348ca90b684c74ec96407f7aa76ba9c2e1359cdb",
-    "output/manifests/02a_build_facility_identity.json": "9289337f0c9e0576716ce4fc9853fd6f05b29eaa7ef32930d1beafb5a01964f4",
-    "output/manifests/02b_build_raw_data_manifest.json": "d16e66e79a0e76ed1d86ff3c6529e44ceb80b42b50d46612195dc10f7c316a53",
-    "output/manifests/04_eda_facility.json": "e986f1b4e778ac5bc3cdcf19193016851a11889f7370e65f34e9019aa99d9390",
-    "output/manifests/05_fleet_decomposition.json": "dc9a63b743250e57882e9b27c2c37e5f6254701bfe85f32b7176ed93b6157990",
-    "output/manifests/05_panel_regression.json": "ebbdd5a1b8a6adea0b90f917805c957c6a625cd32d9cc04c63cedc927eafdcd8",
-    "output/manifests/05a_power_adoption.json": "19c3954634a09ed9b20e5716961cb1ca8db507aabae33e9b51fe1636f1693ffe",
-    "output/manifests/06_robustness.json": "3e3df1ea066b7a0e03bc1557e1cdd995666154240df8ff9c13101cd3116312f9",
-    "output/manifests/06a_data_quality_sensitivity.json": "52b748403dea92f46de11f77113a0a9cdd7aae728060da0419e165886d5c2f20",
-    "output/manifests/06b_identifier_gap_audit.json": "ecb109393d8f641c97c4b46d5d1c1da6294d308f8d7d34a666c7025fb77b3f06",
+    "output/manifests/02_parse_facility_panel.json": "19d54609342a4f5d86004eea254090eb449660d57f85cd53ee922fc424f38a6e",
+    "output/manifests/02a_build_facility_identity.json": "d6b752611a630337bdb7f47673fa0970cc8b00e399b06d0d5eee5a123963fcac",
+    "output/manifests/02b_build_raw_data_manifest.json": "9bc001596240cd9bd87f7d653dff27c2cff6d87ddd22f566ac7c33df01db06ea",
+    "output/manifests/04_eda_facility.json": "dfd026d89886c471e1febd5565f93f20f4a39ed335501c56b695ef2d7211f16c",
+    "output/manifests/05_fleet_decomposition.json": "7977814c8f178a112fa3124d89e2888c2057051aa351179b0700140331a2f274",
+    "output/manifests/05_panel_regression.json": "6cf4f17fdc526c1e4981bf2e764ccdc2a877893f7ec6ebde06e5ba9f950ae738",
+    "output/manifests/05a_power_adoption.json": "b2c38cbd1738b9fcf84b9f550e7fe7002effb3d93cf3d808ae27f4e8fda3fcaf",
+    "output/manifests/06_robustness.json": "2c3c3368e0b255136389f534263f8637af96397366e878585c93d2b5004c698c",
+    "output/manifests/06a_data_quality_sensitivity.json": "a7c43eb6f62f0939a80411b43de20f0952dc45cd289298ad90649bf9683ecfb2",
+    "output/manifests/06b_identifier_gap_audit.json": "1befcca5145ff9369d6cde0fb049a171b7127e6fe78dfddc63e98fac5cd76e66",
     "output/post_adoption_bridge.csv": "59b4862c0b9eea757413b7141d442b61c81c6795d2cc37a6058ffce6b4a8cc1b",
     "output/post_adoption_trajectories.csv": "3a1dc2c2c25fd30df6ecb111e3c3f2186299de800a55192b3576e89d37e6cedc",
     "output/raw_data_manifest.csv": "71d7b057c190eb5c92d64ffe93de36221e75cd80b0ede2fcea24ec0f8487acb4",
@@ -78,8 +78,10 @@
     "output/raw_workbook_schema_map.csv": "1daecd784392ab9032efbc490292b921d2c895de722cb16eabcdab4522b90faf",
     "output/regression_results.md": "acc09f33528421c9a556b9b48ff6d60783d77a12f937a113da60d6284ba5113b",
     "output/robustness_component_results.csv": "c67a57c13c7794045c43c99645d26171333819b91f2a03eef3bc71442a3832dc",
-    "paper/manuscript/paper.md": "d971a92f05961cc82288044298cf282c6359f50ee83c11f4a7fe0bd3ffe85209",
-    "paper/manuscript/paper.tex": "418cba59463244c88368e7a0a156671ab096ad070286fe2848fdb64e92e5c39c",
+    "paper/manuscript/paper.md": "4da2d63d6240c946cb4e3bad8586d17b66420d744871a0b28d8e2d3c3a156454",
+    "paper/manuscript/paper.tex": "91875d24d17ff7016cbce641610887034ce233efa83eb12cf51da5800eaebf81",
+    "paper/manuscript/professor/paper.md": "d37e6dd8b4e08876de636ea6c0bb8a53c4d5855d064265acaf4d7129a9ff0c68",
+    "paper/manuscript/professor/paper.tex": "b8b4eda99d7b2e038e512b8ae88f9c658f5d9063ecf2cf062eab129b25baa143",
     "paper/notes/positioning/professor-comparator-method-lineage.md": "5ba5c90a9dc86b38505fd57a1dc839b79269ae16a4dbbdd4951343471056f892",
     "paper/supplement/supplement.md": "601d92c19804323c11a334c6fd0b20f4e511554fc25867f5d06a59504a72327e"
   },
@@ -119,6 +121,8 @@
     "output/manifests/06b_identifier_gap_audit.json",
     "paper/manuscript/paper.md",
     "paper/manuscript/paper.tex",
+    "paper/manuscript/professor/paper.md",
+    "paper/manuscript/professor/paper.tex",
     "paper/supplement/supplement.md",
     "paper/notes/positioning/professor-comparator-method-lineage.md"
   ],
@@ -126,19 +130,21 @@
     "documents_checked": [
       "paper/manuscript/paper.md",
       "paper/manuscript/paper.tex",
+      "paper/manuscript/professor/paper.md",
+      "paper/manuscript/professor/paper.tex",
       "paper/supplement/supplement.md",
       "paper/notes/positioning/professor-comparator-method-lineage.md"
     ],
     "failed_checks": 0,
     "failure_ids": [],
-    "passed_checks": 97,
+    "passed_checks": 139,
     "source_manifest_python": [
       "3.12.12"
     ]
   },
   "output_sha256": {
     "output/claim_evidence_map.md": "6f8e7afd68d35e6ae23d3fda7084878396fa55f8105c5736d03e3ac980994968",
-    "output/claim_verification.md": "484a9d68d151530899724ae734cc57733e4d963402442f306552de5189bcf969"
+    "output/claim_verification.md": "5fb094c4b0c36ca74cc1bd081e1eae988e86df0a185641bd59650210f3313839"
   },
   "outputs": [
     "output/claim_verification.md",
@@ -146,6 +152,6 @@
   ],
   "python": "3.12.12",
   "script": "code/analysis/08_verify_claims.py",
-  "script_sha256": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
+  "script_sha256": "d89279430853c41552c7f6acca63adc480e2602a7e96a18d52ad2b33adf082a1",
   "stage": "08_verify_claims"
 }

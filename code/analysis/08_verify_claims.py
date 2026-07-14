@@ -42,6 +42,12 @@ from panel_utils import (  # noqa: E402
 DOCUMENTS = {
     "manuscript_md": REPO_ROOT / "paper" / "manuscript" / "paper.md",
     "manuscript_tex": REPO_ROOT / "paper" / "manuscript" / "paper.tex",
+    "professor_manuscript_md": (
+        REPO_ROOT / "paper" / "manuscript" / "professor" / "paper.md"
+    ),
+    "professor_manuscript_tex": (
+        REPO_ROOT / "paper" / "manuscript" / "professor" / "paper.tex"
+    ),
     "supplement": REPO_ROOT / "paper" / "supplement" / "supplement.md",
     "professor_lineage": (
         REPO_ROOT
@@ -984,9 +990,19 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
     adoption = metrics["adoption"]
     components = metrics["components"]
 
-    manuscript_keys = [key for key in ("manuscript_md", "manuscript_tex") if key in texts]
+    manuscript_keys = [
+        key
+        for key in (
+            "manuscript_md",
+            "manuscript_tex",
+            "professor_manuscript_md",
+            "professor_manuscript_tex",
+        )
+        if key in texts
+    ]
     for key in manuscript_keys:
         text = texts[key]
+        is_professor_profile = key.startswith("professor_")
         add_requirement(
             checks,
             "stable_site_identity",
@@ -1211,47 +1227,80 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{components['stable_sites']} stable administrative lineages."
             ),
         )
-        add_requirement(
-            checks,
-            "sizing_diagnostic_conclusion",
-            key,
-            re.search(r"sizing|generator design intensity", text, re.IGNORECASE)
-            is not None
-            and contains_number(text, components["sizing_age_coefficient"], (3, 4))
-            and contains_number(text, components["sizing_age_p_value"], (3, 4))
-            and contains_number(text, components["legacy_r_squared"], (3, 4))
-            and contains_number(text, components["sizing_r_squared"], (3, 4)),
-            (
-                "State that the sizing-adjusted age coefficient is "
-                f"{components['sizing_age_coefficient']:.4f} (p="
-                f"{components['sizing_age_p_value']:.4f}) and that R-squared changes "
-                f"from {components['legacy_r_squared']:.4f} to "
-                f"{components['sizing_r_squared']:.4f}."
-            ),
-        )
+        if is_professor_profile:
+            add_requirement(
+                checks,
+                "sizing_diagnostic_conclusion",
+                key,
+                re.search(r"sizing|generator design intensity", text, re.IGNORECASE)
+                is not None
+                and contains_number(text, components["sizing_age_coefficient"], (3, 4))
+                and contains_number(text, components["sizing_age_p_value"], (3, 4))
+                and contains_number(text, components["legacy_r_squared"], (3, 4))
+                and contains_number(text, components["sizing_r_squared"], (3, 4)),
+                (
+                    "State that the sizing-adjusted age coefficient is "
+                    f"{components['sizing_age_coefficient']:.4f} (p="
+                    f"{components['sizing_age_p_value']:.4f}) and that R-squared changes "
+                    f"from {components['legacy_r_squared']:.4f} to "
+                    f"{components['sizing_r_squared']:.4f}."
+                ),
+            )
+        else:
+            add_requirement(
+                checks,
+                "sizing_diagnostic_public_boundary",
+                key,
+                contains_number(text, components["sizing_age_coefficient"], (3, 4))
+                and contains_number(text, components["sizing_age_p_value"], (3, 4))
+                and re.search(
+                    r"algebra|mechanical|accounting identity",
+                    text,
+                    re.IGNORECASE,
+                )
+                is not None,
+                (
+                    "Report the sizing-adjusted age result and disclose that shared "
+                    "component quantities are algebraically or mechanically coupled."
+                ),
+            )
         t1 = adoption["event_time_one"]
         all_t1 = t1["all"]
         continuity_t1 = t1["Continuity-lineage entry"]
         rebuild_t1 = t1["Rebuild/replacement-like entry"]
-        add_requirement(
-            checks,
-            "post_entry_pathway_results",
-            key,
-            contains_number(text, int(all_t1["events"]))
-            and contains_number(text, all_t1["mean_gross_rank_pct"] * 100, (1,))
-            and contains_number(text, int(continuity_t1["events"]))
-            and contains_number(
-                text, continuity_t1["mean_design_rank_pct"] * 100, (1,)
+        if is_professor_profile:
+            add_requirement(
+                checks,
+                "post_entry_pathway_results",
+                key,
+                contains_number(text, int(all_t1["events"]))
+                and contains_number(text, all_t1["mean_gross_rank_pct"] * 100, (1,))
+                and contains_number(text, int(continuity_t1["events"]))
+                and contains_number(
+                    text, continuity_t1["mean_design_rank_pct"] * 100, (1,)
+                )
+                and contains_number(text, int(rebuild_t1["events"]))
+                and contains_number(
+                    text, rebuild_t1["mean_design_rank_pct"] * 100, (1,)
+                ),
+                (
+                    "Report event-time-one pathway counts and ranks from the generated "
+                    "trajectory table."
+                ),
             )
-            and contains_number(text, int(rebuild_t1["events"]))
-            and contains_number(
-                text, rebuild_t1["mean_design_rank_pct"] * 100, (1,)
-            ),
-            (
-                "Report event-time-one pathway counts and ranks from the generated "
-                "trajectory table."
-            ),
-        )
+        else:
+            add_requirement(
+                checks,
+                "post_entry_pathway_public_placement",
+                key,
+                re.search(
+                    r"pathway.{0,120}supplement|supplement.{0,120}pathway",
+                    text,
+                    re.IGNORECASE | re.DOTALL,
+                )
+                is not None,
+                "State that the exploratory pathway comparison is supplemental.",
+            )
 
     if "supplement" in texts:
         text = texts["supplement"]

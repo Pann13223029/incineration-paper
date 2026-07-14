@@ -4,7 +4,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 
 ## Result: PASS
 
-- Passed checks: 97
+- Passed checks: 139
 - Failed checks: 0
 
 ## Canonical Evidence
@@ -53,6 +53,8 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::diagnostic_manifest_sync` [n/a]: Generated diagnostic coefficients and p-values match the stage manifest for 4 terms.
 - `document_presence::manuscript_md_present` [paper/manuscript/paper.md]: Required document exists.
 - `document_presence::manuscript_tex_present` [paper/manuscript/paper.tex]: Required document exists.
+- `document_presence::professor_manuscript_md_present` [paper/manuscript/professor/paper.md]: Required document exists.
+- `document_presence::professor_manuscript_tex_present` [paper/manuscript/professor/paper.tex]: Required document exists.
 - `document_presence::supplement_present` [paper/supplement/supplement.md]: Required document exists.
 - `document_presence::professor_lineage_present` [paper/notes/positioning/professor-comparator-method-lineage.md]: Optional lineage checked when present.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.md]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
@@ -63,8 +65,8 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.md]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
-- `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/paper.md]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
-- `required_claim::post_entry_pathway_results` [paper/manuscript/paper.md]: Report event-time-one pathway counts and ranks from the generated trajectory table.
+- `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.md]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
+- `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.md]: State that the exploratory pathway comparison is supplemental.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
@@ -73,8 +75,28 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.tex]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
-- `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/paper.tex]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
-- `required_claim::post_entry_pathway_results` [paper/manuscript/paper.tex]: Report event-time-one pathway counts and ranks from the generated trajectory table.
+- `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.tex]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
+- `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.tex]: State that the exploratory pathway comparison is supplemental.
+- `required_claim::stable_site_identity` [paper/manuscript/professor/paper.md]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
+- `required_claim::official_code_break` [paper/manuscript/professor/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
+- `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
+- `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
+- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/professor/paper.md]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
+- `required_claim::engineering_components` [paper/manuscript/professor/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.md]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
+- `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.md]: Report event-time-one pathway counts and ranks from the generated trajectory table.
+- `required_claim::stable_site_identity` [paper/manuscript/professor/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
+- `required_claim::official_code_break` [paper/manuscript/professor/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
+- `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
+- `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
+- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/professor/paper.tex]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
+- `required_claim::engineering_components` [paper/manuscript/professor/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.tex]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
+- `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.tex]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::supplement_identity_audit` [paper/supplement/supplement.md]: Document identity audit counts, including official/stable FY2019-FY2020 overlaps 0/1,064 and duplicate lineage-years.
 - `required_claim::supplement_raw_provenance` [paper/supplement/supplement.md]: Reference SHA-256 raw-file provenance, explicitly unavailable retrieval timestamps, and workbook schema/header mappings.
 - `required_claim::supplement_firth_inference` [paper/supplement/supplement.md]: Document Firth estimation, 499 cluster-bootstrap repetitions, broad joint-age p=0.380, and continuity sensitivity p=0.051.
@@ -101,6 +123,26 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `stale_phrase::overstated_design_vintage_claim` [paper/manuscript/paper.tex]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
 - `high_risk_claim::official_code_as_stable_id` [paper/manuscript/paper.tex]: Official facility codes cannot be asserted as stable longitudinal IDs.
 - `high_risk_claim::causal_regression_interpretation` [paper/manuscript/paper.tex]: Observational regression terms must not be presented as causal effects.
+- `stale_phrase::panel_exit_claim` [paper/manuscript/professor/paper.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
+- `stale_phrase::active_conversion_frame` [paper/manuscript/professor/paper.md]: The old active-conversion frame is replaced by the prior-operation sensitivity.
+- `stale_phrase::coded_longitudinal_frame` [paper/manuscript/professor/paper.md]: Officially coded rows must not be framed as stable longitudinal units.
+- `stale_phrase::stale_exact_event_count` [paper/manuscript/professor/paper.md]: The superseded exact-code hazard sample must be removed.
+- `stale_phrase::stale_active_sample` [paper/manuscript/professor/paper.md]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/manuscript/professor/paper.md]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/manuscript/professor/paper.md]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/manuscript/professor/paper.md]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
+- `high_risk_claim::official_code_as_stable_id` [paper/manuscript/professor/paper.md]: Official facility codes cannot be asserted as stable longitudinal IDs.
+- `high_risk_claim::causal_regression_interpretation` [paper/manuscript/professor/paper.md]: Observational regression terms must not be presented as causal effects.
+- `stale_phrase::panel_exit_claim` [paper/manuscript/professor/paper.tex]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
+- `stale_phrase::active_conversion_frame` [paper/manuscript/professor/paper.tex]: The old active-conversion frame is replaced by the prior-operation sensitivity.
+- `stale_phrase::coded_longitudinal_frame` [paper/manuscript/professor/paper.tex]: Officially coded rows must not be framed as stable longitudinal units.
+- `stale_phrase::stale_exact_event_count` [paper/manuscript/professor/paper.tex]: The superseded exact-code hazard sample must be removed.
+- `stale_phrase::stale_active_sample` [paper/manuscript/professor/paper.tex]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/manuscript/professor/paper.tex]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/manuscript/professor/paper.tex]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/manuscript/professor/paper.tex]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
+- `high_risk_claim::official_code_as_stable_id` [paper/manuscript/professor/paper.tex]: Official facility codes cannot be asserted as stable longitudinal IDs.
+- `high_risk_claim::causal_regression_interpretation` [paper/manuscript/professor/paper.tex]: Observational regression terms must not be presented as causal effects.
 - `stale_phrase::panel_exit_claim` [paper/supplement/supplement.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
 - `stale_phrase::active_conversion_frame` [paper/supplement/supplement.md]: The old active-conversion frame is replaced by the prior-operation sensitivity.
 - `stale_phrase::coded_longitudinal_frame` [paper/supplement/supplement.md]: Officially coded rows must not be framed as stable longitudinal units.
