@@ -1,0 +1,9 @@
+component,cohort,percent_difference,ci_low_percent,ci_high_percent,reference
+Installed electrical capacity,Before 1990,-79.08466308,-82.2720166,-75.32424819,2010 or later
+Installed electrical capacity,1990-1999,-58.63329529,-63.47169924,-53.15401419,2010 or later
+Installed electrical capacity,2000-2009,-23.46174894,-29.64699338,-16.73271467,2010 or later
+Installed electrical capacity,2010 or later,0,0,0,2010 or later
+Electrical capacity factor,Before 1990,35.26041452,24.5956461,46.83803414,2010 or later
+Electrical capacity factor,1990-1999,21.95494636,14.43820564,29.96541547,2010 or later
+Electrical capacity factor,2000-2009,1.501923147,-4.087110142,7.416640431,2010 or later
+Electrical capacity factor,2010 or later,0,0,0,2010 or later

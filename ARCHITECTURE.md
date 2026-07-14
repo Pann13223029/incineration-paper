@@ -55,6 +55,8 @@ data/raw/facility_annual/*
        parse 23,599 source rows
   -> 02a_build_facility_identity.py
        collapse exact duplicates; retain 23,593 records; build audited lineages
+  -> 02c_build_linkage_validation_packet.py
+       generate a blinded clerical-review packet and separate answer key
   -> 04_eda_facility.py
        audit descriptive and model-frame inputs
   -> 05_fleet_decomposition.py
@@ -63,6 +65,8 @@ data/raw/facility_annual/*
        estimate first reported installed-capacity entry with Firth logistic models
   -> 05_panel_regression.py
        estimate generator design-intensity and electrical-capacity-factor components
+  -> 05b_scientific_revision.py
+       fit the frozen five-parameter entry models, event attacks, and raw-kW models
   -> 06_robustness.py
   -> 06a_data_quality_sensitivity.py
   -> 06b_identifier_gap_audit.py
@@ -104,7 +108,8 @@ No model uses administrative disappearance as a physical closure outcome.
 | Prior-operation Firth entry | 13,072 rows, 1,019 lineages, 33 events | Nested sensitivity requiring positive prior operation. |
 | Same-episode Firth entry | 15,095 rows, 1,135 lineages, 24 events | Continuity sensitivity excluding inferred asset-episode changes. |
 | Identity-certain Firth entry | 15,107 rows, 1,130 lineages, 35 events | Linkage sensitivity excluding every lineage containing an accepted uncertain link. |
-| Generator components | 6,511 engineering-valid rows, 493 lineages | Separates installed design intensity from annual electrical capacity factor. |
+| Revised entry inference | 1,999 lineage bootstraps per frame; broad scale OR 6.72 (4.31-12.46) | Five-parameter primary model; all event attacks retain OR 6.12-7.30. |
+| Generator components | 6,511 engineering-valid rows, 493 lineages | Leads with raw installed kW and separates installed design from annual capacity factor. |
 
 Gross MWh/t is retained only as a descriptive accounting ratio and specification diagnostic. It is not named or interpreted as independent plant efficiency.
 
@@ -115,8 +120,8 @@ Gross MWh/t is retained only as a descriptive accounting ratio and specification
 | Group | Synced files |
 |:--|:--|
 | Provenance | `raw_data_provenance.md`, `raw_data_manifest.csv`, `raw_workbook_schema_map.csv` |
-| Identity and fleet | `facility_identity_audit.md`, `identity_low_margin_links.csv`, `fleet_decomposition.md`, `fleet_decomposition.csv`, `fy2024_fleet_segments.csv` |
-| Core models | `sample_definition.md`, `adoption_results.md`, `regression_results.md`, `generator_component_results.csv` |
+| Identity and fleet | `facility_identity_audit.md`, `identity_low_margin_links.csv`, `linkage_validation_packet.csv`, `linkage_validation_protocol.md`, `fleet_decomposition.md`, `fleet_decomposition.csv`, `fy2024_fleet_segments.csv` |
+| Core models | `sample_definition.md`, `scientific_revision_results.md`, `revised_entry_results.csv`, `revised_entry_bootstrap.csv`, `revised_entry_influence.csv`, `adoption_event_composition.csv`, `raw_quantity_component_results.csv`, `figure3_adjusted_components.csv`, `adoption_results.md`, `regression_results.md` |
 | Robustness and quality | `robustness_results.md`, `robustness_component_results.csv`, `data_quality_sensitivity.md`, `data_quality_sample_flow.csv`, `data_quality_engineering_bounds.csv`, `data_quality_official_code_duplicates.csv` |
 | Identifier audits | `identifier_gap_audit.md`, `identifier_overlap_by_year.csv`, `identifier_gap_bridges.csv`, `identifier_duplicates_by_year.csv` |
 | Claim and summary outputs | `claim_evidence_map.md`, `claim_verification.md`, `panel_summary.md`, `table1_summary_stats.md`, `table2_generator_components_by_cohort.md` |

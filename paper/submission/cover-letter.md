@@ -2,9 +2,10 @@
 
 Dear Editors,
 
-Please consider the enclosed manuscript, *From Facility Counts to Generator
-Components: Electricity Recovery in Japan's Municipal Waste-Incineration Fleet,
-FY2005-FY2024*, for publication as a full-length article in *Waste Management*.
+Please consider the enclosed manuscript, *Three Margins of Electricity
+Recovery: Coverage, Selective Entry, and Generator Sizing in Japan's Municipal
+Incinerator Fleet, FY2005-FY2024*, for publication as a full-length article in
+*Waste Management*.
 
 The study links 23,593 Japanese municipal-incinerator records into 1,690 audited
 administrative facility lineages. It addresses a practical measurement problem:
@@ -18,12 +19,12 @@ Three features provide the paper's main contribution. First, the FY2024
 analytical facility participation rate is 41.1%, while positive-output
 facilities handle 80.1% of recorded throughput. Second, bias-reduced
 discrete-time models show strong scale selection in sparse first-entry events,
-while broad, same-episode, and identity-certain sensitivities show that age
-inference depends on the administrative continuity rule. Third, an exact engineering
-identity separates gross MWh/t into generator sizing, electrical capacity
-factor, and waste loading. This decomposition shows why gross electricity per
-tonne should be treated as an accounting outcome rather than a stand-alone
-measure of operating efficiency.
+while all continuity frames and event-level attacks preserve the scale result.
+Third, a raw installed-kW model and exact engineering identity separate
+installed design from annual capacity factor and waste loading. Older cohorts
+have substantially smaller adjusted installed kW but not lower annual capacity
+factors. Gross electricity per tonne is therefore not a stand-alone measure of
+operating efficiency.
 
 The manuscript fits *Waste Management* because it provides a reproducible
 facility-level account of electricity-recovery coverage and heterogeneity in a

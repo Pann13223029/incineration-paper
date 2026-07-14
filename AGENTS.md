@@ -13,8 +13,9 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 | Raw provenance and parser schema | `output/raw_data_provenance.md`, `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv` | Verify workbook and field claims here. |
 | Identity and panel grain | `output/facility_identity_audit.md`, `data/processed/facility_identity_crosswalk.csv` | Treat `stable_site_id` as an audited administrative lineage only. |
 | Samples and fleet facts | `output/sample_definition.md`, `output/fleet_decomposition.md` | Verify counts and coverage before repeating them. |
-| Entry results | `output/adoption_results.md` | Use the Firth frames and exact event definitions. |
-| Generator component results | `output/regression_results.md`, `output/generator_component_results.csv` | Separate design intensity from electrical capacity factor. |
+| Entry results | `output/scientific_revision_results.md`, `output/revised_entry_results.csv`, `output/adoption_results.md` | Use the frozen five-parameter Firth model as primary; retain the higher-dimensional model as sensitivity. |
+| Generator component results | `output/scientific_revision_results.md`, `output/raw_quantity_component_results.csv`, `output/generator_component_results.csv` | Lead with raw installed capacity and capacity factor; use ratio transformations only as supporting identities. |
+| Linkage validation | `output/linkage_validation_protocol.md`, `output/linkage_validation_packet.csv` | A generated blinded packet is not completed independent validation. Do not expose the answer key in paper-facing evidence. |
 | Robustness and quality | `output/robustness_results.md`, `output/data_quality_sensitivity.md`, `output/identifier_gap_audit.md` | Keep limitations visible. |
 | Claim synchronization | `output/claim_verification.md`, `output/claim_evidence_map.md` | Run `npm run claims:verify` after claim edits. |
 | Public journal prose | `paper/manuscript/paper.md`, `paper/manuscript/paper.tex` | Keep Markdown and LaTeX semantically synchronized. |
@@ -34,6 +35,8 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 8. Separate generator design intensity from annual electrical capacity factor.
 9. Treat gross MWh/t as an administrative gross-output ratio, not net export, useful heat, lifecycle benefit, or independent efficiency.
 10. Keep all claims observational unless a valid identification design is added.
+11. Use the frozen five-parameter Firth entry model as primary; describe the earlier eleven-parameter model as sensitivity only.
+12. Do not call the linkage independently validated until a second reviewer has completed the blinded packet and disagreements have been adjudicated.
 
 ## Current Sample Contract
 
@@ -45,7 +48,11 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 - The prior-operation Firth frame contains 13,072 rows, 1,019 lineages, and 33 events.
 - The same-episode sensitivity contains 15,095 rows, 1,135 lineages, and 24 events.
 - The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
+- The frozen primary entry specification has five parameters and 1,999 complete whole-lineage bootstrap replications per frame.
+- The broad 300-versus-100 t/day odds ratio is 6.72 (95% bootstrap interval 4.31-12.46); all event attacks retain 6.12-7.30.
+- The exact modeled events comprise 24 continuity-lineage and 11 rebuild/replacement-like entries.
 - The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
+- The raw installed-kW processing-scale elasticity is 1.532; older cohorts have smaller adjusted kW but not lower annual capacity factors.
 - FY2024 coverage is 41.1% by facility participation, 80.1% by throughput, and 70.5% by waste-processing design capacity.
 
 If regenerated outputs disagree, stop and resolve the pipeline before updating prose.

@@ -4,7 +4,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 
 ## Result: PASS
 
-- Passed checks: 139
+- Passed checks: 146
 - Failed checks: 0
 
 ## Canonical Evidence
@@ -44,13 +44,16 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::adoption_estimand_configuration` [n/a]: Primary entry is broad administrative-lineage entry; same-episode sensitivity excludes 59 rows and 11 events.
 - `evidence_integrity::firth_convergence` [n/a]: Firth convergence metadata: {'broad': {'converged': True, 'iterations': 18}, 'identity_certain': {'converged': True, 'iterations': 18}, 'prior_operation': {'converged': True, 'iterations': 21}, 'same_episode_continuity': {'converged': True, 'iterations': 28}}
 - `evidence_integrity::firth_estimates_finite` [n/a]: All 16 focal Firth estimates and uncertainty fields are finite.
-- `evidence_integrity::cluster_bootstrap_joint_tests` [n/a]: Cluster-bootstrap joint tests: {'broad_cluster_bootstrap_covariance': [3.076452, 3, 0.3799873, 499], 'broad_model_based': [4.784085, 3, 0.1883077], 'identity_certain_cluster_bootstrap_covariance': [3.236333, 3, 0.3566027, 499], 'identity_certain_model_based': [4.793329, 3, 0.1875714], 'prior_operation_cluster_bootstrap_covariance': [4.809944, 3, 0.1862548, 499], 'prior_operation_model_based': [5.807285, 3, 0.1213721], 'same_episode_cluster_bootstrap_covariance': [7.779455, 3, 0.05079653, 499], 'same_episode_model_based': [11.36422, 3, 0.009910937]}
+- `evidence_integrity::cluster_bootstrap_joint_tests` [n/a]: Cluster-bootstrap joint tests: {'broad_cluster_bootstrap_covariance': [3.076452, 3, 0.3799873, 499], 'broad_model_based': [4.784085, 3, 0.1883077], 'identity_certain_cluster_bootstrap_covariance': [3.236333, 3, 0.3566027, 499], 'identity_certain_model_based': [4.793329, 3, 0.1875714], 'prior_operation_cluster_bootstrap_covariance': [4.809945, 3, 0.1862548, 499], 'prior_operation_model_based': [5.807285, 3, 0.1213721], 'same_episode_cluster_bootstrap_covariance': [7.779455, 3, 0.05079653, 499], 'same_episode_model_based': [11.36422, 3, 0.009910937]}
 - `evidence_integrity::cluster_bootstrap_sync` [n/a]: Stable-lineage bootstrap repetitions by model: {'broad': 499, 'identity_certain': 499, 'prior_operation': 499, 'same_episode_continuity': 499}
 - `evidence_integrity::pathway_and_bridge_sync` [n/a]: Pathway events: 55 descriptive, 55 exact; bridge rows: 55.
 - `evidence_integrity::post_entry_trajectory_sync` [n/a]: Event-time-one pathway rows and component ranks match adoption metadata.
 - `evidence_integrity::component_sample_sync` [n/a]: Component output has 9 terms on 6511 engineering-valid rows and 493 stable administrative lineages.
 - `evidence_integrity::component_estimates_finite` [n/a]: All component-model focal estimates and uncertainty fields are finite.
 - `evidence_integrity::diagnostic_manifest_sync` [n/a]: Generated diagnostic coefficients and p-values match the stage manifest for 4 terms.
+- `evidence_integrity::revised_entry_model_sync` [n/a]: Reduced-DF frames: ['Broad reduced-DF frame', 'Identity-certain reduced-DF frame', 'Prior-operation reduced-DF frame', 'Same-episode reduced-DF frame']; bootstrap repetitions: {'Broad reduced-DF frame': 1999, 'Identity-certain reduced-DF frame': 1999, 'Prior-operation reduced-DF frame': 1999, 'Same-episode reduced-DF frame': 1999}.
+- `evidence_integrity::revised_event_composition_and_influence` [n/a]: Modeled event pathways: {'Continuity-lineage entry': 24, 'Rebuild/replacement-like entry': 11}; event-attack scale OR range 6.1162-7.2978.
+- `evidence_integrity::raw_quantity_component_sync` [n/a]: Raw quantity results have 11 focal rows and adjusted component contrasts have 8 rows.
 - `document_presence::manuscript_md_present` [paper/manuscript/paper.md]: Required document exists.
 - `document_presence::manuscript_tex_present` [paper/manuscript/paper.tex]: Required document exists.
 - `document_presence::professor_manuscript_md_present` [paper/manuscript/professor/paper.md]: Required document exists.
@@ -61,48 +64,52 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `required_claim::official_code_break` [paper/manuscript/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
-- `required_claim::firth_method_and_frames` [paper/manuscript/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
-- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.md]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::firth_method_and_frames` [paper/manuscript/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
+- `required_claim::revised_entry_scale_and_influence` [paper/manuscript/paper.md]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/paper.md]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
 - `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.md]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
 - `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.md]: State that the exploratory pathway comparison is supplemental.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
-- `required_claim::firth_method_and_frames` [paper/manuscript/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
-- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/paper.tex]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::firth_method_and_frames` [paper/manuscript/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
+- `required_claim::revised_entry_scale_and_influence` [paper/manuscript/paper.tex]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/paper.tex]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
 - `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.tex]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
 - `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.tex]: State that the exploratory pathway comparison is supplemental.
 - `required_claim::stable_site_identity` [paper/manuscript/professor/paper.md]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/professor/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
-- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
-- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/professor/paper.md]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
+- `required_claim::revised_entry_scale_and_influence` [paper/manuscript/professor/paper.md]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/professor/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/professor/paper.md]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.md]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.md]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::stable_site_identity` [paper/manuscript/professor/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/professor/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
-- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 499 lineage bootstraps.
-- `required_claim::adoption_joint_inference_and_scale` [paper/manuscript/professor/paper.tex]: Report lineage-bootstrap joint-age p-values for broad, prior-operation, same-episode, and identity-certain frames (0.380/0.186/0.051/0.357) and scale contrast OR=6.13.
+- `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
+- `required_claim::revised_entry_scale_and_influence` [paper/manuscript/professor/paper.tex]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/professor/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/professor/paper.tex]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.tex]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.tex]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::supplement_identity_audit` [paper/supplement/supplement.md]: Document identity audit counts, including official/stable FY2019-FY2020 overlaps 0/1,064 and duplicate lineage-years.
 - `required_claim::supplement_raw_provenance` [paper/supplement/supplement.md]: Reference SHA-256 raw-file provenance, explicitly unavailable retrieval timestamps, and workbook schema/header mappings.
-- `required_claim::supplement_firth_inference` [paper/supplement/supplement.md]: Document Firth estimation, 499 cluster-bootstrap repetitions, broad joint-age p=0.380, and continuity sensitivity p=0.051.
+- `required_claim::supplement_firth_inference` [paper/supplement/supplement.md]: Document the five-parameter Firth model, 1999 cluster bootstraps, scale OR 6.72, continuous age, and event influence.
 - `required_claim::supplement_component_diagnostic` [paper/supplement/supplement.md]: Document both engineering components and the non-significant sizing-adjusted age result.
 - `required_claim::lineage_current_design` [paper/notes/positioning/professor-comparator-method-lineage.md]: Explain the current administrative-lineage, Firth, design-intensity, and capacity-factor design.
-- `required_claim::lineage_current_headlines` [paper/notes/positioning/professor-comparator-method-lineage.md]: Report current count-volume, joint-age, continuity, and sizing-diagnostic headline values in the professor lineage packet.
+- `required_claim::lineage_current_headlines` [paper/notes/positioning/professor-comparator-method-lineage.md]: Report current count-volume, reduced-model entry, event-influence, raw-component, and sizing-diagnostic headline values in the professor lineage packet.
 - `stale_phrase::panel_exit_claim` [paper/manuscript/paper.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
 - `stale_phrase::active_conversion_frame` [paper/manuscript/paper.md]: The old active-conversion frame is replaced by the prior-operation sensitivity.
 - `stale_phrase::coded_longitudinal_frame` [paper/manuscript/paper.md]: Officially coded rows must not be framed as stable longitudinal units.

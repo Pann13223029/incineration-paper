@@ -33,6 +33,8 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 - `identifier_overlap_by_year.csv`
 - `identifier_gap_bridges.csv`
 - `identifier_duplicates_by_year.csv`
+- `linkage_validation_packet.csv`
+- `linkage_validation_protocol.md`
 - `claim_evidence_map.md`
 - `claim_verification.md`
 - `panel_summary.md`
@@ -44,6 +46,14 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 - `post_adoption_bridge.csv`
 - `post_adoption_trajectories.csv`
 - `figure3_persistence.csv`
+- `scientific_revision_results.md`
+- `revised_entry_results.csv`
+- `revised_entry_bootstrap.csv`
+- `revised_entry_influence.csv`
+- `adoption_event_composition.csv`
+- `raw_quantity_component_results.csv`
+- `figure3_adjusted_components.csv`
+- `cohort_year_overlap.csv`
 
 ## Rule
 

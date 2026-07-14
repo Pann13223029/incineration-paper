@@ -1,6 +1,6 @@
 # Professor Method-Lineage And Orientation Packet
 
-Last updated: 2026-07-10
+Last updated: 2026-07-14
 
 ## Purpose
 
@@ -38,8 +38,8 @@ The corrected paper has three linked but distinct empirical layers:
 | Layer | Question | Current evidence | Interpretation |
 |:--|:--|:--|:--|
 | Fleet coverage | Does the number of generating facilities represent the waste volume handled by generators? | In FY2024, installed-generation facilities are 41.1% of facility records, positive-output facilities handle 80.1% of throughput, and installed-generation facilities hold 70.5% of waste-processing design capacity. | Facility counts and system volume answer different questions. |
-| First reported entry | Among lineages observed without installed generation, which characteristics precede the first positive installed-capacity report? | There are 55 descriptive first entries, 35 broad exact-year model events, 33 after positive prior-year operation, and 24 under same-episode continuity. A 300 versus 100 t/day contrast has odds ratios of 6.13 and 6.25 in the broad and prior-operation frames. | Entry is strongly scale-selective, but age inference changes under the stricter continuity rule and the model does not identify why entry occurs. |
-| Generator components | Among positive-output generators, what produces gross MWh/t differences? | The primary engineering frame contains 6,511 rows across 493 stable administrative lineages. A separate 5,806-row diagnostic with plausible heating value and heating value controlled raises `R^2` from 0.4737 to 0.8131 after generator sizing is added; age, processing capacity, and utilization are then not independently significant. | The previous age-performance story combined generator sizing with annual operation. The comparison is a specification diagnostic, not causal mediation. |
+| First reported entry | Among lineages observed without installed generation, which characteristics precede the first positive installed-capacity report? | There are 55 descriptive first entries, 35 broad exact-year model events, 33 after positive prior-year operation, and 24 under same-episode continuity. The frozen five-parameter model gives a 300-versus-100 t/day odds ratio of 6.72 (bootstrap 95% CI 4.31-12.46); all event attacks leave it between 6.12 and 7.30. | Entry is strongly scale-selective, while the continuous-age estimate is imprecise and continuity-sensitive; the model does not identify why entry occurs. |
+| Generator components | Among positive-output generators, what produces gross MWh/t differences? | The primary engineering frame contains 6,511 rows across 493 stable administrative lineages. Adjusted installed capacity is 79.1%, 58.6%, and 23.5% lower in the three older reported start-year cohorts than in 2010-or-later records, whereas adjusted capacity factors are 35.3%, 22.0%, and 1.5% higher. | The apparent cohort hierarchy is primarily generator sizing, not uniformly better annual use. Reported start year is not a verified generator vintage. |
 
 ### Current central argument
 
@@ -110,13 +110,16 @@ with the first positive capacity report?
 at-risk population. The main coefficient contrast compares otherwise modeled
 lineage-years with different prior-year waste-processing design capacities.
 
-**Current answer:** Scale selectivity is the robust result. The estimated odds
-for 300 rather than 100 t/day are 6.13 in the broad exact-year frame and 6.25 in
-the prior-operation subset. The lineage-bootstrap joint age tests are
-`p = 0.3800` broad, `p = 0.1863` prior-operation, `p = 0.0508` same-episode,
-and `p = 0.3566` identity-certain. The borderline same-episode result uses only
-24 events and differs from its model-based covariance result; the age-band
-coefficients should therefore not be converted into a general headline.
+**Current answer:** Scale selectivity is the robust result. The frozen
+five-parameter Firth model gives a 300-versus-100 t/day odds ratio of 6.72 in
+the broad frame (1,999-lineage-bootstrap 95% CI 4.31-12.46), 7.09 in the
+prior-operation frame, 7.15 under same-episode continuity, and 6.76 after
+uncertain lineages are excluded. Reclassifying any one event or deleting its
+whole lineage leaves the scale contrast between 6.12 and 7.30. The continuous
+age coefficient is -0.327 per decade in the broad frame (bootstrap CI -0.774 to
+0.070) but -0.751 under same-episode continuity (-1.364 to -0.206), which has
+only 24 events. Age is therefore a continuity-sensitive secondary result, not
+a general barrier headline.
 
 ### RQ3: Generator design and annual operation
 
@@ -128,16 +131,16 @@ gross electricity generation per tonne?
 models, plus a specification diagnostic comparing a gross-intensity model with
 and without generator sizing.
 
-**Current answer:** The primary analysis is the 6,511-row component
-decomposition. The separate gross-intensity diagnostic uses 5,806
-engineering-valid rows with plausible heating value and explicitly controls
-heating value. Its legacy coefficients are -0.0349 for age, +0.1001 for
-waste-processing capacity, and +0.6699 for utilization. After generator design
-intensity is added, the corresponding estimates are -0.0020 (`p = 0.2977`),
--0.0092 (`p = 0.1991`), and -0.0995 (`p = 0.2038`), while sizing is +0.7532
-(`p < 0.001`); `R^2` rises from 0.4737 to 0.8131. The earlier independent age,
-capacity, and utilization interpretation does not survive this specification
-check, which is not a causal mediation analysis.
+**Current answer:** The primary analysis is the 6,511-row raw-quantity
+decomposition. Installed kW has a processing-capacity elasticity of 1.532 (95%
+CI 1.447-1.617). Relative to 2010-or-later records and conditional on observed
+controls, installed capacity is 79.1%, 58.6%, and 23.5% lower in pre-1990,
+1990s, and 2000s cohorts. Their capacity factors are 35.3%, 22.0%, and 1.5%
+higher, with the 2000s interval spanning zero. A direct gross-output model gives
+throughput and installed-kW elasticities of 0.638 and 0.576. The separate
+5,806-row sizing diagnostic remains useful: adding generator design intensity
+raises `R^2` from 0.4737 to 0.8131 and leaves age at -0.0020 (`p = 0.2977`).
+That is specification evidence, not causal mediation.
 
 ## Data And Longitudinal Identity
 
@@ -286,11 +289,11 @@ The event hierarchy is:
 | Exact continuity-lineage model | Requires an adjacent-year transition in the same stable lineage and asset episode | 35 |
 | Prior-operation subset | Additionally requires positive prior-year throughput | 33 |
 
-The exact sample is primary because annual covariates should predict an annual
-transition, not a change observed across an unknown multi-year gap. The prior-
-operation subset asks whether the scale pattern remains when the site was
-already processing waste. It is a nested sensitivity frame, not a separately
-identified retrofit population.
+The broad exact-year sample is primary because annual covariates should predict
+an annual transition, not a change observed across an unknown multi-year gap.
+The prior-operation and same-episode subsets ask whether the scale pattern
+survives stricter operating and continuity definitions. They are nested
+sensitivity frames, not separately identified retrofit populations.
 
 ### Model
 
@@ -299,19 +302,19 @@ The annual hazard is modeled as:
 $$
 \operatorname{logit}(h_{it}) =
 \alpha
-+ \sum_k \gamma_k \mathbf{1}(A_{i,t-1} \in k)
-+ \beta \log\left(1 + \frac{W_{i,t-1}}{100}\right)
-+ \delta_{r(t)}
-+ \lambda_{d(it)},
++ \beta_A\frac{A_{i,t-1}}{10}
++ \beta_C \log\left(1 + \frac{W_{i,t-1}}{100}\right)
++ \beta_T\frac{t-2014.5}{5}
++ \beta_R\log(1+R_{it}),
 $$
 
 where:
 
 - `h_it = Pr(Y_it = 1 | Y_i,t-1 = 0, X_i,t-1)` is the conditional annual
   probability of first reported entry;
-- age enters as bands rather than an imposed linear age slope;
-- `r(t)` denotes broad calendar eras; and
-- `d(it)` denotes flexible elapsed-at-risk duration bands.
+- age is measured per ten reported years;
+- calendar time is centered and measured per five fiscal years; and
+- `R_it` is elapsed observed time at risk.
 
 Calendar terms absorb broad period differences in reporting and system context.
 Duration terms address event dependence: a lineage's hazard may differ after
@@ -339,11 +342,13 @@ events. It does not add information, repair omitted variables, or transform an
 observational hazard into a causal model.
 
 The coefficient table labels fitted-model uncertainty as model-based. Primary
-repeated-observation uncertainty uses 499 deterministic bootstrap replications
+repeated-observation uncertainty uses 1,999 deterministic bootstrap replications
 that resample whole stable lineages, preserving within-lineage dependence.
-Every requested replication must converge and return all focal coefficients.
-Percentile intervals use the bootstrap distributions; joint age tests use the
-bootstrap covariance of all three age coefficients.
+Predictors are centered and scaled internally for numerical stability, then
+coefficients are returned to their original units. Every requested replication
+must converge and return all focal coefficients; no failed draw is discarded.
+The former 11-parameter age/calendar/risk-band model is retained only as a
+sensitivity.
 
 ### Interpretable capacity contrast
 
@@ -357,8 +362,9 @@ OR_{300:100} =
 \left[\log(1 + 300/100) - \log(1 + 100/100)\right]\right\}.
 $$
 
-This gives 6.13 in the broad exact-year frame and 6.25 in the prior-operation
-frame. These are conditional odds ratios, not risk ratios, predicted
+This gives 6.72 in the broad exact-year frame and 7.09 in the prior-operation
+frame, with corresponding same-episode and identity-certain estimates of 7.15
+and 6.76. These are conditional odds ratios, not risk ratios, predicted
 probabilities, or benefit-cost estimates, and they cannot show what enlarging a
 plant would cause.
 
@@ -376,15 +382,14 @@ change one condition at a time:
 3. The identity-certain frame excludes each lineage containing an accepted
    uncertain link and contains 15,107 rows, 1,130 lineages, and 35 events.
 
-The broad frame contains 15,154 rows, 1,137 lineages, and 35 events. The
-lineage-bootstrap joint age tests are `p = 0.3800` broad, `p = 0.1863`
-prior-operation, `p = 0.0508` same-episode continuity, and `p = 0.3566`
-identity-certain. The same-episode fitted-model covariance instead gives
-`p = 0.0099`. This divergence shows sensitivity to the continuity definition
-and within-lineage dependence. The nested prior-operation frame has only two
-fewer events than the broad frame and is not treated as an independent group;
-the former interaction contrast is therefore not used as an equality or
-equivalence test.
+The broad frame contains 15,154 rows, 1,137 lineages, and 35 events. Its scale
+contrast is 6.72 (bootstrap CI 4.31-12.46), and all event reclassifications or
+whole-event-lineage deletions leave it between 6.12 and 7.30. The broad
+continuous-age coefficient is -0.327 per decade (CI -0.774 to 0.070), compared
+with -0.751 (CI -1.364 to -0.206) in the 24-event same-episode frame. This
+divergence makes age continuity-sensitive. The nested prior-operation frame has
+only two fewer events than the broad frame and is not treated as an independent
+group or an equality test.
 
 ## Equation Set 3: Generator Engineering Components
 
@@ -632,17 +637,18 @@ elapsed-duration terms, and calendar controls.
 
 The critical adaptation is to the administrative observation process. The event
 is first reported installed capacity, not necessarily the physical decision or
-commissioning date. Exact adjacent-year and same-episode continuity is therefore
-required for the primary model. Event-history structure improves timing
-discipline; it does not validate the event's substantive mechanism.
+commissioning date. Exact adjacent-year lineage continuity is required for the
+primary model, while same-episode continuity is a stricter sensitivity.
+Event-history structure improves timing discipline; it does not validate the
+event's substantive mechanism.
 
 ### Firth (1993) and Heinze and Schemper (2002): sparse-event estimation
 
 Firth bias reduction is an estimator-level adaptation. It addresses bias and
 separation risk when only a small number of transitions is observed relative to
 the covariate pattern. The paper implements the penalized likelihood directly,
-reports interpretable capacity contrasts, uses joint tests for age bands, and
-checks uncertainty by resampling stable lineages.
+reports interpretable capacity contrasts, uses a continuous age term in the
+frozen primary model, and checks uncertainty by resampling stable lineages.
 
 The two citations serve different roles. Firth (1993) establishes the
 Jeffreys-prior bias-reduction method. Heinze and Schemper (2002) supports its
@@ -714,10 +720,10 @@ results are distinguishable. That is the intended standard here.
 - Thirty-five exact events constrain model complexity and precision.
 - Prior waste-processing capacity may proxy for unobserved urban scale,
   financing ability, technology, waste contracts, or project feasibility.
-- The 6.13 and 6.25 odds ratios do not imply that increasing a plant from 100 to
-  300 t/day would multiply its entry probability by those values.
-- The nonsignificant age tests are absence of strong evidence in this design,
-  not proof that age never matters.
+- The 6.72 broad-frame odds ratio does not imply that increasing a plant from
+  100 to 300 t/day would multiply its entry probability by that value.
+- The broad age interval spans zero, while the same-episode estimate does not;
+  this is continuity-sensitive evidence, not proof that age always matters.
 
 ### Limits specific to generator components
 
@@ -748,8 +754,9 @@ of whether each estimand answers a worthwhile and supportable question.
 3. **Risk-set eligibility:** Is the observed non-generating history long enough
    to make the event meaningful, and should a minimum pre-event history be a
    sensitivity check?
-4. **Sparse-event complexity:** Are the age bands, capacity term, calendar eras,
-   and duration bands parsimonious enough for 35 and 33 events?
+4. **Sparse-event complexity:** Is the frozen five-parameter model parsimonious
+   enough for 35 and 33 events, and is the older 11-parameter model properly
+   confined to sensitivity analysis?
 5. **Capacity functional form:** Does `log(1 + W/100)` adequately represent
    scale, or should splines or prespecified categories be shown descriptively?
 6. **Confounding:** Which municipal finance, population, policy, or waste-flow
@@ -886,12 +893,11 @@ solve confounding or make the estimates causal.
 
 ### "Why not claim that age prevents entry?"
 
-The broad and identity-certain joint age tests are not statistically
-distinguishable from zero. The same-episode test is borderline under
-lineage-bootstrap covariance and stronger under fitted-model covariance, with
-only 24 events. Individual age-band signs do not override this dependence on
-continuity and uncertainty rules. The defensible result is scale selectivity,
-not an age barrier.
+The broad continuous-age estimate is -0.327 per decade, but its bootstrap
+interval spans zero (-0.774 to 0.070). The 24-event same-episode estimate is
+more negative and its interval excludes zero. That contrast is evidence that
+the age result depends on how physical continuity is approximated. The
+defensible headline is scale selectivity, not a universal age barrier.
 
 ### "Why did the earlier age-performance result disappear?"
 
@@ -966,13 +972,15 @@ facilities, delayed reports, or recodes.
   waste-processing design capacity.
 - [ ] The event hierarchy is 55 descriptive, 35 broad exact-year, 33
   prior-operation, and 24 same-episode events; identity-certain retains 35.
-- [ ] The capacity contrasts are described as conditional odds ratios of about
-  6.13 and 6.25, not causal multipliers of probability.
-- [ ] Lineage-bootstrap joint age tests `p = 0.3800`, `0.1863`, `0.0508`, and
-  `0.3566` are mapped to broad, prior-operation, same-episode, and
-  identity-certain frames and interpreted as continuity-sensitive evidence.
+- [ ] The scale contrasts are 6.72 broad, 7.09 prior-operation, 7.15
+  same-episode, and 6.76 identity-certain, with a 6.12-7.30 event-attack range.
+- [ ] The broad age coefficient is -0.327 per decade (CI -0.774 to 0.070),
+  compared with -0.751 (-1.364 to -0.206) in the 24-event same-episode frame.
 - [ ] The generator frame is 6,511 rows across 493 stable administrative
   lineages.
+- [ ] Installed-kW elasticity is 1.532, and cohort contrasts separately report
+  installed capacity (79.1%, 58.6%, 23.5% lower) and capacity factor (35.3%,
+  22.0%, 1.5% higher).
 - [ ] The separate sizing diagnostic uses 5,806 engineering-valid rows with
   plausible heating value and explicitly controls heating value.
 - [ ] Legacy age -0.0349, capacity +0.1001, and utilization +0.6699 become age

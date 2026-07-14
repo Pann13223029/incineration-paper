@@ -31,6 +31,9 @@ artifacts in [`output/`](../../output/), and a failed verifier overrides any not
 - [Defense red-team revision map](review/defense-red-team-revision-map.md):
   resolved identity blockers, remaining attacks, revision priorities, and oral
   defense answers
+- [Major-revision red-team review](review/major-revision-red-team-2026-07-14.md):
+  multi-persona novelty attacks, resolved objections, and the remaining human
+  linkage-validation gate
 
 ## Current Anchor Set
 
@@ -40,9 +43,12 @@ artifacts in [`output/`](../../output/), and a failed verifier overrides any not
 - 55 descriptive entries; broad/prior/same-episode Firth frames
   15,154/1,137/35, 13,072/1,019/33, and 15,095/1,135/24; identity-certain
   15,107/1,130/35 for rows/lineages/events
-- scale odds ratios 6.13 and 6.25; joint age p=0.380/0.186/0.051/0.357 across broad/prior/same-episode/identity-certain frames
+- scale odds ratios 6.72/7.09/7.15/6.76 across broad/prior/same-episode/identity-certain frames; all event attacks remain within 6.12-7.30
+- broad age -0.327 per decade (bootstrap CI -0.774 to 0.070), versus -0.751 (-1.364 to -0.206) in the 24-event same-episode frame
 - generator components: 6,511 engineering-valid rows across 493 stable
   administrative lineages
+- installed-kW elasticity 1.532; adjusted older-cohort installed capacity is
+  79.1%/58.6%/23.5% lower while capacity factor is 35.3%/22.0%/1.5% higher
 - separate sizing diagnostic: 5,806 engineering-valid rows with plausible
   heating value, explicitly controlling heating value; legacy age -0.0349,
   capacity +0.1001, and utilization +0.6699; after sizing, age -0.0020

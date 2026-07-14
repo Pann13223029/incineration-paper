@@ -14,11 +14,11 @@ The public draft is ready for structured review, not journal submission.
 | Repository | Public review workspace at `https://github.com/Pann13223029/incineration-paper` |
 | Target journal track | `Waste Management` |
 | Empirical pipeline | Corrected identity, fleet, entry, component, robustness, quality, and claim stages implemented |
-| Journal-facing draft | Focused 19-page draft: 213-word abstract, 5,909 conservative main-text words, three figures, and one table |
-| Professor-facing draft | Preserved comprehensive 21-page version with four figures, two tables, and expanded method context |
-| Shared supplement | Reconciled with the corrected four-frame entry and component evidence |
+| Journal-facing draft | Major-revision draft with a three-margin contribution, reduced-DF entry model, and adjusted component contrasts |
+| Professor-facing draft | Comprehensive parallel profile with comparator adaptation, pathway context, and the same revised empirical core |
+| Shared supplement | Reconciled with the five-parameter entry model, event attacks, and raw-quantity component evidence |
 | Figures | Public draft uses three academic figures; exploratory pathway evidence remains outside its main text |
-| Evidence snapshot | 33 canonical artifacts synchronized; `paper:check` passes |
+| Evidence snapshot | Expanded to include linkage-review, revised-entry, influence, and raw-component artifacts |
 | Claim verification | Profile-aware checks pass for journal and professor Markdown and LaTeX sources |
 | Journal PDF | `paper/share/waste-management-manuscript-latex.pdf` |
 | Professor PDF | `paper/share/professor-review-manuscript-latex.pdf` |
@@ -39,10 +39,13 @@ Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/inc
 - The prior-operation Firth sensitivity contains 13,072 rows, 1,019 lineages, and 33 events.
 - The same-episode continuity sensitivity contains 15,095 rows, 1,135 lineages, and 24 events.
 - The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
-- All four entry models complete 499 stable-lineage bootstrap replications; joint age p-values are 0.3800, 0.1863, 0.0508, and 0.3566, respectively.
+- The frozen five-parameter Firth model gives 300-versus-100 t/day odds ratios of 6.72, 7.09, 7.15, and 6.76 across the four frames.
+- All four revised entry models complete 1,999 whole-lineage bootstrap replications; the broad scale interval is 4.31-12.46.
+- The 35 modeled events comprise 24 continuity-lineage and 11 rebuild/replacement-like entries; all 70 event attacks leave the scale odds ratio between 6.12 and 7.30.
 - FY2024 installed-capacity participation is 41.1% by facility count, while positive-output facilities handle 80.1% of throughput and installed-generation facilities represent 70.5% of waste-processing design capacity.
 - The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
-- Generator analysis separates installed design intensity from annual electrical capacity factor.
+- The raw installed-kW model has a processing-scale elasticity of 1.532 and separates installed design from annual capacity factor.
+- Relative to 2010 or later, adjusted installed kW is 79.1%, 58.6%, and 23.5% lower in the older cohorts, while capacity factor is 35.3%, 22.0%, and 1.5% higher.
 - Gross MWh/t remains a descriptive administrative output ratio, not a stand-alone efficiency measure.
 - Administrative disappearance is not analyzed as physical closure.
 
@@ -50,20 +53,21 @@ Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/inc
 
 - Full raw-to-claims rebuild completed with exact workbook, code, input, and output hashes.
 - The custom Firth estimator matches a closed-form separated-table solution and an independently optimized penalized likelihood.
-- All four Firth models converged with all 499 requested whole-lineage bootstrap replications.
+- All four revised Firth models converged with all 1,999 requested whole-lineage bootstrap replications.
+- Every modeled event was reclassified and every event lineage deleted once without reversing the scale result.
+- A 558-pair blinded linkage-review packet and separate answer key were generated; independent human completion remains pending.
 - Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
 - The journal and professor LaTeX profiles compile independently from shared evidence.
 - Profile-aware `paper:check`, `claims:verify`, and repository-layout gates pass after evidence sync.
-- The 19-page journal-facing PDF was visually inspected page by page for crop, overlap, spacing, and figure legibility.
+- The 18-page journal-facing and 20-page professor-facing PDFs were visually inspected for crop, overlap, spacing, equation layout, table breaks, and figure legibility.
 - The submission Markdown, HTML, and DOCX were regenerated; the DOCX archive is structurally valid.
 
 ## Next Human Actions
 
-1. Complete blinded human validation of the administrative-linkage and event-transition sample, with professor or second-reviewer adjudication for high-impact cases.
-2. Freeze and run the lower-degree-of-freedom entry model, influence diagnostics, and at least 1,999 whole-lineage bootstrap replications.
-3. Recast the engineering analysis around raw installed-capacity and gross-output quantities before finalizing the component claim.
-4. Obtain professor feedback from the comprehensive profile before accepting the shorter journal-facing framing.
-5. Resolve raw-workbook redistribution terms, licensing, citation metadata, and fresh-clone preflight behavior before public release is treated as archival publication.
+1. Complete blinded human validation of the linkage packet, with professor or second-reviewer adjudication for high-impact cases.
+2. Obtain professor feedback from the comprehensive profile before accepting the journal-facing framing.
+3. Add a repository code license, citation metadata, and source-data attribution notice before treating the public repository as archival publication.
+4. Confirm the fresh-clone preflight and full continuous-integration rebuild after this major revision.
 
 ## Deferred Scope
 

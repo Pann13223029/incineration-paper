@@ -211,13 +211,35 @@ def cluster_bootstrap_coefficients(
             for column in design_columns
             if column == "const" or bootstrap[column].nunique(dropna=False) > 1
         ]
+        # A cluster resample can make calendar and duration columns nearly
+        # collinear. Firth estimates are invariant to this full-rank affine
+        # transformation, while centering and scaling prevents Newton steps
+        # from being dominated by a poorly conditioned bootstrap design.
+        bootstrap_design = bootstrap[varying_columns].astype(float).copy()
+        centers: dict[str, float] = {}
+        scales: dict[str, float] = {}
+        for column in varying_columns:
+            if column == "const":
+                continue
+            center = float(bootstrap_design[column].mean())
+            scale = float(bootstrap_design[column].std(ddof=0))
+            if not np.isfinite(scale) or scale <= 0:
+                raise RuntimeError(
+                    f"Bootstrap column {column} is not estimable at repetition "
+                    f"{repetition}"
+                )
+            centers[column] = center
+            scales[column] = scale
+            bootstrap_design[column] = (
+                bootstrap_design[column] - center
+            ) / scale
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", RuntimeWarning)
                 fit = fit_firth_logit(
-                    bootstrap[varying_columns],
+                    bootstrap_design,
                     bootstrap[outcome_column],
-                    max_iterations=150,
+                    max_iterations=300,
                     tolerance=1e-7,
                 )
         except (np.linalg.LinAlgError, ValueError, FloatingPointError) as error:
@@ -228,7 +250,15 @@ def cluster_bootstrap_coefficients(
             raise RuntimeError(
                 f"Bootstrap Firth fit did not converge at repetition {repetition}"
             )
-        focal_values = fit.params.to_numpy(float)
+        transformed_params = fit.params.copy()
+        for column, scale in scales.items():
+            transformed_params[column] = fit.params[column] / scale
+        if "const" in transformed_params:
+            transformed_params["const"] = fit.params["const"] - sum(
+                fit.params[column] * centers[column] / scales[column]
+                for column in scales
+            )
+        focal_values = transformed_params.to_numpy(float)
         if not np.isfinite(focal_values).all():
             raise RuntimeError(
                 f"Bootstrap Firth fit is non-finite at repetition {repetition}"
@@ -245,8 +275,8 @@ def cluster_bootstrap_coefficients(
                     # LAPACK implementations can differ below the precision used
                     # for inference or reporting. Canonicalize at the analysis
                     # boundary so tracked evidence rebuilds identically across OSes.
-                    float(np.round(fit.params[column], 6))
-                    if column in fit.params
+                    float(np.round(transformed_params[column], 6))
+                    if column in transformed_params
                     else np.nan
                 )
                 for column in design_columns

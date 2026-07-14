@@ -19,13 +19,13 @@ The shared empirical core, focused public draft, and preserved professor package
 
 ## Paper Logic
 
-The article links three evidence blocks:
+The article links three margins that should not be collapsed:
 
 1. FY2024 count-volume decomposition: 41.1% facility participation, 80.1% throughput coverage, and 70.5% waste-processing design-capacity share.
-2. First reported installed-capacity entry: 55 descriptive events, with the broad exact-year Firth model on 15,154 rows across 1,137 administrative lineages and 35 events.
-3. Conditional generator components: 6,511 engineering-valid rows across 493 lineages, separating installed generator design intensity from annual electrical capacity factor.
+2. First reported installed-capacity entry: 55 descriptive events, with a frozen five-parameter Firth model on 15,154 rows across 1,137 lineages and 35 events; the broad scale OR is 6.72 with 1,999 lineage bootstraps.
+3. Conditional generator components: 6,511 engineering-valid rows across 493 lineages, separating raw installed electrical capacity from annual capacity factor.
 
-The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events; same-episode continuity uses 15,095/1,135/24; and identity-certain linkage uses 15,107/1,130/35 rows/lineages/events. Administrative disappearance is not modeled. Gross MWh/t is not presented as a stand-alone efficiency measure.
+The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events; same-episode continuity uses 15,095/1,135/24; and identity-certain linkage uses 15,107/1,130/35 rows/lineages/events. All event attacks retain a scale OR between 6.12 and 7.30. Administrative disappearance is not modeled. Gross MWh/t is not presented as a stand-alone efficiency measure.
 
 ## Start Here
 

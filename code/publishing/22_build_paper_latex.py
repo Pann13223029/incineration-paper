@@ -40,6 +40,7 @@ def tectonic_binary() -> str:
 
     raise SystemExit("Tectonic not found; cannot compile the LaTeX manuscript.")
 
+
 def build_figures() -> None:
     for script in (FIGURE1_SCRIPT, FIGURE2_SCRIPT, FIGURE3_SCRIPT, FIGURE4_SCRIPT):
         if not script.exists():
@@ -49,6 +50,7 @@ def build_figures() -> None:
 
 def compile_latex(tectonic: str, manuscript_dir: Path, latex_source: Path) -> Path:
     latex_pdf = manuscript_dir / "paper.pdf"
+    previous_mtime_ns = latex_pdf.stat().st_mtime_ns if latex_pdf.exists() else None
     command = [
         tectonic,
         "-p",
@@ -59,6 +61,8 @@ def compile_latex(tectonic: str, manuscript_dir: Path, latex_source: Path) -> Pa
     subprocess.run(command, cwd=manuscript_dir, check=True)
     if not latex_pdf.exists():
         raise SystemExit(f"Tectonic did not produce the expected PDF: {latex_pdf}")
+    if previous_mtime_ns is not None and latex_pdf.stat().st_mtime_ns == previous_mtime_ns:
+        raise SystemExit(f"Tectonic did not refresh the expected PDF: {latex_pdf}")
     return latex_pdf
 
 

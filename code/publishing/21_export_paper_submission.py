@@ -36,8 +36,8 @@ OUT_PDF = SUBMISSION_DIR / "waste-management-manuscript.pdf"
 
 
 TITLE = (
-    "From Facility Counts to Generator Components: Electricity Recovery in "
-    "Japan's Municipal Waste-Incineration Fleet, FY2005-FY2024"
+    "Three Margins of Electricity Recovery: Coverage, Selective Entry, and "
+    "Generator Sizing in Japan's Municipal Incinerator Fleet, FY2005-FY2024"
 )
 AUTHOR = "Pann Phetra"
 SUBJECT = "Waste Management manuscript export"

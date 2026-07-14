@@ -16,7 +16,7 @@ ANALYSIS_DIR = Path(__file__).resolve().parents[1] / "analysis"
 if str(ANALYSIS_DIR) not in sys.path:
     sys.path.insert(0, str(ANALYSIS_DIR))
 
-from rare_event_utils import fit_firth_logit  # noqa: E402
+from rare_event_utils import cluster_bootstrap_coefficients, fit_firth_logit  # noqa: E402
 
 
 def reference_objective(
@@ -75,6 +75,32 @@ class FirthLogitBenchmarkTest(unittest.TestCase):
             float(reference.fun),
             places=8,
         )
+
+    def test_cluster_bootstrap_returns_original_scale_coefficients(self) -> None:
+        """Internal standardization must not alter the reported parameter scale."""
+        frame = pd.DataFrame(
+            {
+                "cluster": np.repeat(np.arange(20), 2),
+                "const": 1.0,
+                "predictor": np.tile(np.array([-2.0, 2.0]), 20),
+            }
+        )
+        frame["event"] = (
+            (frame["predictor"] > 0) & (frame["cluster"] % 4 == 0)
+        ).astype(float)
+
+        bootstrap = cluster_bootstrap_coefficients(
+            frame,
+            ["const", "predictor"],
+            "event",
+            "cluster",
+            repetitions=10,
+            seed=20260714,
+        )
+
+        self.assertEqual(len(bootstrap), 10)
+        self.assertTrue(bootstrap["converged"].all())
+        self.assertTrue(np.isfinite(bootstrap[["const", "predictor"]]).all().all())
 
 
 if __name__ == "__main__":

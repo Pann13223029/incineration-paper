@@ -16,14 +16,16 @@ The code layer has two responsibilities: `analysis/` creates canonical evidence,
 | 1 | `02b_build_raw_data_manifest.py` | Preflight exactly 20 nonempty FY2005-FY2024 workbooks, then record hashes, byte sizes, URLs, sheets, headers, and selected columns. |
 | 2 | `02_parse_facility_panel.py` | Parse the preflighted MOE workbooks into 23,599 source rows and fail on any missing or duplicate year. |
 | 3 | `02a_build_facility_identity.py` | Collapse exact duplicates and construct 23,593 unique records, 1,690 stable administrative lineages, and 1,767 asset episodes; expose uncertain links. |
-| 4 | `04_eda_facility.py` | Build descriptive summaries and audit model-frame inputs. |
-| 5 | `05_fleet_decomposition.py` | Separate facility participation, throughput coverage, and design-capacity share. |
-| 6 | `05a_power_adoption.py` | Estimate sparse first installed-capacity entry with Firth bias reduction. |
-| 7 | `05_panel_regression.py` | Separate generator design intensity from annual electrical capacity factor. |
-| 8 | `06_robustness.py` | Test component results across windows, weights, bounds, and within-episode designs. |
-| 9 | `06a_data_quality_sensitivity.py` | Audit sample flow, ages, engineering bounds, heating values, and duplicates. |
-| 10 | `06b_identifier_gap_audit.py` | Audit official-code gaps, code-regime resets, and restored lineage continuity. |
-| 11 | `08_verify_claims.py` | Verify registered paper-facing claims and stale-language guards. |
+| 4 | `02c_build_linkage_validation_packet.py` | Build the blinded clerical-review packet and separate answer key. |
+| 5 | `04_eda_facility.py` | Build descriptive summaries and audit model-frame inputs. |
+| 6 | `05_fleet_decomposition.py` | Separate facility participation, throughput coverage, and design-capacity share. |
+| 7 | `05a_power_adoption.py` | Retain the higher-dimensional sparse-entry specification and pathway outputs as sensitivities. |
+| 8 | `05_panel_regression.py` | Build component frames and legacy component sensitivities. |
+| 9 | `05b_scientific_revision.py` | Fit the frozen five-parameter entry models, 1,999 bootstraps, all-event attacks, and raw-kW models. |
+| 10 | `06_robustness.py` | Test component results across windows, weights, bounds, and within-episode designs. |
+| 11 | `06a_data_quality_sensitivity.py` | Audit sample flow, ages, engineering bounds, heating values, and duplicates. |
+| 12 | `06b_identifier_gap_audit.py` | Audit official-code gaps, code-regime resets, and restored lineage continuity. |
+| 13 | `08_verify_claims.py` | Verify registered paper-facing claims and stale-language guards. |
 
 The numbering is historical; the order in `07_rebuild_analysis.py` is authoritative.
 `03_grid_emission_factors.py` remains available only as a noncanonical contextual

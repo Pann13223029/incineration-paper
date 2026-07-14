@@ -62,10 +62,12 @@ CORE_STAGES = [
     "02_parse_facility_panel",
     "02a_build_facility_identity",
     "02b_build_raw_data_manifest",
+    "02c_build_linkage_validation_packet",
     "04_eda_facility",
     "05_fleet_decomposition",
     "05a_power_adoption",
     "05_panel_regression",
+    "05b_scientific_revision",
     "06_robustness",
     "06a_data_quality_sensitivity",
     "06b_identifier_gap_audit",
@@ -805,6 +807,78 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         ),
     )
 
+    # Major-revision sparse-entry and raw-quantity evidence.
+    revised = pd.read_csv(OUTPUT_DIR / "revised_entry_results.csv")
+    revised_bootstrap = pd.read_csv(OUTPUT_DIR / "revised_entry_bootstrap.csv")
+    revised_influence = pd.read_csv(OUTPUT_DIR / "revised_entry_influence.csv")
+    event_composition = pd.read_csv(OUTPUT_DIR / "adoption_event_composition.csv")
+    raw_quantities = pd.read_csv(OUTPUT_DIR / "raw_quantity_component_results.csv")
+    adjusted_components = pd.read_csv(OUTPUT_DIR / "figure3_adjusted_components.csv")
+    revision_meta = manifests["05b_scientific_revision"]["metadata"]
+    revised_models = set(revised["model"])
+    revised_repetitions = revised_bootstrap.groupby("model")["repetition"].nunique()
+    broad_revised = revised[revised["model"].eq("Broad reduced-DF frame")]
+    broad_scale = broad_revised[
+        broad_revised["term"].eq("log_processing_capacity")
+    ].iloc[0]
+    broad_age = broad_revised[broad_revised["term"].eq("age_per_10y")].iloc[0]
+    scale_or = math.exp(float(broad_scale["coefficient"]) * math.log(2.0))
+    scale_or_ci = (
+        math.exp(float(broad_scale["bootstrap_ci_low"]) * math.log(2.0)),
+        math.exp(float(broad_scale["bootstrap_ci_high"]) * math.log(2.0)),
+    )
+    influence_range = (
+        float(revised_influence["odds_ratio_300_vs_100"].min()),
+        float(revised_influence["odds_ratio_300_vs_100"].max()),
+    )
+    pathway_counts_revised = event_composition["pathway_category"].value_counts().to_dict()
+    assert_evidence(
+        "revised_entry_model_sync",
+        revised_models
+        == {
+            "Broad reduced-DF frame",
+            "Prior-operation reduced-DF frame",
+            "Same-episode reduced-DF frame",
+            "Identity-certain reduced-DF frame",
+        }
+        and revised.groupby("model").size().eq(4).all()
+        and revised_repetitions.eq(1999).all()
+        and revised_bootstrap["converged"].fillna(False).astype(bool).all()
+        and int(revision_meta["bootstrap_repetitions"]) == 1999,
+        (
+            f"Reduced-DF frames: {sorted(revised_models)}; bootstrap repetitions: "
+            f"{revised_repetitions.to_dict()}."
+        ),
+    )
+    assert_evidence(
+        "revised_event_composition_and_influence",
+        pathway_counts_revised
+        == {"Continuity-lineage entry": 24, "Rebuild/replacement-like entry": 11}
+        and len(revised_influence) == 70
+        and revised_influence["converged"].fillna(False).astype(bool).all()
+        and influence_range[0] > 6.0
+        and influence_range[1] < 7.5,
+        (
+            f"Modeled event pathways: {pathway_counts_revised}; event-attack scale OR "
+            f"range {influence_range[0]:.4f}-{influence_range[1]:.4f}."
+        ),
+    )
+    installed_rows = raw_quantities[
+        raw_quantities["outcome"].eq("log_installed_capacity_kw")
+    ]
+    assert_evidence(
+        "raw_quantity_component_sync",
+        len(installed_rows) == 4
+        and set(adjusted_components["component"])
+        == {"Installed electrical capacity", "Electrical capacity factor"}
+        and raw_quantities["observations"].eq(design_rows).all()
+        and raw_quantities["lineages"].eq(int(regression_meta["stable_sites"])).all(),
+        (
+            f"Raw quantity results have {len(raw_quantities)} focal rows and adjusted "
+            f"component contrasts have {len(adjusted_components)} rows."
+        ),
+    )
+
     metrics = {
         "python_versions": python_versions,
         "provenance": {
@@ -904,6 +978,28 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
                 ].iloc[0]
             ),
         },
+        "revision": {
+            "bootstrap_repetitions": 1999,
+            "scale_or": scale_or,
+            "scale_or_ci_low": scale_or_ci[0],
+            "scale_or_ci_high": scale_or_ci[1],
+            "broad_age_coefficient": float(broad_age["coefficient"]),
+            "broad_age_ci_low": float(broad_age["bootstrap_ci_low"]),
+            "broad_age_ci_high": float(broad_age["bootstrap_ci_high"]),
+            "influence_or_low": influence_range[0],
+            "influence_or_high": influence_range[1],
+            "continuity_events": int(pathway_counts_revised["Continuity-lineage entry"]),
+            "rebuild_events": int(pathway_counts_revised["Rebuild/replacement-like entry"]),
+            "installed_capacity_elasticity": float(
+                installed_rows.loc[
+                    installed_rows["term"].eq("log_capacity_t_day"), "coefficient"
+                ].iloc[0]
+            ),
+            "adjusted_components": {
+                f"{row.component}::{row.cohort}": float(row.percent_difference)
+                for row in adjusted_components.itertuples(index=False)
+            },
+        },
     }
     return metrics, assertions
 
@@ -989,6 +1085,7 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
     fleet = metrics["fleet"]
     adoption = metrics["adoption"]
     components = metrics["components"]
+    revision = metrics["revision"]
 
     manuscript_keys = [
         key
@@ -1112,7 +1209,7 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                     adoption["identity_certain_rows"],
                     adoption["identity_certain_sites"],
                     adoption["identity_certain_events"],
-                    adoption["bootstrap_repetitions"],
+                    revision["bootstrap_repetitions"],
                 )
             ),
             (
@@ -1126,52 +1223,40 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{adoption['identity_certain_rows']:,}/"
                 f"{adoption['identity_certain_sites']:,}/"
                 f"{adoption['identity_certain_events']}, with "
-                f"{adoption['bootstrap_repetitions']} "
-                "lineage bootstraps."
+                f"{revision['bootstrap_repetitions']} "
+                "lineage bootstraps for the reduced model."
             ),
         )
         add_requirement(
             checks,
-            "adoption_joint_inference_and_scale",
+            "revised_entry_scale_and_influence",
             key,
             contains_context_number(
                 text,
-                r"broad.{0,80}joint age|joint age.{0,80}broad",
-                adoption["broad_age_joint_p_value"],
-                (3, 4),
-            )
-            and contains_context_number(
-                text,
-                r"prior[- ]operation.{0,80}joint age|joint age.{0,80}prior[- ]operation",
-                adoption["prior_age_joint_p_value"],
-                (3, 4),
-            )
-            and contains_context_number(
-                text,
-                r"same[- ](?:asset[- ])?episode|continuity sensitivity",
-                adoption["continuity_age_joint_p_value"],
-                (3, 4),
-            )
-            and contains_context_number(
-                text,
-                r"identity[- ]certain|identity uncertainty",
-                adoption["identity_certain_age_joint_p_value"],
-                (3, 4),
-            )
-            and contains_context_number(
-                text,
                 r"300.{0,30}100|100.{0,30}300|odds ratio|scale select",
-                adoption["capacity_or_300_vs_100"],
+                revision["scale_or"],
                 (2,),
+            )
+            and contains_context_number(
+                text,
+                r"confidence interval|CI|bootstrap",
+                revision["scale_or_ci_low"],
+                (2,),
+            )
+            and contains_number(text, revision["influence_or_low"], (2,))
+            and contains_number(text, revision["influence_or_high"], (2,))
+            and contains_context_number(
+                text, r"continuity[- ]lineage", revision["continuity_events"]
+            )
+            and contains_context_number(
+                text, r"rebuild|replacement", revision["rebuild_events"]
             ),
             (
-                "Report lineage-bootstrap joint-age p-values for broad, prior-operation, "
-                "same-episode, and identity-certain "
-                f"frames ({adoption['broad_age_joint_p_value']:.3f}/"
-                f"{adoption['prior_age_joint_p_value']:.3f}/"
-                f"{adoption['continuity_age_joint_p_value']:.3f}/"
-                f"{adoption['identity_certain_age_joint_p_value']:.3f}) and scale contrast "
-                f"OR={adoption['capacity_or_300_vs_100']:.2f}."
+                f"Report reduced-model scale OR={revision['scale_or']:.2f} "
+                f"(CI {revision['scale_or_ci_low']:.2f}-"
+                f"{revision['scale_or_ci_high']:.2f}), event-attack range "
+                f"{revision['influence_or_low']:.2f}-"
+                f"{revision['influence_or_high']:.2f}, and exact-event composition."
             ),
         )
         quartiles = adoption["capacity_quartile_counts"]
@@ -1225,6 +1310,32 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 "Separate generator design intensity from electrical capacity factor and "
                 f"report {components['rows']:,} engineering-valid rows across "
                 f"{components['stable_sites']} stable administrative lineages."
+            ),
+        )
+        adjusted = revision["adjusted_components"]
+        add_requirement(
+            checks,
+            "raw_installed_capacity_contrasts",
+            key,
+            contains_context_number(
+                text,
+                r"installed electrical capacity|installed[- ]kW",
+                revision["installed_capacity_elasticity"],
+                (3,),
+            )
+            and all(
+                contains_number(text, abs(adjusted[label]), (1,))
+                for label in (
+                    "Installed electrical capacity::Before 1990",
+                    "Installed electrical capacity::1990-1999",
+                    "Installed electrical capacity::2000-2009",
+                    "Electrical capacity factor::Before 1990",
+                    "Electrical capacity factor::1990-1999",
+                )
+            ),
+            (
+                "Report the raw installed-kW elasticity and the adjusted installed-capacity "
+                "and capacity-factor cohort contrasts."
             ),
         )
         if is_professor_profile:
@@ -1352,25 +1463,15 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
             "supplement",
             re.search(r"Firth|Jeffreys[- ]prior", text, re.IGNORECASE) is not None
             and contains_context_number(
-                text, r"bootstrap", adoption["bootstrap_repetitions"]
+                text, r"bootstrap", revision["bootstrap_repetitions"]
             )
-            and contains_context_number(
-                text,
-                r"broad.{0,80}joint age|joint age.{0,80}broad",
-                adoption["broad_age_joint_p_value"],
-                (3, 4),
-            )
-            and contains_context_number(
-                text,
-                r"same[- ](?:asset[- ])?episode|continuity sensitivity",
-                adoption["continuity_age_joint_p_value"],
-                (3, 4),
-            ),
+            and contains_number(text, revision["scale_or"], (2,))
+            and contains_number(text, revision["broad_age_coefficient"], (3, 4))
+            and contains_number(text, revision["influence_or_low"], (2,)),
             (
-                f"Document Firth estimation, {adoption['bootstrap_repetitions']} "
-                "cluster-bootstrap repetitions, broad joint-age p="
-                f"{adoption['broad_age_joint_p_value']:.3f}, and continuity "
-                f"sensitivity p={adoption['continuity_age_joint_p_value']:.3f}."
+                f"Document the five-parameter Firth model, "
+                f"{revision['bootstrap_repetitions']} cluster bootstraps, scale OR "
+                f"{revision['scale_or']:.2f}, continuous age, and event influence."
             ),
         )
         add_requirement(
@@ -1406,17 +1507,15 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
             "professor_lineage",
             contains_number(text, fleet["facility_participation_pct"], (1,))
             and contains_number(text, fleet["throughput_coverage_pct"], (1,))
-            and contains_number(text, adoption["broad_age_joint_p_value"], (3, 4))
-            and contains_number(
-                text, adoption["continuity_age_joint_p_value"], (3, 4)
-            )
-            and contains_number(
-                text, adoption["identity_certain_age_joint_p_value"], (3, 4)
-            )
+            and contains_number(text, revision["scale_or"], (2,))
+            and contains_number(text, revision["scale_or_ci_low"], (2,))
+            and contains_number(text, revision["influence_or_low"], (2,))
+            and contains_number(text, revision["broad_age_coefficient"], (3, 4))
+            and contains_number(text, revision["installed_capacity_elasticity"], (3,))
             and contains_number(text, components["sizing_age_p_value"], (3, 4)),
             (
-                "Report current count-volume, joint-age, continuity, and sizing-diagnostic headline "
-                "values in the professor lineage packet."
+                "Report current count-volume, reduced-model entry, event-influence, raw-component, "
+                "and sizing-diagnostic headline values in the professor lineage packet."
             ),
         )
 

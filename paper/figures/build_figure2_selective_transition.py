@@ -15,7 +15,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 FIGURE_DIR = Path(__file__).resolve().parent
-DATA_PATH = ROOT / "output" / "figure2_transition_effects.csv"
+DATA_PATH = ROOT / "output" / "revised_entry_results.csv"
 PNG_OUT = FIGURE_DIR / "figure2_selective_transition.png"
 PDF_OUT = FIGURE_DIR / "figure2_selective_transition.pdf"
 
@@ -26,30 +26,32 @@ BLUE = "#0072b2"
 ORANGE = "#d55e00"
 
 MODEL_STYLES = {
-    "Broad exact-year risk frame": {
-        "label": "Broad exact-year frame",
+    "Broad reduced-DF frame": {
+        "label": "Broad frame",
         "color": BLUE,
         "marker": "o",
-        "offset": 0.11,
+        "offset": 0.16,
     },
-    "Prior-operation risk frame": {
+    "Prior-operation reduced-DF frame": {
         "label": "Prior-operation frame",
         "color": ORANGE,
         "marker": "s",
-        "offset": -0.11,
+        "offset": 0.0,
+    },
+    "Same-episode reduced-DF frame": {
+        "label": "Same-episode frame",
+        "color": "#009e73",
+        "marker": "^",
+        "offset": -0.16,
     },
 }
 
 TERM_ORDER = (
-    "age_10-19 yrs",
-    "age_20-29 yrs",
-    "age_30+ yrs",
+    "age_per_10y",
     "log_processing_capacity",
 )
 TERM_LABELS = {
-    "age_10-19 yrs": "Age 10-19",
-    "age_20-29 yrs": "Age 20-29",
-    "age_30+ yrs": "Age 30+",
+    "age_per_10y": "Prior reported age\nper 10 years",
     "log_processing_capacity": "Capacity\n300 vs 100 t/day",
 }
 
@@ -129,7 +131,7 @@ def build() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(3.7, 4.15), dpi=200)
+    fig, ax = plt.subplots(figsize=(3.9, 3.45), dpi=200)
     style_axes(ax)
     y_base = np.arange(len(TERM_ORDER) - 1, -1, -1, dtype=float)
 
@@ -160,18 +162,18 @@ def build() -> None:
 
     ax.axvline(1, color=INK, linewidth=0.9, linestyle=(0, (3, 2)), zorder=2)
     ax.set_xscale("log")
-    ax.set_xlim(0.1, 12)
-    ticks = [0.125, 0.25, 0.5, 1, 2, 4, 8]
-    ax.set_xticks(ticks, ["0.125", "0.25", "0.5", "1", "2", "4", "8"])
+    ax.set_xlim(0.2, 16)
+    ticks = [0.25, 0.5, 1, 2, 4, 8, 16]
+    ax.set_xticks(ticks, ["0.25", "0.5", "1", "2", "4", "8", "16"])
     ax.set_yticks(y_base, [TERM_LABELS[item] for item in TERM_ORDER])
-    ax.set_ylim(-0.55, 3.55)
+    ax.set_ylim(-0.55, 1.55)
     ax.set_xlabel("Odds ratio (log scale)", fontsize=8.2, labelpad=7)
     handles, labels = ax.get_legend_handles_labels()
     fig.text(
         0.08,
         0.965,
-        "Scale-associated entry; age remains uncertain",
-        fontsize=9.3,
+        "Scale estimate survives continuity restriction",
+        fontsize=8.8,
         fontweight="semibold",
         ha="left",
         va="top",
@@ -179,7 +181,7 @@ def build() -> None:
     fig.text(
         0.08,
         0.915,
-        "Firth logistic models; 95% intervals from 499 lineage bootstraps",
+        "Five-parameter Firth models; 1,999 lineage bootstraps",
         color=MUTED,
         fontsize=7.3,
         ha="left",
@@ -189,7 +191,7 @@ def build() -> None:
         handles,
         labels,
         loc="upper left",
-        bbox_to_anchor=(0.08, 0.875),
+        bbox_to_anchor=(0.08, 0.865),
         frameon=False,
         fontsize=7.1,
         handletextpad=0.5,
@@ -199,16 +201,17 @@ def build() -> None:
     fig.text(
         0.08,
         0.03,
-        "Age reference: 0-9 years; capacity compares 300 with 100 t/day.\n"
-        f"Models use {model_rows['Broad exact-year risk frame']:,} and "
-        f"{model_rows['Prior-operation risk frame']:,} risk rows, respectively.",
+        "Age is per 10 years; capacity compares 300 with 100 t/day.\n"
+        f"Risk rows: {model_rows['Broad reduced-DF frame']:,} / "
+        f"{model_rows['Prior-operation reduced-DF frame']:,} / "
+        f"{model_rows['Same-episode reduced-DF frame']:,}.",
         color=MUTED,
         fontsize=6.6,
         ha="left",
         linespacing=1.25,
     )
 
-    fig.subplots_adjust(left=0.34, right=0.97, top=0.68, bottom=0.18)
+    fig.subplots_adjust(left=0.34, right=0.97, top=0.64, bottom=0.22)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)

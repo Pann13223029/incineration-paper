@@ -190,6 +190,20 @@ violated. Current checks include:
 These tests establish deterministic behavior and catch known failure modes. They
 do not convert administrative record linkage into proof of physical identity.
 
+### S3.6 Blinded clerical-review protocol
+
+The generated reviewer packet contains 558 candidate pairs. It includes all 35
+modeled event links, all 16 accepted uncertain links, all 31 gap links, 50
+deterministically sampled FY2019-FY2020 bridge links, and stratified accepted
+pairs. It exposes prior- and current-record names, municipalities, start years,
+capacities, furnace counts, facility types, and years, but withholds match
+scores, algorithmic decisions, and final lineage IDs. A second reviewer records
+same administrative history, different history, indeterminate, or same lineage
+with a probable reset before the separate answer key is opened. The packet and
+protocol are reproducible outputs. They do not constitute independent
+validation until a second reviewer completes and signs the review and
+disagreements are adjudicated.
+
 ## S4. Analytical Frames And Sample Construction
 
 ### S4.1 Fleet frame
@@ -257,20 +271,21 @@ capacity.
 
 For lineage `i` in fiscal year `t`, let `Y_it=1` denote the first observed report
 of positive installed electrical-generation capacity while the lineage remains
-at risk. The model is:
+at risk. The primary model, frozen before the revised fit, is:
 
 ```text
 logit Pr(Y_it = 1 | at risk) = alpha
-                              + sum_a beta_a AgeBand_i,t-1,a
+                              + beta_A Age_i,t-1 / 10
                               + beta_C log(1 + C_i,t-1 / 100)
-                              + calendar-era indicators
-                              + elapsed-risk-duration indicators.
+                              + beta_T (t - 2014.5) / 5
+                              + beta_R log(1 + RiskDuration_it).
 ```
 
-`C_i,t-1` is lagged waste-processing design capacity in t/day. The reference age
-band is 0-9 years; comparison bands are 10-19, 20-29, and 30+ years. Calendar
-eras are FY2005-FY2009, FY2010-FY2014, FY2015-FY2019, and FY2020-FY2024. Elapsed
-risk duration is grouped as 1-4, 5-9, 10-14, and 15+ fiscal years. The setup
+`C_i,t-1` is lagged waste-processing design capacity in t/day. Age is scaled per
+ten years, calendar time per five years, and observed risk duration is logged.
+The intercept plus four predictors gives five parameters for 35 broad-frame
+events. The earlier 11-parameter age-band, calendar-era, and duration-band
+model remains a sensitivity. The setup
 follows the discrete-time event-history logic described by Allison (1982) and
 Beck et al. (1998), while the present implementation uses bias reduction because
 events are sparse. The Jeffreys-prior correction follows Firth (1993), and its
@@ -295,53 +310,40 @@ Schemper (2002).
 
 The machine-readable coefficient table reports model-based standard errors,
 confidence intervals, and term-level *p*-values under explicit labels. Primary
-repeated-observation uncertainty uses 499 deterministic stable-lineage
+repeated-observation uncertainty uses 1,999 deterministic stable-lineage
 cluster-bootstrap replications. Entire lineage histories are resampled with
 replacement, preserving within-lineage dependence. Every replication must
-converge and return all focal coefficients. Percentile intervals come from the
-coefficient distributions, while each joint age test uses the covariance of the
-three age coefficients across the same 499 replications.
+converge and return all focal coefficients. Bootstrap designs are centered and
+scaled internally to avoid numerical instability in near-collinear resamples;
+coefficients are transformed back to their original units before storage.
+Percentile intervals come from the resulting coefficient distributions.
 
 ### S5.3 Main entry estimates
 
 | Model | Term | Coefficient | Bootstrap 95% interval | Events |
 |:--|:--|--:|--:|--:|
-| Broad exact-year | Age 10-19 years | -1.2541 | [-2.4232, 0.6642] | 35 |
-| Broad exact-year | Age 20-29 years | -1.1274 | [-2.1767, 0.8694] | 35 |
-| Broad exact-year | Age 30+ years | -1.3091 | [-2.7015, 0.6446] | 35 |
-| Broad exact-year | Log processing capacity | 2.6158 | [1.9707, 3.4872] | 35 |
-| Prior-operation | Age 10-19 years | -1.3358 | [-2.4445, 0.3110] | 33 |
-| Prior-operation | Age 20-29 years | -1.3892 | [-2.5051, 0.2434] | 33 |
-| Prior-operation | Age 30+ years | -1.3096 | [-2.5941, 0.4230] | 33 |
-| Prior-operation | Log processing capacity | 2.6444 | [1.9087, 3.7149] | 33 |
-| Same-episode continuity | Age 10-19 years | -1.6932 | [-3.1183, -0.0298] | 24 |
-| Same-episode continuity | Age 20-29 years | -1.6656 | [-2.6437, 0.1727] | 24 |
-| Same-episode continuity | Age 30+ years | -2.6005 | [-4.5943, -0.6761] | 24 |
-| Same-episode continuity | Log processing capacity | 2.7146 | [2.0411, 3.6682] | 24 |
-| Identity-certain | Age 10-19 years | -1.2541 | [-2.5990, 0.4523] | 35 |
-| Identity-certain | Age 20-29 years | -1.1270 | [-2.1997, 0.7766] | 35 |
-| Identity-certain | Age 30+ years | -1.3110 | [-2.6679, 0.5910] | 35 |
-| Identity-certain | Log processing capacity | 2.6235 | [1.9097, 3.5373] | 35 |
+| Broad exact-year | Age per ten years | -0.3274 | [-0.7743, 0.0701] | 35 |
+| Broad exact-year | Log processing capacity | 2.7492 | [2.1084, 3.6394] | 35 |
+| Prior-operation | Age per ten years | -0.3228 | [-0.7928, 0.1471] | 33 |
+| Prior-operation | Log processing capacity | 2.8253 | [2.0300, 3.7828] | 33 |
+| Same-episode continuity | Age per ten years | -0.7510 | [-1.3639, -0.2059] | 24 |
+| Same-episode continuity | Log processing capacity | 2.8381 | [2.1501, 3.8126] | 24 |
+| Identity-certain | Age per ten years | -0.3276 | [-0.7907, 0.0652] | 35 |
+| Identity-certain | Log processing capacity | 2.7581 | [2.0805, 3.6203] | 35 |
 
-Because the age specification is a three-coefficient family, the joint
-age-band tests below are the primary inferential summary. The individual
-percentile intervals are retained as stability diagnostics and are not
-interpreted term by term.
+The corresponding 300-versus-100 t/day odds ratios are 6.72 (95% interval
+4.31-12.46), 7.09 (4.08-13.76), 7.15 (4.44-14.05), and 6.76
+(4.23-12.30). The exact modeled events comprise 24 continuity-lineage and 11
+rebuild/replacement-like entries. Reclassifying each event gives scale odds
+ratios from 6.12 to 7.30; deleting each event's entire lineage gives 6.13 to
+7.30. These are conditional diagnostic contrasts, not causal effects of
+enlarging a facility.
 
-The broad-frame joint age test is `chi-square=3.08`, 3 df, `p=0.3800`; the
-prior-operation joint age test is `chi-square=4.81`, 3 df, `p=0.1863`; the
-same-episode continuity joint age test is `chi-square=7.78`, 3 df, `p=0.0508`;
-and the identity-certain joint age test is `chi-square=3.24`, 3 df, `p=0.3566`.
-All four use lineage-bootstrap coefficient covariance. The same-episode
-fitted-model covariance gives
-`p=0.0099`, demonstrating that its age inference is sensitive to both the
-continuity rule and within-lineage dependence. The evidence therefore does not
-support a robust general independent age result.
-
-Waste-processing scale is the stable entry correlate. The model-implied odds
-ratio comparing 300 with 100 t/day is 6.13 in the exact-year frame and 6.25 in
-the prior-operation frame. These are conditional odds contrasts, not causal
-effects of enlarging a facility.
+The earlier 11-parameter model is retained to show specification continuity.
+Its broad, prior-operation, and identity-certain joint age tests do not reject;
+its same-episode inference changes between bootstrap and model-based covariance.
+The lower-degree-of-freedom model is primary because it asks the same age and
+scale question with less sparse-event expenditure.
 
 ### S5.4 Why the frames are sensitivities, not group comparisons
 
@@ -352,9 +354,9 @@ equivalence test. It is therefore not used. Instead, the four complete Firth
 fits answer transparent sensitivity questions: whether prior operation,
 same-episode continuity, or identity certainty changes the broad pattern.
 
-As link-function checks, the processing-capacity coefficient is 2.6091 under a
-complementary log-log model and 2.6258 under conventional logistic regression,
-close to the broad Firth estimate of 2.6158.
+In the earlier 11-parameter sensitivity, the processing-capacity coefficient is
+2.6091 under a complementary log-log model and 2.6258 under conventional
+logistic regression, close to that specification's Firth estimate of 2.6158.
 
 ## S6. Engineering Components And Accounting Identity
 
@@ -414,7 +416,7 @@ start-year cohort indicators, coarse furnace/facility configuration controls,
 and standard errors clustered by stable lineage:
 
 ```text
-log(D_it) = cohort_i + log(C_w,it) + configuration_it + fiscal_year_t + error_it
+log(K_it) = cohort_i + log(C_w,it) + configuration_it + fiscal_year_t + error_it
 
 log(F_it) = cohort_i + log(C_w,it) + U_it
             + configuration_it + fiscal_year_t + error_it
@@ -427,10 +429,10 @@ The 2010-or-later reported start-year cohort is the reference group.
 
 | Outcome | Term | Coefficient | Clustered SE | p-value |
 |:--|:--|--:|--:|--:|
-| Log generator design intensity | Start before 1990 | -1.5647 | 0.0844 | <0.0001 |
-| Log generator design intensity | Start 1990-1999 | -0.8827 | 0.0635 | <0.0001 |
-| Log generator design intensity | Start 2000-2009 | -0.2674 | 0.0430 | <0.0001 |
-| Log generator design intensity | Log processing capacity | 0.5320 | 0.0436 | <0.0001 |
+| Log installed electrical capacity | Start before 1990 | -1.5647 | 0.0844 | <0.0001 |
+| Log installed electrical capacity | Start 1990-1999 | -0.8827 | 0.0635 | <0.0001 |
+| Log installed electrical capacity | Start 2000-2009 | -0.2674 | 0.0430 | <0.0001 |
+| Log installed electrical capacity | Log processing capacity | 1.5320 | 0.0435 | <0.0001 |
 | Log electrical capacity factor | Start before 1990 | 0.3020 | 0.0419 | <0.0001 |
 | Log electrical capacity factor | Start 1990-1999 | 0.1985 | 0.0325 | <0.0001 |
 | Log electrical capacity factor | Start 2000-2009 | 0.0149 | 0.0289 | 0.6060 |
@@ -439,10 +441,18 @@ The 2010-or-later reported start-year cohort is the reference group.
 | Log gross output | Log annual throughput | 0.6378 | 0.0521 | <0.0001 |
 | Log gross output | Log installed electrical capacity | 0.5758 | 0.0379 | <0.0001 |
 
-The pooled design-intensity model has `R-squared=0.5493`, the capacity-factor
+The pooled raw installed-kW model has `R-squared=0.7862`, the capacity-factor
 model has `R-squared=0.3390`, and the direct gross-output model has
 `R-squared=0.9139`. Cohort coefficients describe conditional administrative
 patterns and should not be read as effects of calendar age.
+
+With identical controls, subtracting `log(C_w)` from `log(K)` produces the
+design-intensity outcome. The corresponding scale coefficient is therefore
+`1.5320 - 1 = 0.5320`; this is an algebraic re-expression rather than a second
+model. Relative to the 2010-or-later cohort, adjusted installed kW is 79.1%,
+58.6%, and 23.5% lower in the pre-1990, 1990s, and 2000s cohorts. Adjusted
+capacity factors are 35.3%, 22.0%, and 1.5% higher, respectively; the 2000s
+capacity-factor interval spans zero.
 
 ### S6.4 Cohort medians
 
@@ -505,14 +515,16 @@ others.
 1. Compare the 55-event descriptive risk set with the 35-event complete-case
    exact-year frame.
 2. Restrict further to the 33 events following positive prior-year throughput.
-3. Use Firth bias reduction for sparse events.
-4. Resample complete stable-lineage histories in 499 cluster-bootstrap
+3. Use the frozen five-parameter Firth model for sparse events and retain the
+   earlier 11-parameter model as sensitivity.
+4. Resample complete stable-lineage histories in 1,999 cluster-bootstrap
    replications.
-5. Test age terms jointly rather than selecting individual coefficients.
+5. Report continuous age with model-based and lineage-bootstrap uncertainty.
 6. Compare the broad, prior-operation, same-episode, and identity-certain
    frames without treating nested frames as independent groups.
-7. Compare Firth, conventional logit, and complementary log-log scale
-   coefficients.
+7. Reclassify every modeled event and delete every event lineage one at a time.
+8. Compare the earlier Firth, conventional logit, and complementary log-log
+   scale coefficients as a specification sensitivity.
 
 ### S7.3 Engineering-sample checks
 
@@ -586,12 +598,12 @@ than manually transcribed private calculations. The primary evidence paths are:
 | Topic | Generated evidence |
 |:--|:--|
 | Raw provenance | `output/raw_data_manifest.csv`; `output/raw_workbook_schema_map.csv`; `output/raw_data_provenance.md` |
-| Lineage reconstruction | `data/processed/facility_identity_crosswalk.csv`; `output/facility_identity_audit.md`; `output/identifier_gap_audit.md` |
+| Lineage reconstruction | `data/processed/facility_identity_crosswalk.csv`; `output/facility_identity_audit.md`; `output/identifier_gap_audit.md`; `output/linkage_validation_protocol.md` |
 | Sample arithmetic | `output/sample_definition.md`; `output/data_quality_sensitivity.md` |
 | Fleet decomposition | `output/fleet_decomposition.csv`; `output/fy2024_fleet_segments.csv`; `output/fleet_decomposition.md` |
-| Entry model | `output/figure2_transition_effects.csv`; `output/adoption_bootstrap_coefficients.csv`; `output/adoption_results.md` |
+| Entry model | `output/revised_entry_results.csv`; `output/revised_entry_bootstrap.csv`; `output/revised_entry_influence.csv`; `output/adoption_event_composition.csv`; `output/scientific_revision_results.md` |
 | Pathways and follow-up | `output/adoption_pathway_audit.csv`; `output/post_adoption_bridge.csv`; `output/post_adoption_trajectories.csv` |
-| Engineering components | `output/generator_component_results.csv`; `output/table2_generator_components_by_cohort.md`; `output/regression_results.md` |
+| Engineering components | `output/raw_quantity_component_results.csv`; `output/figure3_adjusted_components.csv`; `output/generator_component_results.csv`; `output/regression_results.md` |
 | Robustness | `output/robustness_component_results.csv`; `output/robustness_results.md` |
 
 Each analytical stage writes a JSON manifest under `output/manifests/` with its
@@ -611,11 +623,12 @@ could have appeared to influence the work.
 ### S10.2 Data and code availability
 
 The source workbooks can be obtained from the Ministry of the Environment and
-e-Stat portals. Subject to source-file redistribution conditions, the submission
-package will provide analysis code, machine-readable stage manifests, derived
-tables, figure-generation scripts, and manuscript figures in a versioned
-repository. The raw-file manifest provides full SHA-256 values so independently
-obtained files can be compared byte for byte.
+e-Stat portals and are preserved in the versioned repository used for this
+analysis. e-Stat permits reuse and modification with source citation under terms
+compatible with Creative Commons Attribution 4.0. The repository cites e-Stat,
+marks harmonized files as researcher-edited content, and provides analysis code,
+machine-readable stage manifests, derived tables, figure scripts, and full
+SHA-256 values for byte-level comparison.
 
 ### S10.3 COPE-facing publication controls
 
@@ -654,11 +667,12 @@ were not used as authors and did not replace author judgment or accountability.
 
 1. Administrative lineage reconstruction is deterministic and audited but can
    still contain linkage error, especially among the 16 exposed uncertain
-   assignments.
+   assignments. A blinded packet exists, but independent clerical review remains
+   a submission gate.
 2. First reported positive capacity can lag physical installation or reflect a
    reporting correction.
 3. Sparse events make age inference sensitive to continuity rules even with
-   complete 499-replication lineage bootstraps.
+   complete 1,999-replication lineage bootstraps.
 4. Reported start year and configuration fields do not provide a complete
    engineering history.
 5. Gross output is not net electricity export, useful heat, or lifecycle climate
@@ -682,6 +696,10 @@ https://doi.org/10.2307/2991857
 
 Firth, D. (1993). Bias reduction of maximum likelihood estimates. *Biometrika*,
 *80*(1), 27-38. https://doi.org/10.1093/biomet/80.1.27
+
+Harron, K., Doidge, J. C., & Goldstein, H. (2020). Assessing data linkage
+quality in cohort studies. *Annals of Human Biology*, *47*(2), 218-226.
+https://doi.org/10.1080/03014460.2020.1742379
 
 Heinze, G., & Schemper, M. (2002). A solution to the problem of separation in
 logistic regression. *Statistics in Medicine*, *21*(16), 2409-2419.
