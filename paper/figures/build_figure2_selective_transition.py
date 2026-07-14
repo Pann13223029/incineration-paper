@@ -170,7 +170,7 @@ def build() -> None:
     fig.text(
         0.08,
         0.965,
-        "Entry is strongly associated with scale; age is uncertain",
+        "Scale-associated entry; age remains uncertain",
         fontsize=9.3,
         fontweight="semibold",
         ha="left",
