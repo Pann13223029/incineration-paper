@@ -191,8 +191,9 @@ def write_summary_statistics(frame: pd.DataFrame) -> str:
         handle.write("# Generator Component Summary Statistics\n\n")
         handle.write(table.to_markdown(index=False, floatfmt=".3f"))
         handle.write(
-            "\n\nThe frame excludes predeclared implausible generation-intensity, "
-            "capacity-factor, utilization, generator-sizing, and reported-age records. "
+            "\n\nThe frame excludes records outside specified bounds for generation "
+            "intensity, capacity factor, utilization, and generator sizing, as well "
+            "as records with invalid reported age. "
             "Values are not clipped into the model.\n"
         )
     return path

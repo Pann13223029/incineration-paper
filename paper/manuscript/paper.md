@@ -16,15 +16,15 @@ ratios comparing 300 with 100 tonnes per
 day are 6.13 and 6.25. Lineage-bootstrap joint age tests do not support a general
 independent association in the broad, prior-operation, or identity-certain
 frames (*p*=0.380, 0.186, and 0.357); a 24-event same-episode sensitivity is
-near but above 0.05 (*p*=0.051). Among 6,511 engineering-valid generator-years across 493
+continuity-sensitive (*p*=0.051 with 499 lineage-bootstrap replications). Among 6,511 engineering-valid generator-years across 493
 lineages, reported start-year cohorts differ sharply in generator sizing. In a
 heating-controlled diagnostic, adding design intensity makes former age,
 processing-scale, and waste-utilization associations with gross MWh/t small and
 non-significant. Gross MWh/t is therefore an accounting outcome, not an
 independent operating-performance measure. An exploratory pathway comparison
 places continuity-lineage entrants below rebuild/replacement-like entrants in
-descriptive first-complete-year component ranks. The evidence establishes
-count-volume divergence, scale-associated entry, and a design-vintage hierarchy, but not physical project
+descriptive first-complete-year component ranks. The evidence shows
+count-volume divergence, scale-associated entry, and a reported start-year cohort hierarchy in generator sizing, but not physical project
 histories or causal effects.
 
 **Keywords:** municipal solid waste; incineration; waste-to-energy; Japan;
@@ -373,9 +373,11 @@ relative to 0-9 years; $C$ is prior-year processing design capacity in t/day;
 $\mathbf{E}$ contains four calendar eras; and $\mathbf{D}$ contains flexible
 elapsed-risk-duration bands of 1-4, 5-9, 10-14, and at least 15 years. The
 capacity transform is scaled so its contrast remains interpretable without
-assuming a linear effect per t/day. The deliberately parsimonious specification
-reflects only 35 complete-covariate events; adding many technology or geographic
-terms would spend sparse event information without creating causal control.
+assuming a linear effect per t/day. The specification contains 11 coefficients
+but only 35 complete-covariate events, or approximately 3.2 events per
+coefficient. It is therefore intentionally limited to age, processing scale,
+calendar era, and elapsed risk duration. Adding technology or geographic terms
+would further spend sparse event information without creating causal control.
 
 Ordinary maximum-likelihood logit is vulnerable to small-sample bias and
 separation in a sparse event design. The primary estimator therefore uses
@@ -611,11 +613,11 @@ are not jointly significant in the broad frame (chi-square=3.08, 3 df,
 *p*=0.3800), the prior-operation frame (chi-square=4.81, 3 df, *p*=0.1863), or
 the identity-certain frame (chi-square=3.24, 3 df, *p*=0.3566).
 
-The same-episode continuity result is more fragile. Its joint bootstrap test is
-near but above the conventional 0.05 threshold (chi-square=7.78, 3 df,
-*p*=0.0508) with only 24
-events, whereas the corresponding fitted-model covariance gives *p*=0.0099.
-That discrepancy shows that uncertainty is sensitive both to the continuity
+The same-episode continuity result is more fragile. With only 24 events, its
+joint test based on 499 lineage-bootstrap replications gives chi-square=7.78
+(3 df, *p*=0.0508), whereas the corresponding fitted-model covariance gives
+*p*=0.0099. The discrepancy, rather than either threshold classification, is
+the relevant finding: age inference is sensitive both to the continuity
 definition and to within-lineage dependence. It is not evidence of a stable
 general age effect. Figure 2 therefore presents only the broad and
 prior-operation estimates for readability; the same-episode and
@@ -824,7 +826,8 @@ throughput and installed-capacity facilities represent 70.5% of processing
 design capacity. First reported capacity entry is sparse and strongly associated
 with processing scale, with 300-versus-100 t/day odds ratios near six in both modeled
 frames. Broad and identity-certain age tests are non-significant, while a
-same-episode sensitivity is near but above 0.05 with only 24 events; age inference is
+same-episode sensitivity uses only 24 events and differs sharply between
+bootstrap and fitted-model covariance; age inference is
 therefore continuity-sensitive rather than generally established. Among operating generators,
 the observed gross-MWh/t cohort hierarchy aligns primarily with generator sizing
 and design vintage; it does not

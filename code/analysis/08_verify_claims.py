@@ -1397,6 +1397,21 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
             r"(?:9,215|9215).{0,100}(?:58 events?|1,663)|(?:1,663).{0,100}(?:9,215|9215)",
             "The superseded active-conversion sample must be removed.",
         ),
+        (
+            "threshold_dependent_same_episode_claim",
+            r"near but above (?:the conventional )?0\.05",
+            "The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.",
+        ),
+        (
+            "unsupported_predeclared_language",
+            r"\bpredeclared\b",
+            "Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.",
+        ),
+        (
+            "overstated_design_vintage_claim",
+            r"evidence establishes.{0,120}design[- ]vintage hierarchy",
+            "Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.",
+        ),
     ]
 
     for key, text in texts.items():

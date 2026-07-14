@@ -42,7 +42,7 @@ The raw panel contains 36 missing and 355 negative reported ages. Negative value
 | Engineering-valid component rows | Generator design intensity (kW per t/day) |         0.100 |       100.000 |   6511 |         0 |             0 |            6511 |             0 |
 | Engineering-valid component rows | Heating value (MJ/kg; plausibility only)  |         3.000 |        25.000 |   6511 |       102 |           581 |            5806 |            22 |
 
-Of 6,660 positive-throughput, positive-output generator rows, 149 fail at least one predeclared engineering check and 38 fail more than one. Heating value is within 3-25 MJ/kg for 5,937 rows. Heating value is a plausibility/control field, not a condition for the primary component decomposition.
+Of 6,660 positive-throughput, positive-output generator rows, 149 fail at least one specified engineering check and 38 fail more than one. Heating value is within 3-25 MJ/kg for 5,937 rows. Heating value is a plausibility/control field, not a condition for the primary component decomposition.
 
 ## Same-Year Official-Code Duplicates
 

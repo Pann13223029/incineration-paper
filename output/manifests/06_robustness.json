@@ -8,15 +8,15 @@
     "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
     "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
     "code/analysis/05_fleet_decomposition.py": "fec958fa2ec4af913a466078d070212b9b526ec2065cbfa28545451f23308811",
-    "code/analysis/05_panel_regression.py": "0e6146391e4f83e945a9929359ee4c81f886a064350c22bcbefb8a6ce22b15d1",
+    "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/06_robustness.py": "1fd01889c762f5e341c555ad45710930d1b5a68836a07782e20615e6632a19a7",
-    "code/analysis/06a_data_quality_sensitivity.py": "f6e5535cdaf3eac031dfd96c9d51cc0c8325b53848d3a20fa2654ce092d06651",
+    "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
+    "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
-    "code/analysis/08_verify_claims.py": "795dd43930813c392386be9fbd4d4dc05cc74be8f2153196e2555e26a156d740",
+    "code/analysis/08_verify_claims.py": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
-    "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
+    "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "fb2c41ec244c7a006928826152d4a73e0faeeb2e617fb25a49017025772e7513"
   },
   "analysis_config": {
@@ -39,7 +39,7 @@
     ],
     "post_fukushima_start": 2012,
     "pre_fukushima_end": 2011,
-    "regression_outlier_method": "exclude_predeclared_engineering_bounds",
+    "regression_outlier_method": "exclude_specified_engineering_bounds",
     "regression_requires_positive_output": true,
     "regression_uses_stable_site_id": true,
     "technology_categories_normalized_to_compact_groups": true
@@ -88,7 +88,7 @@
           1.1
         ]
       },
-      "Main predeclared bounds": {
+      "Main analysis bounds": {
         "capacity_factor": [
           0.02,
           1.2
@@ -149,7 +149,7 @@
         "site_equal_weights": true,
         "stable_sites": 493
       },
-      "Main predeclared bounds": {
+      "Main analysis bounds": {
         "capacity_factor_r_squared": 0.3390337,
         "design_r_squared": 0.549258,
         "gross_output_r_squared": 0.9138868,
@@ -174,8 +174,8 @@
     }
   },
   "output_sha256": {
-    "output/robustness_component_results.csv": "efc1714253ad0137e67e14d653e3dbca7f5d567bcd28a30b2e16b942c2dc2ceb",
-    "output/robustness_results.md": "1454debaaa333c9089f355a72dc9b543fdb44249cffd9b5e76d5c10cd321c5f1"
+    "output/robustness_component_results.csv": "c67a57c13c7794045c43c99645d26171333819b91f2a03eef3bc71442a3832dc",
+    "output/robustness_results.md": "00aa1ef6b469e0da4b9102e243044faa8c5692824374269850f2a8511c0254ba"
   },
   "outputs": [
     "output/robustness_results.md",
@@ -183,6 +183,6 @@
   ],
   "python": "3.12.12",
   "script": "code/analysis/06_robustness.py",
-  "script_sha256": "1fd01889c762f5e341c555ad45710930d1b5a68836a07782e20615e6632a19a7",
+  "script_sha256": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
   "stage": "06_robustness"
 }

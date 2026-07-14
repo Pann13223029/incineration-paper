@@ -47,7 +47,7 @@ COHORT_TERMS = [
 
 # These bounds are sensitivity analyses, not data-driven trimming rules.
 BOUND_SETS = {
-    "Main predeclared bounds": {
+    "Main analysis bounds": {
         "gross": (EFF_FLOOR, EFF_CEIL),
         "capacity_factor": (CAPACITY_FACTOR_FLOOR, CAPACITY_FACTOR_CEIL),
         "utilization": (0.02, CAPACITY_UTILIZATION_CAP),
@@ -464,7 +464,7 @@ def main() -> None:
     )
 
     specifications = [
-        ("Main predeclared bounds", main_frame, False),
+        ("Main analysis bounds", main_frame, False),
         (
             "First decade (FY2005-FY2014)",
             main_frame[main_frame["fiscal_year"].between(2005, 2014)].copy(),
@@ -501,7 +501,7 @@ def main() -> None:
 
     bound_rows = []
     for label, bounds in BOUND_SETS.items():
-        if label == "Main predeclared bounds":
+        if label == "Main analysis bounds":
             frame = main_frame
         elif label == "Conservative engineering bounds":
             frame = conservative

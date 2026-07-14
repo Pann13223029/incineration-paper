@@ -236,7 +236,7 @@ Transition: The main component interpretation survives several predefined sensit
 
 The period split estimates the processing-scale coefficient in the design-intensity model at 0.474 in FY2005-FY2014 and 0.577 in FY2015-FY2024. The positive sizing relationship therefore appears in both halves of the study window.
 
-Changing engineering bounds gives similar coefficients: 0.520 under conservative bounds and 0.536 under broad bounds. Giving each stable lineage equal total weight also preserves the reported design-vintage hierarchy, so lineages with longer observed histories are not solely creating the result.
+Changing engineering bounds gives similar coefficients: 0.520 under conservative bounds and 0.536 under broad bounds. Giving each stable lineage equal total weight also preserves the reported start-year cohort hierarchy in generator sizing, so lineages with longer observed histories are not solely creating the result.
 
 Excluding every identity-uncertain lineage leaves 6,450 rows across 487 lineages and gives a design-intensity scale coefficient of 0.533, nearly the main estimate of 0.532.
 

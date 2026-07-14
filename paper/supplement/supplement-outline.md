@@ -40,7 +40,7 @@ robustness, and publication-integrity controls fully auditable.
 - Cite Firth (1993) and Heinze and Schemper (2002) for bias reduction and sparse separation.
 - Define `G`, `T`, `K`, `C_w`, `U`, generator design intensity, and electrical capacity factor.
 - Show `G/T = [K/C_w] x [G/(K x 8.76)] x [8.76/(365U)]`.
-- Report predeclared engineering bounds without presenting trimmed values as observed values.
+- Report specified engineering bounds without presenting excluded values as observed values.
 - Include calendar, weighting, bound, FE, first-difference, link-function, and bootstrap checks.
 - Keep pathway evidence descriptive and explicitly disclose small cells and follow-up conditioning.
 - Keep data, authorship, AI, correction, and related-publication responsibilities explicit.

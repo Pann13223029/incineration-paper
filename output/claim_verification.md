@@ -4,7 +4,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 
 ## Result: PASS
 
-- Passed checks: 85
+- Passed checks: 97
 - Failed checks: 0
 
 ## Canonical Evidence
@@ -86,6 +86,9 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `stale_phrase::coded_longitudinal_frame` [paper/manuscript/paper.md]: Officially coded rows must not be framed as stable longitudinal units.
 - `stale_phrase::stale_exact_event_count` [paper/manuscript/paper.md]: The superseded exact-code hazard sample must be removed.
 - `stale_phrase::stale_active_sample` [paper/manuscript/paper.md]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/manuscript/paper.md]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/manuscript/paper.md]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/manuscript/paper.md]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
 - `high_risk_claim::official_code_as_stable_id` [paper/manuscript/paper.md]: Official facility codes cannot be asserted as stable longitudinal IDs.
 - `high_risk_claim::causal_regression_interpretation` [paper/manuscript/paper.md]: Observational regression terms must not be presented as causal effects.
 - `stale_phrase::panel_exit_claim` [paper/manuscript/paper.tex]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
@@ -93,6 +96,9 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `stale_phrase::coded_longitudinal_frame` [paper/manuscript/paper.tex]: Officially coded rows must not be framed as stable longitudinal units.
 - `stale_phrase::stale_exact_event_count` [paper/manuscript/paper.tex]: The superseded exact-code hazard sample must be removed.
 - `stale_phrase::stale_active_sample` [paper/manuscript/paper.tex]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/manuscript/paper.tex]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/manuscript/paper.tex]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/manuscript/paper.tex]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
 - `high_risk_claim::official_code_as_stable_id` [paper/manuscript/paper.tex]: Official facility codes cannot be asserted as stable longitudinal IDs.
 - `high_risk_claim::causal_regression_interpretation` [paper/manuscript/paper.tex]: Observational regression terms must not be presented as causal effects.
 - `stale_phrase::panel_exit_claim` [paper/supplement/supplement.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
@@ -100,6 +106,9 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `stale_phrase::coded_longitudinal_frame` [paper/supplement/supplement.md]: Officially coded rows must not be framed as stable longitudinal units.
 - `stale_phrase::stale_exact_event_count` [paper/supplement/supplement.md]: The superseded exact-code hazard sample must be removed.
 - `stale_phrase::stale_active_sample` [paper/supplement/supplement.md]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/supplement/supplement.md]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/supplement/supplement.md]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/supplement/supplement.md]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
 - `high_risk_claim::official_code_as_stable_id` [paper/supplement/supplement.md]: Official facility codes cannot be asserted as stable longitudinal IDs.
 - `high_risk_claim::causal_regression_interpretation` [paper/supplement/supplement.md]: Observational regression terms must not be presented as causal effects.
 - `stale_phrase::panel_exit_claim` [paper/notes/positioning/professor-comparator-method-lineage.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
@@ -107,5 +116,8 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `stale_phrase::coded_longitudinal_frame` [paper/notes/positioning/professor-comparator-method-lineage.md]: Officially coded rows must not be framed as stable longitudinal units.
 - `stale_phrase::stale_exact_event_count` [paper/notes/positioning/professor-comparator-method-lineage.md]: The superseded exact-code hazard sample must be removed.
 - `stale_phrase::stale_active_sample` [paper/notes/positioning/professor-comparator-method-lineage.md]: The superseded active-conversion sample must be removed.
+- `stale_phrase::threshold_dependent_same_episode_claim` [paper/notes/positioning/professor-comparator-method-lineage.md]: The sparse same-episode result must be described as continuity-sensitive, not classified by a fragile threshold.
+- `stale_phrase::unsupported_predeclared_language` [paper/notes/positioning/professor-comparator-method-lineage.md]: Analysis bounds and sensitivities were specified but not preregistered as predeclared choices.
+- `stale_phrase::overstated_design_vintage_claim` [paper/notes/positioning/professor-comparator-method-lineage.md]: Reported start-year cohorts cannot establish a verified physical design-vintage hierarchy.
 - `high_risk_claim::official_code_as_stable_id` [paper/notes/positioning/professor-comparator-method-lineage.md]: Official facility codes cannot be asserted as stable longitudinal IDs.
 - `high_risk_claim::causal_regression_interpretation` [paper/notes/positioning/professor-comparator-method-lineage.md]: Observational regression terms must not be presented as causal effects.

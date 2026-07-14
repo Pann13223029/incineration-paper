@@ -260,7 +260,7 @@ def analysis_config() -> dict[str, Any]:
         "post_fukushima_start": POST_FUKUSHIMA_START,
         "regression_requires_positive_output": True,
         "regression_uses_stable_site_id": True,
-        "regression_outlier_method": "exclude_predeclared_engineering_bounds",
+        "regression_outlier_method": "exclude_specified_engineering_bounds",
         "adoption_model": "firth_first_reported_capacity_discrete_time_hazard",
         "adoption_risk_set_excludes_left_censored_generators": True,
         "adoption_predictors_lagged_exact_one_year": True,
@@ -747,7 +747,7 @@ def build_regression_frame(panel: pd.DataFrame | None = None) -> pd.DataFrame:
 
     This frame is stricter than the descriptive operating sample:
     - requires an audited stable administrative-lineage identifier for clustering
-    - excludes predeclared implausible component records rather than clipping them
+    - excludes records outside specified component bounds rather than clipping them
     - requires the design-intensity and capacity-factor decomposition fields
     """
     power = build_operating_power_frame(panel)
@@ -1014,7 +1014,7 @@ def write_sample_definition_report(path: str, summary: dict[str, Any]) -> None:
             f"{summary['raw_efficiency_above_ceiling']:,}"
         ),
         (
-            f"- Operating rows outside predeclared engineering bounds: "
+            f"- Operating rows outside specified engineering bounds: "
             f"{summary['engineering_invalid_rows']:,}"
         ),
         (

@@ -366,7 +366,7 @@ plant would cause.
 
 The broad exact-year model requires an adjacent-year lag in the same stable
 administrative lineage but permits an inferred asset-episode change. It asks
-about first administrative-lineage entry. Three predeclared sensitivities then
+about first administrative-lineage entry. Three specified sensitivities then
 change one condition at a time:
 
 1. The prior-operation frame requires positive prior-year throughput and
@@ -432,7 +432,7 @@ omitting generator sizing.
 ### Engineering-valid sample
 
 The component analysis uses 6,511 facility-year rows across 493 stable
-administrative lineages. The screen applies predeclared plausible ranges to
+administrative lineages. The screen applies specified plausible ranges to
 gross MWh/t, electrical capacity factor, waste-processing utilization, generator
 design intensity, and reported age. Invalid rows are excluded rather than
 clipped into range. This limits obvious unit or reporting errors but does not

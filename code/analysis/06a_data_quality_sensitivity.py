@@ -127,7 +127,7 @@ def engineering_bounds_table(
     operating: pd.DataFrame,
     regression: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Audit every predeclared component bound and heating-value plausibility."""
+    """Audit every specified component bound and heating-value plausibility."""
     definitions = [
         (
             "Gross generation intensity (MWh/t)",
@@ -295,7 +295,7 @@ def write_report(
         handle.write(bounds.to_markdown(index=False, floatfmt=".3f"))
         handle.write(
             f"\n\nOf {len(operating):,} positive-throughput, positive-output generator rows, "
-            f"{operating_failures:,} fail at least one predeclared engineering check and "
+            f"{operating_failures:,} fail at least one specified engineering check and "
             f"{int((multi_failure > 1).sum()):,} fail more than one. Heating value is "
             f"within {HEATING_VALUE_FLOOR_MJ_KG:g}-{HEATING_VALUE_CEIL_MJ_KG:g} MJ/kg "
             f"for {plausible_hv:,} rows. Heating value is a plausibility/control field, "

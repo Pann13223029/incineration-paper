@@ -87,7 +87,7 @@ Decision:
 - keep the predictor set parsimonious
 - headline the stable scale contrast
 - report age coefficients but interpret the joint p-values
-- compare the predeclared continuity and identity frames without treating nested samples as independent groups
+- compare the specified continuity and identity frames without treating nested samples as independent groups
 
 ### R2 - High: the scale association is not a capacity intervention effect
 

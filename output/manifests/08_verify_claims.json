@@ -8,15 +8,15 @@
     "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
     "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
     "code/analysis/05_fleet_decomposition.py": "fec958fa2ec4af913a466078d070212b9b526ec2065cbfa28545451f23308811",
-    "code/analysis/05_panel_regression.py": "0e6146391e4f83e945a9929359ee4c81f886a064350c22bcbefb8a6ce22b15d1",
+    "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/06_robustness.py": "1fd01889c762f5e341c555ad45710930d1b5a68836a07782e20615e6632a19a7",
-    "code/analysis/06a_data_quality_sensitivity.py": "f6e5535cdaf3eac031dfd96c9d51cc0c8325b53848d3a20fa2654ce092d06651",
+    "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
+    "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "05bd4f5a96b5d44da9de6293b85a012241dfd68094610dce40c357968bb8fabd",
-    "code/analysis/08_verify_claims.py": "795dd43930813c392386be9fbd4d4dc05cc74be8f2153196e2555e26a156d740",
+    "code/analysis/08_verify_claims.py": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
-    "code/analysis/panel_utils.py": "1fd4673ead2120c36b36a0cb188ea41d69c2b3fecfcc626e2dfd2a1f22de6999",
+    "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "fb2c41ec244c7a006928826152d4a73e0faeeb2e617fb25a49017025772e7513"
   },
   "analysis_config": {
@@ -39,7 +39,7 @@
     ],
     "post_fukushima_start": 2012,
     "pre_fukushima_end": 2011,
-    "regression_outlier_method": "exclude_predeclared_engineering_bounds",
+    "regression_outlier_method": "exclude_specified_engineering_bounds",
     "regression_requires_positive_output": true,
     "regression_uses_stable_site_id": true,
     "technology_categories_normalized_to_compact_groups": true
@@ -61,27 +61,27 @@
     "output/identifier_gap_bridges.csv": "116fcf99c88f690ae3ff88d02204e69d65fc6f874a1fc51c0a273cba4a87c45a",
     "output/identifier_overlap_by_year.csv": "e290548149783fde484a3639ce510d5f784a308d48a24b2d2fac4a37d72fe59d",
     "output/identity_low_margin_links.csv": "b43cf8948793ba607faf5f9a1e971d36177a11919032f6c2c077a6fa03fd213f",
-    "output/manifests/02_parse_facility_panel.json": "533af116d5bbb0c9ae0c06eb7e7d3675a15e28b4e8e31f82667e9570d4c43d10",
-    "output/manifests/02a_build_facility_identity.json": "44e74ea53c1df4779ae2c8a8c696ed0c7d2c591eb9d6c6d5948c80d2a0b28bc1",
-    "output/manifests/02b_build_raw_data_manifest.json": "68d0b8a3d01e66400565b0418bf6717d1fd833a4043f078312bce3447b61aaf9",
-    "output/manifests/04_eda_facility.json": "2324e381aa07cbbdda40e2883d937b8dc1bf4a2e3020f70bafa480df5ec8db84",
-    "output/manifests/05_fleet_decomposition.json": "a7f0dbec31447fd915bd8d377bdb0db49fe2bb720dcd5f24d956035d50b77dfb",
-    "output/manifests/05_panel_regression.json": "a5d50389108d01181cd7029bbb7c90b04ca7996c8fba99337b85680dd2a75e5b",
-    "output/manifests/05a_power_adoption.json": "7e10270d3b33ce03163e1b6fd7add90090f96faae5ce14c50222fe3c884f1348",
-    "output/manifests/06_robustness.json": "930e1193e0e9213c275f46179008de0b56c7043ab682002c1362b31603ccfd07",
-    "output/manifests/06a_data_quality_sensitivity.json": "783a29b8d52cd191363231c32e72d6a3ceb7bbf764f793ac717e71725f451f25",
-    "output/manifests/06b_identifier_gap_audit.json": "321633812dd33dbf3a6e34168c1b9eed07215cb8acc6d651622879c32180bf77",
+    "output/manifests/02_parse_facility_panel.json": "7a22e5d58c4df7a55292be58348ca90b684c74ec96407f7aa76ba9c2e1359cdb",
+    "output/manifests/02a_build_facility_identity.json": "9289337f0c9e0576716ce4fc9853fd6f05b29eaa7ef32930d1beafb5a01964f4",
+    "output/manifests/02b_build_raw_data_manifest.json": "d16e66e79a0e76ed1d86ff3c6529e44ceb80b42b50d46612195dc10f7c316a53",
+    "output/manifests/04_eda_facility.json": "e986f1b4e778ac5bc3cdcf19193016851a11889f7370e65f34e9019aa99d9390",
+    "output/manifests/05_fleet_decomposition.json": "dc9a63b743250e57882e9b27c2c37e5f6254701bfe85f32b7176ed93b6157990",
+    "output/manifests/05_panel_regression.json": "ebbdd5a1b8a6adea0b90f917805c957c6a625cd32d9cc04c63cedc927eafdcd8",
+    "output/manifests/05a_power_adoption.json": "19c3954634a09ed9b20e5716961cb1ca8db507aabae33e9b51fe1636f1693ffe",
+    "output/manifests/06_robustness.json": "3e3df1ea066b7a0e03bc1557e1cdd995666154240df8ff9c13101cd3116312f9",
+    "output/manifests/06a_data_quality_sensitivity.json": "52b748403dea92f46de11f77113a0a9cdd7aae728060da0419e165886d5c2f20",
+    "output/manifests/06b_identifier_gap_audit.json": "ecb109393d8f641c97c4b46d5d1c1da6294d308f8d7d34a666c7025fb77b3f06",
     "output/post_adoption_bridge.csv": "59b4862c0b9eea757413b7141d442b61c81c6795d2cc37a6058ffce6b4a8cc1b",
     "output/post_adoption_trajectories.csv": "3a1dc2c2c25fd30df6ecb111e3c3f2186299de800a55192b3576e89d37e6cedc",
     "output/raw_data_manifest.csv": "71d7b057c190eb5c92d64ffe93de36221e75cd80b0ede2fcea24ec0f8487acb4",
     "output/raw_data_provenance.md": "8591b93bd3a2a1e33958d884b6cb2c1e76198721cf27e947a5a4360318e77e2e",
     "output/raw_workbook_schema_map.csv": "1daecd784392ab9032efbc490292b921d2c895de722cb16eabcdab4522b90faf",
     "output/regression_results.md": "acc09f33528421c9a556b9b48ff6d60783d77a12f937a113da60d6284ba5113b",
-    "output/robustness_component_results.csv": "efc1714253ad0137e67e14d653e3dbca7f5d567bcd28a30b2e16b942c2dc2ceb",
-    "paper/manuscript/paper.md": "a316912d4079503f0cd0c9634f7743cf791d191f0fd7ed909bf71574e6d3391b",
-    "paper/manuscript/paper.tex": "e26e6e0e93cc37d92b4f8c1d03c50ad1b23cdf79e39b70d69219a4d72e952731",
-    "paper/notes/positioning/professor-comparator-method-lineage.md": "1abaaf488f2f536feb0eea7d10f38dde26c5627ec1ac3ca71778e65d106fee95",
-    "paper/supplement/supplement.md": "efcff32c82c0a986c460316da6a46e65d1b998f6f0bc7f0107f25d4ad95e61d5"
+    "output/robustness_component_results.csv": "c67a57c13c7794045c43c99645d26171333819b91f2a03eef3bc71442a3832dc",
+    "paper/manuscript/paper.md": "d971a92f05961cc82288044298cf282c6359f50ee83c11f4a7fe0bd3ffe85209",
+    "paper/manuscript/paper.tex": "418cba59463244c88368e7a0a156671ab096ad070286fe2848fdb64e92e5c39c",
+    "paper/notes/positioning/professor-comparator-method-lineage.md": "5ba5c90a9dc86b38505fd57a1dc839b79269ae16a4dbbdd4951343471056f892",
+    "paper/supplement/supplement.md": "601d92c19804323c11a334c6fd0b20f4e511554fc25867f5d06a59504a72327e"
   },
   "inputs": [
     "output/raw_data_manifest.csv",
@@ -131,14 +131,14 @@
     ],
     "failed_checks": 0,
     "failure_ids": [],
-    "passed_checks": 85,
+    "passed_checks": 97,
     "source_manifest_python": [
       "3.12.12"
     ]
   },
   "output_sha256": {
     "output/claim_evidence_map.md": "6f8e7afd68d35e6ae23d3fda7084878396fa55f8105c5736d03e3ac980994968",
-    "output/claim_verification.md": "254784a34fd82bbc553fdec6a6a407cefeab8f7114f02d0a4e6c25ceaa0a1652"
+    "output/claim_verification.md": "484a9d68d151530899724ae734cc57733e4d963402442f306552de5189bcf969"
   },
   "outputs": [
     "output/claim_verification.md",
@@ -146,6 +146,6 @@
   ],
   "python": "3.12.12",
   "script": "code/analysis/08_verify_claims.py",
-  "script_sha256": "795dd43930813c392386be9fbd4d4dc05cc74be8f2153196e2555e26a156d740",
+  "script_sha256": "e18b4d323eaa84936c7fabef73b3d3c0e9f1f399c002b5d4980576bfd083ebab",
   "stage": "08_verify_claims"
 }

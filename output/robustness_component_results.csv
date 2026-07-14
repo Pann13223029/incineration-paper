@@ -1,15 +1,15 @@
 specification,evidence,outcome,term,coefficient,standard_error,ci_low,ci_high,p_value,observations,stable_sites,r_squared
-Main predeclared bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_Before 1990,-1.56468747,0.0843578459,-1.73002581,-1.39934913,8.4305277e-77,6511,493,0.549257958
-Main predeclared bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_1990-1999,-0.882693863,0.0634649416,-1.00708286,-0.758304863,5.63493521e-44,6511,493,0.549257958
-Main predeclared bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_2000-2009,-0.267379556,0.0429931926,-0.351644665,-0.183114447,4.99970706e-10,6511,493,0.549257958
-Main predeclared bounds,between-and-within pooled component model,log_generator_design_intensity,log_capacity_t_day,0.532017282,0.0435105716,0.446738129,0.617296435,2.22172663e-34,6511,493,0.549257958
-Main predeclared bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_Before 1990,0.302031731,0.0419029404,0.219903477,0.384159985,5.68260434e-13,6511,493,0.339033723
-Main predeclared bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_1990-1999,0.198481498,0.0324580943,0.134864803,0.262098194,9.65522654e-10,6511,493,0.339033723
-Main predeclared bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_2000-2009,0.0149075596,0.0288971449,-0.0417298038,0.0715449229,0.605935796,6511,493,0.339033723
-Main predeclared bounds,between-and-within pooled component model,log_electrical_capacity_factor,log_capacity_t_day,-0.116018755,0.0236121172,-0.162297655,-0.069739856,8.94527953e-07,6511,493,0.339033723
-Main predeclared bounds,between-and-within pooled component model,log_electrical_capacity_factor,capacity_utilization_raw,1.69514381,0.125875232,1.44843289,1.94185473,2.45076697e-41,6511,493,0.339033723
-Main predeclared bounds,between-and-within pooled component model,log_gross_generation_mwh,log_throughput_t_year,0.637764724,0.0520994861,0.535651607,0.73987784,1.87044681e-34,6511,493,0.913886843
-Main predeclared bounds,between-and-within pooled component model,log_gross_generation_mwh,log_power_capacity_kw,0.575776149,0.037888727,0.501515609,0.65003669,3.73009634e-52,6511,493,0.913886843
+Main analysis bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_Before 1990,-1.56468747,0.0843578459,-1.73002581,-1.39934913,8.4305277e-77,6511,493,0.549257958
+Main analysis bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_1990-1999,-0.882693863,0.0634649416,-1.00708286,-0.758304863,5.63493521e-44,6511,493,0.549257958
+Main analysis bounds,between-and-within pooled component model,log_generator_design_intensity,cohort_2000-2009,-0.267379556,0.0429931926,-0.351644665,-0.183114447,4.99970706e-10,6511,493,0.549257958
+Main analysis bounds,between-and-within pooled component model,log_generator_design_intensity,log_capacity_t_day,0.532017282,0.0435105716,0.446738129,0.617296435,2.22172663e-34,6511,493,0.549257958
+Main analysis bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_Before 1990,0.302031731,0.0419029404,0.219903477,0.384159985,5.68260434e-13,6511,493,0.339033723
+Main analysis bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_1990-1999,0.198481498,0.0324580943,0.134864803,0.262098194,9.65522654e-10,6511,493,0.339033723
+Main analysis bounds,between-and-within pooled component model,log_electrical_capacity_factor,cohort_2000-2009,0.0149075596,0.0288971449,-0.0417298038,0.0715449229,0.605935796,6511,493,0.339033723
+Main analysis bounds,between-and-within pooled component model,log_electrical_capacity_factor,log_capacity_t_day,-0.116018755,0.0236121172,-0.162297655,-0.069739856,8.94527953e-07,6511,493,0.339033723
+Main analysis bounds,between-and-within pooled component model,log_electrical_capacity_factor,capacity_utilization_raw,1.69514381,0.125875232,1.44843289,1.94185473,2.45076697e-41,6511,493,0.339033723
+Main analysis bounds,between-and-within pooled component model,log_gross_generation_mwh,log_throughput_t_year,0.637764724,0.0520994861,0.535651607,0.73987784,1.87044681e-34,6511,493,0.913886843
+Main analysis bounds,between-and-within pooled component model,log_gross_generation_mwh,log_power_capacity_kw,0.575776149,0.037888727,0.501515609,0.65003669,3.73009634e-52,6511,493,0.913886843
 First decade (FY2005-FY2014),between-and-within pooled component model,log_generator_design_intensity,cohort_Before 1990,-1.35286633,0.0797439529,-1.5091616,-1.19657105,1.48776408e-64,2882,356,0.5080801
 First decade (FY2005-FY2014),between-and-within pooled component model,log_generator_design_intensity,cohort_1990-1999,-0.685220921,0.0688205308,-0.820106683,-0.550335159,2.35912173e-23,2882,356,0.5080801
 First decade (FY2005-FY2014),between-and-within pooled component model,log_generator_design_intensity,cohort_2000-2009,-0.112874052,0.0475622803,-0.206094408,-0.0196536954,0.0176354669,2882,356,0.5080801

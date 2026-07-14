@@ -388,7 +388,7 @@ algebraic decomposition, not a causal model.
 The operating-generator frame requires reported installed generation, positive
 annual waste throughput, and positive gross electricity output. It contains
 6,660 lineage-years. Records are not clipped into the primary model. Instead,
-predeclared bounds are applied to the raw variables:
+specified analysis bounds are applied to the raw variables:
 
 | Variable | Main lower bound | Main upper bound |
 |:--|--:|--:|
@@ -518,7 +518,7 @@ others.
 
 | Specification | Rows | Lineages | Design `R-squared` | Capacity-factor `R-squared` | Gross-output `R-squared` |
 |:--|--:|--:|--:|--:|--:|
-| Main predeclared bounds | 6,511 | 493 | 0.5493 | 0.3390 | 0.9139 |
+| Main analysis bounds | 6,511 | 493 | 0.5493 | 0.3390 | 0.9139 |
 | FY2005-FY2014 | 2,882 | 356 | 0.5081 | 0.2967 | 0.9080 |
 | FY2015-FY2024 | 3,629 | 444 | 0.5733 | 0.3795 | 0.9191 |
 | Lineage-equal WLS | 6,511 | 493 | 0.5618 | 0.4595 | 0.9156 |

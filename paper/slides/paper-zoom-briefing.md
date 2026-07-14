@@ -296,7 +296,7 @@ Script cue: Lead with the scale contrast, then state why the age evidence does n
   <div class="claim-card boundary">
     <p class="eyebrow">Not supported</p>
     <p class="big">No defensible age-only rule.</p>
-    <p class="small">Broad and identity-certain tests are null; the 24-event same-episode result is near but above 0.05.</p>
+    <p class="small">Broad and identity-certain tests are null; the 24-event same-episode result is continuity-sensitive.</p>
   </div>
   <div class="card">
     <p class="eyebrow">Observed pathways · 55 events</p>

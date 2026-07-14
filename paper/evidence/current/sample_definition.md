@@ -10,7 +10,7 @@ This report documents the stable administrative-lineage descriptive and model sa
 - Operating sample rows missing official facility codes: 907
 - Raw gross generation intensity below 0.01 MWh/t: 51
 - Raw gross generation intensity above 0.80 MWh/t: 34
-- Operating rows outside predeclared engineering bounds: 149
+- Operating rows outside specified engineering bounds: 149
 - Negative reported-age rows excluded rather than floored: 52
 
 ## Extensive-Margin Adoption Frame

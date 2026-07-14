@@ -9,4 +9,4 @@
 | Installed electrical capacity (kW)        | 6511 | 5542.399 | 3000.000 | 6334.281 | 72.000 | 50000.000 |
 | Waste-processing design capacity (t/day)  | 6511 |  338.546 |  300.000 |  228.138 | 20.000 |  1800.000 |
 
-The frame excludes predeclared implausible generation-intensity, capacity-factor, utilization, generator-sizing, and reported-age records. Values are not clipped into the model.
+The frame excludes records outside specified bounds for generation intensity, capacity factor, utilization, and generator sizing, as well as records with invalid reported age. Values are not clipped into the model.
