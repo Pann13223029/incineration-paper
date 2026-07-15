@@ -1,0 +1,7 @@
+stratum,pairs,exact_agreements,exact_agreement_pct,four_category_kappa,binary_same_lineage_agreement_pct,binary_same_lineage_kappa,adjudicated_same,adjudicated_reset,unresolved
+All packet pairs,558,549,98.387097,0.908658,98.924731,0.722204,503,43,12
+modeled_event_link,35,33,94.285714,0.882155,97.142857,0.000000,21,13,1
+identity_match_uncertain,16,16,100.000000,1.000000,100.000000,1.000000,12,4,0
+fuzzy_link,375,367,97.866667,0.870062,98.400000,0.692539,341,23,11
+gap_link,31,29,93.548387,0.857143,96.774194,0.651685,21,9,1
+fy2019_2020_bridge,50,50,100.000000,1.000000,100.000000,1.000000,49,1,0

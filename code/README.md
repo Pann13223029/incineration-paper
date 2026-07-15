@@ -1,6 +1,9 @@
 # Code Workspace
 
-The code layer has two responsibilities: `analysis/` creates canonical evidence, and `publishing/` turns existing evidence and manuscript sources into review artifacts.
+The code layer has three responsibilities: `analysis/` creates canonical
+evidence, `publishing/` turns existing evidence and manuscript sources into
+review artifacts, and `review/` runs explicitly noncanonical workflow
+simulations.
 
 ## Directory Roles
 
@@ -8,6 +11,7 @@ The code layer has two responsibilities: `analysis/` creates canonical evidence,
 |:--|:--|:--|
 | `analysis/` | Parse sources, document provenance, reconstruct longitudinal identity, estimate models, run audits, and verify claims | `analysis/07_rebuild_analysis.py` |
 | `publishing/` | Synchronize evidence, export submission files, build PDFs/slides, and validate repository and journal-format gates | npm commands in `package.json` |
+| `review/` | Simulate reviewer workflows and conservative stress cases without changing canonical evidence | `npm run review:simulate:linkage` |
 
 ## Canonical Analysis Order
 
@@ -45,6 +49,7 @@ stage and is not evidence for the current paper.
 
 ```bash
 npm run analysis:rebuild
+npm run review:simulate:linkage
 npm run paper:sync
 npm run paper:check
 npm run claims:verify
@@ -55,3 +60,7 @@ npm run repo:check
 ```
 
 Do not hand-edit `output/`, `output/manifests/`, `paper/evidence/current/`, or generated submission files to compensate for code changes. Rebuild the evidence, synchronize the paper snapshot, and resolve any claim-check failure at its source.
+
+Review simulations write only under `paper/notes/review/simulations/`. They are
+not evidence, do not enter stage manifests, and must never be described as
+human validation or peer review.

@@ -34,6 +34,13 @@ artifacts in [`output/`](../../output/), and a failed verifier overrides any not
 - [Major-revision red-team review](review/major-revision-red-team-2026-07-14.md):
   multi-persona novelty attacks, resolved objections, and the remaining human
   linkage-validation gate
+- [Professor meeting brief](review/professor-meeting-brief-2026-07-15.md):
+  one-page orientation, intellectual foundation, and three decisions requested
+- [Simulated linkage review](review/simulations/linkage-review-simulation-2026-07-15.md):
+  synthetic reviewer agreement, conservative adjudication, and event-lineage
+  model stress test; explicitly not human validation
+- [Simulated professor review](review/simulations/professor-review-simulation-2026-07-15.md):
+  likely supervisory questions, critique, answers, and meeting flow
 
 ## Current Anchor Set
 
