@@ -6,7 +6,7 @@ This repository develops a journal-style paper from Japan's Ministry of the Envi
 2. Transition: which prior-year characteristics are associated with first reporting positive installed electrical capacity?
 3. Components: how do raw installed kW, annual capacity factor, and waste loading combine in gross output?
 
-The central descriptive contrast is simple but important: in FY2024, 41.1% of analytical facility records report installed generation capacity, while positive-output facilities handle 80.1% of recorded throughput and installed-generation facilities represent 70.5% of waste-processing design capacity. The paper therefore distinguishes facility counts, waste-volume coverage, entry into installed capacity, and conditional generator components.
+The central descriptive contrast is simple but important: in FY2024, installed capacity appears in 41.1% of all analytical facility records and 46.4% of positive-throughput records, while positive output appears in 40.4% and 46.6%, respectively. Positive-output facilities handle 80.1% of recorded throughput, and installed-generation facilities represent 70.5% of waste-processing design capacity. The paper therefore distinguishes facility counts, waste-volume coverage, entry into installed capacity, and conditional generator components.
 
 Gross generation intensity in MWh per tonne is an administrative output ratio. It is not treated as net export, useful-heat recovery, lifecycle benefit, R1 efficiency, or an independent measure of operational efficiency.
 
@@ -33,8 +33,9 @@ The tracked PDF is a reading artifact, not a source of empirical truth. Check th
 | Prior-operation Firth frame | 13,072 rows; 1,019 lineages; 33 events |
 | Continuity and identity sensitivities | Same episode: 15,095/1,135/24; identity certain: 15,107/1,130/35 rows/lineages/events |
 | Revised scale result | Broad 300-versus-100 t/day OR 6.72 (95% lineage-bootstrap CI 4.31-12.46); 1,999 bootstraps per frame |
+| Absolute-risk translation | Standardized annual entry: 2.53 versus 16.66 per 1,000 facility-years at 100 and 300 t/day; difference 14.13 |
 | Event influence | 24 continuity-lineage and 11 rebuild-like modeled events; all event attacks retain OR 6.12-7.30 |
-| FY2024 count-volume contrast | 41.1% facility participation; 80.1% throughput coverage; 70.5% design-capacity share |
+| FY2024 count-volume contrast | Installed capacity: 41.1% all/46.4% active; positive output: 40.4% all/46.6% active; 80.1% throughput coverage; 70.5% design-capacity share |
 | Generator component frame | 6,511 engineering-valid rows across 493 lineages |
 | Adjusted component contrast | Older cohorts have 79.1%, 58.6%, and 23.5% lower installed kW; not lower annual capacity factors |
 
@@ -73,7 +74,7 @@ Do not hand-edit generated evidence to make prose agree with a preferred result.
 | Raw-file hashes, URLs, and schema decisions | [`output/raw_data_provenance.md`](output/raw_data_provenance.md), [`output/raw_data_manifest.csv`](output/raw_data_manifest.csv), [`output/raw_workbook_schema_map.csv`](output/raw_workbook_schema_map.csv) |
 | Identity reconstruction and code discontinuities | [`output/facility_identity_audit.md`](output/facility_identity_audit.md), [`output/identity_low_margin_links.csv`](output/identity_low_margin_links.csv), [`output/identifier_gap_audit.md`](output/identifier_gap_audit.md) |
 | Sample definitions and FY2024 coverage | [`output/sample_definition.md`](output/sample_definition.md), [`output/fleet_decomposition.md`](output/fleet_decomposition.md) |
-| Entry model | [`output/scientific_revision_results.md`](output/scientific_revision_results.md), [`output/revised_entry_results.csv`](output/revised_entry_results.csv), [`output/revised_entry_influence.csv`](output/revised_entry_influence.csv), [`output/revised_entry_robustness.csv`](output/revised_entry_robustness.csv), [`output/entry_state_audit.csv`](output/entry_state_audit.csv) |
+| Entry model | [`output/scientific_revision_results.md`](output/scientific_revision_results.md), [`output/revised_entry_results.csv`](output/revised_entry_results.csv), [`output/entry_standardized_risk.csv`](output/entry_standardized_risk.csv), [`output/entry_specification_summary.csv`](output/entry_specification_summary.csv), [`output/entry_sample_flow.csv`](output/entry_sample_flow.csv), [`output/revised_entry_influence.csv`](output/revised_entry_influence.csv), [`output/revised_entry_robustness.csv`](output/revised_entry_robustness.csv), [`output/entry_state_audit.csv`](output/entry_state_audit.csv) |
 | Generator component models | [`output/raw_quantity_component_results.csv`](output/raw_quantity_component_results.csv), [`output/figure3_adjusted_components.csv`](output/figure3_adjusted_components.csv), [`output/regression_results.md`](output/regression_results.md) |
 | Robustness and data quality | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
 | Claim verification | [`output/claim_verification.md`](output/claim_verification.md), [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
@@ -104,7 +105,7 @@ npm run repo:check
 | Command | Purpose |
 |:--|:--|
 | `analysis:rebuild` | Run the canonical empirical pipeline from parsing through claim checks. |
-| `analysis:test` | Benchmark the custom Firth estimator against a closed-form separated table and an independent optimizer. |
+| `analysis:test` | Run independent Firth benchmarks plus denominator, contrast, standardization, and sample-flow contract tests. |
 | `paper:sync` | Copy selected canonical outputs into `paper/evidence/current/`. |
 | `paper:check` | Fail if required evidence is missing or synchronized copies are stale. |
 | `claims:verify` | Check registered high-risk claims and stale-language guards. |

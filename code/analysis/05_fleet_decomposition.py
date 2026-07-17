@@ -49,6 +49,9 @@ def build_annual_decomposition(panel: pd.DataFrame) -> pd.DataFrame:
         total_capacity = float(year["capacity_t_day"].fillna(0).sum())
         active = year[year["positive_throughput"]]
         installed = year[year["installed_generation"]]
+        active_installed = year[
+            year["positive_throughput"] & year["installed_generation"]
+        ]
         output = year[year["positive_output"] & year["positive_throughput"]]
         valid = year[year["engineering_output_valid"]]
         output_throughput = float(output["throughput_t_year"].sum())
@@ -64,9 +67,13 @@ def build_annual_decomposition(panel: pd.DataFrame) -> pd.DataFrame:
                 "facilities": int(len(year)),
                 "positive_throughput_facilities": int(len(active)),
                 "installed_generation_facilities": int(len(installed)),
+                "active_installed_generation_facilities": int(len(active_installed)),
                 "positive_output_facilities": int(len(output)),
                 "facility_participation_pct": float(len(installed) / len(year) * 100),
                 "positive_output_facility_share_pct": float(len(output) / len(year) * 100),
+                "active_installed_generation_facility_share_pct": float(
+                    len(active_installed) / len(active) * 100
+                ),
                 "active_positive_output_facility_share_pct": float(
                     len(output) / len(active) * 100
                 ),
@@ -147,17 +154,19 @@ def write_report(annual: pd.DataFrame, segments: pd.DataFrame) -> None:
         handle.write("## FY2024 Headline\n\n")
         handle.write(
             f"- Installed-generation facility participation: "
-            f"{fy2024['facility_participation_pct']:.1f}%\n"
+            f"{fy2024['facility_participation_pct']:.1f}% of all records; "
+            f"{fy2024['active_installed_generation_facility_share_pct']:.1f}% "
+            "of positive-throughput records\n"
         )
         handle.write(
             f"- Throughput handled by positive-output facilities: "
             f"{fy2024['throughput_coverage_pct']:.1f}%\n"
         )
         handle.write(
-            f"- Positive-output share among positive-throughput facilities: "
+            f"- Positive-output facility participation: "
+            f"{fy2024['positive_output_facility_share_pct']:.1f}% of all records; "
             f"{fy2024['active_positive_output_facility_share_pct']:.1f}% "
-            f"({int(fy2024['positive_output_facilities'])} of "
-            f"{int(fy2024['positive_throughput_facilities'])})\n"
+            "of positive-throughput records\n"
         )
         handle.write(
             f"- Waste-processing design capacity at installed-generation facilities: "
@@ -187,6 +196,8 @@ def write_report(annual: pd.DataFrame, segments: pd.DataFrame) -> None:
             [
                 "fiscal_year",
                 "facility_participation_pct",
+                "active_installed_generation_facility_share_pct",
+                "positive_output_facility_share_pct",
                 "active_positive_output_facility_share_pct",
                 "throughput_coverage_pct",
                 "installed_design_capacity_share_pct",
@@ -228,6 +239,12 @@ def main() -> None:
             ),
             "fy2024_active_positive_output_facility_share_pct": float(
                 fy2024["active_positive_output_facility_share_pct"]
+            ),
+            "fy2024_active_installed_generation_facility_share_pct": float(
+                fy2024["active_installed_generation_facility_share_pct"]
+            ),
+            "fy2024_positive_output_facility_share_pct": float(
+                fy2024["positive_output_facility_share_pct"]
             ),
             "fy2024_installed_design_capacity_share_pct": float(
                 fy2024["installed_design_capacity_share_pct"]

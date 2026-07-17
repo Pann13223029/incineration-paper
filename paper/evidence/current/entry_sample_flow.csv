@@ -1,0 +1,6 @@
+order,stage,facility_year_rows,lineages,events,role
+1,All reconstructed administrative lineages,23593,1690,,Starting panel
+2,Left-censored: positive capacity in first observed year,,467,,Excluded from entry risk set
+3,Observed non-generator risk set,16519,1223,55,Descriptive first-entry frame
+4,Exact-year complete-covariate model,15154,1137,35,Frozen primary frame
+5,Positive-prior-throughput sensitivity,13072,1019,33,Nested operating frame

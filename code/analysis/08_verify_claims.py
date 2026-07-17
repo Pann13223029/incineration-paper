@@ -451,6 +451,14 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         / fy2024["positive_throughput_facilities"]
         * 100
     )
+    active_installed_share = (
+        fy2024["active_installed_generation_facilities"]
+        / fy2024["positive_throughput_facilities"]
+        * 100
+    )
+    all_record_positive_output_share = (
+        fy2024["positive_output_facilities"] / fy2024["facilities"] * 100
+    )
     valid_throughput_coverage = (
         fy2024["valid_output_throughput_t"] / fy2024["total_throughput_t"] * 100
     )
@@ -470,12 +478,22 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             fy2024["active_positive_output_facility_share_pct"],
         )
         and close(
+            active_installed_share,
+            fy2024["active_installed_generation_facility_share_pct"],
+        )
+        and close(
+            all_record_positive_output_share,
+            fy2024["positive_output_facility_share_pct"],
+        )
+        and close(
             valid_throughput_coverage,
             fy2024["engineering_valid_throughput_coverage_pct"],
         ),
         (
-            f"FY2024 recomputed all-record/active/throughput/valid-throughput shares: "
-            f"{facility_participation:.6f}/{active_positive_output_share:.6f}/"
+            "FY2024 recomputed installed all/active and output all/active shares: "
+            f"{facility_participation:.6f}/{active_installed_share:.6f}/"
+            f"{all_record_positive_output_share:.6f}/"
+            f"{active_positive_output_share:.6f}; throughput/valid-throughput: "
             f"{throughput_coverage:.6f}/"
             f"{valid_throughput_coverage:.6f}%."
         ),
@@ -517,6 +535,14 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         and close(
             fleet_meta["fy2024_active_positive_output_facility_share_pct"],
             fy2024["active_positive_output_facility_share_pct"],
+        )
+        and close(
+            fleet_meta["fy2024_active_installed_generation_facility_share_pct"],
+            fy2024["active_installed_generation_facility_share_pct"],
+        )
+        and close(
+            fleet_meta["fy2024_positive_output_facility_share_pct"],
+            fy2024["positive_output_facility_share_pct"],
         )
         and close(
             fleet_meta["fy2024_installed_design_capacity_share_pct"],
@@ -836,6 +862,11 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     revised_bootstrap = pd.read_csv(OUTPUT_DIR / "revised_entry_bootstrap.csv")
     revised_influence = pd.read_csv(OUTPUT_DIR / "revised_entry_influence.csv")
     revised_robustness = pd.read_csv(OUTPUT_DIR / "revised_entry_robustness.csv")
+    standardized_risk = pd.read_csv(OUTPUT_DIR / "entry_standardized_risk.csv")
+    specification_summary = pd.read_csv(
+        OUTPUT_DIR / "entry_specification_summary.csv"
+    )
+    sample_flow = pd.read_csv(OUTPUT_DIR / "entry_sample_flow.csv")
     state_audit = pd.read_csv(OUTPUT_DIR / "entry_state_audit.csv").set_index(
         "metric"
     )["value"]
@@ -876,6 +907,19 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         float(geographic_deletion["odds_ratio_300_vs_100"].min()),
         float(geographic_deletion["odds_ratio_300_vs_100"].max()),
     )
+    standardized_probabilities = standardized_risk[
+        standardized_risk["estimand"].eq("standardized_annual_probability")
+    ].set_index("capacity_t_day")
+    standardized_difference = standardized_risk[
+        standardized_risk["estimand"].eq(
+            "standardized_annual_probability_difference_300_minus_100"
+        )
+    ]
+    legacy_summary = specification_summary[
+        specification_summary["specification"].eq(
+            "Flexible era/duration Firth sensitivity"
+        )
+    ]
     pathway_counts_revised = event_composition["pathway_category"].value_counts().to_dict()
     assert_evidence(
         "revised_entry_model_sync",
@@ -960,6 +1004,71 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             f"{int(state_audit['strict_two_prior_year_events'])} rows/lineages/events."
         ),
     )
+    standardized_meta = revision_meta["entry_standardized_risk"]
+    assert_evidence(
+        "entry_standardized_absolute_risk",
+        set(standardized_probabilities.index.astype(int)) == {100, 300}
+        and len(standardized_difference) == 1
+        and standardized_probabilities.loc[
+            300.0, "events_per_1000_facility_years"
+        ]
+        > standardized_probabilities.loc[
+            100.0, "events_per_1000_facility_years"
+        ]
+        and standardized_probabilities["bootstrap_repetitions"].eq(1999).all()
+        and int(standardized_difference.iloc[0]["bootstrap_repetitions"]) == 1999
+        and close(
+            standardized_probabilities.loc[
+                100.0, "events_per_1000_facility_years"
+            ],
+            standardized_meta[
+                "standardized_annual_probability_100_t_day"
+            ]["events_per_1000_facility_years"],
+        )
+        and close(
+            standardized_probabilities.loc[
+                300.0, "events_per_1000_facility_years"
+            ],
+            standardized_meta[
+                "standardized_annual_probability_300_t_day"
+            ]["events_per_1000_facility_years"],
+        ),
+        (
+            "Standardized annual entries per 1,000 facility-years at 100/300 "
+            f"t/day: {standardized_probabilities.loc[100.0, 'events_per_1000_facility_years']:.4f}/"
+            f"{standardized_probabilities.loc[300.0, 'events_per_1000_facility_years']:.4f}."
+        ),
+    )
+    assert_evidence(
+        "entry_specification_and_sample_flow",
+        len(legacy_summary) == 1
+        and close(
+            float(legacy_summary.iloc[0]["odds_ratio_300_vs_100"]),
+            capacity_or_300_vs_100,
+        )
+        and len(specification_summary) == 11
+        and sample_flow["stage"].nunique() == 5
+        and int(
+            sample_flow.loc[
+                sample_flow["stage"].eq(
+                    "Left-censored: positive capacity in first observed year"
+                ),
+                "lineages",
+            ].iloc[0]
+        )
+        == 467
+        and int(
+            sample_flow.loc[
+                sample_flow["stage"].eq("Exact-year complete-covariate model"),
+                "events",
+            ].iloc[0]
+        )
+        == 35,
+        (
+            f"Consolidated specifications: {len(specification_summary)} rows; "
+            "sample flow exposes 467 left-censored lineages and 35 primary events."
+        ),
+    )
     assert_evidence(
         "frozen_primary_not_legacy_sensitivity",
         close(
@@ -1007,6 +1116,12 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             ),
             "active_positive_output_facility_share_pct": float(
                 fy2024["active_positive_output_facility_share_pct"]
+            ),
+            "active_installed_generation_facility_share_pct": float(
+                fy2024["active_installed_generation_facility_share_pct"]
+            ),
+            "positive_output_facility_share_pct": float(
+                fy2024["positive_output_facility_share_pct"]
             ),
             "throughput_coverage_pct": float(fy2024["throughput_coverage_pct"]),
             "installed_design_capacity_share_pct": float(
@@ -1118,6 +1233,44 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             "strict_state_or": float(
                 reporting_state.iloc[0]["odds_ratio_300_vs_100"]
             ),
+            "standardized_risk_100_per_1000": float(
+                standardized_probabilities.loc[
+                    100.0, "events_per_1000_facility_years"
+                ]
+            ),
+            "standardized_risk_100_ci_low_per_1000": float(
+                standardized_probabilities.loc[
+                    100.0, "bootstrap_ci_low_per_1000"
+                ]
+            ),
+            "standardized_risk_100_ci_high_per_1000": float(
+                standardized_probabilities.loc[
+                    100.0, "bootstrap_ci_high_per_1000"
+                ]
+            ),
+            "standardized_risk_300_per_1000": float(
+                standardized_probabilities.loc[
+                    300.0, "events_per_1000_facility_years"
+                ]
+            ),
+            "standardized_risk_300_ci_low_per_1000": float(
+                standardized_probabilities.loc[
+                    300.0, "bootstrap_ci_low_per_1000"
+                ]
+            ),
+            "standardized_risk_300_ci_high_per_1000": float(
+                standardized_probabilities.loc[
+                    300.0, "bootstrap_ci_high_per_1000"
+                ]
+            ),
+            "standardized_risk_difference_per_1000": float(
+                standardized_difference.iloc[0]["events_per_1000_facility_years"]
+            ),
+            "legacy_temporal_or": float(
+                legacy_summary.iloc[0]["odds_ratio_300_vs_100"]
+            ),
+            "legacy_temporal_ci_low": float(legacy_summary.iloc[0]["ci_low"]),
+            "legacy_temporal_ci_high": float(legacy_summary.iloc[0]["ci_high"]),
             "ambiguous_capacity_output_rows": int(
                 state_audit["positive_output_without_positive_capacity_rows"]
             ),
@@ -1328,11 +1481,24 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
         if is_professor_profile:
             add_requirement(
                 checks,
-                "fy2024_activity_matched_facility_share",
+                "fy2024_matched_state_facility_matrix",
                 key,
                 contains_context_number(
                     text,
-                    r"positive[- ]throughput|active facilit",
+                    r"installed.{0,60}(?:all|records|active|positive[- ]throughput)",
+                    fleet["active_installed_generation_facility_share_pct"],
+                    (1,),
+                )
+                and contains_context_number(
+                    text,
+                    r"positive output|positive-output",
+                    fleet["positive_output_facility_share_pct"],
+                    (1,),
+                )
+                and
+                contains_context_number(
+                    text,
+                    r"positive output|positive-output|positive[- ]throughput",
                     fleet["active_positive_output_facility_share_pct"],
                     (1,),
                 )
@@ -1342,9 +1508,12 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                     fleet["positive_throughput_facilities"],
                 ),
                 (
-                    "Report the activity-matched FY2024 facility comparison: "
-                    f"{fleet['active_positive_output_facility_share_pct']:.1f}% of "
-                    f"{fleet['positive_throughput_facilities']} positive-throughput facilities."
+                    "Report the matched FY2024 installed/output by all/active matrix: "
+                    f"{fleet['facility_participation_pct']:.1f}/"
+                    f"{fleet['active_installed_generation_facility_share_pct']:.1f}% "
+                    "installed and "
+                    f"{fleet['positive_output_facility_share_pct']:.1f}/"
+                    f"{fleet['active_positive_output_facility_share_pct']:.1f}% output."
                 ),
             )
         add_requirement(
@@ -1454,6 +1623,52 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 (
                     "Disclose blank/zero-capacity positive-output exceptions and avoid "
                     "equating a blank field with verified physical absence."
+                ),
+            )
+            add_requirement(
+                checks,
+                "entry_standardized_absolute_risk",
+                key,
+                contains_context_number(
+                    text,
+                    r"per 1,000|standardized|annual (?:risk|probabilit|entr)",
+                    revision["standardized_risk_100_per_1000"],
+                    (2,),
+                )
+                and contains_context_number(
+                    text,
+                    r"per 1,000|standardized|annual (?:risk|probabilit|entr)",
+                    revision["standardized_risk_300_per_1000"],
+                    (2,),
+                ),
+                (
+                    "Translate the primary odds ratio into standardized annual "
+                    f"risk: {revision['standardized_risk_100_per_1000']:.2f} and "
+                    f"{revision['standardized_risk_300_per_1000']:.2f} entries per "
+                    "1,000 facility-years at 100 and 300 t/day."
+                ),
+            )
+            add_requirement(
+                checks,
+                "entry_flexible_temporal_sensitivity",
+                key,
+                contains_context_number(
+                    text,
+                    r"11-parameter|flexible.{0,30}(?:era|duration|temporal)|temporal-form",
+                    revision["legacy_temporal_or"],
+                    (2,),
+                )
+                and contains_context_number(
+                    text,
+                    r"11-parameter|lineage bootstrap|temporal-form",
+                    revision["legacy_temporal_ci_low"],
+                    (2,),
+                ),
+                (
+                    "Surface the flexible calendar/duration sensitivity: OR "
+                    f"{revision['legacy_temporal_or']:.2f} (CI "
+                    f"{revision['legacy_temporal_ci_low']:.2f}-"
+                    f"{revision['legacy_temporal_ci_high']:.2f})."
                 ),
             )
         quartiles = adoption["capacity_quartile_counts"]
@@ -1871,9 +2086,12 @@ def write_report(
         f"versus {identity['fy2020_stable_site_overlap']:,} administrative-lineage overlap.",
         f"- FY2009-FY2013 bridge: {identity['fy2009_fy2013_official_code_overlap']} official-code overlap "
         f"versus {identity['fy2009_fy2013_stable_site_overlap']:,} administrative-lineage overlap.",
-        f"- FY2024 fleet: {fleet['facility_participation_pct']:.1f}% facility participation, "
-        f"{fleet['active_positive_output_facility_share_pct']:.1f}% positive-output share "
-        f"among {fleet['positive_throughput_facilities']} positive-throughput facilities, "
+        f"- FY2024 facility matrix: installed capacity "
+        f"{fleet['facility_participation_pct']:.1f}% all/"
+        f"{fleet['active_installed_generation_facility_share_pct']:.1f}% active; "
+        f"positive output {fleet['positive_output_facility_share_pct']:.1f}% all/"
+        f"{fleet['active_positive_output_facility_share_pct']:.1f}% active among "
+        f"{fleet['positive_throughput_facilities']} positive-throughput records; "
         f"{fleet['throughput_coverage_pct']:.1f}% throughput coverage, "
         f"{fleet['installed_design_capacity_share_pct']:.1f}% installed design-capacity share.",
         f"- Firth entry frames: {adoption['broad_rows']:,}/{adoption['broad_sites']:,}/"
@@ -1898,6 +2116,13 @@ def write_report(
         f"leave-one-prefecture ORs {revision['geographic_or_low']:.2f}-"
         f"{revision['geographic_or_high']:.2f}; strict reporting-state OR "
         f"{revision['strict_state_or']:.2f} on {revision['strict_state_events']} events.",
+        f"- Standardized annual entry risk: "
+        f"{revision['standardized_risk_100_per_1000']:.2f} versus "
+        f"{revision['standardized_risk_300_per_1000']:.2f} entries per 1,000 "
+        "facility-years at 100 and 300 t/day; flexible temporal-form OR "
+        f"{revision['legacy_temporal_or']:.2f} ("
+        f"{revision['legacy_temporal_ci_low']:.2f}-"
+        f"{revision['legacy_temporal_ci_high']:.2f}).",
         f"- Components: {components['rows']:,} rows across {components['stable_sites']} stable administrative lineages; "
         f"sizing-adjusted age {components['sizing_age_coefficient']:.4f} "
         f"(p={components['sizing_age_p_value']:.4f}); R-squared "
@@ -1947,10 +2172,12 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         "",
         "## FY2024 Count-Volume Contrast",
         "",
-        f"Claim: installed-generation facilities are {fleet['facility_participation_pct']:.1f}% "
-        f"of recorded facilities and {fleet['active_positive_output_facility_share_pct']:.1f}% "
-        f"of the {fleet['positive_throughput_facilities']} positive-throughput facilities, "
-        "while positive-output facilities handle "
+        f"Claim: installed capacity appears in {fleet['facility_participation_pct']:.1f}% "
+        f"of all records and {fleet['active_installed_generation_facility_share_pct']:.1f}% "
+        "of positive-throughput records; positive output appears in "
+        f"{fleet['positive_output_facility_share_pct']:.1f}% and "
+        f"{fleet['active_positive_output_facility_share_pct']:.1f}%, respectively. "
+        "Positive-output facilities handle "
         f"{fleet['throughput_coverage_pct']:.1f}% of recorded throughput; installed-generation "
         f"facilities hold {fleet['installed_design_capacity_share_pct']:.1f}% of waste-processing "
         "design capacity.",
@@ -1972,12 +2199,18 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         f"{revision['influence_or_high']:.2f}; alternative capacity transforms retain "
         f"{revision['functional_form_or_low']:.2f}-{revision['functional_form_or_high']:.2f}; "
         f"and leave-one-event-prefecture fits retain {revision['geographic_or_low']:.2f}-"
-        f"{revision['geographic_or_high']:.2f}. The nested frames and diagnostics are "
+        f"{revision['geographic_or_high']:.2f}. Standardized annual entry is "
+        f"{revision['standardized_risk_100_per_1000']:.2f} versus "
+        f"{revision['standardized_risk_300_per_1000']:.2f} per 1,000 facility-years; "
+        f"the flexible temporal-form OR is {revision['legacy_temporal_or']:.2f}. "
+        "The nested frames and diagnostics are "
         "not interpreted as independent equivalence tests.",
         "",
         "Evidence: `output/revised_entry_results.csv`, "
         "`output/revised_entry_bootstrap.csv`, `output/revised_entry_influence.csv`, "
-        "`output/revised_entry_robustness.csv`, `output/entry_state_audit.csv`, and "
+        "`output/revised_entry_robustness.csv`, `output/entry_standardized_risk.csv`, "
+        "`output/entry_specification_summary.csv`, `output/entry_sample_flow.csv`, "
+        "`output/entry_state_audit.csv`, and "
         "`output/scientific_revision_results.md`. The earlier eleven-parameter estimates "
         "remain labeled sensitivity evidence in `output/adoption_results.md`.",
         "",
@@ -2029,6 +2262,9 @@ def main() -> None:
         "output/revised_entry_bootstrap.csv",
         "output/revised_entry_influence.csv",
         "output/revised_entry_robustness.csv",
+        "output/entry_standardized_risk.csv",
+        "output/entry_specification_summary.csv",
+        "output/entry_sample_flow.csv",
         "output/entry_state_audit.csv",
         "output/adoption_event_composition.csv",
         "output/post_adoption_bridge.csv",

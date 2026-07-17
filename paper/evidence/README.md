@@ -51,6 +51,9 @@ Use these files when drafting the paper so the manuscript stays downstream of th
 - `revised_entry_bootstrap.csv`
 - `revised_entry_influence.csv`
 - `revised_entry_robustness.csv`
+- `entry_standardized_risk.csv`
+- `entry_specification_summary.csv`
+- `entry_sample_flow.csv`
 - `entry_state_audit.csv`
 - `adoption_event_composition.csv`
 - `raw_quantity_component_results.csv`

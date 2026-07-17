@@ -67,7 +67,8 @@ data/raw/facility_annual/*
   -> 05_panel_regression.py
        estimate generator design-intensity and electrical-capacity-factor components
   -> 05b_scientific_revision.py
-       fit the frozen five-parameter entry models, event attacks, and raw-kW models
+       fit the frozen five-parameter entry models, standardized risks,
+       specification and sample-flow audits, event attacks, and raw-kW models
   -> 06_robustness.py
   -> 06a_data_quality_sensitivity.py
   -> 06b_identifier_gap_audit.py
@@ -103,13 +104,13 @@ No model uses administrative disappearance as a physical closure outcome.
 
 | Block | Current frame | Interpretation boundary |
 |:--|:--|:--|
-| Fleet coverage | FY2024: 41.1% facility participation, 80.1% throughput coverage, 70.5% design-capacity share | Count, flow, and capacity shares are distinct. |
+| Fleet coverage | FY2024: installed capacity 41.1% all/46.4% active; positive output 40.4% all/46.6% active; 80.1% throughput coverage; 70.5% design-capacity share | Installed and output states use matched all-record and positive-throughput denominators; count, flow, and capacity shares remain distinct. |
 | Descriptive installed-capacity entry | 55 events | First reported positive installed electrical-generation capacity after observed non-generation. |
 | Broad exact-year Firth entry | 15,154 rows, 1,137 lineages, 35 events | Bias-reduced observational association with exact one-year administrative-lineage lags. |
 | Prior-operation Firth entry | 13,072 rows, 1,019 lineages, 33 events | Nested sensitivity requiring positive prior operation. |
 | Same-episode Firth entry | 15,095 rows, 1,135 lineages, 24 events | Continuity sensitivity excluding inferred asset-episode changes. |
 | Identity-certain Firth entry | 15,107 rows, 1,130 lineages, 35 events | Linkage sensitivity excluding every lineage containing an accepted uncertain link. |
-| Revised entry inference | 1,999 lineage bootstraps per frame; broad scale OR 6.72 (4.31-12.46) | Five-parameter primary model; all event attacks retain OR 6.12-7.30. |
+| Revised entry inference | 1,999 lineage bootstraps per frame; broad scale OR 6.72 (4.31-12.46); standardized annual risk 2.53 versus 16.66 per 1,000 at 100 and 300 t/day | Five-parameter primary model; all event attacks retain OR 6.12-7.30; absolute risks are standardized over the observed broad risk frame. |
 | Generator components | 6,511 engineering-valid rows, 493 lineages | Leads with raw installed kW and separates installed design from annual capacity factor. |
 
 Gross MWh/t is retained only as a descriptive accounting ratio and specification diagnostic. It is not named or interpreted as independent plant efficiency.
@@ -122,7 +123,7 @@ Gross MWh/t is retained only as a descriptive accounting ratio and specification
 |:--|:--|
 | Provenance | `raw_data_provenance.md`, `raw_data_manifest.csv`, `raw_workbook_schema_map.csv` |
 | Identity and fleet | `facility_identity_audit.md`, `identity_low_margin_links.csv`, `linkage_validation_packet.csv`, `linkage_validation_protocol.md`, `fleet_decomposition.md`, `fleet_decomposition.csv`, `fy2024_fleet_segments.csv` |
-| Core models | `sample_definition.md`, `scientific_revision_results.md`, `revised_entry_results.csv`, `revised_entry_bootstrap.csv`, `revised_entry_influence.csv`, `revised_entry_robustness.csv`, `entry_state_audit.csv`, `adoption_event_composition.csv`, `raw_quantity_component_results.csv`, `figure3_adjusted_components.csv`, `adoption_results.md`, `regression_results.md` |
+| Core models | `sample_definition.md`, `scientific_revision_results.md`, `revised_entry_results.csv`, `revised_entry_bootstrap.csv`, `revised_entry_influence.csv`, `revised_entry_robustness.csv`, `entry_standardized_risk.csv`, `entry_specification_summary.csv`, `entry_sample_flow.csv`, `entry_state_audit.csv`, `adoption_event_composition.csv`, `raw_quantity_component_results.csv`, `figure3_adjusted_components.csv`, `adoption_results.md`, `regression_results.md` |
 | Robustness and quality | `robustness_results.md`, `robustness_component_results.csv`, `data_quality_sensitivity.md`, `data_quality_sample_flow.csv`, `data_quality_engineering_bounds.csv`, `data_quality_official_code_duplicates.csv` |
 | Identifier audits | `identifier_gap_audit.md`, `identifier_overlap_by_year.csv`, `identifier_gap_bridges.csv`, `identifier_duplicates_by_year.csv` |
 | Claim and summary outputs | `claim_evidence_map.md`, `claim_verification.md`, `panel_summary.md`, `table1_summary_stats.md`, `table2_generator_components_by_cohort.md` |
@@ -135,7 +136,7 @@ If a source changes, run `npm run paper:sync`; do not edit its copy. `npm run pa
 | Command | Contract |
 |:--|:--|
 | `npm run analysis:rebuild` | Execute the full empirical stage sequence and regenerate canonical evidence. |
-| `npm run analysis:test` | Run closed-form and independent-optimizer benchmarks for the custom Firth estimator. |
+| `npm run analysis:test` | Run independent Firth benchmarks and revision-contract tests for denominators, contrasts, standardization, and sample flow. |
 | `npm run paper:sync` | Refresh the selected paper-facing evidence snapshot. |
 | `npm run paper:check` | Fail on missing or stale snapshot files. |
 | `npm run claims:verify` | Check registered numerical claims, required disclosures, and stale wording. |

@@ -10,15 +10,15 @@ Evidence: `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv`, 
 
 ## FY2024 Count-Volume Contrast
 
-Claim: installed-generation facilities are 41.1% of recorded facilities and 46.6% of the 879 positive-throughput facilities, while positive-output facilities handle 80.1% of recorded throughput; installed-generation facilities hold 70.5% of waste-processing design capacity.
+Claim: installed capacity appears in 41.1% of all records and 46.4% of positive-throughput records; positive output appears in 40.4% and 46.6%, respectively. Positive-output facilities handle 80.1% of recorded throughput; installed-generation facilities hold 70.5% of waste-processing design capacity.
 
 Evidence: `output/fleet_decomposition.csv`, `output/fy2024_fleet_segments.csv`, and `output/fleet_decomposition.md`.
 
 ## First Reported Installed-Generation Capacity
 
-Claim: Firth bias-reduced hazards use 35 exact-year events in the broad frame, 33 following positive prior-lineage operation, and 24 in the same-episode sensitivity. The identity-certain sensitivity retains 35 events after excluding every lineage containing an accepted uncertain link. The frozen five-parameter primary 300-versus-100 t/day OR is 6.72 (95% lineage-bootstrap interval 4.31-12.46). Event attacks retain 6.12-7.30; alternative capacity transforms retain 4.22-5.01; and leave-one-event-prefecture fits retain 6.14-7.18. The nested frames and diagnostics are not interpreted as independent equivalence tests.
+Claim: Firth bias-reduced hazards use 35 exact-year events in the broad frame, 33 following positive prior-lineage operation, and 24 in the same-episode sensitivity. The identity-certain sensitivity retains 35 events after excluding every lineage containing an accepted uncertain link. The frozen five-parameter primary 300-versus-100 t/day OR is 6.72 (95% lineage-bootstrap interval 4.31-12.46). Event attacks retain 6.12-7.30; alternative capacity transforms retain 4.22-5.01; and leave-one-event-prefecture fits retain 6.14-7.18. Standardized annual entry is 2.53 versus 16.66 per 1,000 facility-years; the flexible temporal-form OR is 6.13. The nested frames and diagnostics are not interpreted as independent equivalence tests.
 
-Evidence: `output/revised_entry_results.csv`, `output/revised_entry_bootstrap.csv`, `output/revised_entry_influence.csv`, `output/revised_entry_robustness.csv`, `output/entry_state_audit.csv`, and `output/scientific_revision_results.md`. The earlier eleven-parameter estimates remain labeled sensitivity evidence in `output/adoption_results.md`.
+Evidence: `output/revised_entry_results.csv`, `output/revised_entry_bootstrap.csv`, `output/revised_entry_influence.csv`, `output/revised_entry_robustness.csv`, `output/entry_standardized_risk.csv`, `output/entry_specification_summary.csv`, `output/entry_sample_flow.csv`, `output/entry_state_audit.csv`, and `output/scientific_revision_results.md`. The earlier eleven-parameter estimates remain labeled sensitivity evidence in `output/adoption_results.md`.
 
 ## Generator Design And Annual Operation
 

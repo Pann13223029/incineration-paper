@@ -1,0 +1,12 @@
+specification,purpose,observations,lineages,events,odds_ratio_300_vs_100,ci_low,ci_high,range_low,range_high,fits,uncertainty
+Broad reduced-DF frame,Frozen primary,15154,1137,35,6.723341926,4.31218478,12.46137776,,,1,"1,999 whole-lineage bootstrap replications"
+Prior-operation reduced-DF frame,Requires positive prior throughput,13072,1019,33,7.087463505,4.084183837,13.76418475,,,1,"1,999 whole-lineage bootstrap replications"
+Same-episode reduced-DF frame,Excludes episode-boundary transitions,15095,1135,24,7.15100692,4.438509995,14.05116424,,,1,"1,999 whole-lineage bootstrap replications"
+Identity-certain reduced-DF frame,Excludes uncertain-link lineages,15107,1130,35,6.764835361,4.229594966,12.29730656,,,1,"1,999 whole-lineage bootstrap replications"
+Flexible era/duration Firth sensitivity,11-parameter temporal-form check,15154,1137,35,6.129560301,3.919726993,11.21417531,,,1,499 whole-lineage bootstrap replications
+Log of one plus t/day,Functional Form,15154,1137,35,5.014892396,2.847862686,8.830884249,,,1,Model-based
+Linear t/day per 100,Functional Form,15154,1137,35,4.219535996,2.694710517,6.607197289,,,1,Model-based
+Two prior observed years without positive capacity or output,Reporting State,14000,1110,30,6.208167593,3.262376071,11.8138878,,,1,Model-based
+Leave-one-event-prefecture fits,"Geographic influence, not confounding control",,,,,,,6.143045921,7.182065425,21,Range across deletion fits
+Leave-one-event reclassification,Single-event influence,,,,,,,6.116199895,7.297825511,35,Range across deletion fits
+Leave-one-event-lineage deletion,Single-event influence,,,,,,,6.132163004,7.29612257,35,Range across deletion fits

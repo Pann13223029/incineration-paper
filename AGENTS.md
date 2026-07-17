@@ -13,7 +13,7 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 | Raw provenance and parser schema | `output/raw_data_provenance.md`, `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv` | Verify workbook and field claims here. |
 | Identity and panel grain | `output/facility_identity_audit.md`, `data/processed/facility_identity_crosswalk.csv` | Treat `stable_site_id` as an audited administrative lineage only. |
 | Samples and fleet facts | `output/sample_definition.md`, `output/fleet_decomposition.md` | Verify counts and coverage before repeating them. |
-| Entry results | `output/scientific_revision_results.md`, `output/revised_entry_results.csv`, `output/revised_entry_robustness.csv`, `output/entry_state_audit.csv`, `output/adoption_results.md` | Use the frozen five-parameter Firth model as primary; retain diagnostics and the higher-dimensional model as sensitivity. |
+| Entry results | `output/scientific_revision_results.md`, `output/revised_entry_results.csv`, `output/entry_standardized_risk.csv`, `output/entry_specification_summary.csv`, `output/entry_sample_flow.csv`, `output/revised_entry_robustness.csv`, `output/entry_state_audit.csv`, `output/adoption_results.md` | Use the frozen five-parameter Firth model as primary; report its absolute-risk translation and retain diagnostics and the higher-dimensional model as sensitivity. |
 | Generator component results | `output/scientific_revision_results.md`, `output/raw_quantity_component_results.csv`, `output/generator_component_results.csv` | Lead with raw installed capacity and capacity factor; use ratio transformations only as supporting identities. |
 | Linkage validation | `output/linkage_validation_protocol.md`, `output/linkage_validation_packet.csv` | A generated blinded packet is not completed independent validation. Do not expose the answer key in paper-facing evidence. |
 | Robustness and quality | `output/robustness_results.md`, `output/data_quality_sensitivity.md`, `output/identifier_gap_audit.md` | Keep limitations visible. |
@@ -50,12 +50,14 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 - The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
 - The frozen primary entry specification has five parameters and 1,999 complete whole-lineage bootstrap replications per frame.
 - The broad 300-versus-100 t/day odds ratio is 6.72 (95% bootstrap interval 4.31-12.46); all event attacks retain 6.12-7.30.
+- Standardized over the broad risk frame, annual entry is 2.53 versus 16.66 per 1,000 facility-years at 100 and 300 t/day, a difference of 14.13 per 1,000.
+- The earlier flexible eleven-parameter temporal specification gives an OR of 6.13 (95% lineage-bootstrap interval 3.92-11.21) and remains sensitivity evidence.
 - Alternative capacity transforms retain odds ratios of 4.22-5.01; leave-one-event-prefecture fits retain 6.14-7.18; the 30-event two-prior-year reporting-state sensitivity gives 6.21.
 - Forty-nine panel rows across six lineages report positive output without positive reported capacity; no modeled event has positive output in its immediately prior year.
 - The exact modeled events comprise 24 continuity-lineage and 11 rebuild/replacement-like entries.
 - The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
 - The raw installed-kW processing-scale elasticity is 1.532; older cohorts have smaller adjusted kW but not lower annual capacity factors.
-- FY2024 coverage is 41.1% across all facility records, 46.6% positive-output share among 879 positive-throughput records, 80.1% by throughput, and 70.5% by waste-processing design capacity.
+- In FY2024, installed capacity appears in 41.1% of all records and 46.4% of 879 positive-throughput records; positive output appears in 40.4% and 46.6%, respectively. Positive-output facilities cover 80.1% of throughput, while installed-generation facilities hold 70.5% of waste-processing design capacity.
 
 If regenerated outputs disagree, stop and resolve the pipeline before updating prose.
 

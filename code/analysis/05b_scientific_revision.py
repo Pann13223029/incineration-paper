@@ -373,6 +373,253 @@ def scale_contrast(bundle: dict[str, Any]) -> dict[str, float]:
     }
 
 
+def _logistic(linear_predictor: np.ndarray) -> np.ndarray:
+    """Evaluate logistic probabilities without numerical overflow."""
+    clipped = np.clip(linear_predictor, -35.0, 35.0)
+    return 1.0 / (1.0 + np.exp(-clipped))
+
+
+def standardized_entry_probabilities(bundle: dict[str, Any]) -> pd.DataFrame:
+    """Standardize annual entry risk at 100 and 300 t/day over the broad frame."""
+    design = primary_entry_design(bundle["frame"])
+    columns = list(design.columns)
+    base = design.to_numpy(float)
+    scale_index = columns.index("log_processing_capacity")
+
+    def mean_probability(coefficients: np.ndarray, capacity: float) -> float:
+        target_scale = np.log1p(capacity / 100.0)
+        linear_predictor = np.sum(base * coefficients, axis=1)
+        linear_predictor += (
+            target_scale - base[:, scale_index]
+        ) * coefficients[scale_index]
+        return float(_logistic(linear_predictor).mean())
+
+    point_coefficients = bundle["result"].params[columns].to_numpy(float)
+    bootstrap_coefficients = bundle["bootstrap"][columns].to_numpy(float)
+    point: dict[float, float] = {}
+    draws: dict[float, np.ndarray] = {}
+    for capacity in (100.0, 300.0):
+        point[capacity] = mean_probability(point_coefficients, capacity)
+        draws[capacity] = np.array(
+            [
+                mean_probability(coefficients, capacity)
+                for coefficients in bootstrap_coefficients
+            ]
+        )
+
+    rows: list[dict[str, Any]] = []
+    for capacity in (100.0, 300.0):
+        rows.append(
+            {
+                "estimand": "standardized_annual_probability",
+                "capacity_t_day": capacity,
+                "probability": point[capacity],
+                "events_per_1000_facility_years": point[capacity] * 1000.0,
+                "bootstrap_ci_low": float(np.quantile(draws[capacity], 0.025)),
+                "bootstrap_ci_high": float(np.quantile(draws[capacity], 0.975)),
+                "bootstrap_ci_low_per_1000": float(
+                    np.quantile(draws[capacity], 0.025) * 1000.0
+                ),
+                "bootstrap_ci_high_per_1000": float(
+                    np.quantile(draws[capacity], 0.975) * 1000.0
+                ),
+                "standardization_population": "Broad exact-year risk rows",
+                "bootstrap_repetitions": int(len(bootstrap_coefficients)),
+            }
+        )
+    point_difference = point[300.0] - point[100.0]
+    difference_draws = draws[300.0] - draws[100.0]
+    rows.append(
+        {
+            "estimand": "standardized_annual_probability_difference_300_minus_100",
+            "capacity_t_day": np.nan,
+            "probability": point_difference,
+            "events_per_1000_facility_years": point_difference * 1000.0,
+            "bootstrap_ci_low": float(np.quantile(difference_draws, 0.025)),
+            "bootstrap_ci_high": float(np.quantile(difference_draws, 0.975)),
+            "bootstrap_ci_low_per_1000": float(
+                np.quantile(difference_draws, 0.025) * 1000.0
+            ),
+            "bootstrap_ci_high_per_1000": float(
+                np.quantile(difference_draws, 0.975) * 1000.0
+            ),
+            "standardization_population": "Broad exact-year risk rows",
+            "bootstrap_repetitions": int(len(bootstrap_coefficients)),
+        }
+    )
+    return pd.DataFrame(rows)
+
+
+def legacy_temporal_scale_contrast() -> dict[str, float]:
+    """Read the earlier flexible calendar/duration Firth sensitivity."""
+    coefficients = pd.read_csv(Path(OUTPUT_DIR) / "figure2_transition_effects.csv")
+    row = coefficients[
+        coefficients["model"].eq("Broad exact-year risk frame")
+        & coefficients["term"].eq("log_processing_capacity")
+    ]
+    if len(row) != 1:
+        raise ValueError("Legacy broad scale coefficient is not unique")
+    coefficient = float(row.iloc[0]["coefficient"])
+    bootstrap = pd.read_csv(
+        Path(OUTPUT_DIR) / "adoption_bootstrap_coefficients.csv"
+    )
+    samples = bootstrap.loc[
+        bootstrap["model"].eq("broad"), "log_processing_capacity"
+    ].dropna()
+    contrast = np.log(2.0)
+    odds_ratio_draws = np.exp(samples.to_numpy(float) * contrast)
+    return {
+        "coefficient": coefficient,
+        "odds_ratio_300_vs_100": float(np.exp(coefficient * contrast)),
+        "bootstrap_ci_low": float(np.quantile(odds_ratio_draws, 0.025)),
+        "bootstrap_ci_high": float(np.quantile(odds_ratio_draws, 0.975)),
+        "bootstrap_repetitions": int(len(samples)),
+    }
+
+
+def entry_specification_summary(
+    bundles: list[dict[str, Any]],
+    entry_robustness: pd.DataFrame,
+    influence: pd.DataFrame,
+) -> pd.DataFrame:
+    """Consolidate primary and diagnostic scale results in one audit table."""
+    purpose = {
+        "Broad reduced-DF frame": "Frozen primary",
+        "Prior-operation reduced-DF frame": "Requires positive prior throughput",
+        "Same-episode reduced-DF frame": "Excludes episode-boundary transitions",
+        "Identity-certain reduced-DF frame": "Excludes uncertain-link lineages",
+    }
+    rows: list[dict[str, Any]] = []
+    for bundle in bundles:
+        contrast = scale_contrast(bundle)
+        rows.append(
+            {
+                "specification": bundle["label"],
+                "purpose": purpose[bundle["label"]],
+                "observations": int(len(bundle["frame"])),
+                "lineages": int(bundle["frame"]["analysis_facility_id"].nunique()),
+                "events": int(bundle["frame"]["adopt_power_this_year"].sum()),
+                "odds_ratio_300_vs_100": contrast["odds_ratio_300_vs_100"],
+                "ci_low": contrast["bootstrap_ci_low"],
+                "ci_high": contrast["bootstrap_ci_high"],
+                "range_low": np.nan,
+                "range_high": np.nan,
+                "fits": 1,
+                "uncertainty": (
+                    f"{BOOTSTRAP_REPETITIONS:,} whole-lineage bootstrap replications"
+                ),
+            }
+        )
+
+    legacy = legacy_temporal_scale_contrast()
+    rows.append(
+        {
+            "specification": "Flexible era/duration Firth sensitivity",
+            "purpose": "11-parameter temporal-form check",
+            "observations": int(len(bundles[0]["frame"])),
+            "lineages": int(bundles[0]["frame"]["analysis_facility_id"].nunique()),
+            "events": int(bundles[0]["frame"]["adopt_power_this_year"].sum()),
+            "odds_ratio_300_vs_100": legacy["odds_ratio_300_vs_100"],
+            "ci_low": legacy["bootstrap_ci_low"],
+            "ci_high": legacy["bootstrap_ci_high"],
+            "range_low": np.nan,
+            "range_high": np.nan,
+            "fits": 1,
+            "uncertainty": (
+                f"{legacy['bootstrap_repetitions']:,} whole-lineage bootstrap replications"
+            ),
+        }
+    )
+
+    diagnostic_rows = entry_robustness[
+        entry_robustness["check_type"].isin(["functional_form", "reporting_state"])
+    ]
+    for row in diagnostic_rows.itertuples(index=False):
+        rows.append(
+            {
+                "specification": str(row.model),
+                "purpose": str(row.check_type).replace("_", " ").title(),
+                "observations": int(row.observations),
+                "lineages": int(row.lineages),
+                "events": int(row.events),
+                "odds_ratio_300_vs_100": float(row.odds_ratio_300_vs_100),
+                "ci_low": float(row.ci_low_model_based),
+                "ci_high": float(row.ci_high_model_based),
+                "range_low": np.nan,
+                "range_high": np.nan,
+                "fits": 1,
+                "uncertainty": "Model-based",
+            }
+        )
+
+    geographic = entry_robustness[
+        entry_robustness["check_type"].eq("geographic_deletion")
+    ]
+    rows.append(
+        {
+            "specification": "Leave-one-event-prefecture fits",
+            "purpose": "Geographic influence, not confounding control",
+            "observations": np.nan,
+            "lineages": np.nan,
+            "events": np.nan,
+            "odds_ratio_300_vs_100": np.nan,
+            "ci_low": np.nan,
+            "ci_high": np.nan,
+            "range_low": float(geographic["odds_ratio_300_vs_100"].min()),
+            "range_high": float(geographic["odds_ratio_300_vs_100"].max()),
+            "fits": int(len(geographic)),
+            "uncertainty": "Range across deletion fits",
+        }
+    )
+    for deletion, label in (
+        ("event_reclassified", "Leave-one-event reclassification"),
+        ("event_lineage_removed", "Leave-one-event-lineage deletion"),
+    ):
+        values = influence.loc[
+            influence["deletion"].eq(deletion), "odds_ratio_300_vs_100"
+        ]
+        rows.append(
+            {
+                "specification": label,
+                "purpose": "Single-event influence",
+                "observations": np.nan,
+                "lineages": np.nan,
+                "events": np.nan,
+                "odds_ratio_300_vs_100": np.nan,
+                "ci_low": np.nan,
+                "ci_high": np.nan,
+                "range_low": float(values.min()),
+                "range_high": float(values.max()),
+                "fits": int(len(values)),
+                "uncertainty": "Range across deletion fits",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def entry_sample_flow(
+    panel: pd.DataFrame,
+    adoption: pd.DataFrame,
+    exact: pd.DataFrame,
+) -> pd.DataFrame:
+    """Create the auditable lineage and row flow into the entry model."""
+    ordered = panel.sort_values(["stable_site_id", "fiscal_year"])
+    first_rows = ordered.groupby("stable_site_id", sort=False).head(1)
+    left_censored = int(first_rows["has_power_gen"].fillna(False).sum())
+    prior = exact[exact["lag_throughput_t_year"].gt(0)]
+    rows = [
+        (1, "All reconstructed administrative lineages", len(panel), panel["stable_site_id"].nunique(), np.nan, "Starting panel"),
+        (2, "Left-censored: positive capacity in first observed year", np.nan, left_censored, np.nan, "Excluded from entry risk set"),
+        (3, "Observed non-generator risk set", len(adoption), adoption["analysis_facility_id"].nunique(), int(adoption["adopt_power_this_year"].sum()), "Descriptive first-entry frame"),
+        (4, "Exact-year complete-covariate model", len(exact), exact["analysis_facility_id"].nunique(), int(exact["adopt_power_this_year"].sum()), "Frozen primary frame"),
+        (5, "Positive-prior-throughput sensitivity", len(prior), prior["analysis_facility_id"].nunique(), int(prior["adopt_power_this_year"].sum()), "Nested operating frame"),
+    ]
+    return pd.DataFrame(
+        rows,
+        columns=["order", "stage", "facility_year_rows", "lineages", "events", "role"],
+    )
+
+
 def build_event_composition(
     panel: pd.DataFrame,
     adoption: pd.DataFrame,
@@ -578,6 +825,9 @@ def cohort_overlap(frame: pd.DataFrame) -> pd.DataFrame:
 def write_report(
     entry_results: pd.DataFrame,
     bundles: list[dict[str, Any]],
+    standardized_risk: pd.DataFrame,
+    specification_summary: pd.DataFrame,
+    sample_flow: pd.DataFrame,
     composition: pd.DataFrame,
     influence: pd.DataFrame,
     entry_robustness: pd.DataFrame,
@@ -609,6 +859,23 @@ def write_report(
             "bootstrap replications per frame.\n\n"
         )
         handle.write(pd.DataFrame(scale_rows).to_markdown(index=False, floatfmt=".4f"))
+        handle.write("\n\n")
+        handle.write("## Standardized Absolute Annual Entry Risk\n\n")
+        handle.write(
+            standardized_risk.to_markdown(index=False, floatfmt=".6f")
+        )
+        handle.write(
+            "\n\nProbabilities average predictions over the observed broad-frame "
+            "age, calendar-year, and elapsed-risk distribution while setting "
+            "processing capacity to 100 or 300 t/day for every risk row. They are "
+            "descriptive model standardizations, not causal intervention effects.\n\n"
+        )
+        handle.write("## Consolidated Entry Specification Audit\n\n")
+        handle.write(
+            specification_summary.to_markdown(index=False, floatfmt=".4f")
+        )
+        handle.write("\n\n## Entry Sample Flow\n\n")
+        handle.write(sample_flow.to_markdown(index=False, floatfmt=".0f"))
         handle.write("\n\n")
         age = entry_results[entry_results["term"].eq("age_per_10y")]
         handle.write(age.to_markdown(index=False, floatfmt=".4f"))
@@ -699,6 +966,13 @@ def main() -> None:
     influence = influence_diagnostics(bundles[0])
     state_audit, strict_state = build_entry_state_audit(panel, exact)
     entry_robustness = entry_robustness_diagnostics(exact, strict_state)
+    standardized_risk = standardized_entry_probabilities(bundles[0])
+    specification_summary = entry_specification_summary(
+        bundles,
+        entry_robustness,
+        influence,
+    )
+    sample_flow = entry_sample_flow(panel, adoption, exact)
 
     engineering_frame = build_regression_frame(panel)
     raw_results, figure_data = raw_quantity_models(engineering_frame)
@@ -709,6 +983,9 @@ def main() -> None:
         "output/revised_entry_bootstrap.csv": bootstrap,
         "output/revised_entry_influence.csv": influence,
         "output/revised_entry_robustness.csv": entry_robustness,
+        "output/entry_standardized_risk.csv": standardized_risk,
+        "output/entry_specification_summary.csv": specification_summary,
+        "output/entry_sample_flow.csv": sample_flow,
         "output/entry_state_audit.csv": state_audit,
         "output/adoption_event_composition.csv": composition,
         "output/raw_quantity_component_results.csv": raw_results,
@@ -724,6 +1001,9 @@ def main() -> None:
     report_path = write_report(
         entry_results,
         bundles,
+        standardized_risk,
+        specification_summary,
+        sample_flow,
         composition,
         influence,
         entry_robustness,
@@ -733,7 +1013,11 @@ def main() -> None:
     )
     manifest_path = write_stage_manifest(
         "05b_scientific_revision",
-        inputs=["data/processed/incineration_panel_identified.csv"],
+        inputs=[
+            "data/processed/incineration_panel_identified.csv",
+            "output/figure2_transition_effects.csv",
+            "output/adoption_bootstrap_coefficients.csv",
+        ],
         outputs=[*outputs.keys(), "output/scientific_revision_results.md"],
         metadata={
             "bootstrap_repetitions": BOOTSTRAP_REPETITIONS,
@@ -794,6 +1078,24 @@ def main() -> None:
                 str(row.metric): int(row.value)
                 for row in state_audit.itertuples(index=False)
             },
+            "entry_standardized_risk": {
+                str(row.estimand)
+                if pd.isna(row.capacity_t_day)
+                else f"{row.estimand}_{int(row.capacity_t_day)}_t_day": {
+                    "probability": float(row.probability),
+                    "events_per_1000_facility_years": float(
+                        row.events_per_1000_facility_years
+                    ),
+                    "bootstrap_ci_low_per_1000": float(
+                        row.bootstrap_ci_low_per_1000
+                    ),
+                    "bootstrap_ci_high_per_1000": float(
+                        row.bootstrap_ci_high_per_1000
+                    ),
+                }
+                for row in standardized_risk.itertuples(index=False)
+            },
+            "legacy_temporal_scale_contrast": legacy_temporal_scale_contrast(),
             "capacity_factor_above_one": int(
                 (engineering_frame["electrical_capacity_factor"] > 1).sum()
             ),

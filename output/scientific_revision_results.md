@@ -11,6 +11,42 @@ The prespecified primary model uses five parameters including the intercept and 
 | Same-episode reduced-DF frame     |                  7.1510 |             4.4385 |             14.0512 |
 | Identity-certain reduced-DF frame |                  6.7648 |             4.2296 |             12.2973 |
 
+## Standardized Absolute Annual Entry Risk
+
+| estimand                                                 |   capacity_t_day |   probability |   events_per_1000_facility_years |   bootstrap_ci_low |   bootstrap_ci_high |   bootstrap_ci_low_per_1000 |   bootstrap_ci_high_per_1000 | standardization_population   |   bootstrap_repetitions |
+|:---------------------------------------------------------|-----------------:|--------------:|---------------------------------:|-------------------:|--------------------:|----------------------------:|-----------------------------:|:-----------------------------|------------------------:|
+| standardized_annual_probability                          |       100.000000 |      0.002532 |                         2.532416 |           0.001728 |            0.003520 |                    1.727814 |                     3.519685 | Broad exact-year risk rows   |                    1999 |
+| standardized_annual_probability                          |       300.000000 |      0.016659 |                        16.658775 |           0.009515 |            0.029657 |                    9.514510 |                    29.657436 | Broad exact-year risk rows   |                    1999 |
+| standardized_annual_probability_difference_300_minus_100 |       nan        |      0.014126 |                        14.126359 |           0.007382 |            0.026773 |                    7.382316 |                    26.772510 | Broad exact-year risk rows   |                    1999 |
+
+Probabilities average predictions over the observed broad-frame age, calendar-year, and elapsed-risk distribution while setting processing capacity to 100 or 300 t/day for every risk row. They are descriptive model standardizations, not causal intervention effects.
+
+## Consolidated Entry Specification Audit
+
+| specification                                                | purpose                                       |   observations |   lineages |   events |   odds_ratio_300_vs_100 |   ci_low |   ci_high |   range_low |   range_high |   fits | uncertainty                                |
+|:-------------------------------------------------------------|:----------------------------------------------|---------------:|-----------:|---------:|------------------------:|---------:|----------:|------------:|-------------:|-------:|:-------------------------------------------|
+| Broad reduced-DF frame                                       | Frozen primary                                |     15154.0000 |  1137.0000 |  35.0000 |                  6.7233 |   4.3122 |   12.4614 |    nan      |     nan      |      1 | 1,999 whole-lineage bootstrap replications |
+| Prior-operation reduced-DF frame                             | Requires positive prior throughput            |     13072.0000 |  1019.0000 |  33.0000 |                  7.0875 |   4.0842 |   13.7642 |    nan      |     nan      |      1 | 1,999 whole-lineage bootstrap replications |
+| Same-episode reduced-DF frame                                | Excludes episode-boundary transitions         |     15095.0000 |  1135.0000 |  24.0000 |                  7.1510 |   4.4385 |   14.0512 |    nan      |     nan      |      1 | 1,999 whole-lineage bootstrap replications |
+| Identity-certain reduced-DF frame                            | Excludes uncertain-link lineages              |     15107.0000 |  1130.0000 |  35.0000 |                  6.7648 |   4.2296 |   12.2973 |    nan      |     nan      |      1 | 1,999 whole-lineage bootstrap replications |
+| Flexible era/duration Firth sensitivity                      | 11-parameter temporal-form check              |     15154.0000 |  1137.0000 |  35.0000 |                  6.1296 |   3.9197 |   11.2142 |    nan      |     nan      |      1 | 499 whole-lineage bootstrap replications   |
+| Log of one plus t/day                                        | Functional Form                               |     15154.0000 |  1137.0000 |  35.0000 |                  5.0149 |   2.8479 |    8.8309 |    nan      |     nan      |      1 | Model-based                                |
+| Linear t/day per 100                                         | Functional Form                               |     15154.0000 |  1137.0000 |  35.0000 |                  4.2195 |   2.6947 |    6.6072 |    nan      |     nan      |      1 | Model-based                                |
+| Two prior observed years without positive capacity or output | Reporting State                               |     14000.0000 |  1110.0000 |  30.0000 |                  6.2082 |   3.2624 |   11.8139 |    nan      |     nan      |      1 | Model-based                                |
+| Leave-one-event-prefecture fits                              | Geographic influence, not confounding control |       nan      |   nan      | nan      |                nan      | nan      |  nan      |      6.1430 |       7.1821 |     21 | Range across deletion fits                 |
+| Leave-one-event reclassification                             | Single-event influence                        |       nan      |   nan      | nan      |                nan      | nan      |  nan      |      6.1162 |       7.2978 |     35 | Range across deletion fits                 |
+| Leave-one-event-lineage deletion                             | Single-event influence                        |       nan      |   nan      | nan      |                nan      | nan      |  nan      |      6.1322 |       7.2961 |     35 | Range across deletion fits                 |
+
+## Entry Sample Flow
+
+|   order | stage                                                   |   facility_year_rows |   lineages |   events | role                          |
+|--------:|:--------------------------------------------------------|---------------------:|-----------:|---------:|:------------------------------|
+|       1 | All reconstructed administrative lineages               |                23593 |       1690 |      nan | Starting panel                |
+|       2 | Left-censored: positive capacity in first observed year |                  nan |        467 |      nan | Excluded from entry risk set  |
+|       3 | Observed non-generator risk set                         |                16519 |       1223 |       55 | Descriptive first-entry frame |
+|       4 | Exact-year complete-covariate model                     |                15154 |       1137 |       35 | Frozen primary frame          |
+|       5 | Positive-prior-throughput sensitivity                   |                13072 |       1019 |       33 | Nested operating frame        |
+
 | model                             | term        |   coefficient |   standard_error_model_based |   p_value_model_based |   bootstrap_ci_low |   bootstrap_ci_high |   observations |   lineages |   events |   bootstrap_repetitions |
 |:----------------------------------|:------------|--------------:|-----------------------------:|----------------------:|-------------------:|--------------------:|---------------:|-----------:|---------:|------------------------:|
 | Broad reduced-DF frame            | age_per_10y |       -0.3274 |                       0.2144 |                0.1268 |            -0.7743 |              0.0701 |          15154 |       1137 |       35 |                    1999 |

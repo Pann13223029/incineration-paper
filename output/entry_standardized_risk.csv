@@ -1,0 +1,4 @@
+estimand,capacity_t_day,probability,events_per_1000_facility_years,bootstrap_ci_low,bootstrap_ci_high,bootstrap_ci_low_per_1000,bootstrap_ci_high_per_1000,standardization_population,bootstrap_repetitions
+standardized_annual_probability,100,0.002532415779,2.532415779,0.001727813838,0.003519685124,1.727813838,3.519685124,Broad exact-year risk rows,1999
+standardized_annual_probability,300,0.01665877499,16.65877499,0.009514509679,0.02965743577,9.514509679,29.65743577,Broad exact-year risk rows,1999
+standardized_annual_probability_difference_300_minus_100,,0.01412635921,14.12635921,0.007382315741,0.0267725095,7.382315741,26.7725095,Broad exact-year risk rows,1999

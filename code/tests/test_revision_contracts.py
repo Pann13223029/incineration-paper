@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 import unittest
 
 import numpy as np
@@ -48,6 +49,10 @@ class RevisionContractTest(unittest.TestCase):
         self.assertEqual(int(row["positive_throughput_facilities"]), 2)
         self.assertAlmostEqual(row["facility_participation_pct"], 50.0)
         self.assertAlmostEqual(
+            row["active_installed_generation_facility_share_pct"], 50.0
+        )
+        self.assertAlmostEqual(row["positive_output_facility_share_pct"], 25.0)
+        self.assertAlmostEqual(
             row["active_positive_output_facility_share_pct"], 50.0
         )
         self.assertAlmostEqual(row["throughput_coverage_pct"], 100 / 1.5)
@@ -68,6 +73,77 @@ class RevisionContractTest(unittest.TestCase):
                 )
                 observed = float(design.loc[1, "scale_term"] - design.loc[0, "scale_term"])
                 self.assertAlmostEqual(observed, contrast, places=12)
+
+    def test_standardized_entry_risk_preserves_noncapacity_covariates(self) -> None:
+        frame = pd.DataFrame(
+            {
+                "lag_capacity_t_day": [50.0, 500.0],
+                "lag_facility_age_years": [10.0, 30.0],
+                "fiscal_year": [2018, 2022],
+                "elapsed_at_risk_years": [1, 5],
+            }
+        )
+        columns = list(revision_stage.primary_entry_design(frame).columns)
+        coefficients = pd.Series(
+            [0.0, 0.1, 1.0, -0.2, 0.05], index=columns
+        )
+        bootstrap = pd.DataFrame([coefficients, coefficients], columns=columns)
+        bundle = {
+            "frame": frame,
+            "result": SimpleNamespace(params=coefficients),
+            "bootstrap": bootstrap,
+        }
+
+        result = revision_stage.standardized_entry_probabilities(bundle)
+        probabilities = result[
+            result["estimand"].eq("standardized_annual_probability")
+        ].set_index("capacity_t_day")
+        difference = result[
+            result["estimand"].str.contains("difference", na=False)
+        ].iloc[0]
+
+        self.assertGreater(
+            probabilities.loc[300.0, "probability"],
+            probabilities.loc[100.0, "probability"],
+        )
+        self.assertAlmostEqual(
+            difference["probability"],
+            probabilities.loc[300.0, "probability"]
+            - probabilities.loc[100.0, "probability"],
+            places=12,
+        )
+        self.assertTrue(result["bootstrap_repetitions"].eq(2).all())
+
+    def test_entry_sample_flow_exposes_left_censoring_and_nested_frame(self) -> None:
+        panel = pd.DataFrame(
+            {
+                "stable_site_id": ["a", "a", "b", "b", "c"],
+                "fiscal_year": [2020, 2021, 2020, 2021, 2020],
+                "has_power_gen": [True, True, False, True, False],
+            }
+        )
+        adoption = pd.DataFrame(
+            {
+                "analysis_facility_id": ["b", "b", "c"],
+                "adopt_power_this_year": [0, 1, 0],
+            }
+        )
+        exact = adoption.assign(lag_throughput_t_year=[0.0, 10.0, 5.0])
+
+        flow = revision_stage.entry_sample_flow(panel, adoption, exact)
+
+        left_censored = flow[
+            flow["stage"].eq(
+                "Left-censored: positive capacity in first observed year"
+            )
+        ].iloc[0]
+        prior = flow[
+            flow["stage"].eq("Positive-prior-throughput sensitivity")
+        ].iloc[0]
+        self.assertEqual(int(left_censored["lineages"]), 1)
+        self.assertEqual(int(prior["facility_year_rows"]), 2)
+        self.assertEqual(int(prior["lineages"]), 2)
+        self.assertEqual(int(prior["events"]), 1)
 
 
 if __name__ == "__main__":

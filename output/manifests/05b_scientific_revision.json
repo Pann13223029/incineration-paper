@@ -8,15 +8,15 @@
     "code/analysis/02c_build_linkage_validation_packet.py": "8a753a91e441af68553f0d93d900ac53a7c2f038214ca7f9ef6bded9f306632e",
     "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
     "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
-    "code/analysis/05_fleet_decomposition.py": "0aea773f91309bbb363c92e73600421286445effae7d7b004dc8480a5f5bc3cf",
+    "code/analysis/05_fleet_decomposition.py": "23111b613463a2397bda554c0d12d10362cd31a2b746dd0a289027e5383017f2",
     "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/05b_scientific_revision.py": "358e6c6cf93eede122ac00fecc7122ec0417a874147d356ee7af6c3b0e2e81b9",
+    "code/analysis/05b_scientific_revision.py": "fd17756a487d3aff2a2109ddf12933532c689ab9d2970ac272b8989fea923b95",
     "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "c0bc62d97ebb3d1850937664237824806e1b2b1bbc827d192ff54ecaa69e9212",
-    "code/analysis/08_verify_claims.py": "68610884b056e0ee2d992a0f45e58f7e7a36cc9719cce8c32751168567420d44",
+    "code/analysis/08_verify_claims.py": "4a08a1521635b399c7eaec7e2487e46ddba25aab0f8f1e5f208ac1bc1b075568",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "45212374aa5c9567ff5156aea066b055bf5946fa3d90ddaab8366bc86617d0b0"
@@ -47,10 +47,14 @@
     "technology_categories_normalized_to_compact_groups": true
   },
   "input_sha256": {
-    "data/processed/incineration_panel_identified.csv": "ff6913f314b56e571ac87d3d208f83461cb59d69fdd57798779158bc907ea66b"
+    "data/processed/incineration_panel_identified.csv": "ff6913f314b56e571ac87d3d208f83461cb59d69fdd57798779158bc907ea66b",
+    "output/adoption_bootstrap_coefficients.csv": "108a579416889cb80dfc57fb1aa859472d0fa9d032ebf3bfae91d39611bca832",
+    "output/figure2_transition_effects.csv": "f325893d8d0dce1e1f438d28817a66156106eca66a74829db4c9624a7be5b8e5"
   },
   "inputs": [
-    "data/processed/incineration_panel_identified.csv"
+    "data/processed/incineration_panel_identified.csv",
+    "output/figure2_transition_effects.csv",
+    "output/adoption_bootstrap_coefficients.csv"
   ],
   "metadata": {
     "bootstrap_repetitions": 1999,
@@ -152,6 +156,26 @@
       "geographic_deletion_scale_or_max": 7.182065,
       "geographic_deletion_scale_or_min": 6.143046
     },
+    "entry_standardized_risk": {
+      "standardized_annual_probability_100_t_day": {
+        "bootstrap_ci_high_per_1000": 3.519685,
+        "bootstrap_ci_low_per_1000": 1.727814,
+        "events_per_1000_facility_years": 2.532416,
+        "probability": 0.002532416
+      },
+      "standardized_annual_probability_300_t_day": {
+        "bootstrap_ci_high_per_1000": 29.65744,
+        "bootstrap_ci_low_per_1000": 9.51451,
+        "events_per_1000_facility_years": 16.65877,
+        "probability": 0.01665877
+      },
+      "standardized_annual_probability_difference_300_minus_100": {
+        "bootstrap_ci_high_per_1000": 26.77251,
+        "bootstrap_ci_low_per_1000": 7.382316,
+        "events_per_1000_facility_years": 14.12636,
+        "probability": 0.01412636
+      }
+    },
     "entry_state_audit": {
       "missing_capacity_positive_output_rows": 35,
       "missing_capacity_rows": 15242,
@@ -175,12 +199,22 @@
     },
     "influence_scale_or_max": 7.297826,
     "influence_scale_or_min": 6.1162,
+    "legacy_temporal_scale_contrast": {
+      "bootstrap_ci_high": 11.21418,
+      "bootstrap_ci_low": 3.919727,
+      "bootstrap_repetitions": 499,
+      "coefficient": 2.615784,
+      "odds_ratio_300_vs_100": 6.12956
+    },
     "raw_quantity_result_rows": 11,
     "utilization_above_one": 7
   },
   "output_sha256": {
     "output/adoption_event_composition.csv": "1cfa15e33acf8ba42d034a1a048d383ba24dd40e94447f7b87860936fa1d9ae6",
     "output/cohort_year_overlap.csv": "739a1e55bead270655519573fb19ac92aba427b7e2a4dd13262eae8fb55c251e",
+    "output/entry_sample_flow.csv": "76f90e6fc1b3004d7b60edf2ea4d12c112395fc42498c3f0514a98d3282b39b4",
+    "output/entry_specification_summary.csv": "5bac28b58f441e33dcd1611687f58aa317d7823c30919d2984aa06637316c226",
+    "output/entry_standardized_risk.csv": "3f448b9c034e2a77c0674fa5c49983cc997c8a20970114940d051e2e2de6d4f9",
     "output/entry_state_audit.csv": "031641ee72984e048c938cbee3788e03d4301aa2fbdcdced53ca928d5da60b2f",
     "output/figure3_adjusted_components.csv": "1ebb91f8421c1dcccb9af29c1892dec29183a035ae3b379c403c240574ce6096",
     "output/raw_quantity_component_results.csv": "eb14309450ca10af11960eb5795ca8b395ba3047c2111b3a4242de3f9f35c8aa",
@@ -188,13 +222,16 @@
     "output/revised_entry_influence.csv": "6851e231411c0f6c2ad885ed25109e74797af73e259b67b8478cd9a29809b4ee",
     "output/revised_entry_results.csv": "64bfdbb6fb6a5a2d8b4fbafc58bd6191ffbbdcdd6136b184168d5e3b6956b3b7",
     "output/revised_entry_robustness.csv": "95264ab55edaefaf9e2f8823e20d153907d9784bbffebd5e861c744f6ada8d80",
-    "output/scientific_revision_results.md": "77f96a3c583beeaaaa482211f5d54eee7058ba6cf4be25f60d8ef4191d15b20e"
+    "output/scientific_revision_results.md": "c0f14cba830199524ff03a09d8f8a4226ee5c148d7a6acd1f3959cef4c711ed1"
   },
   "outputs": [
     "output/revised_entry_results.csv",
     "output/revised_entry_bootstrap.csv",
     "output/revised_entry_influence.csv",
     "output/revised_entry_robustness.csv",
+    "output/entry_standardized_risk.csv",
+    "output/entry_specification_summary.csv",
+    "output/entry_sample_flow.csv",
     "output/entry_state_audit.csv",
     "output/adoption_event_composition.csv",
     "output/raw_quantity_component_results.csv",
@@ -204,6 +241,6 @@
   ],
   "python": "3.12.12",
   "script": "code/analysis/05b_scientific_revision.py",
-  "script_sha256": "358e6c6cf93eede122ac00fecc7122ec0417a874147d356ee7af6c3b0e2e81b9",
+  "script_sha256": "fd17756a487d3aff2a2109ddf12933532c689ab9d2970ac272b8989fea923b95",
   "stage": "05b_scientific_revision"
 }
