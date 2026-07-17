@@ -157,32 +157,153 @@ non-generating facility as an equally feasible opportunity when local waste
 supply, costs, grid access, heat demand, and alternative treatment arrangements
 remain unobserved.
 
-## 2. Analytical Foundation and Comparator Adaptation
+## 2. Literature Review and Analytical Foundation
 
-### 2.1 From one fleet average to three margins
+### 2.1 Waste-to-energy within the waste hierarchy
 
-System studies consider material flows, lifecycle effects, energy substitution,
-and waste hierarchy (Astrup et al., 2009, 2015; Brunner & Rechberger, 2015;
-Münster & Meibom, 2010). Facility studies benchmark operating plants (Chen et
-al., 2012; Yeh, 2020), while Japan studies examine policy, power systems, heat
-use, and technology (Sasao, 2018; Shino, 2019; Tabata & Tsai, 2016; Uno, 2015).
-These perspectives do not share one denominator or estimand.
+Waste-to-energy (WtE) is not a single environmental outcome. It is a family of
+thermal-treatment arrangements that can provide waste-disposal service, recover
+electricity or useful heat, and produce emissions and residual materials at the
+same time. Reviews therefore evaluate incineration within material-flow,
+life-cycle, energy-system, and waste-hierarchy boundaries rather than by
+electricity output alone (Astrup et al., 2009, 2015; Brunner & Rechberger, 2015;
+Lombardi et al., 2015; Münster & Meibom, 2010). The environmental value assigned
+to recovered energy can change with waste composition, the energy displaced,
+plant configuration, treatment alternatives, and the boundary chosen for
+analysis.
 
-The present design separates three margins and their estimands. Fleet coverage is an annual ratio
-whose denominator is either facilities, tonnes, or waste-processing design
+This wider framing is especially important for a study of an incineration-heavy
+system. Comparative policy research places prevention, reuse, and material
+recycling ahead of disposal, while recognizing energy recovery as one possible
+function of residual-waste treatment (European Commission, 2017; Sakai et al.,
+2011). Increasing electricity recovery is therefore not equivalent to improving
+the whole waste system. More generation could reflect better use of unavoidable
+combustion heat, but it could also coexist with high residual-waste throughput.
+The appropriate interpretation depends on which question is being asked.
+
+This thesis deliberately conditions on the observed Japanese incineration fleet.
+It asks how electricity recovery is distributed within that fleet, not whether
+incineration should replace prevention or recycling. It also does not estimate
+life-cycle greenhouse-gas savings, avoided generation, pollutant exposure, ash
+management, heat use, or social welfare. Keeping these outcomes outside the
+estimand prevents the gross electricity measures reported below from becoming
+an unsupported claim of overall sustainability.
+
+### 2.2 Japan's municipal transition and operating context
+
+Japan's municipal solid-waste system combines national policy with local
+implementation. Municipal instruments can alter the quantity and composition of
+residual waste before it reaches an incinerator. For example, Japanese
+unit-charging programmes have been studied as waste-reduction and recycling
+measures, with effects depending on programme design and complementary
+collection arrangements (Sakai et al., 2008). This means that annual incinerator
+throughput is not simply an engineering input: it is partly the downstream result
+of local waste-management choices that are not fully observed in the facility
+workbooks.
+
+Within the treatment stage, prior Japan-focused research examines several
+different margins. Uno (2015) describes technical developments associated with
+higher-efficiency power generation. Tabata and Tsai (2016) examine heat supply
+and the local constraints on using recovered heat. Sun et al. (2018) show through
+a Tokyo case that energy recovery can be considered within an integrated urban
+waste-management network rather than at one plant in isolation. Sasao (2018)
+uses repeated facility observations to study how municipal solid-waste policy
+relates to heat and electricity output. Shino (2019) examines generation
+performance relative to waste input, while Yamada et al. (2023) place the sector
+within longer-run Japanese decarbonization scenarios.
+
+Scale is important in this literature, but it is not a complete decision rule.
+Large, continuously operated plants can support steam conditions and generating
+equipment that are difficult to reproduce at small sites. Yet a heat-balance case
+study by Yoshida et al. (2018) identifies technically possible recovery options
+for a small Japanese facility and separately examines their costs and benefits.
+The relevant question is therefore not simply whether a small plant lacks a
+generator. Feasibility can also depend on waste supply, technology, capital and
+operating costs, grid connection, heat demand, and regional coordination.
+
+The national administrative panel used here does not consistently observe those
+project-level factors. It can show which reported facility profiles are
+associated with witnessed entry, but it cannot identify why a municipality made
+a particular investment. This boundary is consequential: an association between
+size and entry is evidence about observed selection in the fleet, not proof that
+size alone caused adoption or that every large non-generator should be
+retrofitted.
+
+### 2.3 Measuring coverage, performance, and efficiency
+
+The literature also shows why the word *efficiency* requires qualification.
+Thermal-treatment reviews compare technologies using electrical, thermal, or
+combined energy performance and sometimes life-cycle measures (Astrup et al.,
+2015; Lombardi et al., 2015). The European Union's R1 formulation evaluates
+energy recovery using a defined accounting boundary (Grosso et al., 2010).
+Facility benchmarking studies may instead estimate technical or revenue
+efficiency relative to observed peers (Chen et al., 2012; Yeh, 2020). These are
+not interchangeable quantities.
+
+The Ministry workbooks report installed electrical capacity, annual gross
+electricity generation, waste-processing design capacity, and annual throughput.
+They do not provide a complete and consistent series for net export, internal
+electricity use, useful heat delivery, lower heating value, steam conditions,
+operating cost, or emissions. Gross megawatt-hours per tonne (MWh/t) is therefore
+observable, but it is not a direct thermal-conversion efficiency. Shino (2019)
+similarly treats generation relative to waste input as informative while noting
+that a thermal interpretation requires calorific-value information.
+
+Measurement also changes the apparent reach of energy recovery. A facility-count
+share weights a small and a large plant equally. A throughput share weights each
+plant by the tonnes it actually processes. A design-capacity share weights its
+nominal daily waste-processing capacity. None is inherently the correct
+denominator for every purpose. Used together, however, they reveal whether
+generation is diffuse across facilities or concentrated where most waste is
+processed and capacity is installed.
+
+The present design consequently separates three estimands. Fleet coverage is an
+annual ratio whose denominator is facilities, tonnes, or waste-processing design
 capacity. Entry is a discrete-time conditional probability among lineages
-observed at risk. Generator components are conditional associations among
-positive-throughput, positive-output generator-years that pass stated
-engineering checks. A coefficient from the generator frame cannot explain why
-a non-generator enters, and a facility participation rate cannot describe the
+observed at risk. Generator-component estimates are conditional associations
+among positive-throughput, positive-output generator-years that pass stated
+engineering checks. A coefficient from the generator frame cannot explain why a
+non-generator enters, and a facility participation rate cannot describe the
 share of waste processed with electricity output.
 
 This separation permits a low count share and high throughput share to be true
 simultaneously. It also permits newer cohorts to report higher gross MWh/t
-because of larger generators even when older generators do not have lower
-annual capacity factors. Section 3 states that identity explicitly.
+because of larger generators even when older generators do not have lower annual
+capacity factors. Section 3 states the exact identity used to distinguish those
+components.
 
-### 2.2 What is adapted from high-profile and close comparators
+### 2.4 Infrastructure heterogeneity, transition, and persistence
+
+Incinerators are long-lived infrastructure embedded in municipal organisations,
+regulation, collection systems, energy networks, and local service obligations.
+Socio-technical research distinguishes a technology from the wider system of
+actors, rules, users, and material arrangements that supports it (Geels, 2004).
+Carbon lock-in research likewise explains how long-lived capital and
+institutional interdependence can make infrastructure pathways persistent
+(Seto et al., 2016; Unruh, 2000). These perspectives make age, cohort, and
+continuity relevant, but they do not establish that every old incinerator is
+technically or politically locked in.
+
+This thesis uses that literature as a conceptual warning rather than a tested
+causal theory. The workbooks do not observe investment deliberations, sunk
+costs, procurement contracts, or political opposition. They also do not show
+whether first reported generation was installed through an in-place retrofit, a
+furnace replacement, a wider site redevelopment, or correction of a previous
+record. Accordingly, the longitudinal unit is called a stable administrative
+lineage, and large configuration changes create separate asset episodes. A
+first-entry event means the first witnessed transition from no reported
+generation to reported generation under a stated continuity rule; it is not
+automatically labelled a retrofit.
+
+This distinction explains why identity reconstruction is substantive. If a
+national recoding is mistaken for facility replacement, apparent entry and exit
+events will be manufactured by the database. If all records sharing a site name
+are forced into one permanent asset, genuine replacement may be hidden. The
+lineage and episode sensitivity analyses translate the general infrastructure
+literature into a testable question: how much do transition inferences depend on
+the continuity definition?
+
+### 2.5 What is adapted from high-profile and close comparators
 
 High-profile studies supply research logic, not a ready-made model. Cui et al.
 (2026) foreground facility hierarchy, Liu et al. (2025) emphasize effectiveness
@@ -215,6 +336,37 @@ The adaptation changes the unit and estimands to fit Japanese administrative
 data. Its distinctive elements are audited lineages, count-volume coverage,
 sparse first entry, and an exact engineering identity; its conclusions are
 narrower than studies with process, cost, emissions, or city-system data.
+
+### 2.6 Synthesis, research gap, and contribution
+
+The reviewed literature provides strong but separated accounts of the problem.
+Waste-system studies define environmental and hierarchy boundaries. Japan
+studies document policy, technology, heat use, integrated recovery, and
+facility-level output. Performance studies distinguish engineering indicators
+from peer-relative efficiency. Transition research explains why infrastructure
+continuity and institutional context may matter. Close empirical comparators
+show the value of repeated facility observations and decomposition. Each strand
+answers a necessary part of the problem, but their units and outcomes differ.
+
+Within the literature reviewed for this thesis, no study combines four elements
+for Japan over FY2005-FY2024: (1) audited reconstruction of administrative
+facility lineages across coding breaks; (2) simultaneous count, throughput, and
+design-capacity coverage; (3) first witnessed entry among an explicit at-risk
+set with sparse-event and continuity checks; and (4) exact decomposition of
+gross MWh/t into generator sizing, annual generator use, and waste loading. This
+is a bounded integration claim, not a claim that each element is individually
+new. Sasao (2018), Shino (2019), and the high-profile comparators establish the
+closest foundations; the contribution is to connect their research logics under
+one auditable set of estimands.
+
+That integration matters because the three research questions can otherwise
+produce misleading answers. Rising facility participation does not show how much
+waste passes through generators. A profile associated with first entry does not
+explain output differences among existing generators. Gross MWh/t does not
+identify whether a plant has a larger generator, uses it more during the year,
+or processes more waste relative to that generator. The thesis therefore treats
+coverage, transition, and conditional performance as complementary diagnostics,
+not substitutes for one another and not a causal policy evaluation.
 
 ## 3. Data and Methods
 
@@ -1045,6 +1197,11 @@ https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52017DC0034
 Firth, D. (1993). Bias reduction of maximum likelihood estimates. *Biometrika*,
 *80*(1), 27-38. https://doi.org/10.1093/biomet/80.1.27
 
+Geels, F. W. (2004). From sectoral systems of innovation to socio-technical
+systems: Insights about dynamics and change from sociology and institutional
+theory. *Research Policy*, *33*(6-7), 897-920.
+https://doi.org/10.1016/j.respol.2004.01.015
+
 Grosso, M., Motta, A., & Rigamonti, L. (2010). Efficiency of energy recovery
 from waste incineration, in the light of the new Waste Framework Directive.
 *Waste Management*, *30*(7), 1238-1243.
@@ -1069,6 +1226,11 @@ V. W.-C. (2025). Refocusing on effectiveness over expansion in urban
 waste-energy-carbon development in China. *Nature Energy*, *10*, 215-225.
 https://doi.org/10.1038/s41560-024-01683-8
 
+Lombardi, L., Carnevale, E., & Corti, A. (2015). A review of technologies and
+performances of thermal treatment systems for energy recovery from waste.
+*Waste Management*, *37*, 26-44.
+https://doi.org/10.1016/j.wasman.2014.11.010
+
 Ministry of the Environment Japan. (2026). *General Waste Treatment Survey
 results: FY2024 municipal solid waste treatment survey*. Environmental
 Management Bureau, Ministry of the Environment Japan.
@@ -1079,13 +1241,34 @@ to energy technologies identified by use of energy system analysis.
 *Waste Management*, *30*(12), 2510-2519.
 https://doi.org/10.1016/j.wasman.2010.04.015
 
+Sakai, S., Ikematsu, T., Hirai, Y., & Yoshida, H. (2008). Unit-charging
+programs for municipal solid waste in Japan. *Waste Management*, *28*(12),
+2815-2825. https://doi.org/10.1016/j.wasman.2008.07.010
+
+Sakai, S.-i., Yoshida, H., Hirai, Y., Asari, M., Takigami, H., Takahashi, S.,
+Tomoda, K., Peeler, M. V., Wejchert, J., Schmid-Unterseh, T., Ravazzi Douvan,
+A., Hathaway, R., Hylander, L. D., Fischer, C., Oh, G. J., Li, J., & Chi, N. K.
+(2011). International comparative study of 3R and waste management policy
+developments. *Journal of Material Cycles and Waste Management*, *13*(2),
+86-102. https://doi.org/10.1007/s10163-011-0009-x
+
 Sasao, T. (2018). How does municipal solid waste policy affect heat and
 electricity produced by incinerators? *Detritus*, *2*, 133-141.
 https://doi.org/10.31025/2611-4135/2018.13650
 
+Seto, K. C., Davis, S. J., Mitchell, R. B., Stokes, E. C., Unruh, G., &
+Ürge-Vorsatz, D. (2016). Carbon lock-in: Types, causes, and policy
+implications. *Annual Review of Environment and Resources*, *41*(1), 425-452.
+https://doi.org/10.1146/annurev-environ-110615-085934
+
 Shino, Y. (2019). System analysis of MSW incinerator power generation
 performance. *Journal of the Japan Society of Material Cycles and Waste
 Management*, *30*, 113-121. https://doi.org/10.3985/jjsmcwm.30.113
+
+Sun, L., Fujii, M., Tasaki, T., Dong, H., & Ohnishi, S. (2018). Improving
+waste to energy rate by promoting an integrated municipal solid-waste
+management system. *Resources, Conservation and Recycling*, *136*, 289-296.
+https://doi.org/10.1016/j.resconrec.2018.05.005
 
 Tabata, T., & Tsai, P. (2016). Heat supply from municipal solid waste
 incineration plants in Japan: Current situation and future challenges. *Waste
@@ -1095,6 +1278,9 @@ https://doi.org/10.1177/0734242X15617009
 Uno, S. (2015). Trends in Waste-to-Energy Technologies for High Efficiency
 Power Generation. *Material Cycles and Waste Management Research*, *26*(2),
 114-119. https://doi.org/10.3985/mcwmr.26.114
+
+Unruh, G. C. (2000). Understanding carbon lock-in. *Energy Policy*, *28*(12),
+817-830. https://doi.org/10.1016/S0301-4215(00)00070-7
 
 Wooldridge, J. M. (2010). *Econometric analysis of cross section and panel
 data* (2nd ed.). MIT Press.
@@ -1109,3 +1295,9 @@ Yeh, L.-T. (2020). Analysis of the dynamic electricity revenue inefficiencies
 of Taiwan's municipal solid waste incineration plants using data envelopment
 analysis. *Waste Management*, *107*, 28-35.
 https://doi.org/10.1016/j.wasman.2020.03.040
+
+Yoshida, C., Nakao, A., Yoshida, N., & Yamamoto, S. (2018). Evaluation of
+energy recovery technology selection in small-scale waste incineration
+facility: Estimation of power generation using heat balance analysis. *Journal
+of Japan Society of Civil Engineers, Ser. G (Environmental Research)*, *74*(6),
+II_287-II_298. https://doi.org/10.2208/jscejer.74.II_287

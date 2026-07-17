@@ -1,17 +1,17 @@
 # Reference Verification Notes
 
-Checked against publisher or official records on 10 July 2026.
+Checked against publisher or official records on 17 July 2026.
 
 ## Coverage And Method
 
-All 19 DOI-bearing references in the manuscript were checked against Crossref
-metadata and, for the papers carrying central conceptual or methodological
-weight, against the publisher page. The e-Stat survey record, European
-Commission communication, Ministry source, and MIT Press book record were
-checked against their official pages. The audit corrected two stale bibliography
-entries before release: the Münster and Meibom title and the Tabata and Tsai
-issue and page range. The manuscript reference list now agrees with the checked
-records.
+All 28 DOI-bearing references in the professor-facing thesis were checked
+against Crossref metadata and, for the papers carrying central conceptual or
+methodological weight, against the publisher page. The e-Stat survey record,
+European Commission communication, Ministry source, and MIT Press book record
+were checked against their official pages. The audit corrected two stale
+bibliography entries before release: the Münster and Meibom title and the Tabata
+and Tsai issue and page range. The professor-facing thesis reference list now
+agrees with the checked records.
 
 | Source | Verified record | Use boundary in this paper |
 |:--|:--|:--|
@@ -23,6 +23,14 @@ records.
 | Tabata and Tsai (2016) | [Waste Management & Research 34(2), 148-155](https://journals.sagepub.com/doi/10.1177/0734242X15617009), DOI `10.1177/0734242X15617009` | Supports the Japan-specific heat-use and infrastructure context; its questionnaire design is not reproduced |
 | Shino (2019) | [Journal of the Japan Society of Material Cycles and Waste Management 30, 113-121](https://www.jstage.jst.go.jp/article/jjsmcwm/30/0/30_113/_article), DOI `10.3985/jjsmcwm.30.113` | Supports gross generation per waste mass as an observable indicator and cautions that thermal interpretation depends on calorific-value measurement |
 | Sasao (2018) | [Detritus 2, 133-141](https://doi.org/10.31025/2611-4135/2018.13650), DOI `10.31025/2611-4135/2018.13650` | Establishes a Japanese facility-panel comparator; its policy variables and estimand are not copied |
+| Geels (2004) | [Research Policy 33(6-7), 897-920](https://doi.org/10.1016/j.respol.2004.01.015), DOI `10.1016/j.respol.2004.01.015` | Provides a socio-technical vocabulary for infrastructure embedded in actors and rules; the thesis does not estimate a multi-level transition model |
+| Lombardi et al. (2015) | [Waste Management 37, 26-44](https://doi.org/10.1016/j.wasman.2014.11.010), DOI `10.1016/j.wasman.2014.11.010` | Supports distinguishing electrical, thermal, combined, and lifecycle performance boundaries; it does not validate gross MWh/t as thermal efficiency |
+| Sakai et al. (2008) | [Waste Management 28(12), 2815-2825](https://doi.org/10.1016/j.wasman.2008.07.010), DOI `10.1016/j.wasman.2008.07.010` | Establishes that municipal charging and collection policy can affect upstream waste quantities; those policies are not covariates in the facility model |
+| Sakai et al. (2011) | [Journal of Material Cycles and Waste Management 13(2), 86-102](https://link.springer.com/article/10.1007/s10163-011-0009-x), DOI `10.1007/s10163-011-0009-x` | Places thermal recovery within, rather than above, the 3R hierarchy; it does not establish that additional generation is an overall sustainability gain |
+| Seto et al. (2016) | [Annual Review of Environment and Resources 41, 425-452](https://doi.org/10.1146/annurev-environ-110615-085934), DOI `10.1146/annurev-environ-110615-085934` | Motivates attention to long-lived capital and institutional persistence; the thesis does not label observed facilities as causally locked in |
+| Sun et al. (2018) | [Resources, Conservation and Recycling 136, 289-296](https://doi.org/10.1016/j.resconrec.2018.05.005), DOI `10.1016/j.resconrec.2018.05.005` | Supports considering energy recovery within an integrated urban waste system; its Tokyo scenario and network assumptions are not reproduced |
+| Unruh (2000) | [Energy Policy 28(12), 817-830](https://doi.org/10.1016/S0301-4215(00)00070-7), DOI `10.1016/S0301-4215(00)00070-7` | Supplies a conceptual account of infrastructure persistence only; no causal carbon-lock-in test is claimed |
+| Yoshida et al. (2018) | [Journal of Japan Society of Civil Engineers, Ser. G 74(6), II_287-II_298](https://www.jstage.jst.go.jp/article/jscejer/74/6/74_II_287/_article/-char/en), DOI `10.2208/jscejer.74.II_287` | Shows that small-facility recovery options require technology-specific heat-balance and cost analysis; it does not imply universal small-plant feasibility |
 | Firth (1993) | [Biometrika 80(1), 27-38](https://academic.oup.com/biomet/article-abstract/80/1/27/228364), DOI `10.1093/biomet/80.1.27` | Justifies Jeffreys-prior bias reduction for the sparse transition model |
 | Heinze and Schemper (2002) | [Statistics in Medicine 21(16), 2409-2419](https://onlinelibrary.wiley.com/doi/10.1002/sim.1047), DOI `10.1002/sim.1047` | Supports using Firth logistic regression when sparse data can produce separation or unstable maximum-likelihood estimates |
 
