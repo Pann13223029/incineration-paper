@@ -72,7 +72,7 @@ def main() -> int:
         "--profile",
         choices=("journal", "professor"),
         default="journal",
-        help="Build the public journal draft or the comprehensive professor draft.",
+        help="Build the public journal draft or professor-facing thesis draft.",
     )
     args = parser.parse_args()
 
@@ -80,10 +80,12 @@ def main() -> int:
         manuscript_dir = MANUSCRIPT_ROOT
         out_pdf = SUBMISSION_DIR / "waste-management-manuscript-latex.pdf"
         share_pdf = SHARE_DIR / "waste-management-manuscript-latex.pdf"
+        compatibility_pdf = None
     else:
         manuscript_dir = MANUSCRIPT_ROOT / "professor"
         out_pdf = None
-        share_pdf = SHARE_DIR / "professor-review-manuscript-latex.pdf"
+        share_pdf = SHARE_DIR / "professor-review-thesis.pdf"
+        compatibility_pdf = SHARE_DIR / "professor-review-manuscript-latex.pdf"
 
     latex_source = manuscript_dir / "paper.tex"
 
@@ -99,6 +101,8 @@ def main() -> int:
     if out_pdf is not None:
         shutil.copy2(latex_pdf, out_pdf)
     shutil.copy2(latex_pdf, share_pdf)
+    if compatibility_pdf is not None:
+        shutil.copy2(latex_pdf, compatibility_pdf)
 
     print(f"Manuscript profile: {args.profile}")
     print(f"LaTeX manuscript source: {latex_source}")
@@ -106,6 +110,8 @@ def main() -> int:
     if out_pdf is not None:
         print(f"LaTeX manuscript PDF: {out_pdf}")
     print(f"Tracked share PDF: {share_pdf}")
+    if compatibility_pdf is not None:
+        print(f"Compatibility PDF: {compatibility_pdf}")
     return 0
 
 

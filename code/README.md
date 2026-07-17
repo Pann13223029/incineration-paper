@@ -10,7 +10,7 @@ simulations.
 | Path | Responsibility | Main entry point |
 |:--|:--|:--|
 | `analysis/` | Parse sources, document provenance, reconstruct longitudinal identity, estimate models, run audits, and verify claims | `analysis/07_rebuild_analysis.py` |
-| `publishing/` | Synchronize evidence, export submission files, build PDFs/slides, and validate repository and journal-format gates | npm commands in `package.json` |
+| `publishing/` | Synchronize evidence, export submission files, build journal/thesis PDFs and slides, and validate repository format gates | npm commands in `package.json` |
 | `review/` | Simulate reviewer workflows and conservative stress cases without changing canonical evidence | `npm run review:simulate:linkage` |
 
 ## Canonical Analysis Order

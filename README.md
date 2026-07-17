@@ -78,7 +78,7 @@ Do not hand-edit generated evidence to make prose agree with a preferred result.
 | Robustness and data quality | [`output/robustness_results.md`](output/robustness_results.md), [`output/data_quality_sensitivity.md`](output/data_quality_sensitivity.md) |
 | Claim verification | [`output/claim_verification.md`](output/claim_verification.md), [`output/claim_evidence_map.md`](output/claim_evidence_map.md) |
 | Public journal prose | [`paper/manuscript/paper.md`](paper/manuscript/paper.md), [`paper/manuscript/paper.tex`](paper/manuscript/paper.tex) |
-| Comprehensive professor prose | [`paper/manuscript/professor/paper.md`](paper/manuscript/professor/paper.md), [`paper/manuscript/professor/paper.tex`](paper/manuscript/professor/paper.tex) |
+| Professor-facing thesis | [`paper/manuscript/professor/paper.md`](paper/manuscript/professor/paper.md), [`paper/manuscript/professor/paper.tex`](paper/manuscript/professor/paper.tex), [open PDF](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/professor-review-thesis.pdf) |
 | Current reading PDF | [Open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf) |
 
 ## Reproduce And Verify
@@ -110,7 +110,7 @@ npm run repo:check
 | `claims:verify` | Check registered high-risk claims and stale-language guards. |
 | `paper:export:nopdf` | Build portable Markdown, HTML, and DOCX submission artifacts. |
 | `paper:build:latex` | Build figures and the public journal reading PDF. |
-| `paper:build:professor` | Build the comprehensive professor reading PDF. |
+| `paper:build:professor` | Build the A4 professor-facing graduation-thesis PDF. |
 | `repo:check` | Validate required paths, Markdown links, and journal-format gates. |
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for stage ownership and [`AGENTS.md`](AGENTS.md) for editing rules.

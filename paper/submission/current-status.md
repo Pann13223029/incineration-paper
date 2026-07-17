@@ -1,9 +1,10 @@
 # Current Paper Status
 
 The repository now maintains two manuscript profiles over one empirical
-pipeline as of 14 July 2026. The journal-facing public draft presents the
-focused measurement contribution, while the preserved professor-facing version
-retains the fuller methodological, comparator, diagnostic, and defense context.
+pipeline as of 16 July 2026. The journal-facing public draft presents the
+focused measurement contribution, while the professor-facing thesis version
+retains the fuller methodological, comparator, diagnostic, and defense context
+in A4 graduation-thesis format.
 Both profiles use the same generated evidence and claim-verification rules.
 The public draft is ready for structured review, not journal submission.
 
@@ -15,18 +16,18 @@ The public draft is ready for structured review, not journal submission.
 | Target journal track | `Waste Management` |
 | Empirical pipeline | Corrected identity, fleet, entry, component, robustness, quality, and claim stages implemented |
 | Journal-facing draft | Major-revision draft with a three-margin contribution, reduced-DF entry model, and adjusted component contrasts |
-| Professor-facing draft | Comprehensive parallel profile with comparator adaptation, pathway context, and the same revised empirical core |
+| Professor-facing thesis | Comprehensive A4 thesis profile with comparator adaptation, pathway context, and the same revised empirical core |
 | Shared supplement | Reconciled with the five-parameter entry model, event attacks, and raw-quantity component evidence |
 | Figures | Public draft uses three academic figures; exploratory pathway evidence remains outside its main text |
 | Evidence snapshot | Expanded to include linkage-review, revised-entry, influence, and raw-component artifacts |
 | Claim verification | Profile-aware checks pass for journal and professor Markdown and LaTeX sources |
 | Journal PDF | `paper/share/waste-management-manuscript-latex.pdf` |
-| Professor PDF | `paper/share/professor-review-manuscript-latex.pdf` |
+| Professor thesis PDF | `paper/share/professor-review-thesis.pdf` |
 | Frozen professor baseline | Git tag `professor-review-v1` at `4ac9afe` |
 
 Journal-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/waste-management-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/waste-management-manuscript-latex.pdf).
 
-Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/professor-review-manuscript-latex.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/professor-review-manuscript-latex.pdf).
+Professor-facing thesis PDF: [open in browser](https://raw.githack.com/Pann13223029/incineration-paper/main/paper/share/professor-review-thesis.pdf) or [download from GitHub](https://github.com/Pann13223029/incineration-paper/raw/refs/heads/main/paper/share/professor-review-thesis.pdf).
 
 ## Corrected Evidence Baseline
 
@@ -57,9 +58,9 @@ Professor-facing PDF: [open in browser](https://raw.githack.com/Pann13223029/inc
 - Every modeled event was reclassified and every event lineage deleted once without reversing the scale result.
 - A 558-pair blinded linkage-review packet and separate answer key were generated; independent human completion remains pending.
 - Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
-- The journal and professor LaTeX profiles compile independently from shared evidence.
+- The journal and professor-thesis LaTeX profiles compile independently from shared evidence.
 - Profile-aware `paper:check`, `claims:verify`, and repository-layout gates pass after evidence sync.
-- The 18-page journal-facing and 20-page professor-facing PDFs were visually inspected for crop, overlap, spacing, equation layout, table breaks, and figure legibility.
+- The journal-facing PDF and the 29-page A4 professor-facing thesis PDF were visually inspected for crop, overlap, spacing, equation layout, table breaks, and figure legibility.
 - The submission Markdown, HTML, and DOCX were regenerated; the DOCX archive is structurally valid.
 
 ## Next Human Actions

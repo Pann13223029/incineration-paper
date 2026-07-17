@@ -42,7 +42,7 @@ Yamada et al., 2023).
 
 The Ministry's FY2024 national summary reports 415 electricity-generating
 facilities among 991 incineration facilities, or 41.9% (Ministry of the
-Environment Japan, 2026). That published context is distinct from this paper's
+Environment Japan, 2026). That published context is distinct from this thesis's
 analytical measure: 417 of 1,014 retained FY2024 facility records report
 positive installed electrical capacity, or 41.1%. The numerator definition and
 record denominator differ, so the official ratio is not substituted into the
@@ -68,7 +68,7 @@ ratio combines generator size relative to processing capacity, annual use of
 installed electrical capacity, and waste loading. Treating it as an independent
 operating measure can make a design-cohort difference look operational.
 
-This paper addresses the three problems in one national facility-level study.
+This thesis addresses the three problems in one national facility-level study.
 It reconstructs stable administrative lineages before creating lags, separates
 facility participation from waste-volume and design-capacity coverage, uses a
 bias-reduced event-history model for sparse first-entry events, and decomposes
@@ -114,6 +114,49 @@ anchor this sequence.
 
 ![Figure 1. Facility participation, positive-output throughput coverage, and installed-capacity design-capacity coverage in Japan's municipal-incineration records, FY2005-FY2024. The denominators are intentionally different and should not be read as interchangeable shares.](../../figures/figure1_two_part_framework.png)
 
+### 1.2 Thesis objectives and significance
+
+The thesis has four linked objectives. First, it establishes a reproducible
+longitudinal facility record before calculating transitions. This is necessary
+because the official identifiers do not provide an uninterrupted key over the
+study period. Second, it compares three fleet-coverage denominators rather than
+allowing the facility count to stand for the whole system. Third, it estimates
+first reported installed-capacity entry only within an explicit population at
+risk and uses a sparse-event estimator suited to the small number of observed
+entries. Fourth, it decomposes gross generation per tonne into generator design
+intensity, electrical capacity factor, and waste-processing utilization. The
+objectives therefore progress from data identity, to fleet description, to
+transition, and finally to conditional engineering structure.
+
+The academic significance lies primarily in this integrated measurement
+architecture. Existing studies offer important analyses of system outcomes,
+facility performance, and Japanese waste-to-energy policy, but those questions
+do not share one denominator or one comparison population. Treating them as if
+they did can turn a descriptive fleet share into a performance statement, or a
+conditional generator comparison into an explanation of adoption. This thesis
+shows how the three questions can be studied together without collapsing their
+estimands. It also demonstrates why identity reconstruction is part of the
+research design rather than a preliminary clerical step: transition estimates
+depend on which annual records are considered continuous.
+
+The practical significance is diagnostic rather than prescriptive. National
+and municipal decision-makers need to know whether low participation by count
+also means low coverage of waste activity, whether observed entry is broadly
+distributed or concentrated among particular facility profiles, and whether a
+gross-output difference reflects generator size or annual use. The results can
+identify where additional engineering, financial, or project-history evidence
+is most valuable. They cannot by themselves select a retrofit, replacement, or
+closure project.
+
+The social significance follows from keeping electricity recovery within the
+waste hierarchy. Recovering electricity can reduce wasted combustion heat, but
+it does not make waste prevention, reuse, and recycling unnecessary. Clear
+measurement helps prevent a high throughput-coverage statistic from being
+presented as proof of environmental optimality. It also avoids treating every
+non-generating facility as an equally feasible opportunity when local waste
+supply, costs, grid access, heat demand, and alternative treatment arrangements
+remain unobserved.
+
 ## 2. Analytical Foundation and Comparator Adaptation
 
 ### 2.1 From one fleet average to three margins
@@ -144,12 +187,12 @@ annual capacity factors. Section 3 states that identity explicitly.
 High-profile studies supply research logic, not a ready-made model. Cui et al.
 (2026) foreground facility hierarchy, Liu et al. (2025) emphasize effectiveness
 over expansion, and Han et al. (2025) place recovery beside other sustainability
-dimensions. This paper asks where hierarchy appears in Japan without estimating
+dimensions. This thesis asks where hierarchy appears in Japan without estimating
 an optimization frontier, city energy-carbon system, or pollutant outcomes.
 
 Sasao (2018) supports repeated Japanese facility observations and explicit
 output questions. Shino (2019) makes generation relative to waste input an
-important observable. This paper retains that observable but treats it as an
+important observable. This thesis retains that observable but treats it as an
 accounting intensity requiring decomposition.
 
 Chen et al. (2012) and Yeh (2020) motivate separating activities within
@@ -159,7 +202,7 @@ revenue frontier across all years.
 
 **Table 1. Transparent adaptation of comparator research logic**
 
-| Comparator | Research logic used here | Adaptation in this paper | Outside this paper's estimand |
+| Comparator | Research logic used here | Adaptation in this thesis | Outside this thesis's estimand |
 |:--|:--|:--|:--|
 | Cui et al. (2026) | Examine hierarchy rather than only a fleet mean | Separate generator design intensity from annual capacity factor and waste loading | Plant optimization or a transferable frontier |
 | Liu et al. (2025) | Distinguish effective system coverage from equipment expansion | Compare facility participation with throughput and design-capacity coverage | Urban energy-carbon effectiveness or welfare effects |
@@ -373,11 +416,13 @@ binary outcome (Allison, 1982; Beck et al., 1998). For lineage $i$ in year
 $t$, the frozen primary model is
 
 \[
+\begin{aligned}
 \operatorname{logit}\{\Pr(Y_{it}=1\mid Y_{i,t-1}=0)\}
-=\alpha + \beta_A\frac{A_{i,t-1}}{10}
-+\beta_C\log\left(1+\frac{C_{i,t-1}}{100}\right)
-+\beta_T\frac{t-2014.5}{5}
+&=\alpha + \beta_A\frac{A_{i,t-1}}{10}
++\beta_C\log\left(1+\frac{C_{i,t-1}}{100}\right) \\
+&\quad+\beta_T\frac{t-2014.5}{5}
 +\beta_R\log(1+R_{it}),
+\end{aligned}
 \]
 
 where $A$ is prior-year reported facility age, $C$ is prior-year processing
@@ -751,7 +796,7 @@ equivalent projects.
 
 ## 5. Discussion
 
-### 5.1 What the paper changes in the fleet narrative
+### 5.1 What the thesis changes in the fleet narrative
 
 The 41.1% analytical participation rate describes equipment distribution, not
 waste coverage. Positive-output facilities handle 80.1% of throughput, and the
@@ -776,7 +821,49 @@ distinct gross-intensity interpretation. The empirical contribution is not
 “newer plants work better”; it is that reported design and annual use point in
 different cohort directions.
 
-### 5.2 Evidence-bound implications
+### 5.2 Direct answers to the research questions
+
+**RQ1 is answered by a denominator contrast, not by one preferred percentage.**
+In FY2024, installed-capacity participation covers 41.1% of retained facility
+records, positive-output facilities handle 80.1% of recorded throughput, and
+installed-capacity facilities hold 70.5% of recorded processing design
+capacity. The difference means that generation is concentrated in larger or
+more heavily used parts of the observed fleet. It does not mean that 80.1% of
+waste becomes electricity, that the remaining throughput is recoverable, or
+that the covered facilities are environmentally optimal. RQ1 therefore changes
+the fleet narrative from "how many facilities generate?" to "which share of
+facilities, activity, and processing capacity is covered?"
+
+**RQ2 is answered by a robust scale association and a continuity-sensitive age
+association.** The broad five-parameter Firth model gives a 300-versus-100
+t/day odds ratio of 6.72, and the corresponding contrast remains close to seven
+under the prior-operation, same-episode, identity-certain, reclassification, and
+lineage-deletion checks. The evidence consequently supports processing scale as
+a stable profile of first reported entry in this administrative panel. Age is
+less stable across continuity definitions and should not support an age-only
+screening rule. Most importantly, the outcome is first reported positive
+installed capacity within an administrative lineage. It is not a verified
+retrofit, construction start, or causal response to changing capacity.
+
+**RQ3 is answered by separating installed design from annual use.** The adjusted
+cohort hierarchy is large for installed electrical capacity, whereas older
+cohorts do not show uniformly lower electrical capacity factors. Gross MWh/t
+therefore cannot be read as an independent operating-efficiency score. It is
+produced jointly by generator sizing, annual utilization of electrical
+capacity, and waste loading. The small pathway comparison suggests different
+first-complete-year component ranks between continuity-lineage and
+rebuild/replacement-like entries, but selection and uncertain physical meaning
+keep that comparison exploratory.
+
+Together, the answers provide one ordered diagnosis. RQ1 locates electricity
+recovery within the fleet; RQ2 describes which observed non-generator lineages
+first enter the installed-capacity state; and RQ3 explains the observable
+structure inside the generating segment. No result is asked to answer a
+question belonging to another frame. That separation is the central thesis
+contribution and the main safeguard against an aggregate or conditional result
+being interpreted causally.
+
+### 5.3 Evidence-bound implications
 
 Monitoring should report facility, throughput, and design-capacity coverage
 together. Screening can treat processing scale as a marker for further
@@ -789,10 +876,10 @@ projects. The study does not determine whether a municipality should build,
 replace, coordinate, maintain, or retire a facility. Such decisions require
 capital costs, waste-supply agreements, grid and internal-use conditions,
 maintenance history, emissions controls, heat demand, and alternatives higher
-in the waste hierarchy. The paper's role is to prevent an aggregate statistic
+in the waste hierarchy. The thesis's role is to prevent an aggregate statistic
 or misspecified ratio from deciding those questions implicitly.
 
-### 5.3 Limitations and next evidence needed
+### 5.4 Limitations and next evidence needed
 
 The 20 workbooks are hash-identified and parser mappings are documented, but
 their original retrieval timestamps and publisher-side revision history are
@@ -852,7 +939,7 @@ An exploratory comparison places continuity-lineage entrants below
 rebuild/replacement-like entrants in first-complete-year component ranks, but
 that small, selected contrast remains descriptive.
 
-The paper's contribution is therefore not a claim that every non-generator is
+The thesis's contribution is therefore not a claim that every non-generator is
 an equal opportunity or that newer facilities simply perform better. It is a
 three-margin diagnostic: reconstruct lineages before transitions, separate
 counts from covered activity, and separate installed design from annual use.
@@ -863,7 +950,7 @@ evidence.
 ## Acknowledgements
 
 The author thanks Prof. Han Ji for supervision and critical feedback during the
-development of the underlying thesis project from which this paper is derived.
+development of this thesis.
 
 ## Funding
 
@@ -901,10 +988,10 @@ copying, public transmission, and modification with source citation under terms
 compatible with Creative Commons Attribution 4.0; users should consult the
 current e-Stat terms for exceptions and updates.
 
-## Declaration of Generative AI and AI-Assisted Technologies in the Manuscript Preparation Process
+## Declaration of Generative AI and AI-Assisted Technologies in the Thesis Preparation Process
 
-During the preparation of this manuscript, the author used OpenAI Codex and
-Anthropic Claude for language revision, manuscript organization, and assistance
+During the preparation of this thesis, the author used OpenAI Codex and
+Anthropic Claude for language revision, thesis organization, and assistance
 with code development and review. The author executed the analyses, inspected
 the source data and generated outputs, independently checked the reported
 results, reviewed and edited all AI-assisted material, and takes full

@@ -40,7 +40,8 @@ use the same canonical evidence; neither may override a generated result.
 
 The root `paper/manuscript/paper.*` sources own the public journal draft.
 `paper/manuscript/professor/paper.*` preserves the comprehensive supervision
-profile. The profiles may differ in explanation and placement, but not in
+content and presents it through an A4 graduation-thesis profile. The profiles
+may differ in explanation and placement, but not in
 definitions, estimates, uncertainty, or evidence boundaries.
 
 ## Canonical Stage Flow
@@ -140,13 +141,15 @@ If a source changes, run `npm run paper:sync`; do not edit its copy. `npm run pa
 | `npm run claims:verify` | Check registered numerical claims, required disclosures, and stale wording. |
 | `npm run paper:export:nopdf` | Export Markdown, HTML, and DOCX from the Markdown manuscript. |
 | `npm run paper:build:latex` | Build figures and the LaTeX reading PDF. |
-| `npm run paper:build:professor` | Build the comprehensive professor reading PDF. |
+| `npm run paper:build:professor` | Build the A4 professor-facing graduation-thesis PDF. |
 | `npm run repo:check` | Check ownership paths, Markdown links, and journal-format gates. |
 
 The public reading PDF is built from `paper/manuscript/paper.tex` and copied to
-`paper/share/waste-management-manuscript-latex.pdf`. The professor reading PDF
+`paper/share/waste-management-manuscript-latex.pdf`. The professor thesis PDF
 is built from `paper/manuscript/professor/paper.tex` and copied to
-`paper/share/professor-review-manuscript-latex.pdf`. The HTML/DOCX export follows
+`paper/share/professor-review-thesis.pdf`; the former
+`paper/share/professor-review-manuscript-latex.pdf` path remains a compatibility
+alias. The HTML/DOCX export follows
 the public Markdown profile.
 
 CI should call the same orchestrator and package commands rather than duplicate a private stage list. Platform-sensitive figure binaries and convenience PDFs may differ at the byte level; source data, analytical tables, and claim checks must not drift.

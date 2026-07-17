@@ -25,6 +25,7 @@ REQUIRED_PATHS = [
     "paper/notes/review",
     "paper/share/waste-management-manuscript-latex.pdf",
     "paper/share/professor-review-manuscript-latex.pdf",
+    "paper/share/professor-review-thesis.pdf",
     "legacy/thesis/thesis.tex",
     "legacy/research",
     "legacy/scripts",
@@ -44,6 +45,8 @@ LINK_RE = re.compile(r"!?(?:\[[^\]]*\])\(([^)]+)\)")
 WORD_RE = re.compile(r"[A-Za-z0-9]+(?:[\u2019'-][A-Za-z0-9]+)*")
 
 MANUSCRIPT_PATH = REPO_ROOT / "paper" / "manuscript" / "paper.md"
+PROFESSOR_MANUSCRIPT_PATH = REPO_ROOT / "paper" / "manuscript" / "professor" / "paper.md"
+PROFESSOR_LATEX_PATH = REPO_ROOT / "paper" / "manuscript" / "professor" / "paper.tex"
 TITLE_PAGE_PATH = REPO_ROOT / "paper" / "submission" / "title-page.md"
 HIGHLIGHTS_PATH = REPO_ROOT / "paper" / "submission" / "highlights.md"
 EXPORTER_PATH = REPO_ROOT / "code" / "publishing" / "21_export_paper_submission.py"
@@ -239,6 +242,47 @@ def check_submission_format() -> tuple[list[str], dict[str, int]]:
     return errors, metrics
 
 
+def check_professor_thesis_format() -> tuple[list[str], dict[str, int]]:
+    errors: list[str] = []
+    manuscript = PROFESSOR_MANUSCRIPT_PATH.read_text(encoding="utf-8")
+    latex = PROFESSOR_LATEX_PATH.read_text(encoding="utf-8")
+
+    try:
+        main = manuscript.split("## 1. Introduction", 1)[1].split(
+            "## Acknowledgements", 1
+        )[0]
+    except IndexError:
+        return [
+            "paper/manuscript/professor/paper.md: required thesis section boundary is missing"
+        ], {}
+
+    reader_words = count_words(reader_main_text(main))
+    if reader_words < 6500:
+        errors.append(
+            "professor thesis main text has "
+            f"{reader_words} reader-count words; APU minimum is 6500"
+        )
+
+    required_latex = {
+        r"\documentclass[12pt,a4paper]{article}": "12-point A4 document class",
+        r"\onehalfspacing": "1.5 line spacing",
+        r"\begin{titlepage}": "formal title page",
+        "Graduation Thesis": "Graduation Thesis designation",
+        "Student ID: 13223029": "student ID",
+        "Supervisor: Prof. Han Ji": "supervisor",
+        r"\tableofcontents": "table of contents",
+        r"\listoffigures": "list of figures",
+        r"\listoftables": "list of tables",
+        r"\pagenumbering{roman}": "roman-numbered front matter",
+        r"\pagenumbering{arabic}": "arabic-numbered main matter",
+    }
+    for token, label in required_latex.items():
+        if token not in latex:
+            errors.append(f"professor thesis LaTeX is missing {label}")
+
+    return errors, {"reader_main_words": reader_words}
+
+
 def main() -> int:
     errors: list[str] = []
     for relative in REQUIRED_PATHS:
@@ -253,6 +297,8 @@ def main() -> int:
     errors.extend(check_active_stale_references(markdown_paths))
     format_errors, format_metrics = check_submission_format()
     errors.extend(format_errors)
+    thesis_errors, thesis_metrics = check_professor_thesis_format()
+    errors.extend(thesis_errors)
 
     if errors:
         print("Repository layout validation failed:")
@@ -260,6 +306,8 @@ def main() -> int:
             print(f"- {error}")
         if format_metrics:
             print(f"Submission metrics: {format_metrics}")
+        if thesis_metrics:
+            print(f"Professor thesis metrics: {thesis_metrics}")
         return 1
 
     print(
@@ -275,6 +323,11 @@ def main() -> int:
         f"{format_metrics['keywords']} keywords; "
         f"{format_metrics['figures']} figures + {format_metrics['tables']} tables; "
         f"{format_metrics['highlights']} highlights."
+    )
+    print(
+        "Professor thesis format passed: "
+        f"{thesis_metrics['reader_main_words']} main-text words excluding tables, "
+        "captions, equations, and headings; 12-point A4 thesis front matter present."
     )
     return 0
 

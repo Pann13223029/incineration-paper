@@ -39,6 +39,9 @@ paper/manuscript/professor/*.aux
 paper/manuscript/professor/*.log
 paper/manuscript/professor/*.out
 paper/manuscript/professor/*.pdf
+paper/manuscript/professor/*.toc
+paper/manuscript/professor/*.lof
+paper/manuscript/professor/*.lot
 
 # Data: the authoritative raw inputs and processed panels are published for
 # reproducibility. Everything else in data/ is ignored by default.
