@@ -41,6 +41,21 @@ The prespecified primary model uses five parameters including the intercept and 
 
 The deletion range is diagnostic. It does not convert event histories into independent observations.
 
+## Entry Robustness Beyond Event Deletion
+
+| check_type      | model                                                        | scale_transform         | omitted_group   |   observations |   lineages |   events |   capacity_coefficient |   odds_ratio_300_vs_100 |   ci_low_model_based |   ci_high_model_based |   p_value_model_based | converged   |
+|:----------------|:-------------------------------------------------------------|:------------------------|:----------------|---------------:|-----------:|---------:|-----------------------:|------------------------:|---------------------:|----------------------:|----------------------:|:------------|
+| reference       | Frozen primary point model                                   | log1p_capacity_per_100  |                 |          15154 |       1137 |       35 |                 2.7492 |                  6.7233 |               3.7556 |               12.0362 |                0.0000 | True        |
+| functional_form | Log of one plus t/day                                        | log1p_capacity_t_day    |                 |          15154 |       1137 |       35 |                 1.4766 |                  5.0149 |               2.8479 |                8.8309 |                0.0000 | True        |
+| functional_form | Linear t/day per 100                                         | linear_capacity_per_100 |                 |          15154 |       1137 |       35 |                 0.7199 |                  4.2195 |               2.6947 |                6.6072 |                0.0000 | True        |
+| reporting_state | Two prior observed years without positive capacity or output | log1p_capacity_per_100  |                 |          14000 |       1110 |       30 |                 2.6342 |                  6.2082 |               3.2624 |               11.8139 |                0.0000 | True        |
+
+Across leave-one-event-prefecture-out fits, the 300-versus-100 t/day odds ratio ranges from 6.1430 to 7.1821. These fits are diagnostics with model-based intervals, not replacements for the whole-lineage bootstrap primary inference.
+
+## Installed-Capacity Reporting-State Audit
+
+The panel contains 49 rows with positive gross output but blank or zero reported installed capacity, spanning 6 administrative lineages. None of the exact modeled events reports positive output in the immediately prior year. The stricter two-prior-year state frame retains 14,000 rows, 1,110 lineages, and 30 events. A blank field is therefore described as no reported positive capacity, not verified physical absence.
+
 ## Raw-Quantity Engineering Models
 
 | outcome                   | term               |   coefficient |   standard_error |   ci_low |   ci_high |   p_value |   observations |   lineages |   r_squared |

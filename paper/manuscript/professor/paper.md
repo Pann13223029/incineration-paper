@@ -6,16 +6,20 @@ Facility counts can misdiagnose electricity recovery when activity, transition,
 and engineering margins are collapsed. We link 23,593 Japanese municipal-
 incinerator records for fiscal year (FY) 2005-FY2024 into 1,690 audited stable
 administrative lineages and 1,767 reported asset episodes. In FY2024, 41.1% of
-records reported installed capacity, while positive-output facilities handled
-80.1% of throughput and installed-capacity facilities held 70.5% of processing
-design capacity. First reported installed-capacity entry was sparse: 35 events
+all records reported installed capacity; among the 879 records with positive
+throughput, 46.6% reported positive output. Those positive-output facilities
+handled 80.1% of throughput, while installed-capacity facilities held 70.5% of
+processing design capacity. First reported installed-capacity entry was sparse: 35 events
 entered the broad exact-year model and 33 remained after requiring positive
 prior-year operation. A frozen five-parameter Firth model gave a conditional
 300-versus-100 t/day odds ratio of 6.72 (1,999-lineage-bootstrap 95% confidence
 interval: 4.31-12.46); the corresponding odds ratios were 7.09 after prior
 operation, 7.15 within the same reported asset episode, and 6.76 after uncertain
 lineages were excluded. Reclassifying each event or deleting its entire lineage
-left the scale contrast between 6.12 and 7.30. Among 6,511 engineering-valid
+left the scale contrast between 6.12 and 7.30. Alternative capacity transforms
+yielded contrasts of 4.22-5.01, leave-one-event-prefecture fits yielded
+6.14-7.18, and a stricter 30-event reporting-state sensitivity yielded 6.21.
+Among 6,511 engineering-valid
 generator-years across 493 lineages, adjusted installed capacity was 79.1%,
 58.6%, and 23.5% lower in pre-1990, 1990s, and 2000s cohorts than in 2010-or-later
 cohorts. Their electrical capacity factors were 35.3%, 22.0%, and 1.5%
@@ -98,12 +102,11 @@ The three research questions (RQs) are:
 > first reporting positive capacity, and does the evidence change after the
 > risk set is restricted to lineages with positive prior-year waste throughput?
 
-> **RQ3: Installed design, annual use, and exploratory pathways.** Among
+> **RQ3: Installed design and annual use.** Among
 > operating generators, how do raw installed electrical capacity and annual
 > electrical capacity factor differ across reported start-year cohorts after
-> observed controls; how do these components combine with waste loading to
-> produce gross MWh/t; and how do first-complete-year component ranks differ
-> descriptively between continuity-lineage and rebuild/replacement-like entries?
+> observed controls, and how do these components combine with waste loading to
+> produce gross MWh/t?
 
 The sequence matters. RQ1 establishes the denominator problem at fleet level.
 RQ2 then asks which observed non-generating lineages enter the installed-capacity
@@ -211,6 +214,26 @@ uses repeated facility observations to study how municipal solid-waste policy
 relates to heat and electricity output. Shino (2019) examines generation
 performance relative to waste input, while Yamada et al. (2023) place the sector
 within longer-run Japanese decarbonization scenarios.
+
+The institutional setting also changed during the observation window. The
+Ministry maintains a high-efficiency waste-power facility development manual that
+linked facility support requirements to power-generation performance and
+published technical guidance for plant planning (Ministry of the Environment
+Japan, n.d.). The Great East Japan Earthquake and Fukushima Daiichi accident in
+March 2011 then changed the national energy-policy context. Japan's feed-in
+tariff (FIT) system began in July 2012, and waste-derived biomass electricity was
+among the eligible renewable categories (Agency for Natural Resources and
+Energy, 2017; Sasao, 2018). In FY2014, the Ministry also offered capital support
+for high-efficiency waste-heat recovery and waste-derived biomass generation
+(Ministry of the Environment Japan, 2014).
+
+These milestones make calendar time substantively relevant, but they do not
+create a causal research design in this thesis. The annual workbooks do not
+identify whether a facility received a subsidy, obtained FIT accreditation,
+changed its electricity contract, or invested because of the post-2011 energy
+shock. The entry model therefore includes a smooth calendar term to absorb broad
+time ordering; it does not treat FY2011 or FY2012 as an exogenous breakpoint or
+estimate a Fukushima or FIT effect.
 
 Scale is important in this literature, but it is not a complete decision rule.
 Large, continuously operated plants can support steam conditions and generating
@@ -321,21 +344,24 @@ operating plants. This study adds an entry risk set and uses component
 regressions because the available fields do not support a comparable network or
 revenue frontier across all years.
 
-**Table 1. Transparent adaptation of comparator research logic**
+**Table 1. Comparator gap matrix and transparent method adaptation**
 
-| Comparator | Research logic used here | Adaptation in this thesis | Outside this thesis's estimand |
-|:--|:--|:--|:--|
-| Cui et al. (2026) | Examine hierarchy rather than only a fleet mean | Separate generator design intensity from annual capacity factor and waste loading | Plant optimization or a transferable frontier |
-| Liu et al. (2025) | Distinguish effective system coverage from equipment expansion | Compare facility participation with throughput and design-capacity coverage | Urban energy-carbon effectiveness or welfare effects |
-| Han et al. (2025) | Keep resource recovery distinct from other sustainability outcomes | State gross electricity boundaries and avoid a total-sustainability score | Pollutant-control, health, or lifecycle assessment |
-| Sasao (2018) | Use repeated Japanese facility data for policy-relevant output questions | Construct a first-entry event history and explicit risk sets | Replication of the original policy specification |
-| Shino (2019) | Treat electricity per waste input as an informative observable | Decompose gross MWh/t into sizing, capacity factor, and waste loading | Treating the ratio as an independent engineering score |
-| Chen et al. (2012); Yeh (2020) | Recognize multiple plant activities and persistent heterogeneity | Model observable components and within-year ranks | Data-envelopment or revenue-frontier estimation |
+| Comparator | Unit and time structure | Primary outcome | Longitudinal identity treatment | Gap retained for this thesis |
+|:--|:--|:--|:--|:--|
+| Cui et al. (2026) | 975 Chinese plants and 2,151 incinerators, centered on 2023 operations with scenarios to 2035 | Energy-efficiency hierarchy and optimization | Plant/line operational database; first-entry histories are not the target | Test where hierarchy appears in Japan without importing an optimization frontier |
+| Liu et al. (2025) | Chinese urban waste-energy-carbon systems | Effectiveness relative to continued capacity expansion | City-system development, not administrative facility linkage | Distinguish equipment diffusion from covered waste activity |
+| Han et al. (2025) | Chinese incineration configurations and recovery outcomes | Pollutant control and resource recovery | Configuration comparison, not national lineage reconstruction | Keep electricity results separate from unobserved pollutant and lifecycle outcomes |
+| Sasao (2018) | Repeated Japanese incinerator observations | Policy, technology, heat, and electricity associations | Facility repetition is used, but coding-regime breaks and first entry are not the estimand | Reconstruct auditable lineages and define an explicit non-generator risk set |
+| Shino (2019) | 22 Tokyo incinerators, FY2012-FY2017 | Generation relative to waste input and combustion conditions | Operating-plant comparison rather than national transitions | Decompose gross MWh/t instead of treating it as one independent score |
+| Chen et al. (2012); Yeh (2020) | Operating incineration plants | Multi-activity technical or revenue performance | Persistent plant heterogeneity is modeled within performance samples | Use observable components because consistent cost and frontier inputs are unavailable |
 
 The adaptation changes the unit and estimands to fit Japanese administrative
-data. Its distinctive elements are audited lineages, count-volume coverage,
-sparse first entry, and an exact engineering identity; its conclusions are
-narrower than studies with process, cost, emissions, or city-system data.
+data. Cui et al. supply the hierarchy logic, Sasao supplies the closest
+Japan-wide repeated-facility precedent, Shino supplies the transparent gross
+generation-per-input measure, and component-performance studies supply the
+reason to separate activities. This thesis does not copy their outcome models.
+It reconstructs the longitudinal comparison population first and then asks
+questions that those designs leave unresolved.
 
 ### 2.6 Synthesis, research gap, and contribution
 
@@ -348,16 +374,26 @@ continuity and institutional context may matter. Close empirical comparators
 show the value of repeated facility observations and decomposition. Each strand
 answers a necessary part of the problem, but their units and outcomes differ.
 
-Within the literature reviewed for this thesis, no study combines four elements
-for Japan over FY2005-FY2024: (1) audited reconstruction of administrative
-facility lineages across coding breaks; (2) simultaneous count, throughput, and
-design-capacity coverage; (3) first witnessed entry among an explicit at-risk
-set with sparse-event and continuity checks; and (4) exact decomposition of
-gross MWh/t into generator sizing, annual generator use, and waste loading. This
-is a bounded integration claim, not a claim that each element is individually
-new. Sasao (2018), Shino (2019), and the high-profile comparators establish the
-closest foundations; the contribution is to connect their research logics under
-one auditable set of estimands.
+The novelty claim is substantive before it is procedural. First, a facility
+count understates how much observed activity is already covered: the all-record
+participation rate remains below one half even though positive-output facilities
+process most recorded waste. Second, first reported entry is not evenly spread
+across non-generators; it is scale-selective even after sparse-event,
+continuity, functional-form, reporting-state, geographic, and event-influence
+checks. Third, the apparent start-cohort hierarchy in gross MWh/t is expressed
+mainly through installed generator sizing rather than uniformly better annual
+use. These three reinterpretations change what the familiar national statistics
+mean.
+
+Within the literature reviewed for this thesis, the bounded integration claim is
+that these reinterpretations have not been connected for Japan over
+FY2005-FY2024 using audited lineages across coding breaks, denominator-matched
+coverage, an explicit first-entry risk set, and an exact engineering identity.
+This is not a systematic-review claim and does not assert that record linkage,
+coverage ratios, Firth regression, or component identities are individually new.
+Sasao (2018), Shino (2019), and the high-profile comparators establish the
+foundations; the contribution is the resulting diagnosis under one auditable set
+of estimands.
 
 That integration matters because the three research questions can otherwise
 produce misleading answers. Rising facility participation does not show how much
@@ -496,6 +532,7 @@ denominators from being blended.
 | Exact-year model after prior operation | 13,072 | 1,019 | 33 | Nested sensitivity requiring positive prior-year throughput |
 | Same-asset-episode continuity sensitivity | 15,095 | 1,135 | 24 | Entry odds after excluding transitions that cross an inferred asset-episode boundary |
 | Identity-certain-lineage sensitivity | 15,107 | 1,130 | 35 | Broad model after excluding every lineage containing an accepted uncertain identity link |
+| Two-prior-year reporting-state sensitivity | 14,000 | 1,110 | 30 | Entry odds after requiring two observed prior years with neither positive reported capacity nor positive output |
 | Positive-throughput, positive-output generators | 6,660 | 504 | Not applicable | Descriptive operating-generator frame |
 | Engineering-valid component model | 6,511 | 493 | Not applicable | Conditional generator-component associations |
 
@@ -519,12 +556,19 @@ completeness restriction.
 
 For fiscal year $t$, let $N_t$ be all retained facility records,
 $I_{it}^{K}$ indicate positive installed electrical capacity, $I_{it}^{G}$
-indicate positive gross generation with positive throughput, $W_{it}$ be
-annual throughput, and $C_{it}$ be waste-processing design capacity. The three
-headline coverage measures are
+indicate positive gross generation with positive throughput, $I_{it}^{W}$
+indicate positive throughput, $W_{it}$ be annual throughput, and $C_{it}$ be
+waste-processing design capacity. The three headline coverage measures are
 
 \[
 P_t^{facility}=\frac{\sum_i I_{it}^{K}}{N_t},
+\]
+
+An activity-matched facility comparison is also reported as
+
+\[
+P_t^{active\ facility}=\frac{\sum_i I_{it}^{G}}
+{\sum_i I_{it}^{W}}.
 \]
 
 \[
@@ -539,8 +583,10 @@ P_t^{design}=\frac{\sum_i C_{it}I_{it}^{K}}
 {\sum_i C_{it}}.
 \]
 
-The first uses facility records, the second tonnes, and the third tonnes per day
-of design capacity. Positive output is used in the throughput numerator because
+The headline facility measure uses all retained records; the activity-matched
+measure restricts its denominator to records with positive throughput. The
+throughput measure uses tonnes, and the design measure uses tonnes per day of
+nominal capacity. Positive output is used in the throughput numerator because
 installed capacity does not guarantee positive annual generation. For the
 engineering-valid subset, fleet gross intensity has the exact decomposition
 
@@ -562,6 +608,17 @@ The event is the first observed year with positive installed electrical capacity
 after a lineage has been observed without it. It is an administrative state
 transition. It does not uniquely identify first physical operation, equipment
 installation, or a particular construction history.
+
+Operationally, positive installed capacity means that the workbook reports a
+non-missing value greater than zero. A blank or zero field is therefore coded as
+*no reported positive capacity*, not as verified physical absence. This
+distinction matters because 49 panel rows across six administrative lineages
+report positive gross output while installed capacity is blank or zero. None of
+the 35 exact modeled events reports positive output in its immediately prior
+year, and 32 report positive output in the event year. A stricter reporting-state
+sensitivity requires two consecutive observed prior years with neither positive
+reported capacity nor positive output; it retains 14,000 risk rows, 1,110
+lineages, and 30 events.
 
 Discrete-time event-history analysis represents each at-risk lineage-year as a
 binary outcome (Allison, 1982; Beck et al., 1998). For lineage $i$ in year
@@ -633,6 +690,19 @@ OR_{300:100}=\exp\left[\beta_C
 The four reduced-degree-of-freedom frames are primary. The earlier
 11-parameter Firth model and conventional logit and complementary-log-log fits
 are retained as specification and link-function sensitivities.
+
+Three additional diagnostics test whether the scale result depends on choices
+not varied by those four frames. First, the same five-parameter Firth model is
+refitted with either $\log(1+C)$ or linear $C/100$ in place of
+$\log(1+C/100)$; each coefficient is translated into its own 300-versus-100
+t/day contrast. Second, the model is refitted after omitting all risk rows from
+each of the 21 prefectures containing a modeled event, one prefecture at a time.
+Third, it is fitted to the two-prior-year reporting-state frame defined above.
+These diagnostics use model-based intervals and do not replace the 1,999
+whole-lineage bootstrap interval for the frozen primary model. They test
+functional-form, geographic-concentration, and reporting-state fragility; they
+do not establish a causal effect or prove that every coded event is a physical
+installation.
 
 ### 3.6 RQ3: engineering decomposition and component models
 
@@ -759,8 +829,9 @@ count-volume gap.
 The FY2024 cross-section makes the distinction concrete. The administrative
 panel contains 1,014 facility records, of which 417 report positive installed
 electrical capacity, giving the 41.1% participation rate. There are 410
-positive-throughput, positive-output facilities. They process 24.70 million of
-the 30.84 million recorded tonnes, or 80.1%. In contrast, 469 operating
+positive-throughput, positive-output facilities among 879 records with positive
+throughput, an activity-matched facility share of 46.6%. They process 24.70
+million of the 30.84 million recorded tonnes, or 80.1%. In contrast, 469 operating
 non-generators process 6.14 million tonnes, or 19.9%. Another 126 records report
 neither positive throughput nor generation, and nine installed-capacity records
 report no positive output. Because output and installed-capacity flags are not
@@ -779,9 +850,11 @@ facility records.
 The result does not imply that the remaining 19.9% of operating throughput can
 or should all be redirected or equipped. It also does not measure electricity
 used internally, net export, heat recovery, marginal emissions, or project
-cost. Its contribution is denominator discipline: 41.1%, 80.1%, and 70.5%
-answer different questions, and no one of them is a sufficient measure of the
-remaining opportunity.
+cost. Its contribution is denominator discipline: 41.1% of all records, 46.6%
+of positive-throughput records, 80.1% of tonnes, and 70.5% of design capacity
+answer different questions. Matching the facility denominator to observed
+activity narrows the apparent count-volume contrast but does not remove it, and
+no one percentage is a sufficient measure of the remaining opportunity.
 
 ### 4.2 RQ2: entry is rare and strongly associated with processing scale
 
@@ -833,12 +906,24 @@ range of 6.13 to 7.30. Thus no one modeled event or event lineage creates the
 scale result. These perturbations diagnose influence; they do not make events
 independent or validate their physical mechanism.
 
+The scale association also remains positive under broader specification attacks.
+Using $\log(1+C)$ gives a 300-versus-100 t/day odds ratio of 5.01 (model-based
+95% CI 2.85-8.83), while a linear capacity term gives 4.22 (2.69-6.61).
+Omitting each event prefecture in turn produces odds ratios from 6.14 to 7.18
+across 21 fits. The stricter two-prior-year reporting-state frame retains 30
+events and gives an odds ratio of 6.21 (3.26-11.81). The magnitudes vary, as
+expected when the capacity scale and risk-set history change, but none of these
+diagnostics reverses the scale ordering. Their intervals are model-based; only
+the frozen primary result uses the 1,999-lineage bootstrap as its headline
+uncertainty.
+
 ![Figure 2. Five-parameter Firth estimates for first reported installed-capacity entry. Capacity is shown as the 300-versus-100 t/day contrast and age per ten years; intervals come from 1,999 whole-lineage bootstrap replications.](../../figures/figure2_selective_transition.png)
 
 The supported RQ2 conclusion is narrow but robust. First reported capacity entry
 is rare and selectively concentrated among larger waste-processing facilities.
-This concerns witnessed transitions among prior non-generators and survives all
-continuity frames and event-level attacks. It remains observational: scale can
+This concerns witnessed transitions among prior non-generators and remains
+positive across the reported continuity, functional-form, geographic,
+reporting-state, and event-influence checks. It remains observational: scale can
 proxy for contracts, finances, catchments, technology, or municipal capacity.
 
 ### 4.3 RQ3: the gross-intensity hierarchy is principally a sizing hierarchy
@@ -919,10 +1004,13 @@ positive association between utilization and electrical capacity factor. Those
 checks strengthen the component description but do not resolve simultaneous
 changes in throughput, maintenance, installed capacity, and output.
 
-### 4.4 Exploratory pathway comparison
+### 4.4 Exploratory extension outside the core research questions
 
-The first-complete-year comparison asks where entrants sit in the same-year
-generator distribution, not what entry causes. Across all exact-year entrants
+This secondary analysis was not made part of RQ3 because the pathway labels do
+not verify physical project types and the followed groups are small. It is kept
+as a hypothesis-generating extension for professor discussion, not as a main
+thesis contribution. The first-complete-year comparison asks where entrants sit
+in the same-year generator distribution, not what entry causes. Across all exact-year entrants
 with available engineering-valid outcomes at event time plus one, 44 lineages
 have mean gross-intensity rank 51.6%, generator-design rank 48.1%, and
 capacity-factor rank 56.3%. The pooled average is therefore near the middle of
@@ -950,17 +1038,20 @@ equivalent projects.
 
 ### 5.1 What the thesis changes in the fleet narrative
 
-The 41.1% analytical participation rate describes equipment distribution, not
-waste coverage. Positive-output facilities handle 80.1% of throughput, and the
-installed segment holds 70.5% of processing design capacity. Japan therefore
+The 41.1% analytical participation rate describes equipment distribution across
+all retained records, not waste coverage. Restricting the facility denominator
+to the 879 positive-throughput records raises the positive-output share to
+46.6%. Positive-output facilities nevertheless handle 80.1% of throughput, and
+the installed segment holds 70.5% of processing design capacity. Japan therefore
 combines incomplete diffusion across records with substantial volume coverage;
 non-generating records are not equal-sized unused opportunities.
 
 Entry is strongly associated with processing scale in all four reduced models,
-and the result survives every event reclassification and whole-event-lineage
-deletion. The model still does not show that enlarging a facility would produce
-entry. Scale can proxy for unobserved municipal, technical, and financial
-conditions. Age is weaker evidence: broad, prior-operation, and
+and remains positive under alternative capacity transforms, a two-prior-year
+state definition, leave-one-event-prefecture fits, every event reclassification,
+and every whole-event-lineage deletion. The model still does not show that
+enlarging a facility would produce entry. Scale can proxy for unobserved
+municipal, technical, and financial conditions. Age is weaker evidence: broad, prior-operation, and
 identity-certain bootstrap intervals span zero, while the same-episode result
 uses only 24 events. This sensitivity is evidence against a simple age-only
 narrative, not evidence for one preferred continuity definition.
@@ -977,7 +1068,8 @@ different cohort directions.
 
 **RQ1 is answered by a denominator contrast, not by one preferred percentage.**
 In FY2024, installed-capacity participation covers 41.1% of retained facility
-records, positive-output facilities handle 80.1% of recorded throughput, and
+records and positive output appears at 46.6% of positive-throughput records.
+Positive-output facilities handle 80.1% of recorded throughput, and
 installed-capacity facilities hold 70.5% of recorded processing design
 capacity. The difference means that generation is concentrated in larger or
 more heavily used parts of the observed fleet. It does not mean that 80.1% of
@@ -990,8 +1082,11 @@ facilities, activity, and processing capacity is covered?"
 association.** The broad five-parameter Firth model gives a 300-versus-100
 t/day odds ratio of 6.72, and the corresponding contrast remains close to seven
 under the prior-operation, same-episode, identity-certain, reclassification, and
-lineage-deletion checks. The evidence consequently supports processing scale as
-a stable profile of first reported entry in this administrative panel. Age is
+lineage-deletion checks. Alternative capacity transforms produce smaller but
+still positive contrasts of 4.22-5.01; leave-one-prefecture fits retain
+6.14-7.18; and the stricter reporting-state frame gives 6.21. The evidence
+consequently supports processing scale as a stable profile of first reported
+entry in this administrative panel. Age is
 less stable across continuity definitions and should not support an age-only
 screening rule. Most importantly, the outcome is first reported positive
 installed capacity within an administrative lineage. It is not a verified
@@ -1002,10 +1097,9 @@ cohort hierarchy is large for installed electrical capacity, whereas older
 cohorts do not show uniformly lower electrical capacity factors. Gross MWh/t
 therefore cannot be read as an independent operating-efficiency score. It is
 produced jointly by generator sizing, annual utilization of electrical
-capacity, and waste loading. The small pathway comparison suggests different
-first-complete-year component ranks between continuity-lineage and
-rebuild/replacement-like entries, but selection and uncertain physical meaning
-keep that comparison exploratory.
+capacity, and waste loading. The small pathway comparison is retained only as a
+hypothesis-generating extension because selection and uncertain physical meaning
+prevent it from answering RQ3.
 
 Together, the answers provide one ordered diagnosis. RQ1 locates electricity
 recovery within the fleet; RQ2 describes which observed non-generator lineages
@@ -1050,6 +1144,13 @@ prices, contracts, catchments, maintenance, and detailed technology. Scale may
 proxy for these, so odds ratios are associations rather than effects of changing
 t/day.
 
+Installed-capacity state is also a reporting construct. Forty-nine panel rows
+across six lineages report positive gross output despite a blank or zero
+installed-capacity field. None is the immediately prior row of a modeled event,
+and the two-prior-year state sensitivity remains positive, but these checks do
+not prove that workbook blanks represent physical absence. External equipment
+or commissioning records are needed to verify event meaning.
+
 Generator fields also have strict boundaries. Gross generation is not net
 export; on-site use and useful heat are incomplete; reported capacity may differ
 from availability; and MWh/t is not the European Union R1 energy-efficiency
@@ -1080,16 +1181,15 @@ project-specific questions this panel cannot answer.
 
 Japan's municipal-incineration fleet looks different at three margins. In
 FY2024, installed capacity appears in 41.1% of facility records, while
-positive-output facilities handle 80.1% of throughput and installed-capacity
-facilities represent 70.5% of processing design capacity. At the transition
-margin, first reported entry is sparse but strongly scale-selective: the broad
-300-versus-100 t/day odds ratio is 6.72 and remains near seven under every frame
-and event-level attack. Age remains continuity-sensitive. At the component
+positive output appears at 46.6% of positive-throughput records, positive-output
+facilities handle 80.1% of throughput, and installed-capacity facilities
+represent 70.5% of processing design capacity. At the transition margin, first
+reported entry is sparse but strongly scale-selective: the broad 300-versus-100
+t/day odds ratio is 6.72, with positive contrasts under the reported continuity,
+functional-form, geographic, reporting-state, and event-influence checks. Age
+remains continuity-sensitive. At the component
 margin, older cohorts have markedly smaller adjusted installed kW but do not
 have lower annual capacity factors.
-An exploratory comparison places continuity-lineage entrants below
-rebuild/replacement-like entrants in first-complete-year component ranks, but
-that small, selected contrast remains descriptive.
 
 The thesis's contribution is therefore not a claim that every non-generator is
 an equal opportunity or that newer facilities simply perform better. It is a
@@ -1151,6 +1251,10 @@ responsibility for the content. These tools were not used as authors and did not
 replace author judgment or accountability.
 
 ## References
+
+Agency for Natural Resources and Energy. (2017). *FY2016 annual report on
+energy: Outline*. Ministry of Economy, Trade and Industry.
+https://www.enecho.meti.go.jp/en/category/whitepaper/pdf/2017_outline.pdf
 
 Allison, P. D. (1982). Discrete-time methods for the analysis of event histories.
 *Sociological Methodology*, *13*, 61-98. https://doi.org/10.2307/270718
@@ -1230,6 +1334,15 @@ Lombardi, L., Carnevale, E., & Corti, A. (2015). A review of technologies and
 performances of thermal treatment systems for energy recovery from waste.
 *Waste Management*, *37*, 26-44.
 https://doi.org/10.1016/j.wasman.2014.11.010
+
+Ministry of the Environment Japan. (n.d.). *High-efficiency waste power
+generation facility development manual*. Ministry of the Environment Japan.
+https://www.env.go.jp/recycle/misc/he-wge_facil/ (accessed 17 July 2026).
+
+Ministry of the Environment Japan. (2014). *FY2014 waste-energy introduction
+and low-carbon promotion project: Application guidelines*. Ministry of the
+Environment Japan. https://www.env.go.jp/recycle/info/ondanka/kobo.html
+(accessed 17 July 2026).
 
 Ministry of the Environment Japan. (2026). *General Waste Treatment Survey
 results: FY2024 municipal solid waste treatment survey*. Environmental

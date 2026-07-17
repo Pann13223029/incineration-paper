@@ -122,7 +122,7 @@ Gross MWh/t is retained only as a descriptive accounting ratio and specification
 |:--|:--|
 | Provenance | `raw_data_provenance.md`, `raw_data_manifest.csv`, `raw_workbook_schema_map.csv` |
 | Identity and fleet | `facility_identity_audit.md`, `identity_low_margin_links.csv`, `linkage_validation_packet.csv`, `linkage_validation_protocol.md`, `fleet_decomposition.md`, `fleet_decomposition.csv`, `fy2024_fleet_segments.csv` |
-| Core models | `sample_definition.md`, `scientific_revision_results.md`, `revised_entry_results.csv`, `revised_entry_bootstrap.csv`, `revised_entry_influence.csv`, `adoption_event_composition.csv`, `raw_quantity_component_results.csv`, `figure3_adjusted_components.csv`, `adoption_results.md`, `regression_results.md` |
+| Core models | `sample_definition.md`, `scientific_revision_results.md`, `revised_entry_results.csv`, `revised_entry_bootstrap.csv`, `revised_entry_influence.csv`, `revised_entry_robustness.csv`, `entry_state_audit.csv`, `adoption_event_composition.csv`, `raw_quantity_component_results.csv`, `figure3_adjusted_components.csv`, `adoption_results.md`, `regression_results.md` |
 | Robustness and quality | `robustness_results.md`, `robustness_component_results.csv`, `data_quality_sensitivity.md`, `data_quality_sample_flow.csv`, `data_quality_engineering_bounds.csv`, `data_quality_official_code_duplicates.csv` |
 | Identifier audits | `identifier_gap_audit.md`, `identifier_overlap_by_year.csv`, `identifier_gap_bridges.csv`, `identifier_duplicates_by_year.csv` |
 | Claim and summary outputs | `claim_evidence_map.md`, `claim_verification.md`, `panel_summary.md`, `table1_summary_stats.md`, `table2_generator_components_by_cohort.md` |

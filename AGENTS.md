@@ -13,7 +13,7 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 | Raw provenance and parser schema | `output/raw_data_provenance.md`, `output/raw_data_manifest.csv`, `output/raw_workbook_schema_map.csv` | Verify workbook and field claims here. |
 | Identity and panel grain | `output/facility_identity_audit.md`, `data/processed/facility_identity_crosswalk.csv` | Treat `stable_site_id` as an audited administrative lineage only. |
 | Samples and fleet facts | `output/sample_definition.md`, `output/fleet_decomposition.md` | Verify counts and coverage before repeating them. |
-| Entry results | `output/scientific_revision_results.md`, `output/revised_entry_results.csv`, `output/adoption_results.md` | Use the frozen five-parameter Firth model as primary; retain the higher-dimensional model as sensitivity. |
+| Entry results | `output/scientific_revision_results.md`, `output/revised_entry_results.csv`, `output/revised_entry_robustness.csv`, `output/entry_state_audit.csv`, `output/adoption_results.md` | Use the frozen five-parameter Firth model as primary; retain diagnostics and the higher-dimensional model as sensitivity. |
 | Generator component results | `output/scientific_revision_results.md`, `output/raw_quantity_component_results.csv`, `output/generator_component_results.csv` | Lead with raw installed capacity and capacity factor; use ratio transformations only as supporting identities. |
 | Linkage validation | `output/linkage_validation_protocol.md`, `output/linkage_validation_packet.csv` | A generated blinded packet is not completed independent validation. Do not expose the answer key in paper-facing evidence. |
 | Robustness and quality | `output/robustness_results.md`, `output/data_quality_sensitivity.md`, `output/identifier_gap_audit.md` | Keep limitations visible. |
@@ -50,10 +50,12 @@ This is a paper-first workspace derived from a defended thesis. Develop the pape
 - The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
 - The frozen primary entry specification has five parameters and 1,999 complete whole-lineage bootstrap replications per frame.
 - The broad 300-versus-100 t/day odds ratio is 6.72 (95% bootstrap interval 4.31-12.46); all event attacks retain 6.12-7.30.
+- Alternative capacity transforms retain odds ratios of 4.22-5.01; leave-one-event-prefecture fits retain 6.14-7.18; the 30-event two-prior-year reporting-state sensitivity gives 6.21.
+- Forty-nine panel rows across six lineages report positive output without positive reported capacity; no modeled event has positive output in its immediately prior year.
 - The exact modeled events comprise 24 continuity-lineage and 11 rebuild/replacement-like entries.
 - The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
 - The raw installed-kW processing-scale elasticity is 1.532; older cohorts have smaller adjusted kW but not lower annual capacity factors.
-- FY2024 coverage is 41.1% by facility participation, 80.1% by throughput, and 70.5% by waste-processing design capacity.
+- FY2024 coverage is 41.1% across all facility records, 46.6% positive-output share among 879 positive-throughput records, 80.1% by throughput, and 70.5% by waste-processing design capacity.
 
 If regenerated outputs disagree, stop and resolve the pipeline before updating prose.
 

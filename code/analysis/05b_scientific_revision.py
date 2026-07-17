@@ -42,6 +42,20 @@ COHORT_TERMS = [
     "cohort_1990-1999",
     "cohort_2000-2009",
 ]
+ENTRY_SCALE_TRANSFORMS = {
+    "log1p_capacity_per_100": (
+        lambda capacity: np.log1p(capacity / 100.0),
+        float(np.log(2.0)),
+    ),
+    "log1p_capacity_t_day": (
+        lambda capacity: np.log1p(capacity),
+        float(np.log(301.0) - np.log(101.0)),
+    ),
+    "linear_capacity_per_100": (
+        lambda capacity: capacity / 100.0,
+        2.0,
+    ),
+}
 
 
 def load_component_stage():
@@ -71,6 +85,217 @@ def primary_entry_design(frame: pd.DataFrame) -> pd.DataFrame:
     if not np.isfinite(design.to_numpy(float)).all():
         raise ValueError("Revised entry design contains non-finite values")
     return sm.add_constant(design, has_constant="add")
+
+
+def diagnostic_entry_design(
+    frame: pd.DataFrame,
+    scale_transform: str,
+) -> tuple[pd.DataFrame, float]:
+    """Build a five-parameter diagnostic design and its 300-vs-100 contrast."""
+    if scale_transform not in ENTRY_SCALE_TRANSFORMS:
+        raise ValueError(f"Unknown entry scale transform: {scale_transform}")
+    transform, contrast = ENTRY_SCALE_TRANSFORMS[scale_transform]
+    capacity = frame["lag_capacity_t_day"].astype(float)
+    if capacity.lt(0).any():
+        raise ValueError("Entry scale diagnostics require non-negative lagged capacity")
+    design = pd.DataFrame(
+        {
+            "age_per_10y": frame["lag_facility_age_years"] / 10.0,
+            "scale_term": transform(capacity),
+            "calendar_per_5y": (frame["fiscal_year"] - 2014.5) / 5.0,
+            "log_elapsed_risk": np.log1p(frame["elapsed_at_risk_years"]),
+        },
+        index=frame.index,
+    )
+    if not np.isfinite(design.to_numpy(float)).all():
+        raise ValueError("Entry diagnostic design contains non-finite values")
+    return sm.add_constant(design, has_constant="add"), contrast
+
+
+def fit_entry_diagnostic(
+    frame: pd.DataFrame,
+    *,
+    check_type: str,
+    model: str,
+    scale_transform: str = "log1p_capacity_per_100",
+    omitted_group: str = "",
+) -> dict[str, Any]:
+    """Fit one non-bootstrap robustness model on the frozen covariate set."""
+    design, contrast = diagnostic_entry_design(frame, scale_transform)
+    outcome = frame["adopt_power_this_year"].astype(float)
+    result = fit_firth_logit(design, outcome)
+    if not result.converged:
+        raise RuntimeError(f"Entry diagnostic failed to converge: {model}")
+    coefficient = float(result.params["scale_term"])
+    standard_error = float(result.standard_errors["scale_term"])
+    return {
+        "check_type": check_type,
+        "model": model,
+        "scale_transform": scale_transform,
+        "omitted_group": omitted_group,
+        "observations": int(len(frame)),
+        "lineages": int(frame["analysis_facility_id"].nunique()),
+        "events": int(outcome.sum()),
+        "capacity_coefficient": coefficient,
+        "odds_ratio_300_vs_100": float(np.exp(coefficient * contrast)),
+        "ci_low_model_based": float(
+            np.exp((coefficient - 1.96 * standard_error) * contrast)
+        ),
+        "ci_high_model_based": float(
+            np.exp((coefficient + 1.96 * standard_error) * contrast)
+        ),
+        "p_value_model_based": float(result.pvalues["scale_term"]),
+        "converged": bool(result.converged),
+    }
+
+
+def build_entry_state_audit(
+    panel: pd.DataFrame,
+    exact: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Audit reporting-state ambiguities and construct a stricter risk frame."""
+    history = panel[
+        [
+            "stable_site_id",
+            "fiscal_year",
+            "power_capacity_kw",
+            "power_generated_mwh",
+        ]
+    ].copy()
+    history["analysis_facility_id"] = history["stable_site_id"].astype("string")
+    history["positive_capacity"] = history["power_capacity_kw"].fillna(0).gt(0)
+    history["positive_output"] = history["power_generated_mwh"].fillna(0).gt(0)
+
+    enriched = exact.copy()
+    for years_back, prefix in ((1, "prior"), (2, "second_prior")):
+        lag = history[
+            [
+                "analysis_facility_id",
+                "fiscal_year",
+                "positive_capacity",
+                "positive_output",
+            ]
+        ].copy()
+        lag["fiscal_year"] = lag["fiscal_year"] + years_back
+        lag = lag.rename(
+            columns={
+                "positive_capacity": f"{prefix}_positive_capacity",
+                "positive_output": f"{prefix}_positive_output",
+            }
+        )
+        lag[f"{prefix}_observed"] = True
+        enriched = enriched.merge(
+            lag,
+            on=["analysis_facility_id", "fiscal_year"],
+            how="left",
+            validate="many_to_one",
+        )
+
+    current = history[
+        ["analysis_facility_id", "fiscal_year", "positive_output"]
+    ].rename(columns={"positive_output": "event_year_positive_output"})
+    enriched = enriched.merge(
+        current,
+        on=["analysis_facility_id", "fiscal_year"],
+        how="left",
+        validate="many_to_one",
+    )
+    strict_mask = (
+        enriched["prior_observed"].eq(True)
+        & ~enriched["prior_positive_capacity"].eq(True)
+        & ~enriched["prior_positive_output"].eq(True)
+        & enriched["second_prior_observed"].eq(True)
+        & ~enriched["second_prior_positive_capacity"].eq(True)
+        & ~enriched["second_prior_positive_output"].eq(True)
+    )
+    strict = enriched.loc[strict_mask, exact.columns].copy()
+
+    positive_output = history["positive_output"]
+    missing_capacity = history["power_capacity_kw"].isna()
+    zero_capacity = history["power_capacity_kw"].eq(0)
+    ambiguous = positive_output & (missing_capacity | zero_capacity)
+    events = enriched[enriched["adopt_power_this_year"].eq(1)]
+    audit_rows = [
+        ("panel_rows", len(history)),
+        ("missing_capacity_rows", missing_capacity.sum()),
+        ("zero_capacity_rows", zero_capacity.sum()),
+        ("missing_capacity_positive_output_rows", (missing_capacity & positive_output).sum()),
+        ("zero_capacity_positive_output_rows", (zero_capacity & positive_output).sum()),
+        ("positive_output_without_positive_capacity_rows", ambiguous.sum()),
+        (
+            "positive_output_without_positive_capacity_lineages",
+            history.loc[ambiguous, "analysis_facility_id"].nunique(),
+        ),
+        (
+            "positive_output_without_positive_capacity_first_year",
+            history.loc[ambiguous, "fiscal_year"].min(),
+        ),
+        (
+            "positive_output_without_positive_capacity_last_year",
+            history.loc[ambiguous, "fiscal_year"].max(),
+        ),
+        ("modeled_events", len(events)),
+        (
+            "modeled_events_prior_year_positive_output",
+            events["prior_positive_output"].fillna(False).sum(),
+        ),
+        (
+            "modeled_events_event_year_positive_output",
+            events["event_year_positive_output"].fillna(False).sum(),
+        ),
+        ("strict_two_prior_year_rows", len(strict)),
+        ("strict_two_prior_year_lineages", strict["analysis_facility_id"].nunique()),
+        ("strict_two_prior_year_events", strict["adopt_power_this_year"].sum()),
+    ]
+    audit = pd.DataFrame(audit_rows, columns=["metric", "value"])
+    return audit, strict
+
+
+def entry_robustness_diagnostics(
+    exact: pd.DataFrame,
+    strict: pd.DataFrame,
+) -> pd.DataFrame:
+    """Run functional-form, reporting-state, and geographic diagnostics."""
+    rows = [
+        fit_entry_diagnostic(
+            exact,
+            check_type="reference",
+            model="Frozen primary point model",
+        ),
+        fit_entry_diagnostic(
+            exact,
+            check_type="functional_form",
+            model="Log of one plus t/day",
+            scale_transform="log1p_capacity_t_day",
+        ),
+        fit_entry_diagnostic(
+            exact,
+            check_type="functional_form",
+            model="Linear t/day per 100",
+            scale_transform="linear_capacity_per_100",
+        ),
+        fit_entry_diagnostic(
+            strict,
+            check_type="reporting_state",
+            model="Two prior observed years without positive capacity or output",
+        ),
+    ]
+    event_prefectures = sorted(
+        exact.loc[exact["adopt_power_this_year"].eq(1), "prefecture"]
+        .dropna()
+        .astype(str)
+        .unique()
+    )
+    for prefecture in event_prefectures:
+        rows.append(
+            fit_entry_diagnostic(
+                exact[~exact["prefecture"].astype(str).eq(prefecture)].copy(),
+                check_type="geographic_deletion",
+                model="Leave one event prefecture out",
+                omitted_group=prefecture,
+            )
+        )
+    return pd.DataFrame(rows)
 
 
 def fit_entry_frame(frame: pd.DataFrame, label: str) -> dict[str, Any]:
@@ -355,6 +580,8 @@ def write_report(
     bundles: list[dict[str, Any]],
     composition: pd.DataFrame,
     influence: pd.DataFrame,
+    entry_robustness: pd.DataFrame,
+    state_audit: pd.DataFrame,
     raw_results: pd.DataFrame,
     engineering_frame: pd.DataFrame,
 ) -> str:
@@ -399,6 +626,38 @@ def write_report(
             "\n\nThe deletion range is diagnostic. It does not convert event histories "
             "into independent observations.\n\n"
         )
+        handle.write("## Entry Robustness Beyond Event Deletion\n\n")
+        diagnostic_display = entry_robustness[
+            ~entry_robustness["check_type"].eq("geographic_deletion")
+        ]
+        handle.write(
+            diagnostic_display.to_markdown(index=False, floatfmt=".4f")
+        )
+        geographic = entry_robustness[
+            entry_robustness["check_type"].eq("geographic_deletion")
+        ]
+        handle.write("\n\n")
+        handle.write(
+            "Across leave-one-event-prefecture-out fits, the 300-versus-100 t/day "
+            f"odds ratio ranges from {geographic['odds_ratio_300_vs_100'].min():.4f} "
+            f"to {geographic['odds_ratio_300_vs_100'].max():.4f}. These fits are "
+            "diagnostics with model-based intervals, not replacements for the "
+            "whole-lineage bootstrap primary inference.\n\n"
+        )
+        audit = state_audit.set_index("metric")["value"]
+        handle.write("## Installed-Capacity Reporting-State Audit\n\n")
+        handle.write(
+            f"The panel contains {int(audit['positive_output_without_positive_capacity_rows'])} "
+            "rows with positive gross output but blank or zero reported installed capacity, "
+            f"spanning {int(audit['positive_output_without_positive_capacity_lineages'])} "
+            "administrative lineages. None of the exact modeled events reports positive "
+            "output in the immediately prior year. The stricter two-prior-year state "
+            f"frame retains {int(audit['strict_two_prior_year_rows']):,} rows, "
+            f"{int(audit['strict_two_prior_year_lineages']):,} lineages, and "
+            f"{int(audit['strict_two_prior_year_events'])} events. A blank field is "
+            "therefore described as no reported positive capacity, not verified physical "
+            "absence.\n\n"
+        )
         handle.write("## Raw-Quantity Engineering Models\n\n")
         handle.write(installed.to_markdown(index=False, floatfmt=".4f"))
         handle.write("\n\n")
@@ -438,6 +697,8 @@ def main() -> None:
     )
     composition = build_event_composition(panel, adoption, exact)
     influence = influence_diagnostics(bundles[0])
+    state_audit, strict_state = build_entry_state_audit(panel, exact)
+    entry_robustness = entry_robustness_diagnostics(exact, strict_state)
 
     engineering_frame = build_regression_frame(panel)
     raw_results, figure_data = raw_quantity_models(engineering_frame)
@@ -447,6 +708,8 @@ def main() -> None:
         "output/revised_entry_results.csv": entry_results,
         "output/revised_entry_bootstrap.csv": bootstrap,
         "output/revised_entry_influence.csv": influence,
+        "output/revised_entry_robustness.csv": entry_robustness,
+        "output/entry_state_audit.csv": state_audit,
         "output/adoption_event_composition.csv": composition,
         "output/raw_quantity_component_results.csv": raw_results,
         "output/figure3_adjusted_components.csv": figure_data,
@@ -463,6 +726,8 @@ def main() -> None:
         bundles,
         composition,
         influence,
+        entry_robustness,
+        state_audit,
         raw_results,
         engineering_frame,
     )
@@ -496,6 +761,39 @@ def main() -> None:
             "influence_scale_or_max": float(
                 influence["odds_ratio_300_vs_100"].max()
             ),
+            "entry_robustness": {
+                "functional_form_scale_or_min": float(
+                    entry_robustness.loc[
+                        entry_robustness["check_type"].eq("functional_form"),
+                        "odds_ratio_300_vs_100",
+                    ].min()
+                ),
+                "functional_form_scale_or_max": float(
+                    entry_robustness.loc[
+                        entry_robustness["check_type"].eq("functional_form"),
+                        "odds_ratio_300_vs_100",
+                    ].max()
+                ),
+                "geographic_deletion_scale_or_min": float(
+                    entry_robustness.loc[
+                        entry_robustness["check_type"].eq("geographic_deletion"),
+                        "odds_ratio_300_vs_100",
+                    ].min()
+                ),
+                "geographic_deletion_scale_or_max": float(
+                    entry_robustness.loc[
+                        entry_robustness["check_type"].eq("geographic_deletion"),
+                        "odds_ratio_300_vs_100",
+                    ].max()
+                ),
+                "event_prefectures": int(
+                    entry_robustness["check_type"].eq("geographic_deletion").sum()
+                ),
+            },
+            "entry_state_audit": {
+                str(row.metric): int(row.value)
+                for row in state_audit.itertuples(index=False)
+            },
             "capacity_factor_above_one": int(
                 (engineering_frame["electrical_capacity_factor"] > 1).sum()
             ),

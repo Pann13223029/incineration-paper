@@ -1,8 +1,9 @@
 # Professor-Facing Thesis Profile
 
-This directory preserves the comprehensive professor-review content frozen from
-commit `4ac9afe` before the public journal draft was revised. Its LaTeX wrapper
-now presents that content as an APU-style graduation thesis: 12-point type on
+This directory maintains the comprehensive professor-review thesis profile,
+originally separated from the public journal draft at commit `4ac9afe`. Its
+LaTeX wrapper presents the current professor-facing content as an APU-style
+graduation thesis: 12-point type on
 A4 paper, 1.5 line spacing, a formal cover, contents, lists of figures and
 tables, and front/main-matter page numbering. It shares the canonical analysis,
 evidence, tables, figures, and supplement with the public profile; it is not an

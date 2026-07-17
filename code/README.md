@@ -25,7 +25,7 @@ simulations.
 | 6 | `05_fleet_decomposition.py` | Separate facility participation, throughput coverage, and design-capacity share. |
 | 7 | `05a_power_adoption.py` | Retain the higher-dimensional sparse-entry specification and pathway outputs as sensitivities. |
 | 8 | `05_panel_regression.py` | Build component frames and legacy component sensitivities. |
-| 9 | `05b_scientific_revision.py` | Fit the frozen five-parameter entry models, 1,999 bootstraps, all-event attacks, and raw-kW models. |
+| 9 | `05b_scientific_revision.py` | Fit the frozen five-parameter entry models, 1,999 bootstraps, event, functional-form, geographic, and reporting-state diagnostics, and raw-kW models. |
 | 10 | `06_robustness.py` | Test component results across windows, weights, bounds, and within-episode designs. |
 | 11 | `06a_data_quality_sensitivity.py` | Audit sample flow, ages, engineering bounds, heating values, and duplicates. |
 | 12 | `06b_identifier_gap_audit.py` | Audit official-code gaps, code-regime resets, and restored lineage continuity. |

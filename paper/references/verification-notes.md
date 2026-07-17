@@ -8,7 +8,9 @@ All 28 DOI-bearing references in the professor-facing thesis were checked
 against Crossref metadata and, for the papers carrying central conceptual or
 methodological weight, against the publisher page. The e-Stat survey record,
 European Commission communication, Ministry source, and MIT Press book record
-were checked against their official pages. The audit corrected two stale
+were checked against their official pages. The Ministry's high-efficiency
+facility manual, FY2014 support notice, and the Agency for Natural Resources and
+Energy's FIT timeline were also checked against official government pages. The audit corrected two stale
 bibliography entries before release: the Münster and Meibom title and the Tabata
 and Tsai issue and page range. The professor-facing thesis reference list now
 agrees with the checked records.
@@ -16,6 +18,9 @@ agrees with the checked records.
 | Source | Verified record | Use boundary in this paper |
 |:--|:--|:--|
 | Ministry of the Environment Japan (2026) | [FY2024 municipal solid waste press release](https://www.env.go.jp/en/press/press_01569.html): 991 plants, 415 with power-generation facilities (41.9%), and 2,289,000 kW total capacity | National context only; the reconstructed row-level analytical denominator differs |
+| Ministry of the Environment Japan (n.d.) | [High-efficiency waste power generation facility development manual](https://www.env.go.jp/recycle/misc/he-wge_facil/) and linked grant-condition materials | Establishes a formal technical and support context; the thesis does not observe facility eligibility or grant receipt |
+| Ministry of the Environment Japan (2014) | [FY2014 waste-energy introduction and low-carbon promotion project guidelines](https://www.env.go.jp/recycle/info/ondanka/kobo.html) | Verifies that capital support covered high-efficiency waste-heat recovery and waste-derived biomass generation; no subsidy effect is estimated |
+| Agency for Natural Resources and Energy (2017) | [FY2016 Annual Report on Energy outline](https://www.enecho.meti.go.jp/en/category/whitepaper/pdf/2017_outline.pdf), p. 17: FIT began in July 2012 | Dates the national energy-policy context; FY2011/FY2012 are not used as causal breakpoints |
 | Cui et al. (2026) | [Nature Communications 17, 3069](https://www.nature.com/articles/s41467-026-69897-w), DOI `10.1038/s41467-026-69897-w` | Motivates plant heterogeneity and explicit engineering decomposition; its China optimization model and efficiency metric are not imported |
 | Liu et al. (2025) | [Nature Energy 10, 215-225](https://www.nature.com/articles/s41560-024-01683-8), DOI `10.1038/s41560-024-01683-8` | Motivates separating expansion from effectiveness; no China scenario model is reproduced |
 | Han et al. (2025) | [Communications Earth & Environment 6, 863](https://www.nature.com/articles/s43247-025-02859-0), DOI `10.1038/s43247-025-02859-0` | Supports configuration-aware interpretation; the present paper does not estimate pollutant-control or lifecycle scenarios |

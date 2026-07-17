@@ -1,0 +1,26 @@
+check_type,model,scale_transform,omitted_group,observations,lineages,events,capacity_coefficient,odds_ratio_300_vs_100,ci_low_model_based,ci_high_model_based,p_value_model_based,converged
+reference,Frozen primary point model,log1p_capacity_per_100,,15154,1137,35,2.749178522,6.723341926,3.755609094,12.03621717,1.419876821e-10,True
+functional_form,Log of one plus t/day,log1p_capacity_t_day,,15154,1137,35,1.476581596,5.014892396,2.847862686,8.830884249,2.334786959e-08,True
+functional_form,Linear t/day per 100,linear_capacity_per_100,,15154,1137,35,0.7198625843,4.219535996,2.694710517,6.607197289,3.119986756e-10,True
+reporting_state,Two prior observed years without positive capacity or output,log1p_capacity_per_100,,14000,1110,30,2.634167504,6.208167593,3.262376071,11.8138878,2.665802267e-08,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,佐賀県,15019,1124,34,2.708868644,6.538087316,3.639414597,11.74545648,3.340581583e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,千葉県,14564,1099,34,2.818058386,7.052126658,3.90903827,12.72243631,8.663209065e-11,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,埼玉県,14449,1089,32,2.728940773,6.629687061,3.673435026,11.96502734,3.402368928e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,大阪府,14807,1112,32,2.74723465,6.714289067,3.573059944,12.61710645,3.285924019e-09,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,奈良県,14750,1110,34,2.824994118,7.086111264,3.892597856,12.89960451,1.48783414e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,宮城県,14904,1119,34,2.781075249,6.87364455,3.811996743,12.39428903,1.466227232e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,宮崎県,14967,1118,34,2.70513745,6.521199923,3.617682524,11.75505262,4.45463752e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,岐阜県,14779,1112,34,2.787635799,6.904973125,3.81846294,12.48634715,1.626267808e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,岩手県,14878,1117,34,2.674061527,6.382234098,3.549712007,11.47499065,5.918223266e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,愛知県,14793,1111,31,2.678466443,6.401750465,3.484285131,11.76207098,2.204627467e-09,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,新潟県,14641,1099,34,2.766469821,6.804408809,3.793228985,12.20595419,1.261069182e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,栃木県,14925,1113,32,2.808322112,7.004694409,3.85113119,12.74060564,1.796283897e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,滋賀県,14946,1122,32,2.844398795,7.182065425,3.909605306,13.19367551,2.0951386e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,熊本県,14817,1115,34,2.757102938,6.760373418,3.761379177,12.15050294,1.671776037e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,神奈川県,14866,1116,34,2.764490301,6.795078892,3.730858003,12.3759996,3.74812572e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,福井県,14984,1125,34,2.669571511,6.362401916,3.543615281,11.42340659,5.758148012e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,福島県,14825,1113,32,2.781239214,6.874425797,3.752200977,12.59466919,4.357310409e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,秋田県,14907,1115,34,2.728088576,6.625772074,3.699456484,11.8668393,2.021868781e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,青森県,14911,1120,33,2.618954168,6.143045921,3.386627153,11.14294886,2.300938475e-09,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,静岡県,14547,1093,34,2.798237496,6.955901465,3.838451188,12.60523133,1.611983649e-10,True
+geographic_deletion,Leave one event prefecture out,log1p_capacity_per_100,鹿児島県,14595,1090,34,2.819384763,7.058613187,3.897340567,12.78410733,1.126947663e-10,True

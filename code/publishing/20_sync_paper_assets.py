@@ -53,6 +53,8 @@ SOURCE_FILES = [
     "revised_entry_results.csv",
     "revised_entry_bootstrap.csv",
     "revised_entry_influence.csv",
+    "revised_entry_robustness.csv",
+    "entry_state_audit.csv",
     "adoption_event_composition.csv",
     "raw_quantity_component_results.csv",
     "figure3_adjusted_components.csv",
