@@ -31,6 +31,21 @@ revision_stage = load_stage("05b_scientific_revision.py", "revision_stage")
 
 
 class RevisionContractTest(unittest.TestCase):
+    def test_component_identity_output_normalizes_machine_precision_noise(
+        self,
+    ) -> None:
+        self.assertEqual(
+            revision_stage.normalized_component_identity_error(
+                1.0 + 5e-15,
+                1.0,
+            ),
+            0.0,
+        )
+
+    def test_component_identity_output_rejects_substantive_mismatch(self) -> None:
+        with self.assertRaisesRegex(ValueError, "component identity failed"):
+            revision_stage.normalized_component_identity_error(1.0, 0.99)
+
     def test_active_facility_share_uses_positive_throughput_denominator(self) -> None:
         panel = pd.DataFrame(
             {

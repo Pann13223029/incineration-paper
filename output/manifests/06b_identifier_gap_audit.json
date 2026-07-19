@@ -11,7 +11,7 @@
     "code/analysis/05_fleet_decomposition.py": "9f6f1ef93df7807dca2a4bec73d603a090c1abc33f9505b8c9fb7ff7286539bd",
     "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/05b_scientific_revision.py": "85d7e6df49f1b19becb58f590c5879363b65f20f90de6465147f2d1830990773",
+    "code/analysis/05b_scientific_revision.py": "37337e15a127133271bb44e12c577f9dc7b310e5f0b4e931b2f2da78c967ebd9",
     "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",

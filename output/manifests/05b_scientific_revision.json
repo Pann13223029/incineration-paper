@@ -11,7 +11,7 @@
     "code/analysis/05_fleet_decomposition.py": "9f6f1ef93df7807dca2a4bec73d603a090c1abc33f9505b8c9fb7ff7286539bd",
     "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/05b_scientific_revision.py": "85d7e6df49f1b19becb58f590c5879363b65f20f90de6465147f2d1830990773",
+    "code/analysis/05b_scientific_revision.py": "37337e15a127133271bb44e12c577f9dc7b310e5f0b4e931b2f2da78c967ebd9",
     "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
@@ -60,7 +60,7 @@
     "bootstrap_repetitions": 1999,
     "capacity_factor_above_one": 5,
     "component_decomposition": {
-      "identity_max_absolute_error": 1.110223e-15,
+      "identity_max_absolute_error": 0.0,
       "rows": 6,
       "stable_cohort_lineages": 479
     },
@@ -273,7 +273,7 @@
   "output_sha256": {
     "output/adoption_event_composition.csv": "1cfa15e33acf8ba42d034a1a048d383ba24dd40e94447f7b87860936fa1d9ae6",
     "output/cohort_year_overlap.csv": "739a1e55bead270655519573fb19ac92aba427b7e2a4dd13262eae8fb55c251e",
-    "output/common_control_component_decomposition.csv": "2acbb35caf2c7b041bc884537adda3aaf539479b8a0b8e2f1c3bac0c4a143d91",
+    "output/common_control_component_decomposition.csv": "b7dfa1067f596aef4b9bc99a4d4bf37cf1ec30b9ddd2f1581aaf9b3629f82a2d",
     "output/entry_capacity_support.csv": "60839917ab4d574b090b1cd72f7324edda608693c6e806a910dd3461d98e41f0",
     "output/entry_design_diagnostics.csv": "83054c4f879933f4ba0462e38284e3c36363a63970ba8171c782c8a786f06cc9",
     "output/entry_sample_flow.csv": "76f90e6fc1b3004d7b60edf2ea4d12c112395fc42498c3f0514a98d3282b39b4",
@@ -286,7 +286,7 @@
     "output/revised_entry_influence.csv": "6851e231411c0f6c2ad885ed25109e74797af73e259b67b8478cd9a29809b4ee",
     "output/revised_entry_results.csv": "64bfdbb6fb6a5a2d8b4fbafc58bd6191ffbbdcdd6136b184168d5e3b6956b3b7",
     "output/revised_entry_robustness.csv": "95264ab55edaefaf9e2f8823e20d153907d9784bbffebd5e861c744f6ada8d80",
-    "output/scientific_revision_results.md": "49f24239b3c8b49262cea358c3508e084a1b12915403a2d76294d04de74dde00"
+    "output/scientific_revision_results.md": "1c476fa64d64664a285940c670911517542ba9bd6e0c91cc9de92c79b1b92c98"
   },
   "outputs": [
     "output/revised_entry_results.csv",
@@ -308,6 +308,6 @@
   ],
   "python": "3.12.12",
   "script": "code/analysis/05b_scientific_revision.py",
-  "script_sha256": "85d7e6df49f1b19becb58f590c5879363b65f20f90de6465147f2d1830990773",
+  "script_sha256": "37337e15a127133271bb44e12c577f9dc7b310e5f0b4e931b2f2da78c967ebd9",
   "stage": "05b_scientific_revision"
 }

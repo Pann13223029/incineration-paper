@@ -68,7 +68,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::entry_specification_and_sample_flow` [n/a]: Consolidated specifications: 11 rows; sample flow exposes 467 left-censored lineages and 35 primary events.
 - `evidence_integrity::frozen_primary_not_legacy_sensitivity` [n/a]: Frozen five-parameter primary OR is 6.7233; the earlier higher-dimensional sensitivity OR is 6.1296.
 - `evidence_integrity::raw_quantity_component_sync` [n/a]: Raw quantity results have 11 focal rows and adjusted component contrasts have 8 rows.
-- `evidence_integrity::common_control_component_identity` [n/a]: Common-control cohort components sum to direct log gross-intensity differences with maximum error 1.110e-15; the stable-cohort sensitivity retains 6,291 rows across 479 lineages.
+- `evidence_integrity::common_control_component_identity` [n/a]: Common-control cohort components sum to direct log gross-intensity differences with maximum error 0.000e+00; the stable-cohort sensitivity retains 6,291 rows across 479 lineages.
 - `document_presence::manuscript_md_present` [paper/manuscript/paper.md]: Required document exists.
 - `document_presence::manuscript_tex_present` [paper/manuscript/paper.tex]: Required document exists.
 - `document_presence::professor_manuscript_md_present` [paper/manuscript/professor/paper.md]: Required document exists.

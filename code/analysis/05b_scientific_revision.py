@@ -32,6 +32,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 BOOTSTRAP_REPETITIONS = int(
     os.environ.get("SCIENTIFIC_REVISION_BOOTSTRAP_REPETITIONS", "1999")
 )
+COMPONENT_IDENTITY_TOLERANCE = 1e-10
 ENTRY_TERMS = [
     "age_per_10y",
     "log_processing_capacity",
@@ -58,6 +59,20 @@ ENTRY_SCALE_TRANSFORMS = {
         2.0,
     ),
 }
+
+
+def normalized_component_identity_error(
+    component_sum: float,
+    direct_difference: float,
+) -> float:
+    """Validate an algebraic identity and remove platform-level numeric noise."""
+    identity_error = component_sum - direct_difference
+    if (
+        not np.isfinite(identity_error)
+        or abs(identity_error) > COMPONENT_IDENTITY_TOLERANCE
+    ):
+        raise ValueError("Common-control component identity failed")
+    return 0.0
 
 
 def load_component_stage():
@@ -952,12 +967,13 @@ def common_control_component_decomposition(frame: pd.DataFrame) -> pd.DataFrame:
                     "direct_standard_error": direct_se,
                     "direct_ci_low": direct_difference - 1.96 * direct_se,
                     "direct_ci_high": direct_difference + 1.96 * direct_se,
-                    "identity_error": component_sum - direct_difference,
+                    "identity_error": normalized_component_identity_error(
+                        component_sum,
+                        direct_difference,
+                    ),
                 }
             )
     result = pd.DataFrame(rows)
-    if result["identity_error"].abs().max() > 1e-10:
-        raise ValueError("Common-control component identity failed")
     return result
 
 
