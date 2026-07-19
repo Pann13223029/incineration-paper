@@ -908,7 +908,7 @@ asset episode, it increases from 30.53% to 31.42%, or 0.88 points. The 713
 lineages observed in all 20 fiscal years show a similarly modest change, from
 29.73% to 32.26%.
 
-**Endpoint composition diagnostic**
+**Table 3. Endpoint fleet-composition diagnostic**
 
 | Administrative group | FY | Lineages | Installed-capacity lineages | Share |
 |:--|--:|--:|--:|--:|
@@ -1058,7 +1058,7 @@ risk are 0.013 and 0.039. Temporal dependence therefore qualifies the nuisance
 time terms but does not explain the estimated scale ordering. The flexible
 era/duration sensitivity yields a similar 300-versus-100 odds ratio of 6.13.
 
-**Table 3. Consolidated entry specification audit**
+**Table 4. Consolidated entry specification audit**
 
 | Specification | Events or fits | 300-versus-100 t/day odds ratio (95% CI or range) | What the check addresses |
 |:--|--:|:--|:--|
@@ -1140,7 +1140,7 @@ processing-scale, technology, furnace-count, and year controls. The three
 component columns are log differences from the 2010-or-later cohort and sum
 exactly to the directly fitted log gross-intensity difference.
 
-**Common-control cohort decomposition of log gross MWh/t**
+**Table 5. Common-control cohort decomposition of log gross MWh/t**
 
 | Cohort | Generator design $\gamma_D$ | Capacity factor $\gamma_F$ | Waste-loading contribution $-\gamma_U$ | Sum/direct $\gamma_Y$ |
 |:--|--:|--:|--:|--:|
@@ -1209,6 +1209,8 @@ changes in throughput, maintenance, installed capacity, and output.
 Each analytical margin corrects a different intuitive but incomplete reading of
 the fleet. The table below separates the tempting interpretation from the
 strongest statement supported by the evidence.
+
+**Table 6. Interpretive corrections produced by the three-margin design**
 
 | Common reading | Evidence-based correction | Defensible interpretation |
 |:--|:--|:--|
@@ -1565,10 +1567,10 @@ continuity-lineage entrants average 0.260 MWh/t and rank at 40.2% for gross
 intensity, 36.8% for generator design intensity, and 53.8% for capacity factor.
 Eleven rebuild/replacement-like entrants average 0.442 MWh/t and rank at 72.5%,
 66.1%, and 65.5%, respectively. Six forward-dated or placeholder observations
-are omitted from Figure A1 because that category is too sparse and its timing is
+are omitted from Figure A.1 because that category is too sparse and its timing is
 difficult to interpret.
 
-![Figure A1. Mean within-fiscal-year percentile ranks in the first complete year after reported entry for continuity-lineage entrants (n=27) and rebuild/replacement-like entrants (n=11). Metrics are gross MWh/t, generator design intensity (installed kW per t/day of processing capacity), and annual electrical capacity factor among engineering-valid generator-years; the dashed line marks the 50th percentile. The forward-dated/placeholder category (n=6) is omitted because support is sparse. All contrasts are descriptive.](../../figures/figure4_post_entry_trajectories.png)
+![Figure A.1. Mean within-fiscal-year percentile ranks in the first complete year after reported entry for continuity-lineage entrants (n=27) and rebuild/replacement-like entrants (n=11). Metrics are gross MWh/t, generator design intensity (installed kW per t/day of processing capacity), and annual electrical capacity factor among engineering-valid generator-years; the dashed line marks the 50th percentile. The forward-dated/placeholder category (n=6) is omitted because support is sparse. All contrasts are descriptive.](../../figures/figure4_post_entry_trajectories.png)
 
 The larger descriptive pathway difference aligns more closely with generator
 sizing than with capacity factor. This is not an estimated pathway effect:
@@ -1660,7 +1662,7 @@ year $t$, lineage $i$ has no earlier observed positive installed-capacity
 record. The four reported covariates are age per ten years,
 $\log(1+C/100)$ for prior-year processing capacity $C$ in t/day, calendar time
 per five years centred at FY2014.5, and $\log(1+R)$ for elapsed observed years
-at risk. Table B1 reports every non-intercept coefficient from the primary
+at risk. Table B.1 reports every non-intercept coefficient from the primary
 five-parameter Firth model and its three sensitivity frames. Standard errors
 are fitted-model estimates; confidence intervals are percentiles from 1,999
 whole-lineage bootstrap replications.
@@ -1691,7 +1693,7 @@ unstable. Technology and geography are omitted from the primary model because
 other sensitivity fits assess concentration but do not repair unmeasured
 confounding.
 
-**Table B1. Firth first-entry model focal coefficients**
+**Table B.1. Firth first-entry model focal coefficients**
 
 | Frame | Term | Coefficient | Model-based SE | Bootstrap 95% CI | Events |
 |:--|:--|--:|--:|:--|--:|
@@ -1714,7 +1716,7 @@ confounding.
 
 The intercept is included in every fit but is not substantively interpreted.
 Calendar time and elapsed risk are retained as nuisance controls and are not
-interpreted separately because they are strongly correlated. Table B1 makes the
+interpreted separately because they are strongly correlated. Table B.1 makes the
 primary/sensitivity hierarchy explicit: only the broad exact-year frame is the
 primary model.
 
@@ -1730,7 +1732,7 @@ capacity-factor model additionally includes waste-processing utilization. The
 gross-output model replaces log processing capacity with log annual throughput
 and log installed capacity.
 
-**Table B2. Engineering model focal coefficients**
+**Table B.2. Engineering model focal coefficients**
 
 | Outcome | Term | Coefficient | Lineage-clustered SE | 95% CI | $R^2$ |
 |:--|:--|--:|--:|:--|--:|
@@ -1746,7 +1748,7 @@ and log installed capacity.
 | Log gross generation (MWh) | Log annual throughput | 0.638 | 0.052 | 0.536 to 0.740 | 0.914 |
 | Log gross generation (MWh) | Log installed capacity | 0.576 | 0.038 | 0.502 to 0.650 | 0.914 |
 
-Table B2 reports every focal coefficient used for the RQ3 interpretation.
+Table B.2 reports every focal coefficient used for the RQ3 interpretation.
 Furnace-group, facility-group, furnace-count, fiscal-year, and intercept
 coefficients are nuisance adjustments rather than thesis estimands. Sections
 3.5.1-3.5.3 define the models and variables; Tables 4-5 and Appendix Tables
