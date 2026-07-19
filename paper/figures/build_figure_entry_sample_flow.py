@@ -149,7 +149,7 @@ def build() -> None:
     add_box(
         ax,
         x_positions[2],
-        "Frozen primary\nentry model",
+        "Primary\nentry model",
         f"{count(exact.facility_year_rows)} risk rows\n"
         f"{count(exact.lineages)} lineages | {count(exact.events)} events",
         accent=True,
