@@ -10,6 +10,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from panel_utils import (
     OUTPUT_DIR,
@@ -37,6 +38,7 @@ ENTRY_TERMS = [
     "calendar_per_5y",
     "log_elapsed_risk",
 ]
+STANDARDIZED_CAPACITIES = (24.0, 60.0, 100.0, 120.0, 300.0)
 COHORT_TERMS = [
     "cohort_Before 1990",
     "cohort_1990-1999",
@@ -380,7 +382,7 @@ def _logistic(linear_predictor: np.ndarray) -> np.ndarray:
 
 
 def standardized_entry_probabilities(bundle: dict[str, Any]) -> pd.DataFrame:
-    """Standardize annual entry risk at 100 and 300 t/day over the broad frame."""
+    """Standardize entry risk at support-aware and headline capacity levels."""
     design = primary_entry_design(bundle["frame"])
     columns = list(design.columns)
     base = design.to_numpy(float)
@@ -398,7 +400,7 @@ def standardized_entry_probabilities(bundle: dict[str, Any]) -> pd.DataFrame:
     bootstrap_coefficients = bundle["bootstrap"][columns].to_numpy(float)
     point: dict[float, float] = {}
     draws: dict[float, np.ndarray] = {}
-    for capacity in (100.0, 300.0):
+    for capacity in STANDARDIZED_CAPACITIES:
         point[capacity] = mean_probability(point_coefficients, capacity)
         draws[capacity] = np.array(
             [
@@ -408,7 +410,7 @@ def standardized_entry_probabilities(bundle: dict[str, Any]) -> pd.DataFrame:
         )
 
     rows: list[dict[str, Any]] = []
-    for capacity in (100.0, 300.0):
+    for capacity in STANDARDIZED_CAPACITIES:
         rows.append(
             {
                 "estimand": "standardized_annual_probability",
@@ -447,6 +449,85 @@ def standardized_entry_probabilities(bundle: dict[str, Any]) -> pd.DataFrame:
             "bootstrap_repetitions": int(len(bootstrap_coefficients)),
         }
     )
+    return pd.DataFrame(rows)
+
+
+def entry_capacity_support(
+    exact: pd.DataFrame,
+    standardized_risk: pd.DataFrame,
+) -> pd.DataFrame:
+    """Describe empirical support for standardized capacity contrasts."""
+    capacity = exact["lag_capacity_t_day"].astype(float)
+    event_mask = exact["adopt_power_this_year"].eq(1)
+    event_capacity = capacity[event_mask]
+    probabilities = standardized_risk[
+        standardized_risk["estimand"].eq("standardized_annual_probability")
+    ].set_index("capacity_t_day")
+    labels = {
+        24.0: "Risk-frame 25th percentile",
+        60.0: "Risk-frame median",
+        100.0: "Frozen contrast lower level",
+        120.0: "Risk-frame 75th percentile",
+        300.0: "Frozen contrast upper level",
+    }
+    rows: list[dict[str, Any]] = []
+    for level in STANDARDIZED_CAPACITIES:
+        probability = probabilities.loc[level]
+        rows.append(
+            {
+                "capacity_label": labels[level],
+                "capacity_t_day": level,
+                "empirical_percentile_pct": float(capacity.le(level).mean() * 100),
+                "risk_rows_at_or_above": int(capacity.ge(level).sum()),
+                "risk_share_at_or_above_pct": float(capacity.ge(level).mean() * 100),
+                "modeled_events_at_or_above": int(event_capacity.ge(level).sum()),
+                "modeled_event_share_at_or_above_pct": float(
+                    event_capacity.ge(level).mean() * 100
+                ),
+                "standardized_events_per_1000": float(
+                    probability["events_per_1000_facility_years"]
+                ),
+                "bootstrap_ci_low_per_1000": float(
+                    probability["bootstrap_ci_low_per_1000"]
+                ),
+                "bootstrap_ci_high_per_1000": float(
+                    probability["bootstrap_ci_high_per_1000"]
+                ),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def entry_design_diagnostics(exact: pd.DataFrame) -> pd.DataFrame:
+    """Audit predictor support and collinearity in the frozen entry design."""
+    design = primary_entry_design(exact)
+    predictors = design.drop(columns="const")
+    standardized = (predictors - predictors.mean()) / predictors.std(ddof=0)
+    condition_number = float(np.linalg.cond(standardized.to_numpy(float)))
+    correlations = predictors.corr()
+    rows: list[dict[str, Any]] = []
+    for column_index, term in enumerate(design.columns):
+        if term == "const":
+            continue
+        rows.append(
+            {
+                "term": term,
+                "minimum": float(predictors[term].min()),
+                "maximum": float(predictors[term].max()),
+                "mean": float(predictors[term].mean()),
+                "standard_deviation": float(predictors[term].std(ddof=0)),
+                "variance_inflation_factor": float(
+                    variance_inflation_factor(design.to_numpy(float), column_index)
+                ),
+                "correlation_with_calendar_time": float(
+                    correlations.loc[term, "calendar_per_5y"]
+                ),
+                "correlation_with_log_elapsed_risk": float(
+                    correlations.loc[term, "log_elapsed_risk"]
+                ),
+                "standardized_design_condition_number": condition_number,
+            }
+        )
     return pd.DataFrame(rows)
 
 
@@ -810,6 +891,76 @@ def raw_quantity_models(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
     return results, pd.DataFrame(figure_rows)
 
 
+def common_control_component_decomposition(frame: pd.DataFrame) -> pd.DataFrame:
+    """Decompose cohort log-intensity gaps using one shared control design."""
+    component = load_component_stage()
+    cohort_counts = frame.groupby("analysis_facility_id")[
+        "reported_start_year_cohort"
+    ].nunique()
+    switching_lineages = set(cohort_counts[cohort_counts.gt(1)].index)
+    samples = [
+        ("Primary engineering frame", frame),
+        (
+            "Stable-cohort sensitivity",
+            frame[~frame["analysis_facility_id"].isin(switching_lineages)].copy(),
+        ),
+    ]
+    rows: list[dict[str, Any]] = []
+    for sample_label, sample in samples:
+        design = component.common_design(sample, include_utilization=False)
+        groups = sample["analysis_facility_id"]
+        models = {
+            "design": clustered_ols(
+                sample["log_generator_design_intensity"], design, groups
+            ),
+            "factor": clustered_ols(
+                sample["log_electrical_capacity_factor"], design, groups
+            ),
+            "utilization": clustered_ols(
+                np.log(sample["capacity_utilization_raw"]), design, groups
+            ),
+            "gross_intensity": clustered_ols(
+                sample["log_efficiency_raw"], design, groups
+            ),
+        }
+        for term, cohort in zip(
+            COHORT_TERMS,
+            ["Before 1990", "1990-1999", "2000-2009"],
+        ):
+            design_difference = float(models["design"].params[term])
+            factor_difference = float(models["factor"].params[term])
+            utilization_difference = float(models["utilization"].params[term])
+            utilization_contribution = -utilization_difference
+            component_sum = (
+                design_difference + factor_difference + utilization_contribution
+            )
+            direct_difference = float(models["gross_intensity"].params[term])
+            direct_se = float(models["gross_intensity"].bse[term])
+            rows.append(
+                {
+                    "sample": sample_label,
+                    "observations": int(len(sample)),
+                    "lineages": int(sample["analysis_facility_id"].nunique()),
+                    "cohort": cohort,
+                    "reference_cohort": "2010 or later",
+                    "log_design_component": design_difference,
+                    "log_capacity_factor_component": factor_difference,
+                    "log_waste_utilization_difference": utilization_difference,
+                    "negative_log_utilization_component": utilization_contribution,
+                    "component_sum_log_gross_intensity": component_sum,
+                    "direct_log_gross_intensity_difference": direct_difference,
+                    "direct_standard_error": direct_se,
+                    "direct_ci_low": direct_difference - 1.96 * direct_se,
+                    "direct_ci_high": direct_difference + 1.96 * direct_se,
+                    "identity_error": component_sum - direct_difference,
+                }
+            )
+    result = pd.DataFrame(rows)
+    if result["identity_error"].abs().max() > 1e-10:
+        raise ValueError("Common-control component identity failed")
+    return result
+
+
 def cohort_overlap(frame: pd.DataFrame) -> pd.DataFrame:
     overlap = (
         frame.groupby(["reported_start_year_cohort", "fiscal_year"], observed=True)
@@ -832,7 +983,10 @@ def write_report(
     influence: pd.DataFrame,
     entry_robustness: pd.DataFrame,
     state_audit: pd.DataFrame,
+    capacity_support: pd.DataFrame,
+    design_diagnostics: pd.DataFrame,
     raw_results: pd.DataFrame,
+    component_decomposition: pd.DataFrame,
     engineering_frame: pd.DataFrame,
 ) -> str:
     path = os.path.join(OUTPUT_DIR, "scientific_revision_results.md")
@@ -854,7 +1008,7 @@ def write_report(
         handle.write("# Major-Revision Scientific Results\n\n")
         handle.write("## Lower-Degree-Of-Freedom Entry Model\n\n")
         handle.write(
-            f"The prespecified primary model uses five parameters including the "
+            f"The revision-frozen primary model uses five parameters including the "
             f"intercept and {BOOTSTRAP_REPETITIONS:,} deterministic whole-lineage "
             "bootstrap replications per frame.\n\n"
         )
@@ -867,8 +1021,23 @@ def write_report(
         handle.write(
             "\n\nProbabilities average predictions over the observed broad-frame "
             "age, calendar-year, and elapsed-risk distribution while setting "
-            "processing capacity to 100 or 300 t/day for every risk row. They are "
+            "processing capacity to the stated level for every risk row. They are "
             "descriptive model standardizations, not causal intervention effects.\n\n"
+        )
+        handle.write("## Entry-Capacity Support\n\n")
+        handle.write(capacity_support.to_markdown(index=False, floatfmt=".4f"))
+        handle.write(
+            "\n\nThe 300 t/day level is retained as the revision-frozen headline "
+            "contrast, but it lies near the upper tail of the observed risk frame. "
+            "The quartile-based levels show absolute risk where empirical support is "
+            "denser.\n\n"
+        )
+        handle.write("## Entry-Design Collinearity Audit\n\n")
+        handle.write(design_diagnostics.to_markdown(index=False, floatfmt=".4f"))
+        handle.write(
+            "\n\nCalendar time and elapsed risk are moderately collinear. Processing "
+            "scale is not, so the diagnostic limits interpretation of the temporal "
+            "terms rather than overturning the scale ordering.\n\n"
         )
         handle.write("## Consolidated Entry Specification Audit\n\n")
         handle.write(
@@ -934,6 +1103,18 @@ def write_report(
             "outcome yields the design-intensity parameterization; this translation "
             "is algebraic rather than independent corroboration.\n\n"
         )
+        handle.write("## Common-Control Cohort Component Decomposition\n\n")
+        handle.write(
+            component_decomposition.to_markdown(index=False, floatfmt=".4f")
+        )
+        handle.write(
+            "\n\nFor every cohort and sample, the log design contribution plus the "
+            "log capacity-factor contribution minus the log waste-utilization "
+            "difference equals the directly fitted log gross-intensity difference. "
+            "This shared-control decomposition is distinct from the primary capacity-"
+            "factor model, which conditions on waste utilization and answers an equal-"
+            "utilization comparison.\n\n"
+        )
         handle.write(
             f"Administrative proxy exceptions retained within the audited 1.20 upper "
             f"bounds: {(engineering_frame['electrical_capacity_factor'] > 1).sum()} "
@@ -967,6 +1148,8 @@ def main() -> None:
     state_audit, strict_state = build_entry_state_audit(panel, exact)
     entry_robustness = entry_robustness_diagnostics(exact, strict_state)
     standardized_risk = standardized_entry_probabilities(bundles[0])
+    capacity_support = entry_capacity_support(exact, standardized_risk)
+    design_diagnostics = entry_design_diagnostics(exact)
     specification_summary = entry_specification_summary(
         bundles,
         entry_robustness,
@@ -976,6 +1159,9 @@ def main() -> None:
 
     engineering_frame = build_regression_frame(panel)
     raw_results, figure_data = raw_quantity_models(engineering_frame)
+    component_decomposition = common_control_component_decomposition(
+        engineering_frame
+    )
     overlap = cohort_overlap(engineering_frame)
 
     outputs = {
@@ -984,11 +1170,14 @@ def main() -> None:
         "output/revised_entry_influence.csv": influence,
         "output/revised_entry_robustness.csv": entry_robustness,
         "output/entry_standardized_risk.csv": standardized_risk,
+        "output/entry_capacity_support.csv": capacity_support,
+        "output/entry_design_diagnostics.csv": design_diagnostics,
         "output/entry_specification_summary.csv": specification_summary,
         "output/entry_sample_flow.csv": sample_flow,
         "output/entry_state_audit.csv": state_audit,
         "output/adoption_event_composition.csv": composition,
         "output/raw_quantity_component_results.csv": raw_results,
+        "output/common_control_component_decomposition.csv": component_decomposition,
         "output/figure3_adjusted_components.csv": figure_data,
         "output/cohort_year_overlap.csv": overlap,
     }
@@ -1008,7 +1197,10 @@ def main() -> None:
         influence,
         entry_robustness,
         state_audit,
+        capacity_support,
+        design_diagnostics,
         raw_results,
+        component_decomposition,
         engineering_frame,
     )
     manifest_path = write_stage_manifest(
@@ -1095,6 +1287,49 @@ def main() -> None:
                 }
                 for row in standardized_risk.itertuples(index=False)
             },
+            "entry_capacity_support": {
+                f"{int(row.capacity_t_day)}_t_day": {
+                    "empirical_percentile_pct": float(
+                        row.empirical_percentile_pct
+                    ),
+                    "risk_rows_at_or_above": int(row.risk_rows_at_or_above),
+                    "modeled_events_at_or_above": int(
+                        row.modeled_events_at_or_above
+                    ),
+                    "standardized_events_per_1000": float(
+                        row.standardized_events_per_1000
+                    ),
+                }
+                for row in capacity_support.itertuples(index=False)
+            },
+            "entry_design_diagnostics": {
+                "calendar_elapsed_correlation": float(
+                    design_diagnostics.loc[
+                        design_diagnostics["term"].eq("calendar_per_5y"),
+                        "correlation_with_log_elapsed_risk",
+                    ].iloc[0]
+                ),
+                "calendar_vif": float(
+                    design_diagnostics.loc[
+                        design_diagnostics["term"].eq("calendar_per_5y"),
+                        "variance_inflation_factor",
+                    ].iloc[0]
+                ),
+                "elapsed_risk_vif": float(
+                    design_diagnostics.loc[
+                        design_diagnostics["term"].eq("log_elapsed_risk"),
+                        "variance_inflation_factor",
+                    ].iloc[0]
+                ),
+                "processing_scale_vif": float(
+                    design_diagnostics.loc[
+                        design_diagnostics["term"].eq(
+                            "log_processing_capacity"
+                        ),
+                        "variance_inflation_factor",
+                    ].iloc[0]
+                ),
+            },
             "legacy_temporal_scale_contrast": legacy_temporal_scale_contrast(),
             "capacity_factor_above_one": int(
                 (engineering_frame["electrical_capacity_factor"] > 1).sum()
@@ -1103,6 +1338,20 @@ def main() -> None:
                 (engineering_frame["capacity_utilization_raw"] > 1).sum()
             ),
             "raw_quantity_result_rows": int(len(raw_results)),
+            "component_decomposition": {
+                "rows": int(len(component_decomposition)),
+                "identity_max_absolute_error": float(
+                    component_decomposition["identity_error"].abs().max()
+                ),
+                "stable_cohort_lineages": int(
+                    component_decomposition.loc[
+                        component_decomposition["sample"].eq(
+                            "Stable-cohort sensitivity"
+                        ),
+                        "lineages",
+                    ].iloc[0]
+                ),
+            },
         },
     )
     print(

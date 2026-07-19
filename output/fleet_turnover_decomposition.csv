@@ -1,0 +1,11 @@
+analysis_group,fiscal_year,lineages,installed_capacity_lineages,installed_capacity_share_pct,definition
+All endpoint records,2005,1318,285,21.62367223,All retained administrative records in the endpoint year
+All endpoint records,2024,1014,417,41.12426036,All retained administrative records in the endpoint year
+Endpoint-common lineages,2005,732,219,29.91803279,Stable administrative lineages observed in both endpoint years
+Endpoint-common lineages,2024,732,235,32.10382514,Stable administrative lineages observed in both endpoint years
+Endpoint-common same-episode lineages,2005,678,207,30.53097345,Endpoint-common lineages retaining the same reported asset episode
+Endpoint-common same-episode lineages,2024,678,213,31.4159292,Endpoint-common lineages retaining the same reported asset episode
+Balanced lineages,2005,713,212,29.73352034,Stable administrative lineages observed in every year from 2005 to 2024
+Balanced lineages,2024,713,230,32.25806452,Stable administrative lineages observed in every year from 2005 to 2024
+2005-only lineages,2005,586,66,11.26279863,Lineages observed in 2005 but not 2024; not verified closures
+2024-only lineages,2024,282,182,64.53900709,Lineages observed in 2024 but not 2005; not verified openings

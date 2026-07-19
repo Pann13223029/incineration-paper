@@ -58,7 +58,9 @@ Score 2 requires:
 - Firth bias reduction is motivated and cited
 - the predictor set remains parsimonious
 - stable-lineage bootstrap intervals and joint tests are reported
-- scale odds ratios 6.13 and 6.25 are interpreted as associations
+- revision-frozen scale odds ratio 6.72 and its 4.31-12.46 bootstrap interval are interpreted as associations
+- 300 t/day is disclosed as a near-99th-percentile contrast, with 24/60/120 t/day predictions shown in denser support
+- calendar and elapsed-risk collinearity is disclosed without transferring that concern to the low-VIF scale term
 - age joint p=0.380/0.186/0.051/0.357 are mapped to broad/prior/same-episode/identity-certain frames and prevent a universal age headline
 
 ## 5. Engineering Identity
@@ -70,6 +72,7 @@ Score 2 requires:
 - primary component analysis uses 6,511 rows across 493 stable administrative
   lineages
 - generator design intensity and electrical capacity factor have equations,
+- one shared-control `design + factor - utilization = gross intensity` decomposition exactly reproduces cohort log gaps,
   units, and physical interpretations
 - gross generation intensity is shown as a composite quantity
 - the separate sizing diagnostic uses 5,806 engineering-valid rows with
@@ -161,7 +164,7 @@ Without looking at notes, the author should answer in two minutes:
 
 1. Why are 41.1% and 80.1% both correct?
 2. Why are there 55 descriptive events but only 35 in the main Firth model?
-3. What does the 6.13 odds ratio compare, and what does it not mean?
+3. What does the 6.72 odds ratio compare, and what does it not mean?
 4. Why is age not the entry headline?
 5. What is the engineering identity behind gross MWh/t?
 6. Which comparator principles were adapted, and what is original here?

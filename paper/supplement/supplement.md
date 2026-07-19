@@ -215,6 +215,28 @@ handle 80.1% of recorded waste throughput, while facilities with installed
 capacity account for 70.5% of waste-processing design capacity. Thus, a facility
 count is not interpreted as a waste-volume share.
 
+The endpoint-composition diagnostic prevents the annual prevalence series from
+being interpreted as incumbent-facility diffusion:
+
+| Administrative group | FY | Lineages | Installed-capacity lineages | Share |
+|:--|--:|--:|--:|--:|
+| All endpoint records | 2005 | 1,318 | 285 | 21.624% |
+| All endpoint records | 2024 | 1,014 | 417 | 41.124% |
+| Endpoint-common lineages | 2005 | 732 | 219 | 29.918% |
+| Endpoint-common lineages | 2024 | 732 | 235 | 32.104% |
+| Endpoint-common same-episode lineages | 2005 | 678 | 207 | 30.531% |
+| Endpoint-common same-episode lineages | 2024 | 678 | 213 | 31.416% |
+| Balanced 20-year lineages | 2005 | 713 | 212 | 29.734% |
+| Balanced 20-year lineages | 2024 | 713 | 230 | 32.258% |
+| FY2005-only lineages | 2005 | 586 | 66 | 11.263% |
+| FY2024-only lineages | 2024 | 282 | 182 | 64.539% |
+
+The all-record increase is 19.50 percentage points, compared with 2.19 points
+among endpoint-common lineages and 0.88 points among endpoint-common lineages
+retaining the same reported asset episode. Endpoint-only groups are not verified
+openings or closures, and their different denominators do not form an additive
+causal decomposition.
+
 For engineering-valid generating records, the exact annual decomposition is:
 
 `fleet gross MWh / total tonnes = valid generator-throughput share x conditional valid generator gross MWh/t`.
@@ -271,7 +293,7 @@ capacity.
 
 For lineage `i` in fiscal year `t`, let `Y_it=1` denote the first observed report
 of positive installed electrical-generation capacity while the lineage remains
-at risk. The primary model, frozen before the revised fit, is:
+at risk. The revision-frozen primary model is:
 
 ```text
 logit Pr(Y_it = 1 | at risk) = alpha
@@ -285,7 +307,9 @@ logit Pr(Y_it = 1 | at risk) = alpha
 ten years, calendar time per five years, and observed risk duration is logged.
 The intercept plus four predictors gives five parameters for 35 broad-frame
 events. The earlier 11-parameter age-band, calendar-era, and duration-band
-model remains a sensitivity. The setup
+model remains a sensitivity. A dated decision memo records the lower-degree-of-
+freedom model before the revised fit, but the analysis was not externally
+preregistered and is not described as prespecified. The setup
 follows the discrete-time event-history logic described by Allison (1982) and
 Beck et al. (1998), while the present implementation uses bias reduction because
 events are sparse. The Jeffreys-prior correction follows Firth (1993), and its
@@ -345,7 +369,27 @@ its same-episode inference changes between bootstrap and model-based covariance.
 The lower-degree-of-freedom model is primary because it asks the same age and
 scale question with less sparse-event expenditure.
 
-### S5.4 Why the frames are sensitivities, not group comparisons
+### S5.4 Capacity support and design diagnostics
+
+The revision-frozen 300-versus-100 t/day contrast remains the headline odds-
+ratio translation, but the upper value is in a thin part of the risk frame.
+
+| Capacity level | Empirical percentile | Risk rows at or above | Events at or above | Standardized entries per 1,000 (95% CI) |
+|:--|--:|--:|--:|:--|
+| 24 t/day | 25.43 | 11,381 | 35 | 0.68 (0.35-1.08) |
+| 60 t/day | 52.98 | 7,690 | 32 | 1.37 (0.84-1.97) |
+| 100 t/day | 70.89 | 4,848 | 26 | 2.53 (1.73-3.52) |
+| 120 t/day | 77.41 | 4,056 | 26 | 3.29 (2.28-4.57) |
+| 300 t/day | 98.98 | 315 | 4 | 16.66 (9.51-29.66) |
+
+Calendar time and logged elapsed risk correlate at 0.9086 and have variance
+inflation factors of 5.76 and 6.15. Their separate coefficients are therefore
+not interpreted. The processing-scale VIF is 1.10, with correlations of 0.013
+with calendar time and 0.039 with elapsed risk. This audit localizes the
+collinearity concern to temporal adjustment; it does not remove omitted-
+confounding or causal limitations.
+
+### S5.5 Why the frames are sensitivities, not group comparisons
 
 The prior-operation frame is nested inside the broad frame, and only two broad
 events do not follow positive prior-year throughput. A pooled interaction based
@@ -454,7 +498,31 @@ model. Relative to the 2010-or-later cohort, adjusted installed kW is 79.1%,
 capacity factors are 35.3%, 22.0%, and 1.5% higher, respectively; the 2000s
 capacity-factor interval spans zero.
 
-### S6.4 Cohort medians
+### S6.4 Common-control component decomposition
+
+The utilization-adjusted capacity-factor model above answers an equal-
+utilization comparison. To attribute the gross-intensity cohort gaps across the
+three accounting components, four additional ordinary least-squares models use
+identical rows and controls for `log(D)`, `log(F)`, `log(U)`, and `log(I)`.
+Linearity and the exact identity require each cohort contrast to satisfy
+`gamma_I = gamma_D + gamma_F - gamma_U`.
+
+| Sample | Cohort | Log design | Log capacity factor | Log utilization | Negative-utilization contribution | Component sum/direct log intensity |
+|:--|:--|--:|--:|--:|--:|--:|
+| Primary, 6,511 rows/493 lineages | Before 1990 | -1.5647 | 0.0159 | -0.2989 | 0.2989 | -1.2499 |
+| Primary, 6,511 rows/493 lineages | 1990-1999 | -0.8827 | 0.0203 | -0.1725 | 0.1725 | -0.6899 |
+| Primary, 6,511 rows/493 lineages | 2000-2009 | -0.2674 | -0.0940 | -0.0892 | 0.0892 | -0.2722 |
+| Stable-cohort, 6,291 rows/479 lineages | Before 1990 | -1.6235 | 0.0078 | -0.3097 | 0.3097 | -1.3061 |
+| Stable-cohort, 6,291 rows/479 lineages | 1990-1999 | -0.8823 | 0.0094 | -0.1714 | 0.1714 | -0.7016 |
+| Stable-cohort, 6,291 rows/479 lineages | 2000-2009 | -0.2717 | -0.0984 | -0.0897 | 0.0897 | -0.2803 |
+
+The component sums equal the direct log-intensity coefficients to numerical
+precision. Generator sizing is the largest absolute component for every older
+cohort. This is conditional accounting attribution, not causal mediation. The
+stable-cohort sensitivity excludes all 14 lineages whose reported cohort
+changes during follow-up.
+
+### S6.5 Cohort medians
 
 | Reported start-year cohort | Observations | Lineages | Median gross MWh/t | Median kW per t/day | Median capacity factor |
 |:--|--:|--:|--:|--:|--:|
@@ -466,7 +534,7 @@ capacity-factor interval spans zero.
 Lineage counts are not additive because a lineage can contain more than one
 reported asset episode or cohort classification over the observation window.
 
-### S6.5 Generator-sizing diagnostic
+### S6.6 Generator-sizing diagnostic
 
 A diagnostic reproduces a legacy-style regression of log gross generation
 intensity and then adds log generator design intensity. Both specifications use
@@ -483,7 +551,7 @@ from 0.4737 to 0.8131.
 This exercise demonstrates specification dependence. It is not a causal
 mediation analysis and does not show that generator sizing is exogenous.
 
-### S6.6 Adjacent-year persistence
+### S6.7 Adjacent-year persistence
 
 Across 5,963 adjacent-year pairs from 470 stable lineages, pooled rank
 correlations are 0.9609 for gross generation intensity, 0.9952 for generator
@@ -509,13 +577,15 @@ others.
    unrelated-row insertion invariance.
 6. Fail on duplicate stable-lineage-years or missing lineage and asset-episode
    IDs.
+7. Compare all endpoints, endpoint-common lineages, same-episode lineages, and
+   balanced lineages without calling administrative disappearance closure.
 
 ### S7.2 Entry-model checks
 
 1. Compare the 55-event descriptive risk set with the 35-event complete-case
    exact-year frame.
 2. Restrict further to the 33 events following positive prior-year throughput.
-3. Use the frozen five-parameter Firth model for sparse events and retain the
+3. Use the revision-frozen five-parameter Firth model for sparse events and retain the
    earlier 11-parameter model as sensitivity.
 4. Resample complete stable-lineage histories in 1,999 cluster-bootstrap
    replications.
@@ -525,6 +595,10 @@ others.
 7. Reclassify every modeled event and delete every event lineage one at a time.
 8. Compare the earlier Firth, conventional logit, and complementary log-log
    scale coefficients as a specification sensitivity.
+9. Report support-aware standardized predictions at 24, 60, and 120 t/day and
+   disclose that 300 t/day is near the 99th empirical percentile.
+10. Audit predictor correlations and VIFs; do not interpret the moderately
+   collinear calendar and elapsed-risk terms separately.
 
 ### S7.3 Engineering-sample checks
 
@@ -543,6 +617,12 @@ The conservative bounds are 0.02-0.70 MWh/t, 0.05-1.05 capacity factor,
 0.005-1.00 MWh/t, 0.01-1.50 capacity factor, 0.01-1.50 waste utilization, and
 0.05-150 kW per t/day. These alternatives were fixed as sensitivity rules, not
 selected from coefficient results.
+
+The shared-control component decomposition is required to reproduce each direct
+log gross-intensity cohort coefficient to numerical precision. A separate
+sensitivity removes the 14 cohort-switching lineages, leaving 6,291 rows across
+479 lineages; sizing remains the largest absolute component in every older
+cohort.
 
 ### S7.4 Within-asset checks
 

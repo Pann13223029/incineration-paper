@@ -70,23 +70,22 @@ incinerator records for fiscal year (FY) 2005--FY2024 into 1,690 audited stable
 administrative lineages and 1,767 reported asset episodes. In FY2024, 41.1\% of
 records reported installed capacity, while positive-output facilities handled
 80.1\% of throughput and installed-capacity facilities held 70.5\% of processing
-design capacity. First reported installed-capacity entry was sparse: 35 events
-entered the broad exact-year model and 33 remained after requiring positive
-prior-year operation. A frozen five-parameter Firth model gave a conditional
-300-versus-100 t/day odds ratio of 6.72 (1,999-lineage-bootstrap 95\% confidence
-interval: 4.31--12.46); the corresponding odds ratios were 7.09 after prior
-operation, 7.15 within the same reported asset episode, and 6.76 after uncertain
-lineages were excluded. Reclassifying each event or deleting its entire lineage
-left the scale contrast between 6.12 and 7.30. Among 6,511 engineering-valid
-generator-years across 493 lineages, adjusted installed capacity was 79.1\%,
-58.6\%, and 23.5\% lower in pre-1990, 1990s, and 2000s cohorts than in
-2010-or-later cohorts. Their electrical capacity factors were 35.3\%,
-22.0\%, and 1.5\% higher, respectively, with the 2000s interval spanning zero.
-Thus the apparent cohort hierarchy lies primarily in installed generator design,
-not uniformly better annual use. The contribution is a three-margin national
-diagnosis that separates coverage, selective entry, and installed design from
-operation; it does not identify physical projects, recoverable potential, or
-causal effects.
+design capacity. From FY2005, all-record installed-capacity prevalence rose
+19.5 percentage points but only 2.2 points among 732 lineages observed at both
+endpoints, indicating a strong fleet-composition contribution. First reported
+installed-capacity entry was sparse: 35 events entered the broad exact-year
+model. A revision-frozen five-parameter Firth model gave a conditional 300-
+versus-100 t/day odds ratio of 6.72 (1,999-lineage-bootstrap 95\% confidence
+interval: 4.31--12.46). The 300-t/day level was near the 99th empirical
+percentile, so support-aware absolute predictions are also reported. Among
+6,511 engineering-valid generator-years across 493 lineages, adjusted installed
+capacity was 79.1\%, 58.6\%, and 23.5\% lower in pre-1990, 1990s, and 2000s
+cohorts than in 2010-or-later cohorts. A common-control identity decomposition
+shows that installed sizing is the largest component of every older-cohort log
+gross-intensity gap. The contribution is a three-margin national diagnosis that
+separates fleet composition, selective entry, and installed design from annual
+use; it does not identify physical projects, recoverable potential, or causal
+effects.
 \end{abstract}
 
 \vspace{0.15em}
@@ -151,11 +150,13 @@ separate installed generator design from annual use.
 The three research questions (RQs) are:
 
 \begin{quote}
-\textbf{RQ1: Count versus waste-volume coverage.} How did the share of facility
+\textbf{RQ1: Coverage and fleet composition.} How did the share of facility
 records reporting installed electrical-generation capacity evolve from FY2005
 to FY2024, and how does that count-based measure compare with the share of
 recorded waste throughput handled by positive-output facilities and the share
-of waste-processing design capacity located at installed-capacity facilities?
+of waste-processing design capacity located at installed-capacity facilities,
+and how much endpoint change remains among lineages observed in both endpoint
+years?
 \end{quote}
 
 \begin{quote}
@@ -184,10 +185,11 @@ anchor this sequence.
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{figure1_two_part_framework.pdf}
-\caption{Facility participation, positive-output throughput coverage, and
-installed-capacity design-capacity coverage in Japan's municipal-incineration
-records, FY2005--FY2024. The denominators are intentionally different and
-should not be read as interchangeable shares.}
+\caption[Annual electricity-recovery coverage by denominator,
+FY2005--FY2024]{Annual coverage among Japanese incinerator
+records, FY2005--FY2024. ``Facilities'' denotes positive-capacity records;
+``Throughput'', waste at positive-output records; and ``Capacity'', processing
+design capacity at positive-capacity records. Denominators differ.}
 \label{fig:coverage}
 \end{figure}
 
@@ -352,7 +354,7 @@ links, 50 deterministic FY2019--FY2020 bridge links, and a stratified sample of
 other accepted pairs. Scores, algorithmic decisions, and final lineage IDs are
 withheld. Until a second reviewer completes the packet and disagreements are
 adjudicated, it is a protocol and sensitivity resource rather than evidence of
-independent validation.
+independent validation. Completion remains a journal-submission gate.
 
 \subsection{Analytical frames and estimands}
 
@@ -406,7 +408,7 @@ continuity, reported resets, and forward-dated records. These pathway labels do
 not verify physical project mechanisms. Their exploratory outcome comparison is
 reported only in the supplement.
 
-\subsection{RQ1: coverage definitions and fleet identity}
+\subsection{RQ1: coverage definitions and fleet composition}
 
 For fiscal year $t$, let $N_t$ be all retained facility records,
 $I_{it}^{K}$ indicate positive installed electrical capacity, $I_{it}^{G}$
@@ -452,6 +454,13 @@ throughput-weighted conditional gross intensity. This identity distinguishes
 how much waste is covered from how much gross electricity is reported per tonne
 within the covered segment.
 
+Annual prevalence is a repeated cross-section. A composition diagnostic
+compares all endpoint records with stable lineages observed in FY2005 and
+FY2024, a same-reported-episode subset, and lineages observed in all 20 years.
+Endpoint-only lineages are also compared, but administrative appearance and
+disappearance are not interpreted as physical openings or closures. The groups
+have different denominators and are not an additive causal decomposition.
+
 \subsection{RQ2: sparse first-entry model}
 
 The event is the first observed year with positive installed electrical capacity
@@ -461,7 +470,7 @@ installation, or a particular construction history.
 
 Discrete-time event-history analysis represents each at-risk lineage-year as a
 binary outcome (Allison, 1982; Beck et al., 1998). For lineage $i$ in year
-$t$, the frozen primary model is
+$t$, the revision-frozen primary model is
 
 \begin{equation}
 \operatorname{logit}\!\left\{\Pr(Y_{it}=1\mid Y_{i,t-1}=0)\right\}
@@ -475,9 +484,10 @@ $t$, the frozen primary model is
 Here, $A$ is prior-year reported facility age, $C$ is prior-year processing
 design capacity in t/day, and $R$ is elapsed observed time at risk. Age is
 scaled per ten years and calendar time per five years. Including the intercept,
-the specification has five parameters for 35 broad-frame events and was frozen
-before the revised fit. The earlier 11-parameter age-band, calendar-era, and
-duration-band model is retained as sensitivity.
+the specification has five parameters for 35 broad-frame events. A dated
+decision memo records the model before the revised fit; it was not externally
+preregistered. The earlier 11-parameter age-band, calendar-era, and duration-
+band model is retained as sensitivity.
 
 Ordinary maximum-likelihood logit is vulnerable to small-sample bias and
 separation in a sparse event design. The primary estimator therefore uses
@@ -525,6 +535,11 @@ OR_{300:100}
 \end{split}
 \label{eq:capacity-contrast}
 \end{equation}
+
+Because 300 t/day lies near the 99th empirical percentile, standardized annual
+probabilities are also reported at 24, 60, and 120 t/day, the risk-frame 25th
+percentile, median, and 75th percentile. Predictor correlations and variance
+inflation factors delimit interpretation of the calendar and elapsed-risk terms.
 
 The earlier 11-parameter Firth model and conventional logit and
 complementary-log-log fits are retained as specification sensitivities.
@@ -608,6 +623,18 @@ $\beta_{KC}-1$ under identical controls; this is an algebraic translation, not
 independent corroboration. A direct gross-output model replaces $\log C$ with
 $\log W$ and $\log K$.
 
+For relative component attribution, additional regressions use one identical
+control matrix for $\log D$, $\log F$, $\log U$, and $\log Y$. The accounting
+identity and ordinary least-squares linearity imply for every cohort contrast
+
+\begin{equation}
+\gamma_Y=\gamma_D+\gamma_F-\gamma_U.
+\label{eq:common-component}
+\end{equation}
+
+This common-control decomposition is separate from the primary capacity-factor
+model, which conditions on $U$ and answers an equal-utilization comparison.
+
 A specification diagnostic compares a legacy-style regression of $\log Y$ on
 reported age, processing scale, waste utilization, heating value, technology,
 and year with the same model after adding $\log D$. Both specifications use the
@@ -631,13 +658,21 @@ The official 415/991 ratio (41.9\%) describes the Ministry's published count of
 electricity-generating facilities. The results below use the separate analytical
 definition of positive installed capacity among retained facility records.
 
-Installed-capacity participation rises steadily from 21.6\% of facility records
-in FY2005 to 41.1\% in FY2024. Positive-output facilities already handle a much
+Annual repeated-cross-section installed-capacity prevalence rises from 21.6\%
+of facility records in FY2005 to 41.1\% in FY2024. Positive-output facilities handle a much
 larger share of waste: throughput coverage rises from 60.5\% to 80.1\% over the
 same period. The design-capacity share at installed-capacity facilities moves
 from 56.0\% to 70.5\%. Figure~\ref{fig:coverage} therefore shows long-run
 increases with year-to-year variation under all three denominators, alongside a
 persistent count-volume gap.
+
+That 19.50-percentage-point increase is largely compositional. Among 732
+lineages observed at both endpoints, prevalence rises only from 29.92\% to
+32.10\% (2.19 points); among 678 endpoint-common lineages retaining the same
+reported episode, it rises 0.88 points. FY2024-only lineages report 64.54\%
+participation, versus 11.26\% among FY2005-only lineages. The trend therefore
+does not describe widespread conversion among continuing facilities, and the
+endpoint-only groups are not verified openings or closures.
 
 The FY2024 cross-section makes the distinction concrete. The administrative
 panel contains 1,014 facility records, of which 417 report positive installed
@@ -688,11 +723,19 @@ in the largest (0.672\%). Because risk duration, calendar period, and age differ
 across these groups, the adjusted model is needed before interpreting the
 gradient.
 
-In the frozen five-parameter broad Firth model, the coefficient on
+In the revision-frozen five-parameter broad Firth model, the coefficient on
 $\log(1+C/100)$ is 2.749. The implied 300-versus-100 t/day odds ratio is 6.72
 (1,999-lineage-bootstrap 95\% CI 4.31--12.46). The prior-operation,
 same-episode, and identity-certain odds ratios are 7.09 (4.08--13.76), 7.15
 (4.44--14.05), and 6.76 (4.23--12.30), respectively.
+
+Standardized annual predictions are 2.53 and 16.66 entries per 1,000 facility-
+years at 100 and 300 t/day. The latter is a tail prediction: 300 t/day is at the
+98.98th empirical percentile, with 315 risk rows and 4 events at or above
+it. Predictions at 24, 60, and 120 t/day are 0.68, 1.37, and 3.29 per 1,000.
+Calendar time and elapsed risk are correlated ($r=0.909$; variance inflation
+factors 5.76 and 6.15), but the processing-scale variance inflation factor is
+1.10. The temporal coefficients are therefore not interpreted separately.
 
 The broad continuous-age coefficient is -0.327 per ten years (bootstrap CI
 -0.774 to 0.070); the prior-operation and identity-certain intervals also span
@@ -709,9 +752,11 @@ do not validate physical mechanisms.
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.88\textwidth]{figure2_selective_transition.pdf}
-\caption{Five-parameter Firth estimates for first reported installed-capacity
-entry. Capacity is shown as the 300-versus-100 t/day contrast and age per ten
-years; intervals come from 1,999 whole-lineage bootstrap replications.}
+\caption[Firth estimates for first reported installed-capacity entry]{Five-parameter Firth estimates of first reported installed-capacity
+entry. Points are odds ratios; bars are 95\% intervals from 1,999 lineage
+bootstraps. Capacity compares 300 with 100 t/day; age is per ten years. The
+frames contain 13,072--15,154 risk rows; the legend gives events.
+Associations are not causal.}
 \label{fig:entry}
 \end{figure}
 
@@ -737,11 +782,11 @@ is 79.1\% lower before 1990, 58.6\% lower in 1990--1999, and 23.5\% lower in
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{figure3_efficiency_structure.pdf}
-\caption{Adjusted reported start-year cohort contrasts in installed electrical
-capacity and annual electrical capacity factor. Points are percentage
-differences from the 2010-or-later cohort; bars are lineage-clustered 95\%
-confidence intervals. Reported start year is not a verified generator
-installation date.}
+\caption[Adjusted reported start-year cohort contrasts]{Adjusted start-year
+cohort contrasts for 6,511 facility-years from 493 lineages. Points are
+percentage differences from the 2010-or-later cohort; bars are
+lineage-clustered 95\% confidence intervals. Models use the stated controls.
+Start year is not a verified installation date; contrasts are not causal.}
 \label{fig:components}
 \end{figure}
 
@@ -761,6 +806,15 @@ associated (-0.116, 95\% CI -0.162 to -0.070). This model explains 33.9\% of log
 capacity-factor variation. These coefficients describe annual use of installed
 kW. They do not show that utilization has an independent positive association
 with gross MWh/t after generator sizing is represented.
+
+Under one common control design, the pre-1990 log gross-intensity gap of -1.250
+decomposes into -1.565 from generator design, +0.016 from capacity factor, and
++0.299 from lower waste utilization. The corresponding design, factor,
+negative-utilization, and total terms are -0.883, +0.020, +0.172, and -0.690
+for the 1990s, and -0.267, -0.094, +0.089, and -0.272 for the 2000s. Sizing is
+the largest component in every older cohort. Excluding 14 cohort-switching
+lineages leaves the ordering unchanged. These exact conditional sums are
+accounting attribution, not causal mediation.
 
 The direct gross-output model is consistent with the component structure. The
 elasticity of annual gross MWh with respect to throughput is 0.638 (95\% CI
@@ -809,21 +863,25 @@ simultaneous changes in throughput, maintenance, installed capacity, and output.
 
 The 41.1\% analytical participation rate describes equipment distribution, not
 waste coverage. Positive-output facilities handle 80.1\% of throughput, and the
-installed segment holds 70.5\% of processing design capacity. Japan therefore
-combines incomplete diffusion across records with substantial volume coverage;
-non-generating records are not equal-sized unused opportunities.
+installed segment holds 70.5\% of processing design capacity. The all-record
+endpoint increase is 19.50 points but only 2.19 among endpoint-common lineages,
+so prevalence, composition, and volume coverage are distinct fleet facts.
 
 Entry is strongly associated with processing scale in all four reduced models,
-and survives every event reclassification and event-lineage deletion. The model
-does not show that enlarging a facility would produce entry. Age is weaker:
-broad, prior-operation, and identity-certain bootstrap intervals span zero,
-while the same-episode result uses only 24 events.
+and survives every event reclassification and whole-event-lineage deletion. The
+model still does not show that enlarging a facility would produce entry. Scale
+can proxy for unobserved municipal, technical, and financial conditions. Age is
+weaker: broad, prior-operation, and identity-certain bootstrap intervals span
+zero, while the same-episode result uses only 24 events. This sensitivity is
+evidence against a simple age-only narrative, not evidence for one preferred
+continuity definition.
 
-Gross MWh/t also changes meaning after decomposition. Its observed cohort
-hierarchy aligns primarily with installed capacity: older cohorts have smaller
-adjusted kW but not lower annual capacity factors. The contribution is not that
-newer plants work better; reported design and annual use point in different
-cohort directions.
+Gross MWh/t also changes meaning after decomposition. Shared-control component
+regressions show that installed sizing is the largest part of every older-
+cohort log gap, while the utilization-adjusted capacity-factor model answers a
+different conditional question. The contribution is therefore not ``newer
+plants work better''; it is a measured separation of design, annual use, and
+waste loading before an operating interpretation is assigned.
 
 \subsection{Evidence-bound implications}
 
@@ -887,19 +945,24 @@ mechanism claim.
 \section{Conclusion}
 
 Japan's municipal-incineration fleet looks different at three margins. In
-FY2024, installed capacity appears in 41.1\% of records, while positive-output
-facilities handle 80.1\% of throughput and installed-capacity facilities
-represent 70.5\% of processing design capacity. At the transition margin, the
-broad 300-versus-100 t/day odds ratio is 6.72 and remains near seven under every
-frame and event attack. At the component margin, older cohorts have markedly
-smaller adjusted installed kW but do not have lower annual capacity factors.
+FY2024, installed capacity appears in 41.1\% of facility records, while
+positive-output facilities handle 80.1\% of throughput and installed-capacity
+facilities represent 70.5\% of processing design capacity. At the coverage
+margin, the 19.50-point all-record rise falls to 2.19 points among endpoint-
+common lineages. At the transition margin, first reported entry is sparse but
+strongly scale-selective: the broad 300-versus-100 t/day odds ratio is 6.72 and
+remains near seven under every frame and event-level attack. Age remains
+continuity-sensitive. At the component margin, common-control component sums
+identify installed sizing as the largest part of each older-cohort gross-
+intensity gap.
 
-The paper's contribution is therefore not a claim that every non-generator is
-an equal opportunity or that newer facilities simply perform better. It is a
+These findings reject two shortcuts without claiming a causal alternative.
+Facility count is not activity coverage, and newer-cohort gross MWh/t is not
+evidence of uniformly better operation. The transferable contribution is a
 three-margin diagnostic: reconstruct lineages before transitions, separate
 counts from covered activity, and separate installed design from annual use.
-That structure identifies which claims require project, engineering, cost, or
-causal evidence.
+That structure identifies which claim the administrative data can support and
+which next question requires project, engineering, cost, or causal evidence.
 
 \section*{Acknowledgements}
 

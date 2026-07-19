@@ -4,7 +4,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 
 ## Result: PASS
 
-- Passed checks: 161
+- Passed checks: 185
 - Failed checks: 0
 
 ## Canonical Evidence
@@ -13,12 +13,16 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - FY2019-FY2020 continuity: 0 official-code overlap versus 1,064 administrative-lineage overlap.
 - FY2009-FY2013 bridge: 882 official-code overlap versus 1,135 administrative-lineage overlap.
 - FY2024 facility matrix: installed capacity 41.1% all/46.4% active; positive output 40.4% all/46.6% active among 879 positive-throughput records; 80.1% throughput coverage, 70.5% installed design-capacity share.
+- Endpoint composition: all-record installed prevalence rises 19.50 points versus 2.19 among 732 endpoint-common lineages and 0.88 among 678 same-episode endpoint lineages.
 - Firth entry frames: 15,154/1,137/35 broad and 13,072/1,019/33 prior-operation and 15,095/1,135/24 same-episode and 15,107/1,130/35 identity-certain rows/lineages/events.
 - Entry capacity-quartile risk rows: 3,854/4,175/3,702/3,423.
-- Primary entry inference: frozen five-parameter OR 6.72 (95% lineage-bootstrap interval 4.31-12.46) for 300 versus 100 t/day; event attacks retain 6.12-7.30.
+- Primary entry inference: revision-frozen five-parameter OR 6.72 (95% lineage-bootstrap interval 4.31-12.46) for 300 versus 100 t/day; event attacks retain 6.12-7.30.
 - Extended entry diagnostics: alternative-form ORs 4.22-5.01; leave-one-prefecture ORs 6.14-7.18; strict reporting-state OR 6.21 on 30 events.
 - Standardized annual entry risk: 2.53 versus 16.66 entries per 1,000 facility-years at 100 and 300 t/day; flexible temporal-form OR 6.13 (3.92-11.21).
+- Entry support: 300 t/day is at the 98.98th empirical percentile with 315 risk rows and 4 events at or above it; support-aware risks at 24/60/120 t/day are 0.68/1.37/3.29 per 1,000.
+- Entry design audit: calendar/elapsed-risk correlation 0.909; VIFs 5.76/6.15, versus scale VIF 1.10.
 - Components: 6,511 rows across 493 stable administrative lineages; sizing-adjusted age -0.0020 (p=0.2977); R-squared 0.4737 to 0.8131.
+- Common-control components: pre-1990 design/factor/negative-utilization -1.565/0.016/0.299 sum to direct log intensity -1.250.
 
 ## Failures
 
@@ -40,6 +44,7 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::fy2024_fleet_arithmetic` [n/a]: FY2024 recomputed installed all/active and output all/active shares: 41.124260/46.416382/40.433925/46.643914; throughput/valid-throughput: 80.098728/79.671588%.
 - `evidence_integrity::fleet_decomposition_identity` [n/a]: Maximum fleet decomposition identity error: 0.000e+00
 - `evidence_integrity::fy2024_segment_totals` [n/a]: FY2024 segment rows sum to 1014; facility shares sum to 100.000000%; positive-throughput rows total 879.
+- `evidence_integrity::fleet_turnover_composition` [n/a]: All-record installed-capacity prevalence changes by 19.5006 points; endpoint-common/same-episode changes are 2.1858/0.8850 points.
 - `evidence_integrity::fleet_manifest_sync` [n/a]: FY2024 fleet CSV and stage manifest headline metrics agree.
 - `evidence_integrity::adoption_capacity_quartile_counts` [n/a]: Exact-frame capacity-quartile rows/events: {'Q1 smallest': {'risk_rows': 3854, 'events': 1}, 'Q2': {'risk_rows': 4175, 'events': 2}, 'Q3': {'risk_rows': 3702, 'events': 9}, 'Q4 largest': {'risk_rows': 3423, 'events': 23}}
 - `evidence_integrity::firth_method_and_sample_sync` [n/a]: Firth samples are 15154/1137/35 broad and 13072/1019/33 prior-operation and 15095/1135/24 same-episode and 15107/1130/35 identity-certain rows/lineages/events.
@@ -58,9 +63,12 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `evidence_integrity::revised_entry_functional_form_and_geographic_robustness` [n/a]: Alternative-form scale OR range 4.2195-5.0149; leave-one-prefecture range 6.1430-7.1821 across 21 event prefectures.
 - `evidence_integrity::entry_reporting_state_audit` [n/a]: Positive-output rows without positive reported capacity: 49 across 6 lineages; strict state frame retains 14,000/1,110/30 rows/lineages/events.
 - `evidence_integrity::entry_standardized_absolute_risk` [n/a]: Standardized annual entries per 1,000 facility-years at 100/300 t/day: 2.5324/16.6588.
+- `evidence_integrity::entry_capacity_support` [n/a]: Capacity support levels [24, 60, 100, 120, 300]; 300 t/day is at the 98.98th empirical percentile with 315 risk rows and 4 events at or above it.
+- `evidence_integrity::entry_design_collinearity` [n/a]: Calendar/elapsed-risk correlation is 0.9086; VIFs for calendar, elapsed risk, and processing scale are 5.763/6.148/1.102.
 - `evidence_integrity::entry_specification_and_sample_flow` [n/a]: Consolidated specifications: 11 rows; sample flow exposes 467 left-censored lineages and 35 primary events.
 - `evidence_integrity::frozen_primary_not_legacy_sensitivity` [n/a]: Frozen five-parameter primary OR is 6.7233; the earlier higher-dimensional sensitivity OR is 6.1296.
 - `evidence_integrity::raw_quantity_component_sync` [n/a]: Raw quantity results have 11 focal rows and adjusted component contrasts have 8 rows.
+- `evidence_integrity::common_control_component_identity` [n/a]: Common-control cohort components sum to direct log gross-intensity differences with maximum error 1.110e-15; the stable-cohort sensitivity retains 6,291 rows across 479 lineages.
 - `document_presence::manuscript_md_present` [paper/manuscript/paper.md]: Required document exists.
 - `document_presence::manuscript_tex_present` [paper/manuscript/paper.tex]: Required document exists.
 - `document_presence::professor_manuscript_md_present` [paper/manuscript/professor/paper.md]: Required document exists.
@@ -71,62 +79,82 @@ This report verifies generated evidence first, then checks the manuscript, LaTeX
 - `required_claim::official_code_break` [paper/manuscript/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::fleet_endpoint_composition` [paper/manuscript/paper.md]: Distinguish the all-record endpoint increase (19.50 points) from the 732 endpoint-common-lineage increase (2.19 points), without interpreting endpoint-only records as physical openings or closures.
 - `required_claim::firth_method_and_frames` [paper/manuscript/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
 - `required_claim::revised_entry_scale_and_influence` [paper/manuscript/paper.md]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
+- `required_claim::entry_capacity_support` [paper/manuscript/paper.md]: Disclose 300 t/day as an upper-tail contrast and report denser-support standardized predictions at 24, 60, and 120 t/day.
+- `required_claim::entry_temporal_collinearity` [paper/manuscript/paper.md]: Report temporal collinearity and avoid separate interpretation of calendar and elapsed-risk coefficients.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
 - `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/paper.md]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
+- `required_claim::common_control_component_decomposition` [paper/manuscript/paper.md]: Report the shared-control pre-1990 component identity and distinguish conditional accounting attribution from causal mediation.
 - `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.md]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
 - `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.md]: State that the exploratory pathway comparison is supplemental.
 - `required_claim::stable_site_identity` [paper/manuscript/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::fleet_endpoint_composition` [paper/manuscript/paper.tex]: Distinguish the all-record endpoint increase (19.50 points) from the 732 endpoint-common-lineage increase (2.19 points), without interpreting endpoint-only records as physical openings or closures.
 - `required_claim::firth_method_and_frames` [paper/manuscript/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
 - `required_claim::revised_entry_scale_and_influence` [paper/manuscript/paper.tex]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
+- `required_claim::entry_capacity_support` [paper/manuscript/paper.tex]: Disclose 300 t/day as an upper-tail contrast and report denser-support standardized predictions at 24, 60, and 120 t/day.
+- `required_claim::entry_temporal_collinearity` [paper/manuscript/paper.tex]: Report temporal collinearity and avoid separate interpretation of calendar and elapsed-risk coefficients.
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
 - `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/paper.tex]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
+- `required_claim::common_control_component_decomposition` [paper/manuscript/paper.tex]: Report the shared-control pre-1990 component identity and distinguish conditional accounting attribution from causal mediation.
 - `required_claim::sizing_diagnostic_public_boundary` [paper/manuscript/paper.tex]: Report the sizing-adjusted age result and disclose that shared component quantities are algebraically or mechanically coupled.
 - `required_claim::post_entry_pathway_public_placement` [paper/manuscript/paper.tex]: State that the exploratory pathway comparison is supplemental.
 - `required_claim::stable_site_identity` [paper/manuscript/professor/paper.md]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/professor/paper.md]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.md]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.md]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::fleet_endpoint_composition` [paper/manuscript/professor/paper.md]: Distinguish the all-record endpoint increase (19.50 points) from the 732 endpoint-common-lineage increase (2.19 points), without interpreting endpoint-only records as physical openings or closures.
 - `required_claim::fy2024_matched_state_facility_matrix` [paper/manuscript/professor/paper.md]: Report the matched FY2024 installed/output by all/active matrix: 41.1/46.4% installed and 40.4/46.6% output.
 - `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.md]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
 - `required_claim::revised_entry_scale_and_influence` [paper/manuscript/professor/paper.md]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
+- `required_claim::entry_capacity_support` [paper/manuscript/professor/paper.md]: Disclose 300 t/day as an upper-tail contrast and report denser-support standardized predictions at 24, 60, and 120 t/day.
+- `required_claim::entry_temporal_collinearity` [paper/manuscript/professor/paper.md]: Report temporal collinearity and avoid separate interpretation of calendar and elapsed-risk coefficients.
 - `required_claim::revised_entry_extended_robustness` [paper/manuscript/professor/paper.md]: Report alternative-form and leave-one-prefecture OR ranges plus the 30-event two-prior-year reporting-state sensitivity.
 - `required_claim::entry_state_semantic_boundary` [paper/manuscript/professor/paper.md]: Disclose blank/zero-capacity positive-output exceptions and avoid equating a blank field with verified physical absence.
 - `required_claim::entry_standardized_absolute_risk` [paper/manuscript/professor/paper.md]: Translate the primary odds ratio into standardized annual risk: 2.53 and 16.66 entries per 1,000 facility-years at 100 and 300 t/day.
 - `required_claim::entry_flexible_temporal_sensitivity` [paper/manuscript/professor/paper.md]: Surface the flexible calendar/duration sensitivity: OR 6.13 (CI 3.92-11.21).
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.md]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/professor/paper.md]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::capacity_factor_proxy_exceptions` [paper/manuscript/professor/paper.md]: Disclose that only 5 retained capacity-factor rows exceed 1.00, explain the 1.20 administrative bound, and report the conservative-bound stability check.
 - `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/professor/paper.md]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
+- `required_claim::common_control_component_decomposition` [paper/manuscript/professor/paper.md]: Report the shared-control pre-1990 component identity and distinguish conditional accounting attribution from causal mediation.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.md]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.md]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::stable_site_identity` [paper/manuscript/professor/paper.tex]: Explain administrative-lineage identity and report 1,690 lineages and 1,767 asset episodes.
 - `required_claim::official_code_break` [paper/manuscript/professor/paper.tex]: Disclose the FY2019-FY2020 official-code regime break and explain why official codes are not longitudinal identities.
 - `required_claim::official_code_gap_bridge` [paper/manuscript/professor/paper.tex]: Report the FY2009-FY2013 bridge exactly: 882 overlapping official codes and 1,135 linked administrative lineages.
 - `required_claim::fy2024_count_volume` [paper/manuscript/professor/paper.tex]: Report the FY2024 count-volume contrast: 41.1% facilities, 80.1% throughput, and 70.5% design capacity.
+- `required_claim::fleet_endpoint_composition` [paper/manuscript/professor/paper.tex]: Distinguish the all-record endpoint increase (19.50 points) from the 732 endpoint-common-lineage increase (2.19 points), without interpreting endpoint-only records as physical openings or closures.
 - `required_claim::fy2024_matched_state_facility_matrix` [paper/manuscript/professor/paper.tex]: Report the matched FY2024 installed/output by all/active matrix: 41.1/46.4% installed and 40.4/46.6% output.
 - `required_claim::firth_method_and_frames` [paper/manuscript/professor/paper.tex]: Name Firth/Jeffreys-prior bias reduction and report broad frame 15,154/1,137/35 plus prior-operation frame 13,072/1,019/33 and same-episode sensitivity 15,095/1,135/24; identity-certain sensitivity 15,107/1,130/35, with 1999 lineage bootstraps for the reduced model.
 - `required_claim::revised_entry_scale_and_influence` [paper/manuscript/professor/paper.tex]: Report reduced-model scale OR=6.72 (CI 4.31-12.46), event-attack range 6.12-7.30, and exact-event composition.
+- `required_claim::entry_capacity_support` [paper/manuscript/professor/paper.tex]: Disclose 300 t/day as an upper-tail contrast and report denser-support standardized predictions at 24, 60, and 120 t/day.
+- `required_claim::entry_temporal_collinearity` [paper/manuscript/professor/paper.tex]: Report temporal collinearity and avoid separate interpretation of calendar and elapsed-risk coefficients.
 - `required_claim::revised_entry_extended_robustness` [paper/manuscript/professor/paper.tex]: Report alternative-form and leave-one-prefecture OR ranges plus the 30-event two-prior-year reporting-state sensitivity.
 - `required_claim::entry_state_semantic_boundary` [paper/manuscript/professor/paper.tex]: Disclose blank/zero-capacity positive-output exceptions and avoid equating a blank field with verified physical absence.
 - `required_claim::entry_standardized_absolute_risk` [paper/manuscript/professor/paper.tex]: Translate the primary odds ratio into standardized annual risk: 2.53 and 16.66 entries per 1,000 facility-years at 100 and 300 t/day.
 - `required_claim::entry_flexible_temporal_sensitivity` [paper/manuscript/professor/paper.tex]: Surface the flexible calendar/duration sensitivity: OR 6.13 (CI 3.92-11.21).
 - `required_claim::adoption_capacity_quartile_counts` [paper/manuscript/professor/paper.tex]: Report exact capacity-quartile risk rows: 3,854, 4,175, 3,702, and 3,423.
 - `required_claim::engineering_components` [paper/manuscript/professor/paper.tex]: Separate generator design intensity from electrical capacity factor and report 6,511 engineering-valid rows across 493 stable administrative lineages.
+- `required_claim::capacity_factor_proxy_exceptions` [paper/manuscript/professor/paper.tex]: Disclose that only 5 retained capacity-factor rows exceed 1.00, explain the 1.20 administrative bound, and report the conservative-bound stability check.
 - `required_claim::raw_installed_capacity_contrasts` [paper/manuscript/professor/paper.tex]: Report the raw installed-kW elasticity and the adjusted installed-capacity and capacity-factor cohort contrasts.
+- `required_claim::common_control_component_decomposition` [paper/manuscript/professor/paper.tex]: Report the shared-control pre-1990 component identity and distinguish conditional accounting attribution from causal mediation.
 - `required_claim::sizing_diagnostic_conclusion` [paper/manuscript/professor/paper.tex]: State that the sizing-adjusted age coefficient is -0.0020 (p=0.2977) and that R-squared changes from 0.4737 to 0.8131.
 - `required_claim::post_entry_pathway_results` [paper/manuscript/professor/paper.tex]: Report event-time-one pathway counts and ranks from the generated trajectory table.
 - `required_claim::supplement_identity_audit` [paper/supplement/supplement.md]: Document identity audit counts, including official/stable FY2019-FY2020 overlaps 0/1,064 and duplicate lineage-years.
 - `required_claim::supplement_raw_provenance` [paper/supplement/supplement.md]: Reference SHA-256 raw-file provenance, explicitly unavailable retrieval timestamps, and workbook schema/header mappings.
 - `required_claim::supplement_firth_inference` [paper/supplement/supplement.md]: Document the five-parameter Firth model, 1999 cluster bootstraps, scale OR 6.72, continuous age, and event influence.
 - `required_claim::supplement_component_diagnostic` [paper/supplement/supplement.md]: Document both engineering components and the non-significant sizing-adjusted age result.
+- `required_claim::supplement_turnover_support_and_common_components` [paper/supplement/supplement.md]: Document endpoint composition, entry support and collinearity, the common-control identity, and stable-cohort sensitivity.
 - `required_claim::lineage_current_design` [paper/notes/positioning/professor-comparator-method-lineage.md]: Explain the current administrative-lineage, Firth, design-intensity, and capacity-factor design.
 - `required_claim::lineage_current_headlines` [paper/notes/positioning/professor-comparator-method-lineage.md]: Report current count-volume, reduced-model entry, event-influence, raw-component, and sizing-diagnostic headline values in the professor lineage packet.
+- `required_claim::lineage_red_team_revisions` [paper/notes/positioning/professor-comparator-method-lineage.md]: Carry the composition, support, collinearity, and common-control revisions into the professor lineage packet.
 - `stale_phrase::panel_exit_claim` [paper/manuscript/paper.md]: Panel-exit evidence is invalid after the official-code regime break and must not remain.
 - `stale_phrase::active_conversion_frame` [paper/manuscript/paper.md]: The old active-conversion frame is replaced by the prior-operation sensitivity.
 - `stale_phrase::coded_longitudinal_frame` [paper/manuscript/paper.md]: Officially coded rows must not be framed as stable longitudinal units.

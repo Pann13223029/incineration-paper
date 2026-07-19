@@ -1,9 +1,26 @@
 # Entry-Model Decision Memo
 
-**Frozen:** 14 July 2026, before fitting the revised primary specification
+**Internal design freeze:** 14 July 2026, before comparing revised-model
+estimates
 
 **Purpose:** reduce information demand in the sparse first-reported-capacity
 analysis without selecting a model for a favorable result.
+
+## Audit status and chronology
+
+This is an internal design record, not a preregistration. Repository history
+establishes the following sequence:
+
+| Time (Asia/Bangkok) | Version-control evidence | Decision stage |
+|:--|:--|:--|
+| 14 July 2026, 14:32 | Commit `c5e1ea4` | The major-revision plan required a short model-decision memo before comparing revised estimates and specified the estimand, scale, age, time, duration, parameter-budget, and influence decisions to freeze. |
+| 14 July 2026, 16:54 | Commit `0b8a43b` | This memo, the five-parameter implementation, and revised outputs entered version control together. The memo records that the choices were made before the revised comparison, but Git cannot independently timestamp the memo and fit within that commit. |
+| 17 July 2026, 13:36 | Commit `4a589b3` | Functional-form, reporting-state, and leave-one-prefecture diagnostics were added without changing the primary five-parameter specification. |
+| 17 July 2026, 17:48 | Commit `4e7e9fd` | Support-aware standardized risks and the consolidated specification audit were added without changing the primary specification. |
+
+The defensible claim is therefore **revision-frozen internal analysis**, not
+external preregistration. Later diagnostics may qualify interpretation but may
+not replace the primary model because their estimates appear more favorable.
 
 ## Primary estimand
 

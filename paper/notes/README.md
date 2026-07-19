@@ -13,6 +13,12 @@ artifacts in [`output/`](../../output/), and a failed verifier overrides any not
 - [Paper structure checklist](planning/paper-structure-checklist.md): section
   order, methods coverage, results sequence, and failure conditions
 
+## Methods
+
+- [Entry-model decision memo](methods/entry-model-decision.md): internal
+  pre-comparison specification freeze, version-control chronology, primary
+  model choices, and rules separating later diagnostics from model selection
+
 ## Positioning
 
 - [Claim stack](positioning/claim-stack.md): authoritative narrative hierarchy
@@ -21,16 +27,28 @@ artifacts in [`output/`](../../output/), and a failed verifier overrides any not
   from active claims to generated evidence
 - [Professor comparator and method lineage](positioning/professor-comparator-method-lineage.md):
   equations, intellectual provenance, adaptation, and originality boundaries
+- [Major-revision literature positioning](positioning/major-revision-literature-search-2026-07-14.md):
+  retrospective comparator-search record, screening boundaries, retained
+  sources, and explicit limits on exhaustive novelty claims
 - [Thesis-to-paper map](positioning/thesis-to-paper-map.md): what the paper keeps,
   reframes, removes, and defers
 
 ## Review
 
+- [Independent human linkage-review handoff](review/human-linkage-review-handoff.md):
+  reviewer instructions, blinding rules, decision vocabulary, file locking,
+  adjudication, and completion reporting
+- [Modeled-event external-verification handoff](review/model-event-external-verification-handoff.md):
+  official-source protocol and blank review packet for the 35 modeled entry
+  events; verification remains incomplete
+- [Current thesis-defense rehearsal](review/thesis-defense-rehearsal-2026-07-18.md):
+  sixty-second opening, hostile questions, evidence anchors, and prohibited
+  overclaims
 - [Professor and reviewer rubric](review/reviewer-rubric.md): hard gates and
   readiness scoring
 - [Defense red-team revision map](review/defense-red-team-revision-map.md):
-  resolved identity blockers, remaining attacks, revision priorities, and oral
-  defense answers
+  historical review record retained for resolved identity blockers and earlier
+  revision decisions; not the current rehearsal source
 - [Major-revision red-team review](review/major-revision-red-team-2026-07-14.md):
   multi-persona novelty attacks, resolved objections, and the remaining human
   linkage-validation gate

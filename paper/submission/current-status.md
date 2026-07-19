@@ -1,7 +1,7 @@
 # Current Paper Status
 
 The repository now maintains two manuscript profiles over one empirical
-pipeline as of 16 July 2026. The journal-facing public draft presents the
+pipeline as of 17 July 2026. The journal-facing public draft presents the
 focused measurement contribution, while the professor-facing thesis version
 retains the fuller methodological, comparator, diagnostic, and defense context
 in A4 graduation-thesis format.
@@ -14,12 +14,12 @@ The public draft is ready for structured review, not journal submission.
 |:--|:--|
 | Repository | Public review workspace at `https://github.com/Pann13223029/incineration-paper` |
 | Target journal track | `Waste Management` |
-| Empirical pipeline | Corrected identity, fleet, entry, component, robustness, quality, and claim stages implemented |
-| Journal-facing draft | Major-revision draft with a three-margin contribution, reduced-DF entry model, and adjusted component contrasts |
+| Empirical pipeline | Identity, fleet composition, entry support, common-control components, robustness, quality, and claim stages implemented |
+| Journal-facing draft | Major-revision draft with a three-margin contribution, support-audited Firth entry model, and common-control component attribution |
 | Professor-facing thesis | Comprehensive A4 thesis profile with comparator adaptation, pathway context, and the same revised empirical core |
-| Shared supplement | Reconciled with the five-parameter entry model, event attacks, and raw-quantity component evidence |
+| Shared supplement | Reconciled with endpoint composition, entry support and collinearity, event attacks, and common-control components |
 | Figures | Public draft uses three academic figures; exploratory pathway evidence remains outside its main text |
-| Evidence snapshot | Expanded to include linkage-review, revised-entry, influence, and raw-component artifacts |
+| Evidence snapshot | 53 synchronized artifacts, including lineage review, endpoint composition, entry support, influence, and component decomposition |
 | Claim verification | Profile-aware checks pass for journal and professor Markdown and LaTeX sources |
 | Journal PDF | `paper/share/waste-management-manuscript-latex.pdf` |
 | Professor thesis PDF | `paper/share/professor-review-thesis.pdf` |
@@ -40,13 +40,17 @@ Professor-facing thesis PDF: [open in browser](https://raw.githack.com/Pann13223
 - The prior-operation Firth sensitivity contains 13,072 rows, 1,019 lineages, and 33 events.
 - The same-episode continuity sensitivity contains 15,095 rows, 1,135 lineages, and 24 events.
 - The identity-certain sensitivity contains 15,107 rows, 1,130 lineages, and 35 events.
-- The frozen five-parameter Firth model gives 300-versus-100 t/day odds ratios of 6.72, 7.09, 7.15, and 6.76 across the four frames.
+- The all-record installed-capacity share rises 19.50 points, but only 2.19 points among 732 endpoint-common lineages; administrative appearance and disappearance are not physical opening or closure measures.
+- The revision-frozen five-parameter Firth model gives 300-versus-100 t/day odds ratios of 6.72, 7.09, 7.15, and 6.76 across the four frames.
 - All four revised entry models complete 1,999 whole-lineage bootstrap replications; the broad scale interval is 4.31-12.46.
+- The 300-t/day contrast is at the 98.98th empirical percentile with 315 risk rows and four events at or above it; support-aware predictions are also reported at 24, 60, and 120 t/day.
+- Calendar and elapsed risk are correlated at 0.909 with VIFs of 5.76 and 6.15, while the processing-scale VIF is 1.10; the temporal coefficients are not interpreted separately.
 - The 35 modeled events comprise 24 continuity-lineage and 11 rebuild/replacement-like entries; all 70 event attacks leave the scale odds ratio between 6.12 and 7.30.
 - FY2024 installed-capacity participation is 41.1% by facility count, while positive-output facilities handle 80.1% of throughput and installed-generation facilities represent 70.5% of waste-processing design capacity.
 - The generator component frame contains 6,511 engineering-valid rows across 493 lineages.
 - The raw installed-kW model has a processing-scale elasticity of 1.532 and separates installed design from annual capacity factor.
 - Relative to 2010 or later, adjusted installed kW is 79.1%, 58.6%, and 23.5% lower in the older cohorts, while capacity factor is 35.3%, 22.0%, and 1.5% higher.
+- Under shared controls, generator sizing is the largest component of every older-cohort gross-intensity gap; the component sums reproduce each direct gap exactly and are not causal mediation.
 - Gross MWh/t remains a descriptive administrative output ratio, not a stand-alone efficiency measure.
 - Administrative disappearance is not analyzed as physical closure.
 
@@ -60,8 +64,8 @@ Professor-facing thesis PDF: [open in browser](https://raw.githack.com/Pann13223
 - Identity, continuity, component, robustness, data-quality, and identifier-gap audits passed.
 - The journal and professor-thesis LaTeX profiles compile independently from shared evidence.
 - Profile-aware `paper:check`, `claims:verify`, and repository-layout gates pass after evidence sync.
-- The journal-facing PDF and the 29-page A4 professor-facing thesis PDF were visually inspected for crop, overlap, spacing, equation layout, table breaks, and figure legibility.
-- The submission Markdown, HTML, and DOCX were regenerated; the DOCX archive is structurally valid.
+- The 19-page journal PDF and 39-page A4 professor-facing thesis PDF were visually inspected for crop, overlap, spacing, equation layout, table breaks, and figure legibility.
+- The submission Markdown and HTML were regenerated. DOCX export is an optional platform-dependent command and is not part of the portable verification sequence.
 
 ## Next Human Actions
 

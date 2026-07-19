@@ -30,9 +30,9 @@ robustness, and publication-integrity controls fully auditable.
 - FY2010-FY2012 official codes absent; FY2019-FY2020 code overlap 0 versus 1,064 audited lineage links.
 - 16 accepted uncertain links exposed with two-sided margins plus golden-link and invariance guardrails.
 - 55 descriptive entry events; 35 broad exact-year, 33 prior-operation, and 24 same-episode events; identity-certain retains 35.
-- A frozen five-parameter Firth model, 1,999 complete stable-lineage cluster-bootstrap replications, and four estimand/sensitivity frames.
+- A revision-frozen five-parameter Firth model, 1,999 complete stable-lineage cluster-bootstrap replications, four frames, support-aware predictions, and collinearity diagnostics.
 - 6,511 engineering-valid generating observations across 493 lineages.
-- Raw installed-kW, electrical-capacity-factor, and gross-output component models with adjusted cohort contrasts.
+- Raw installed-kW, utilization-adjusted capacity-factor, and shared-control component models with exact cohort-gap decomposition.
 
 ## Mandatory Technical Content
 

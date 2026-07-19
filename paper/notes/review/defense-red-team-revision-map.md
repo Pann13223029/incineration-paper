@@ -1,5 +1,10 @@
 # Defense Red-Team Review And Revision Map
 
+> **Historical review record.** This paper-oriented map contains estimates from
+> an earlier model revision and must not be used for the current thesis defense.
+> Use [Thesis Defense Rehearsal](thesis-defense-rehearsal-2026-07-18.md), which
+> is synchronized to the five-parameter primary model and the current thesis.
+
 Status: post-identity-remediation review for the professor-facing paper.
 
 ## Executive Verdict

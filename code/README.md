@@ -2,7 +2,7 @@
 
 The code layer has three responsibilities: `analysis/` creates canonical
 evidence, `publishing/` turns existing evidence and manuscript sources into
-review artifacts, and `review/` runs explicitly noncanonical workflow
+review artifacts, and `review/` builds explicitly noncanonical review tools and
 simulations.
 
 ## Directory Roles
@@ -11,7 +11,7 @@ simulations.
 |:--|:--|:--|
 | `analysis/` | Parse sources, document provenance, reconstruct longitudinal identity, estimate models, run audits, and verify claims | `analysis/07_rebuild_analysis.py` |
 | `publishing/` | Synchronize evidence, export submission files, build journal/thesis PDFs and slides, and validate repository format gates | npm commands in `package.json` |
-| `review/` | Simulate reviewer workflows and conservative stress cases without changing canonical evidence | `npm run review:simulate:linkage` |
+| `review/` | Build reviewer packets and simulate conservative stress cases without changing canonical evidence | `npm run review:build:event-verification`, `npm run review:simulate:linkage` |
 
 ## Canonical Analysis Order
 
@@ -22,10 +22,10 @@ simulations.
 | 3 | `02a_build_facility_identity.py` | Collapse exact duplicates and construct 23,593 unique records, 1,690 stable administrative lineages, and 1,767 asset episodes; expose uncertain links. |
 | 4 | `02c_build_linkage_validation_packet.py` | Build the blinded clerical-review packet and separate answer key. |
 | 5 | `04_eda_facility.py` | Build descriptive summaries and audit model-frame inputs. |
-| 6 | `05_fleet_decomposition.py` | Separate facility participation, throughput coverage, and design-capacity share. |
+| 6 | `05_fleet_decomposition.py` | Separate participation, throughput and design-capacity coverage, conditional intensity, and endpoint composition. |
 | 7 | `05a_power_adoption.py` | Retain the higher-dimensional sparse-entry specification and pathway outputs as sensitivities. |
 | 8 | `05_panel_regression.py` | Build component frames and legacy component sensitivities. |
-| 9 | `05b_scientific_revision.py` | Fit the frozen five-parameter entry models, 1,999 bootstraps, standardized absolute risks, specification and sample-flow audits, event, functional-form, geographic, and reporting-state diagnostics, and raw-kW models. |
+| 9 | `05b_scientific_revision.py` | Fit revision-frozen entry models, 1,999 bootstraps, support-aware risks, collinearity and event diagnostics, raw-kW models, and the shared-control component decomposition. |
 | 10 | `06_robustness.py` | Test component results across windows, weights, bounds, and within-episode designs. |
 | 11 | `06a_data_quality_sensitivity.py` | Audit sample flow, ages, engineering bounds, heating values, and duplicates. |
 | 12 | `06b_identifier_gap_audit.py` | Audit official-code gaps, code-regime resets, and restored lineage continuity. |
@@ -49,6 +49,7 @@ stage and is not evidence for the current paper.
 
 ```bash
 npm run analysis:rebuild
+npm run review:build:event-verification
 npm run review:simulate:linkage
 npm run paper:sync
 npm run paper:check
@@ -61,6 +62,7 @@ npm run repo:check
 
 Do not hand-edit `output/`, `output/manifests/`, `paper/evidence/current/`, or generated submission files to compensate for code changes. Rebuild the evidence, synchronize the paper snapshot, and resolve any claim-check failure at its source.
 
-Review simulations write only under `paper/notes/review/simulations/`. They are
-not evidence, do not enter stage manifests, and must never be described as
-human validation or peer review.
+Review simulations write only under `paper/notes/review/simulations/`. The
+external-event packet is a blank research aid under `paper/notes/review/`.
+Neither is evidence, neither enters stage manifests, and neither may be
+described as completed human validation or peer review.

@@ -19,11 +19,10 @@ DATA_PATH = ROOT / "output" / "figure3_adjusted_components.csv"
 PNG_OUT = FIGURE_DIR / "figure3_efficiency_structure.png"
 PDF_OUT = FIGURE_DIR / "figure3_efficiency_structure.pdf"
 
-INK = "#20262d"
-MUTED = "#59636e"
-GRID = "#d9dee3"
-BLUE = "#0072b2"
-ORANGE = "#d55e00"
+INK = "#1a1a1a"
+MUTED = "#555555"
+MID = "#777777"
+GRID = "#d2d2d2"
 
 COHORT_ORDER = ("Before 1990", "1990-1999", "2000-2009", "2010 or later")
 COHORT_LABELS = ("Before 1990", "1990-1999", "2000-2009", "2010 or later\n(reference)")
@@ -61,7 +60,8 @@ def style_axes(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color(MUTED)
+    ax.spines["bottom"].set_color(INK)
+    ax.spines["bottom"].set_linewidth(0.7)
     ax.tick_params(axis="x", colors=INK, labelsize=7.4, length=3)
     ax.tick_params(axis="y", colors=INK, labelsize=7.7, length=0, pad=5)
     ax.grid(axis="x", color=GRID, linewidth=0.65)
@@ -95,16 +95,16 @@ def panel(
         color=color,
         ecolor=color,
         markerfacecolor="white",
-        markeredgewidth=1.25,
-        markersize=5.0,
-        elinewidth=1.25,
-        capsize=2.4,
+        markeredgewidth=1.0,
+        markersize=4.6,
+        elinewidth=1.0,
+        capsize=2.1,
         zorder=3,
     )
     ax.set_yticks(y, COHORT_LABELS)
     ax.set_xlim(*xlim)
     ax.set_xticks(ticks)
-    ax.set_title(title, loc="left", fontsize=8.7, fontweight="semibold", pad=6)
+    ax.set_title(title, loc="left", fontsize=8.3, fontweight="bold", pad=5)
     ax.set_xlabel("Adjusted difference from 2010-or-later cohort (%)", fontsize=7.6)
 
 
@@ -112,7 +112,7 @@ def build() -> None:
     data = load_data()
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Sans",
+            "font.family": "DejaVu Serif",
             "font.size": 8.2,
             "axes.labelcolor": INK,
             "text.color": INK,
@@ -120,12 +120,12 @@ def build() -> None:
             "ps.fonttype": 42,
         }
     )
-    fig, axes = plt.subplots(2, 1, figsize=(4.0, 4.75), dpi=200)
+    fig, axes = plt.subplots(2, 1, figsize=(4.0, 3.95), dpi=200)
     panel(
         axes[0],
         data,
         "Installed electrical capacity",
-        BLUE,
+        INK,
         "o",
         "A. Installed capacity (raw kW model)",
         (-90, 10),
@@ -135,40 +135,13 @@ def build() -> None:
         axes[1],
         data,
         "Electrical capacity factor",
-        ORANGE,
+        MID,
         "s",
         "B. Annual electrical capacity factor",
         (-15, 55),
         [-10, 0, 10, 20, 30, 40, 50],
     )
-    fig.suptitle(
-        "Adjusted cohort contrasts",
-        x=0.08,
-        y=0.985,
-        ha="left",
-        fontsize=9.3,
-        fontweight="semibold",
-    )
-    fig.text(
-        0.08,
-        0.945,
-        "Installed design versus annual use; clustered 95% confidence intervals",
-        color=MUTED,
-        fontsize=7.2,
-        ha="left",
-    )
-    fig.text(
-        0.08,
-        0.025,
-        "Models adjust for processing scale, configuration, furnace count, and fiscal year.\n"
-        "Capacity-factor estimates also adjust for waste utilization. N=6,511 years / 493\n"
-        "lineages. Start year is not an equipment date; contrasts are not causal.",
-        color=MUTED,
-        fontsize=6.4,
-        ha="left",
-        linespacing=1.2,
-    )
-    fig.subplots_adjust(left=0.36, right=0.97, top=0.86, bottom=0.18, hspace=0.62)
+    fig.subplots_adjust(left=0.36, right=0.97, top=0.92, bottom=0.14, hspace=0.58)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)

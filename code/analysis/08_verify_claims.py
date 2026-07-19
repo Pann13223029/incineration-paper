@@ -436,6 +436,7 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
 
     # FY2024 fleet count-volume decomposition.
     fleet = pd.read_csv(OUTPUT_DIR / "fleet_decomposition.csv")
+    turnover = pd.read_csv(OUTPUT_DIR / "fleet_turnover_decomposition.csv")
     fy2024_rows = fleet[fleet["fiscal_year"].eq(2024)]
     if len(fy2024_rows) != 1:
         raise ValueError(f"Expected one FY2024 fleet row, found {len(fy2024_rows)}")
@@ -520,6 +521,44 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             f"FY2024 segment rows sum to {int(segments['facility_rows'].sum())}; "
             f"facility shares sum to {segments['facility_share_pct'].sum():.6f}%; "
             f"positive-throughput rows total {int(fy2024['positive_throughput_facilities'])}."
+        ),
+    )
+    turnover_index = turnover.set_index(["analysis_group", "fiscal_year"])
+
+    def turnover_row(group: str, year: int) -> pd.Series:
+        return turnover_index.loc[(group, year)]
+
+    all_2005 = turnover_row("All endpoint records", 2005)
+    all_2024 = turnover_row("All endpoint records", 2024)
+    common_2005 = turnover_row("Endpoint-common lineages", 2005)
+    common_2024 = turnover_row("Endpoint-common lineages", 2024)
+    episode_2005 = turnover_row("Endpoint-common same-episode lineages", 2005)
+    episode_2024 = turnover_row("Endpoint-common same-episode lineages", 2024)
+    only_2005 = turnover_row("2005-only lineages", 2005)
+    only_2024 = turnover_row("2024-only lineages", 2024)
+    assert_evidence(
+        "fleet_turnover_composition",
+        len(turnover) == 10
+        and int(common_2005["lineages"]) == 732
+        and int(common_2024["lineages"]) == 732
+        and int(episode_2005["lineages"]) == 678
+        and int(episode_2024["lineages"]) == 678
+        and int(only_2005["lineages"]) == 586
+        and int(only_2024["lineages"]) == 282
+        and close(all_2005["installed_capacity_share_pct"], 21.62367223)
+        and close(all_2024["installed_capacity_share_pct"], 41.12426036)
+        and close(common_2005["installed_capacity_share_pct"], 29.91803279)
+        and close(common_2024["installed_capacity_share_pct"], 32.10382514)
+        and close(episode_2005["installed_capacity_share_pct"], 30.53097345)
+        and close(episode_2024["installed_capacity_share_pct"], 31.41592920)
+        and close(only_2005["installed_capacity_share_pct"], 11.26279863)
+        and close(only_2024["installed_capacity_share_pct"], 64.53900709),
+        (
+            "All-record installed-capacity prevalence changes by "
+            f"{all_2024['installed_capacity_share_pct'] - all_2005['installed_capacity_share_pct']:.4f} "
+            "points; endpoint-common/same-episode changes are "
+            f"{common_2024['installed_capacity_share_pct'] - common_2005['installed_capacity_share_pct']:.4f}/"
+            f"{episode_2024['installed_capacity_share_pct'] - episode_2005['installed_capacity_share_pct']:.4f} points."
         ),
     )
     assert_evidence(
@@ -863,6 +902,8 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     revised_influence = pd.read_csv(OUTPUT_DIR / "revised_entry_influence.csv")
     revised_robustness = pd.read_csv(OUTPUT_DIR / "revised_entry_robustness.csv")
     standardized_risk = pd.read_csv(OUTPUT_DIR / "entry_standardized_risk.csv")
+    capacity_support = pd.read_csv(OUTPUT_DIR / "entry_capacity_support.csv")
+    entry_design = pd.read_csv(OUTPUT_DIR / "entry_design_diagnostics.csv")
     specification_summary = pd.read_csv(
         OUTPUT_DIR / "entry_specification_summary.csv"
     )
@@ -872,6 +913,9 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     )["value"]
     event_composition = pd.read_csv(OUTPUT_DIR / "adoption_event_composition.csv")
     raw_quantities = pd.read_csv(OUTPUT_DIR / "raw_quantity_component_results.csv")
+    component_decomposition = pd.read_csv(
+        OUTPUT_DIR / "common_control_component_decomposition.csv"
+    )
     adjusted_components = pd.read_csv(OUTPUT_DIR / "figure3_adjusted_components.csv")
     revision_meta = manifests["05b_scientific_revision"]["metadata"]
     revised_models = set(revised["model"])
@@ -1007,7 +1051,8 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     standardized_meta = revision_meta["entry_standardized_risk"]
     assert_evidence(
         "entry_standardized_absolute_risk",
-        set(standardized_probabilities.index.astype(int)) == {100, 300}
+        set(standardized_probabilities.index.astype(int))
+        == {24, 60, 100, 120, 300}
         and len(standardized_difference) == 1
         and standardized_probabilities.loc[
             300.0, "events_per_1000_facility_years"
@@ -1037,6 +1082,108 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             "Standardized annual entries per 1,000 facility-years at 100/300 "
             f"t/day: {standardized_probabilities.loc[100.0, 'events_per_1000_facility_years']:.4f}/"
             f"{standardized_probabilities.loc[300.0, 'events_per_1000_facility_years']:.4f}."
+        ),
+    )
+    support_300 = capacity_support[
+        capacity_support["capacity_t_day"].eq(300)
+    ].iloc[0]
+    support_levels = set(capacity_support["capacity_t_day"].astype(int))
+    support_risk_match = capacity_support.merge(
+        standardized_probabilities[
+            [
+                "events_per_1000_facility_years",
+                "bootstrap_ci_low_per_1000",
+                "bootstrap_ci_high_per_1000",
+            ]
+        ],
+        left_on="capacity_t_day",
+        right_index=True,
+        how="left",
+        validate="one_to_one",
+        suffixes=("_support", "_risk"),
+    )
+    assert_evidence(
+        "entry_capacity_support",
+        support_levels == {24, 60, 100, 120, 300}
+        and len(capacity_support) == 5
+        and int(support_300["risk_rows_at_or_above"]) == 315
+        and int(support_300["modeled_events_at_or_above"]) == 4
+        and 98.5 < float(support_300["empirical_percentile_pct"]) < 99.5
+        and np.allclose(
+            support_risk_match["standardized_events_per_1000"],
+            support_risk_match["events_per_1000_facility_years"],
+        )
+        and close(
+            capacity_support.loc[
+                capacity_support["capacity_t_day"].eq(24),
+                "standardized_events_per_1000",
+            ].iloc[0],
+            0.682403,
+            1e-4,
+        )
+        and close(
+            capacity_support.loc[
+                capacity_support["capacity_t_day"].eq(60),
+                "standardized_events_per_1000",
+            ].iloc[0],
+            1.373724,
+            1e-4,
+        )
+        and close(
+            capacity_support.loc[
+                capacity_support["capacity_t_day"].eq(120),
+                "standardized_events_per_1000",
+            ].iloc[0],
+            3.287146,
+            1e-4,
+        ),
+        (
+            f"Capacity support levels {sorted(support_levels)}; 300 t/day is at "
+            f"the {support_300['empirical_percentile_pct']:.2f}th empirical percentile "
+            f"with {int(support_300['risk_rows_at_or_above'])} risk rows and "
+            f"{int(support_300['modeled_events_at_or_above'])} events at or above it."
+        ),
+    )
+    entry_design_index = entry_design.set_index("term")
+    calendar_elapsed_correlation = float(
+        entry_design_index.loc[
+            "calendar_per_5y", "correlation_with_log_elapsed_risk"
+        ]
+    )
+    assert_evidence(
+        "entry_design_collinearity",
+        set(entry_design_index.index)
+        == {
+            "age_per_10y",
+            "log_processing_capacity",
+            "calendar_per_5y",
+            "log_elapsed_risk",
+        }
+        and 0.90 < calendar_elapsed_correlation < 0.92
+        and float(
+            entry_design_index.loc[
+                "calendar_per_5y", "variance_inflation_factor"
+            ]
+        )
+        > 5
+        and float(
+            entry_design_index.loc[
+                "log_elapsed_risk", "variance_inflation_factor"
+            ]
+        )
+        > 5
+        and float(
+            entry_design_index.loc[
+                "log_processing_capacity", "variance_inflation_factor"
+            ]
+        )
+        < 1.2,
+        (
+            f"Calendar/elapsed-risk correlation is {calendar_elapsed_correlation:.4f}; "
+            "VIFs for calendar, elapsed risk, and processing scale are "
+            f"{entry_design_index.loc['calendar_per_5y', 'variance_inflation_factor']:.3f}/"
+            f"{entry_design_index.loc['log_elapsed_risk', 'variance_inflation_factor']:.3f}/"
+            f"{entry_design_index.loc['log_processing_capacity', 'variance_inflation_factor']:.3f}."
         ),
     )
     assert_evidence(
@@ -1098,6 +1245,45 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             f"component contrasts have {len(adjusted_components)} rows."
         ),
     )
+    primary_decomposition = component_decomposition[
+        component_decomposition["sample"].eq("Primary engineering frame")
+    ].set_index("cohort")
+    stable_decomposition = component_decomposition[
+        component_decomposition["sample"].eq("Stable-cohort sensitivity")
+    ]
+    assert_evidence(
+        "common_control_component_identity",
+        len(component_decomposition) == 6
+        and component_decomposition["identity_error"].abs().max() < 1e-10
+        and int(primary_decomposition["observations"].iloc[0]) == 6511
+        and int(primary_decomposition["lineages"].iloc[0]) == 493
+        and stable_decomposition["observations"].eq(6291).all()
+        and stable_decomposition["lineages"].eq(479).all()
+        and close(
+            primary_decomposition.loc["Before 1990", "log_design_component"],
+            -1.564687,
+            1e-4,
+        )
+        and close(
+            primary_decomposition.loc[
+                "Before 1990", "log_capacity_factor_component"
+            ],
+            0.015859,
+            1e-4,
+        )
+        and close(
+            primary_decomposition.loc[
+                "Before 1990", "negative_log_utilization_component"
+            ],
+            0.298934,
+            1e-4,
+        ),
+        (
+            "Common-control cohort components sum to direct log gross-intensity "
+            f"differences with maximum error {component_decomposition['identity_error'].abs().max():.3e}; "
+            "the stable-cohort sensitivity retains 6,291 rows across 479 lineages."
+        ),
+    )
 
     metrics = {
         "python_versions": python_versions,
@@ -1134,6 +1320,26 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
                 fy2024["conditional_valid_gross_mwh_t"]
             ),
             "fleet_valid_gross_mwh_t": float(fy2024["fleet_valid_gross_mwh_t"]),
+            "all_record_endpoint_change_pct_points": float(
+                all_2024["installed_capacity_share_pct"]
+                - all_2005["installed_capacity_share_pct"]
+            ),
+            "endpoint_common_lineages": int(common_2024["lineages"]),
+            "endpoint_common_change_pct_points": float(
+                common_2024["installed_capacity_share_pct"]
+                - common_2005["installed_capacity_share_pct"]
+            ),
+            "same_episode_endpoint_lineages": int(episode_2024["lineages"]),
+            "same_episode_endpoint_change_pct_points": float(
+                episode_2024["installed_capacity_share_pct"]
+                - episode_2005["installed_capacity_share_pct"]
+            ),
+            "fy2005_only_share_pct": float(
+                only_2005["installed_capacity_share_pct"]
+            ),
+            "fy2024_only_share_pct": float(
+                only_2024["installed_capacity_share_pct"]
+            ),
         },
         "adoption": {
             "bias_reduction": adoption_meta["bias_reduction"],
@@ -1183,6 +1389,9 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             "capacity_factor_r_squared": float(
                 regression_meta["capacity_factor_model"]["rsquared"]
             ),
+            "capacity_factor_above_one": int(
+                revision_meta["capacity_factor_above_one"]
+            ),
             "legacy_age_coefficient": age_diagnostic["legacy_coefficient"],
             "legacy_age_p_value": age_diagnostic["legacy_p_value"],
             "sizing_age_coefficient": age_diagnostic["sizing_adjusted_coefficient"],
@@ -1209,6 +1418,18 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
                     cohort_design["term"].eq("cohort_Before 1990"), "coefficient"
                 ].iloc[0]
             ),
+            "common_control_components": {
+                f"{cohort}::{component}": float(primary_decomposition.loc[cohort, component])
+                for cohort in primary_decomposition.index
+                for component in (
+                    "log_design_component",
+                    "log_capacity_factor_component",
+                    "negative_log_utilization_component",
+                    "direct_log_gross_intensity_difference",
+                )
+            },
+            "stable_cohort_rows": int(stable_decomposition["observations"].iloc[0]),
+            "stable_cohort_lineages": int(stable_decomposition["lineages"].iloc[0]),
         },
         "revision": {
             "bootstrap_repetitions": 1999,
@@ -1265,6 +1486,46 @@ def build_metrics() -> tuple[dict[str, Any], list[dict[str, Any]]]:
             ),
             "standardized_risk_difference_per_1000": float(
                 standardized_difference.iloc[0]["events_per_1000_facility_years"]
+            ),
+            "standardized_risk_24_per_1000": float(
+                standardized_probabilities.loc[
+                    24.0, "events_per_1000_facility_years"
+                ]
+            ),
+            "standardized_risk_60_per_1000": float(
+                standardized_probabilities.loc[
+                    60.0, "events_per_1000_facility_years"
+                ]
+            ),
+            "standardized_risk_120_per_1000": float(
+                standardized_probabilities.loc[
+                    120.0, "events_per_1000_facility_years"
+                ]
+            ),
+            "capacity_300_empirical_percentile_pct": float(
+                support_300["empirical_percentile_pct"]
+            ),
+            "capacity_300_risk_rows_at_or_above": int(
+                support_300["risk_rows_at_or_above"]
+            ),
+            "capacity_300_events_at_or_above": int(
+                support_300["modeled_events_at_or_above"]
+            ),
+            "calendar_elapsed_correlation": calendar_elapsed_correlation,
+            "calendar_vif": float(
+                entry_design_index.loc[
+                    "calendar_per_5y", "variance_inflation_factor"
+                ]
+            ),
+            "elapsed_risk_vif": float(
+                entry_design_index.loc[
+                    "log_elapsed_risk", "variance_inflation_factor"
+                ]
+            ),
+            "processing_scale_vif": float(
+                entry_design_index.loc[
+                    "log_processing_capacity", "variance_inflation_factor"
+                ]
             ),
             "legacy_temporal_or": float(
                 legacy_summary.iloc[0]["odds_ratio_300_vs_100"]
@@ -1478,6 +1739,41 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{fleet['installed_design_capacity_share_pct']:.1f}% design capacity."
             ),
         )
+        add_requirement(
+            checks,
+            "fleet_endpoint_composition",
+            key,
+            contains_context_number(
+                text,
+                r"all[- ]record|endpoint|FY?2005.{0,60}FY?2024",
+                fleet["all_record_endpoint_change_pct_points"],
+                (2,),
+            )
+            and contains_context_number(
+                text,
+                r"endpoint[- ]common|observed.{0,40}both",
+                fleet["endpoint_common_lineages"],
+            )
+            and contains_context_number(
+                text,
+                r"endpoint[- ]common|observed.{0,40}both",
+                fleet["endpoint_common_change_pct_points"],
+                (2,),
+            )
+            and re.search(
+                r"not (?:verified )?(?:openings?|closures?)|not.{0,40}(?:physical )?(?:opening|closure)|administrative.{0,100}(?:opening|closure)",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None,
+            (
+                "Distinguish the all-record endpoint increase "
+                f"({fleet['all_record_endpoint_change_pct_points']:.2f} points) from "
+                f"the {fleet['endpoint_common_lineages']} endpoint-common-lineage "
+                f"increase ({fleet['endpoint_common_change_pct_points']:.2f} points), "
+                "without interpreting endpoint-only records as physical openings or closures."
+            ),
+        )
         if is_professor_profile:
             add_requirement(
                 checks,
@@ -1585,6 +1881,55 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{revision['influence_or_low']:.2f}-"
                 f"{revision['influence_or_high']:.2f}, and exact-event composition."
             ),
+        )
+        add_requirement(
+            checks,
+            "entry_capacity_support",
+            key,
+            contains_context_number(
+                text,
+                r"empirical percentile|percentile|tail",
+                revision["capacity_300_empirical_percentile_pct"],
+                (2,),
+            )
+            and contains_context_number(
+                text,
+                r"300.{0,30}t/day|at or above",
+                revision["capacity_300_risk_rows_at_or_above"],
+            )
+            and contains_context_number(
+                text,
+                r"300.{0,60}events?|at\s+or\s+above",
+                revision["capacity_300_events_at_or_above"],
+            )
+            and all(
+                contains_number(text, revision[field], (2,))
+                for field in (
+                    "standardized_risk_24_per_1000",
+                    "standardized_risk_60_per_1000",
+                    "standardized_risk_120_per_1000",
+                )
+            ),
+            (
+                "Disclose 300 t/day as an upper-tail contrast and report denser-support "
+                "standardized predictions at 24, 60, and 120 t/day."
+            ),
+        )
+        add_requirement(
+            checks,
+            "entry_temporal_collinearity",
+            key,
+            contains_number(text, revision["calendar_elapsed_correlation"], (3, 4))
+            and contains_number(text, revision["calendar_vif"], (2,))
+            and contains_number(text, revision["elapsed_risk_vif"], (2,))
+            and contains_number(text, revision["processing_scale_vif"], (2,))
+            and re.search(
+                r"temporal coefficients?.{0,80}not interpreted|not interpret.{0,80}temporal",
+                text,
+                re.IGNORECASE | re.DOTALL,
+            )
+            is not None,
+            "Report temporal collinearity and avoid separate interpretation of calendar and elapsed-risk coefficients.",
         )
         if is_professor_profile:
             add_requirement(
@@ -1724,6 +2069,30 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 f"{components['stable_sites']} stable administrative lineages."
             ),
         )
+        if is_professor_profile:
+            add_requirement(
+                checks,
+                "capacity_factor_proxy_exceptions",
+                key,
+                contains_context_number(
+                    text,
+                    r"capacity[- ]factor.{0,80}(?:rows?|observations?).{0,80}(?:exceed|above)|(?:rows?|observations?).{0,80}(?:exceed|above).{0,80}1\.00",
+                    components["capacity_factor_above_one"],
+                )
+                and contains_number(text, 1.20, (1, 2))
+                and re.search(
+                    r"conservative[- ]bound.{0,100}(?:stable|unchanged)|(?:stable|unchanged).{0,100}conservative[- ]bound",
+                    text,
+                    re.IGNORECASE | re.DOTALL,
+                )
+                is not None,
+                (
+                    "Disclose that only "
+                    f"{components['capacity_factor_above_one']} retained capacity-factor "
+                    "rows exceed 1.00, explain the 1.20 administrative bound, and report "
+                    "the conservative-bound stability check."
+                ),
+            )
         adjusted = revision["adjusted_components"]
         add_requirement(
             checks,
@@ -1748,6 +2117,37 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
             (
                 "Report the raw installed-kW elasticity and the adjusted installed-capacity "
                 "and capacity-factor cohort contrasts."
+            ),
+        )
+        common_components = components["common_control_components"]
+        add_requirement(
+            checks,
+            "common_control_component_decomposition",
+            key,
+            all(
+                contains_number(text, common_components[label], (3, 4))
+                for label in (
+                    "Before 1990::log_design_component",
+                    "Before 1990::log_capacity_factor_component",
+                    "Before 1990::negative_log_utilization_component",
+                    "Before 1990::direct_log_gross_intensity_difference",
+                )
+            )
+            and re.search(
+                r"common[- ]control|shared[- ]control",
+                text,
+                re.IGNORECASE,
+            )
+            is not None
+            and re.search(
+                r"not causal|not causal mediation|accounting attribution",
+                text,
+                re.IGNORECASE,
+            )
+            is not None,
+            (
+                "Report the shared-control pre-1990 component identity and distinguish "
+                "conditional accounting attribution from causal mediation."
             ),
         )
         if is_professor_profile:
@@ -1895,6 +2295,33 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
             and contains_number(text, components["sizing_age_p_value"], (3, 4)),
             "Document both engineering components and the non-significant sizing-adjusted age result.",
         )
+        add_requirement(
+            checks,
+            "supplement_turnover_support_and_common_components",
+            "supplement",
+            contains_number(
+                text, fleet["all_record_endpoint_change_pct_points"], (2,)
+            )
+            and contains_number(
+                text, fleet["endpoint_common_change_pct_points"], (2,)
+            )
+            and contains_number(
+                text, revision["capacity_300_empirical_percentile_pct"], (2,)
+            )
+            and contains_number(text, revision["calendar_vif"], (2,))
+            and contains_number(
+                text,
+                components["common_control_components"][
+                    "Before 1990::direct_log_gross_intensity_difference"
+                ],
+                (3, 4),
+            )
+            and contains_number(text, components["stable_cohort_lineages"]),
+            (
+                "Document endpoint composition, entry support and collinearity, the "
+                "common-control identity, and stable-cohort sensitivity."
+            ),
+        )
 
     if "professor_lineage" in texts:
         text = texts["professor_lineage"]
@@ -1929,6 +2356,29 @@ def build_document_checks(metrics: dict[str, Any]) -> list[dict[str, Any]]:
                 "Report current count-volume, reduced-model entry, event-influence, raw-component, "
                 "and sizing-diagnostic headline values in the professor lineage packet."
             ),
+        )
+        add_requirement(
+            checks,
+            "lineage_red_team_revisions",
+            "professor_lineage",
+            contains_number(
+                text, fleet["all_record_endpoint_change_pct_points"], (2,)
+            )
+            and contains_number(
+                text, fleet["endpoint_common_change_pct_points"], (2,)
+            )
+            and contains_number(
+                text, revision["capacity_300_empirical_percentile_pct"], (2,)
+            )
+            and contains_number(text, revision["processing_scale_vif"], (2,))
+            and contains_number(
+                text,
+                components["common_control_components"][
+                    "Before 1990::direct_log_gross_intensity_difference"
+                ],
+                (3, 4),
+            ),
+            "Carry the composition, support, collinearity, and common-control revisions into the professor lineage packet.",
         )
 
     stale_patterns = [
@@ -2094,6 +2544,12 @@ def write_report(
         f"{fleet['positive_throughput_facilities']} positive-throughput records; "
         f"{fleet['throughput_coverage_pct']:.1f}% throughput coverage, "
         f"{fleet['installed_design_capacity_share_pct']:.1f}% installed design-capacity share.",
+        f"- Endpoint composition: all-record installed prevalence rises "
+        f"{fleet['all_record_endpoint_change_pct_points']:.2f} points versus "
+        f"{fleet['endpoint_common_change_pct_points']:.2f} among "
+        f"{fleet['endpoint_common_lineages']} endpoint-common lineages and "
+        f"{fleet['same_episode_endpoint_change_pct_points']:.2f} among "
+        f"{fleet['same_episode_endpoint_lineages']} same-episode endpoint lineages.",
         f"- Firth entry frames: {adoption['broad_rows']:,}/{adoption['broad_sites']:,}/"
         f"{adoption['broad_events']} broad and {adoption['prior_rows']:,}/"
         f"{adoption['prior_sites']:,}/{adoption['prior_events']} prior-operation and "
@@ -2107,7 +2563,7 @@ def write_report(
             for label in ("Q1 smallest", "Q2", "Q3", "Q4 largest")
         )
         + ".",
-        f"- Primary entry inference: frozen five-parameter OR {revision['scale_or']:.2f} "
+        f"- Primary entry inference: revision-frozen five-parameter OR {revision['scale_or']:.2f} "
         f"(95% lineage-bootstrap interval {revision['scale_or_ci_low']:.2f}-"
         f"{revision['scale_or_ci_high']:.2f}) for 300 versus 100 t/day; event attacks "
         f"retain {revision['influence_or_low']:.2f}-{revision['influence_or_high']:.2f}.",
@@ -2123,10 +2579,28 @@ def write_report(
         f"{revision['legacy_temporal_or']:.2f} ("
         f"{revision['legacy_temporal_ci_low']:.2f}-"
         f"{revision['legacy_temporal_ci_high']:.2f}).",
+        f"- Entry support: 300 t/day is at the "
+        f"{revision['capacity_300_empirical_percentile_pct']:.2f}th empirical percentile "
+        f"with {revision['capacity_300_risk_rows_at_or_above']} risk rows and "
+        f"{revision['capacity_300_events_at_or_above']} events at or above it; "
+        f"support-aware risks at 24/60/120 t/day are "
+        f"{revision['standardized_risk_24_per_1000']:.2f}/"
+        f"{revision['standardized_risk_60_per_1000']:.2f}/"
+        f"{revision['standardized_risk_120_per_1000']:.2f} per 1,000.",
+        f"- Entry design audit: calendar/elapsed-risk correlation "
+        f"{revision['calendar_elapsed_correlation']:.3f}; VIFs "
+        f"{revision['calendar_vif']:.2f}/{revision['elapsed_risk_vif']:.2f}, "
+        f"versus scale VIF {revision['processing_scale_vif']:.2f}.",
         f"- Components: {components['rows']:,} rows across {components['stable_sites']} stable administrative lineages; "
         f"sizing-adjusted age {components['sizing_age_coefficient']:.4f} "
         f"(p={components['sizing_age_p_value']:.4f}); R-squared "
         f"{components['legacy_r_squared']:.4f} to {components['sizing_r_squared']:.4f}.",
+        "- Common-control components: pre-1990 design/factor/negative-utilization "
+        f"{components['common_control_components']['Before 1990::log_design_component']:.3f}/"
+        f"{components['common_control_components']['Before 1990::log_capacity_factor_component']:.3f}/"
+        f"{components['common_control_components']['Before 1990::negative_log_utilization_component']:.3f} "
+        "sum to direct log intensity "
+        f"{components['common_control_components']['Before 1990::direct_log_gross_intensity_difference']:.3f}.",
         "",
         "## Failures",
         "",
@@ -2170,7 +2644,7 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         "`output/raw_data_provenance.md`, `data/processed/facility_identity_crosswalk.csv`, "
         "`output/facility_identity_audit.md`, and `output/identity_low_margin_links.csv`.",
         "",
-        "## FY2024 Count-Volume Contrast",
+        "## Fleet Coverage And Endpoint Composition",
         "",
         f"Claim: installed capacity appears in {fleet['facility_participation_pct']:.1f}% "
         f"of all records and {fleet['active_installed_generation_facility_share_pct']:.1f}% "
@@ -2180,9 +2654,15 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         "Positive-output facilities handle "
         f"{fleet['throughput_coverage_pct']:.1f}% of recorded throughput; installed-generation "
         f"facilities hold {fleet['installed_design_capacity_share_pct']:.1f}% of waste-processing "
-        "design capacity.",
+        "design capacity. From FY2005 to FY2024, all-record installed prevalence "
+        f"rises {fleet['all_record_endpoint_change_pct_points']:.2f} points, compared "
+        f"with {fleet['endpoint_common_change_pct_points']:.2f} among "
+        f"{fleet['endpoint_common_lineages']} endpoint-common lineages and "
+        f"{fleet['same_episode_endpoint_change_pct_points']:.2f} among "
+        f"{fleet['same_episode_endpoint_lineages']} endpoint-common same-episode lineages.",
         "",
-        "Evidence: `output/fleet_decomposition.csv`, `output/fy2024_fleet_segments.csv`, "
+        "Evidence: `output/fleet_decomposition.csv`, `output/fleet_turnover_decomposition.csv`, "
+        "`output/fleet_turnover_decomposition.md`, `output/fy2024_fleet_segments.csv`, "
         "and `output/fleet_decomposition.md`.",
         "",
         "## First Reported Installed-Generation Capacity",
@@ -2192,7 +2672,7 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         f"operation, and {adoption['continuity_events']} in the same-episode sensitivity. "
         f"The identity-certain sensitivity retains {adoption['identity_certain_events']} "
         "events after excluding every lineage containing an accepted uncertain link. "
-        f"The frozen five-parameter primary 300-versus-100 t/day OR is "
+        f"The revision-frozen five-parameter primary 300-versus-100 t/day OR is "
         f"{revision['scale_or']:.2f} (95% lineage-bootstrap interval "
         f"{revision['scale_or_ci_low']:.2f}-{revision['scale_or_ci_high']:.2f}). "
         f"Event attacks retain {revision['influence_or_low']:.2f}-"
@@ -2203,12 +2683,19 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         f"{revision['standardized_risk_100_per_1000']:.2f} versus "
         f"{revision['standardized_risk_300_per_1000']:.2f} per 1,000 facility-years; "
         f"the flexible temporal-form OR is {revision['legacy_temporal_or']:.2f}. "
+        f"The 300-t/day level is at the {revision['capacity_300_empirical_percentile_pct']:.2f}th "
+        f"empirical percentile, with {revision['capacity_300_risk_rows_at_or_above']} risk rows "
+        f"and {revision['capacity_300_events_at_or_above']} events at or above it; "
+        f"predictions at 24/60/120 t/day are {revision['standardized_risk_24_per_1000']:.2f}/"
+        f"{revision['standardized_risk_60_per_1000']:.2f}/"
+        f"{revision['standardized_risk_120_per_1000']:.2f} per 1,000. "
         "The nested frames and diagnostics are "
         "not interpreted as independent equivalence tests.",
         "",
         "Evidence: `output/revised_entry_results.csv`, "
         "`output/revised_entry_bootstrap.csv`, `output/revised_entry_influence.csv`, "
         "`output/revised_entry_robustness.csv`, `output/entry_standardized_risk.csv`, "
+        "`output/entry_capacity_support.csv`, `output/entry_design_diagnostics.csv`, "
         "`output/entry_specification_summary.csv`, `output/entry_sample_flow.csv`, "
         "`output/entry_state_audit.csv`, and "
         "`output/scientific_revision_results.md`. The earlier eleven-parameter estimates "
@@ -2221,9 +2708,19 @@ def write_claim_map(metrics: dict[str, Any]) -> None:
         f"{components['stable_sites']} stable administrative lineages. After generator "
         f"sizing is added, the age coefficient is {components['sizing_age_coefficient']:.4f} "
         f"(p={components['sizing_age_p_value']:.4f}); model R-squared changes from "
-        f"{components['legacy_r_squared']:.4f} to {components['sizing_r_squared']:.4f}.",
+        f"{components['legacy_r_squared']:.4f} to {components['sizing_r_squared']:.4f}. "
+        f"Only {components['capacity_factor_above_one']} retained capacity-factor rows "
+        "exceed 1.00 under the audited 1.20 administrative bound.",
+        "Under identical controls, the pre-1990 design, capacity-factor, and "
+        "negative-utilization components are "
+        f"{components['common_control_components']['Before 1990::log_design_component']:.3f}, "
+        f"{components['common_control_components']['Before 1990::log_capacity_factor_component']:.3f}, and "
+        f"{components['common_control_components']['Before 1990::negative_log_utilization_component']:.3f}; "
+        "they sum exactly to the direct log gross-intensity gap of "
+        f"{components['common_control_components']['Before 1990::direct_log_gross_intensity_difference']:.3f}.",
         "",
         "Evidence: `output/generator_component_results.csv`, "
+        "`output/common_control_component_decomposition.csv`, "
         "`output/table2_generator_components_by_cohort.md`, `output/figure3_persistence.csv`, "
         "and `output/regression_results.md`.",
         "",
@@ -2254,6 +2751,7 @@ def main() -> None:
         "output/facility_identity_audit.md",
         "output/identity_low_margin_links.csv",
         "output/fleet_decomposition.csv",
+        "output/fleet_turnover_decomposition.csv",
         "output/fy2024_fleet_segments.csv",
         "output/figure2_transition_effects.csv",
         "output/adoption_bootstrap_coefficients.csv",
@@ -2263,6 +2761,8 @@ def main() -> None:
         "output/revised_entry_influence.csv",
         "output/revised_entry_robustness.csv",
         "output/entry_standardized_risk.csv",
+        "output/entry_capacity_support.csv",
+        "output/entry_design_diagnostics.csv",
         "output/entry_specification_summary.csv",
         "output/entry_sample_flow.csv",
         "output/entry_state_audit.csv",
@@ -2270,6 +2770,7 @@ def main() -> None:
         "output/post_adoption_bridge.csv",
         "output/post_adoption_trajectories.csv",
         "output/generator_component_results.csv",
+        "output/common_control_component_decomposition.csv",
         "output/regression_results.md",
         "output/robustness_component_results.csv",
         "output/data_quality_sample_flow.csv",

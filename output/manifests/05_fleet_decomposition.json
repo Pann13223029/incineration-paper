@@ -8,15 +8,15 @@
     "code/analysis/02c_build_linkage_validation_packet.py": "8a753a91e441af68553f0d93d900ac53a7c2f038214ca7f9ef6bded9f306632e",
     "code/analysis/03_grid_emission_factors.py": "95898b72282ff7516a6068b5ed779409473b92cd9cc88aca30c41a07f8b7d31d",
     "code/analysis/04_eda_facility.py": "2ff134bb646045cabd57da76f70caa92ff973af91d775984c21df2bcb7c1816a",
-    "code/analysis/05_fleet_decomposition.py": "23111b613463a2397bda554c0d12d10362cd31a2b746dd0a289027e5383017f2",
+    "code/analysis/05_fleet_decomposition.py": "9f6f1ef93df7807dca2a4bec73d603a090c1abc33f9505b8c9fb7ff7286539bd",
     "code/analysis/05_panel_regression.py": "8f7a7e55f32070dded50285f91d9abdb3595982772d23f36d45c655422dbdf5e",
     "code/analysis/05a_power_adoption.py": "b55179bf9de6afa50dafef9efc9aac39a4d1c4dd9f37af78452fb7829738d9dc",
-    "code/analysis/05b_scientific_revision.py": "fd17756a487d3aff2a2109ddf12933532c689ab9d2970ac272b8989fea923b95",
+    "code/analysis/05b_scientific_revision.py": "85d7e6df49f1b19becb58f590c5879363b65f20f90de6465147f2d1830990773",
     "code/analysis/06_robustness.py": "7f544051cf31c14e4bf066a7c235b999ae8dfc6693704ca0d59496bf660b2569",
     "code/analysis/06a_data_quality_sensitivity.py": "dc15dc8ff043f9fee1d1ba0767de23d36e4d0e1610eb3a751e2dbb3aa19c2d3d",
     "code/analysis/06b_identifier_gap_audit.py": "ae0dd194a3d4315158ee475f36410def68673325cb3251b4651e985d37c2133e",
     "code/analysis/07_rebuild_analysis.py": "c0bc62d97ebb3d1850937664237824806e1b2b1bbc827d192ff54ecaa69e9212",
-    "code/analysis/08_verify_claims.py": "4a08a1521635b399c7eaec7e2487e46ddba25aab0f8f1e5f208ac1bc1b075568",
+    "code/analysis/08_verify_claims.py": "68bfe7e46fb479b262909aa919d6e1b1c3143a5047f5e046bcd535e0a44b2151",
     "code/analysis/identity_utils.py": "f7853f17e05df2d88ac7ce49c63e4c88e69ebb7ee33f5ab235f42e61cf8733a5",
     "code/analysis/panel_utils.py": "33ed5175aac38448cb5892a59bd944f249a25fdf909f2e57e204c7b39d001944",
     "code/analysis/rare_event_utils.py": "45212374aa5c9567ff5156aea066b055bf5946fa3d90ddaab8366bc86617d0b0"
@@ -60,20 +60,76 @@
     "fy2024_installed_design_capacity_share_pct": 70.50304,
     "fy2024_positive_output_facility_share_pct": 40.43393,
     "fy2024_throughput_coverage_pct": 80.09873,
-    "identity_max_absolute_error": 5.551115e-17
+    "identity_max_absolute_error": 5.551115e-17,
+    "turnover": {
+      "fy2005_2005_only_lineages": {
+        "installed_capacity_lineages": 66,
+        "installed_capacity_share_pct": 11.2628,
+        "lineages": 586
+      },
+      "fy2005_all_endpoint_records": {
+        "installed_capacity_lineages": 285,
+        "installed_capacity_share_pct": 21.62367,
+        "lineages": 1318
+      },
+      "fy2005_balanced_lineages": {
+        "installed_capacity_lineages": 212,
+        "installed_capacity_share_pct": 29.73352,
+        "lineages": 713
+      },
+      "fy2005_endpoint_common_lineages": {
+        "installed_capacity_lineages": 219,
+        "installed_capacity_share_pct": 29.91803,
+        "lineages": 732
+      },
+      "fy2005_endpoint_common_same_episode_lineages": {
+        "installed_capacity_lineages": 207,
+        "installed_capacity_share_pct": 30.53097,
+        "lineages": 678
+      },
+      "fy2024_2024_only_lineages": {
+        "installed_capacity_lineages": 182,
+        "installed_capacity_share_pct": 64.53901,
+        "lineages": 282
+      },
+      "fy2024_all_endpoint_records": {
+        "installed_capacity_lineages": 417,
+        "installed_capacity_share_pct": 41.12426,
+        "lineages": 1014
+      },
+      "fy2024_balanced_lineages": {
+        "installed_capacity_lineages": 230,
+        "installed_capacity_share_pct": 32.25806,
+        "lineages": 713
+      },
+      "fy2024_endpoint_common_lineages": {
+        "installed_capacity_lineages": 235,
+        "installed_capacity_share_pct": 32.10383,
+        "lineages": 732
+      },
+      "fy2024_endpoint_common_same_episode_lineages": {
+        "installed_capacity_lineages": 213,
+        "installed_capacity_share_pct": 31.41593,
+        "lineages": 678
+      }
+    }
   },
   "output_sha256": {
     "output/fleet_decomposition.csv": "47a5d1f4be76ccf231a7ea406749a769af8156eab1be1e728eae408afe1a5fc6",
-    "output/fleet_decomposition.md": "57c89fb368f6464d74665dc0a408fda6c3b9f76cb02477ebd44fb32065bb4d8d",
+    "output/fleet_decomposition.md": "c851ffe5bec4e72a00de289d28048aa9c198479a174ccf46737214c44e87803c",
+    "output/fleet_turnover_decomposition.csv": "960cf3398089e09c0c22cefd68a1c4121caf25d2071d1776b445d19400d75d0e",
+    "output/fleet_turnover_decomposition.md": "34a77f4cd4441592b9a3b983769adc797fb3e8c7d63d284bc91f24fbd68d0d50",
     "output/fy2024_fleet_segments.csv": "d5b1e143973bd77d3f48879f797051fee0083a26a8ffaf2a92f9807372f2c00e"
   },
   "outputs": [
     "output/fleet_decomposition.csv",
     "output/fy2024_fleet_segments.csv",
+    "output/fleet_turnover_decomposition.csv",
+    "output/fleet_turnover_decomposition.md",
     "output/fleet_decomposition.md"
   ],
   "python": "3.12.12",
   "script": "code/analysis/05_fleet_decomposition.py",
-  "script_sha256": "23111b613463a2397bda554c0d12d10362cd31a2b746dd0a289027e5383017f2",
+  "script_sha256": "9f6f1ef93df7807dca2a4bec73d603a090c1abc33f9505b8c9fb7ff7286539bd",
   "stage": "05_fleet_decomposition"
 }

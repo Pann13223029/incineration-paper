@@ -50,4 +50,19 @@ The exact identity is:
 |      2023.000 |                       39.825 |                                           44.944 |                               39.046 |                                      45.056 |                    78.299 |                                69.084 |                           0.417 |                     0.325 |                           7.000 |
 |      2024.000 |                       41.124 |                                           46.416 |                               40.434 |                                      46.644 |                    80.099 |                                70.503 |                           0.425 |                     0.338 |                           6.000 |
 
-Gross generation is an administrative gross-output measure. It is not net export, useful heat, R1 efficiency, lifecycle benefit, or a causal estimate of recoverable potential.
+## Endpoint Composition Diagnostic
+
+| analysis_group                        |   fiscal_year |   lineages |   installed_capacity_lineages |   installed_capacity_share_pct |
+|:--------------------------------------|--------------:|-----------:|------------------------------:|-------------------------------:|
+| All endpoint records                  |          2005 |       1318 |                           285 |                         21.624 |
+| All endpoint records                  |          2024 |       1014 |                           417 |                         41.124 |
+| Endpoint-common lineages              |          2005 |        732 |                           219 |                         29.918 |
+| Endpoint-common lineages              |          2024 |        732 |                           235 |                         32.104 |
+| Endpoint-common same-episode lineages |          2005 |        678 |                           207 |                         30.531 |
+| Endpoint-common same-episode lineages |          2024 |        678 |                           213 |                         31.416 |
+| Balanced lineages                     |          2005 |        713 |                           212 |                         29.734 |
+| Balanced lineages                     |          2024 |        713 |                           230 |                         32.258 |
+| 2005-only lineages                    |          2005 |        586 |                            66 |                         11.263 |
+| 2024-only lineages                    |          2024 |        282 |                           182 |                         64.539 |
+
+Annual prevalence is a repeated-cross-section measure. Administrative appearance and disappearance are not verified physical openings or closures. Gross generation is an administrative gross-output measure. It is not net export, useful heat, R1 efficiency, lifecycle benefit, or a causal estimate of recoverable potential.

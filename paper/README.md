@@ -21,9 +21,9 @@ The shared empirical core, focused public draft, and preserved professor package
 
 The article links three margins that should not be collapsed:
 
-1. FY2024 count-volume decomposition: 41.1% facility participation, 80.1% throughput coverage, and 70.5% waste-processing design-capacity share.
-2. First reported installed-capacity entry: 55 descriptive events, with a frozen five-parameter Firth model on 15,154 rows across 1,137 lineages and 35 events; the broad scale OR is 6.72 with 1,999 lineage bootstraps.
-3. Conditional generator components: 6,511 engineering-valid rows across 493 lineages, separating raw installed electrical capacity from annual capacity factor.
+1. Fleet coverage and composition: FY2024 participation is 41.1%, throughput coverage 80.1%, and design-capacity coverage 70.5%; the FY2005-FY2024 all-record increase is 19.50 points versus 2.19 among endpoint-common lineages.
+2. First reported installed-capacity entry: 55 descriptive events, with a revision-frozen five-parameter Firth model on 15,154 rows across 1,137 lineages and 35 events; the broad scale OR is 6.72, while support-aware predictions disclose that 300 t/day is near the 99th percentile.
+3. Conditional generator components: 6,511 engineering-valid rows across 493 lineages, separating raw installed capacity, utilization-adjusted capacity factor, and a shared-control identity decomposition.
 
 The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events; same-episode continuity uses 15,095/1,135/24; and identity-certain linkage uses 15,107/1,130/35 rows/lineages/events. All event attacks retain a scale OR between 6.12 and 7.30. Administrative disappearance is not modeled. Gross MWh/t is not presented as a stand-alone efficiency measure.
 
@@ -40,7 +40,8 @@ The prior-operation sensitivity uses 13,072 rows, 1,019 lineages, and 33 events;
 | Review source and identity audits | [`../output/raw_data_provenance.md`](../output/raw_data_provenance.md), [`../output/facility_identity_audit.md`](../output/facility_identity_audit.md) |
 | Review supplement detail | [`supplement/supplement.md`](supplement/supplement.md) |
 | Review comparator lineage | [`notes/positioning/professor-comparator-method-lineage.md`](notes/positioning/professor-comparator-method-lineage.md) |
-| Review current red-team plan | [`notes/review/defense-red-team-revision-map.md`](notes/review/defense-red-team-revision-map.md) |
+| Rehearse the thesis defense | [`notes/review/thesis-defense-rehearsal-2026-07-18.md`](notes/review/thesis-defense-rehearsal-2026-07-18.md) |
+| Conduct independent linkage review | [`notes/review/human-linkage-review-handoff.md`](notes/review/human-linkage-review-handoff.md) |
 | Present the study | [`slides/paper-zoom-briefing.md`](slides/paper-zoom-briefing.md) |
 
 ## Directory Roles
@@ -85,7 +86,8 @@ npm run slides:paper:pdf
 - `paper:sync` refreshes selected evidence copies.
 - `paper:check` fails when those copies are missing or stale.
 - `claims:verify` checks registered high-risk claims and stale wording.
-- `paper:export:nopdf` creates Markdown, HTML, and DOCX review files.
+- `paper:export:nopdf` creates portable Markdown and HTML review files.
+- `paper:export:docx` additionally requests DOCX where the document helper is available.
 - `paper:build:latex` creates the public journal reading PDF.
 - `paper:build:professor` creates the comprehensive professor reading PDF.
 

@@ -19,22 +19,21 @@ DATA_PATH = ROOT / "output" / "post_adoption_trajectories.csv"
 PNG_OUT = FIGURE_DIR / "figure4_post_entry_trajectories.png"
 PDF_OUT = FIGURE_DIR / "figure4_post_entry_trajectories.pdf"
 
-INK = "#20262d"
-MUTED = "#59636e"
-GRID = "#d9dee3"
-BLUE = "#0072b2"
-ORANGE = "#d55e00"
+INK = "#1a1a1a"
+MUTED = "#555555"
+MID = "#777777"
+GRID = "#d2d2d2"
 
 PATHWAY_STYLES = {
     "Continuity-lineage entry": {
         "label": "Continuity-lineage",
-        "color": BLUE,
+        "color": INK,
         "marker": "o",
         "offset": -0.105,
     },
     "Rebuild/replacement-like entry": {
         "label": "Rebuild/replacement-like",
-        "color": ORANGE,
+        "color": MID,
         "marker": "s",
         "offset": 0.105,
     },
@@ -83,18 +82,20 @@ def load_data() -> tuple[pd.DataFrame, int]:
 def style_axes(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color(MUTED)
-    ax.spines["bottom"].set_color(MUTED)
+    ax.spines["left"].set_color(INK)
+    ax.spines["bottom"].set_color(INK)
+    ax.spines["left"].set_linewidth(0.7)
+    ax.spines["bottom"].set_linewidth(0.7)
     ax.tick_params(colors=INK, labelsize=7.7, length=3)
     ax.grid(axis="y", color=GRID, linewidth=0.65)
     ax.set_axisbelow(True)
 
 
 def build() -> None:
-    data, omitted_n = load_data()
+    data, _ = load_data()
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Sans",
+            "font.family": "DejaVu Serif",
             "font.size": 8.3,
             "axes.labelcolor": INK,
             "text.color": INK,
@@ -103,7 +104,7 @@ def build() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(3.7, 3.75), dpi=200)
+    fig, ax = plt.subplots(figsize=(3.8, 3.15), dpi=200)
     style_axes(ax)
     x = np.arange(len(METRICS), dtype=float)
 
@@ -119,7 +120,7 @@ def build() -> None:
             marker=style["marker"],
             facecolor="white",
             edgecolor=style["color"],
-            linewidth=1.4,
+            linewidth=1.0,
             label=label,
             zorder=3,
         )
@@ -129,8 +130,7 @@ def build() -> None:
                 value + 3.2,
                 f"{value:.0f}",
                 color=style["color"],
-                fontsize=7.3,
-                fontweight="semibold",
+                fontsize=7.0,
                 ha="center",
                 va="bottom",
             )
@@ -146,24 +146,6 @@ def build() -> None:
         va="bottom",
     )
     handles, labels = ax.get_legend_handles_labels()
-    fig.text(
-        0.08,
-        0.965,
-        "First-year profile after generation entry",
-        fontsize=9.4,
-        fontweight="semibold",
-        ha="left",
-        va="top",
-    )
-    fig.text(
-        0.08,
-        0.91,
-        "Mean within-year percentiles among engineering-valid generators",
-        color=MUTED,
-        fontsize=7.1,
-        ha="left",
-        va="top",
-    )
     ax.set_ylabel("Mean percentile rank", fontsize=8.1)
     ax.set_ylim(0, 100)
     ax.set_yticks([0, 20, 40, 60, 80, 100])
@@ -173,20 +155,14 @@ def build() -> None:
         handles,
         labels,
         loc="upper left",
-        bbox_to_anchor=(0.08, 0.87),
+        bbox_to_anchor=(0.10, 0.98),
         frameon=False,
         fontsize=7.0,
         handletextpad=0.4,
         borderaxespad=0,
         labelspacing=0.3,
     )
-    omission = (
-        f"Placeholder/forward-dated pathway (n={omitted_n}) omitted for sparse support; "
-        "pathway contrasts are descriptive."
-    )
-    fig.text(0.08, 0.035, omission, color=MUTED, fontsize=6.5, ha="left", wrap=True)
-
-    fig.subplots_adjust(left=0.18, right=0.97, top=0.68, bottom=0.22)
+    fig.subplots_adjust(left=0.18, right=0.97, top=0.77, bottom=0.20)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)

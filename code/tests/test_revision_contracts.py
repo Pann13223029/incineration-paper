@@ -57,6 +57,35 @@ class RevisionContractTest(unittest.TestCase):
         )
         self.assertAlmostEqual(row["throughput_coverage_pct"], 100 / 1.5)
 
+    def test_turnover_decomposition_separates_endpoint_composition(self) -> None:
+        panel = pd.DataFrame(
+            {
+                "fiscal_year": [2005, 2024, 2005, 2024, 2005, 2024],
+                "stable_site_id": ["a", "a", "b", "b", "c", "d"],
+                "asset_episode_id": ["a1", "a1", "b1", "b2", "c1", "d1"],
+                "has_power_gen": [False, True, False, False, False, True],
+            }
+        )
+
+        result = fleet_stage.build_turnover_decomposition(panel)
+        indexed = result.set_index(["analysis_group", "fiscal_year"])
+
+        self.assertEqual(
+            int(indexed.loc[("Endpoint-common lineages", 2024), "lineages"]), 2
+        )
+        self.assertEqual(
+            int(
+                indexed.loc[
+                    ("Endpoint-common same-episode lineages", 2024), "lineages"
+                ]
+            ),
+            1,
+        )
+        self.assertAlmostEqual(
+            indexed.loc[("2024-only lineages", 2024), "installed_capacity_share_pct"],
+            100.0,
+        )
+
     def test_entry_scale_contrasts_match_100_to_300_change(self) -> None:
         frame = pd.DataFrame(
             {
@@ -113,6 +142,9 @@ class RevisionContractTest(unittest.TestCase):
             places=12,
         )
         self.assertTrue(result["bootstrap_repetitions"].eq(2).all())
+        self.assertEqual(
+            set(probabilities.index.astype(int)), {24, 60, 100, 120, 300}
+        )
 
     def test_entry_sample_flow_exposes_left_censoring_and_nested_frame(self) -> None:
         panel = pd.DataFrame(

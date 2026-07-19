@@ -37,9 +37,9 @@ The corrected paper has three linked but distinct empirical layers:
 
 | Layer | Question | Current evidence | Interpretation |
 |:--|:--|:--|:--|
-| Fleet coverage | Does the number of generating facilities represent the waste volume handled by generators? | In FY2024, installed-generation facilities are 41.1% of facility records, positive-output facilities handle 80.1% of throughput, and installed-generation facilities hold 70.5% of waste-processing design capacity. | Facility counts and system volume answer different questions. |
-| First reported entry | Among lineages observed without installed generation, which characteristics precede the first positive installed-capacity report? | There are 55 descriptive first entries, 35 broad exact-year model events, 33 after positive prior-year operation, and 24 under same-episode continuity. The frozen five-parameter model gives a 300-versus-100 t/day odds ratio of 6.72 (bootstrap 95% CI 4.31-12.46); all event attacks leave it between 6.12 and 7.30. | Entry is strongly scale-selective, while the continuous-age estimate is imprecise and continuity-sensitive; the model does not identify why entry occurs. |
-| Generator components | Among positive-output generators, what produces gross MWh/t differences? | The primary engineering frame contains 6,511 rows across 493 stable administrative lineages. Adjusted installed capacity is 79.1%, 58.6%, and 23.5% lower in the three older reported start-year cohorts than in 2010-or-later records, whereas adjusted capacity factors are 35.3%, 22.0%, and 1.5% higher. | The apparent cohort hierarchy is primarily generator sizing, not uniformly better annual use. Reported start year is not a verified generator vintage. |
+| Fleet coverage and composition | Does the number of generating facilities represent waste volume or incumbent diffusion? | In FY2024, installed-generation facilities are 41.1% of records, positive-output facilities handle 80.1% of throughput, and installed facilities hold 70.5% of design capacity. The FY2005-FY2024 all-record rise is 19.50 points but only 2.19 among 732 endpoint-common lineages. | Counts, covered activity, and changing fleet composition answer different questions. |
+| First reported entry | Among lineages observed without installed generation, which characteristics precede the first positive installed-capacity report? | There are 55 descriptive first entries and 35 broad model events. The revision-frozen model gives a 300-versus-100 t/day odds ratio of 6.72 (95% CI 4.31-12.46); 300 t/day is near the 99th percentile, so predictions at 24, 60, and 120 t/day are also reported. | Entry is scale-selective, but the upper contrast is tail-supported and the model does not identify why entry occurs. |
+| Generator components | Among positive-output generators, what produces gross MWh/t differences? | The primary frame contains 6,511 rows across 493 lineages. A shared-control identity decomposition gives pre-1990 log components of -1.565 sizing, +0.016 capacity factor, and +0.299 negative utilization, summing to -1.250. | Sizing is the largest component in every older cohort; this is accounting attribution, not causal mediation. |
 
 ### Current central argument
 
@@ -98,7 +98,10 @@ regression effects.
 **Current answer:** In FY2024, the three shares are 41.1%, 80.1%, and 70.5%,
 respectively. The count-volume difference is the result. The 41.1% facility
 share must not be described as the share of Japanese waste that misses
-generation.
+generation. The all-record endpoint increase is 19.50 percentage points, but
+only 2.19 points among 732 endpoint-common lineages and 0.88 among 678 lineages
+retaining the same reported episode. The trend is therefore mainly a fleet-
+composition pattern, not evidence of widespread incumbent conversion.
 
 ### RQ2: First reported installed-capacity entry
 
@@ -110,7 +113,7 @@ with the first positive capacity report?
 at-risk population. The main coefficient contrast compares otherwise modeled
 lineage-years with different prior-year waste-processing design capacities.
 
-**Current answer:** Scale selectivity is the robust result. The frozen
+**Current answer:** Scale selectivity is the robust result. The revision-frozen
 five-parameter Firth model gives a 300-versus-100 t/day odds ratio of 6.72 in
 the broad frame (1,999-lineage-bootstrap 95% CI 4.31-12.46), 7.09 in the
 prior-operation frame, 7.15 under same-episode continuity, and 6.76 after
@@ -121,6 +124,13 @@ age coefficient is -0.327 per decade in the broad frame (bootstrap CI -0.774 to
 only 24 events. Age is therefore a continuity-sensitive secondary result, not
 a general barrier headline.
 
+The 300-t/day upper contrast is at the 98.98th empirical percentile, with 315
+risk rows and four modeled events at or above it. Support-aware standardized
+predictions are 0.68, 1.37, and 3.29 entries per 1,000 facility-years at 24,
+60, and 120 t/day. Calendar and elapsed-risk VIFs are 5.76 and 6.15, while the
+processing-scale VIF is 1.10; temporal coefficients are not interpreted
+separately.
+
 ### RQ3: Generator design and annual operation
 
 **Question:** Among engineering-valid positive-output generator observations,
@@ -128,8 +138,9 @@ how do generator design intensity and electrical capacity factor structure
 gross electricity generation per tonne?
 
 **Estimands:** Conditional associations in component-specific pooled panel
-models, plus a specification diagnostic comparing a gross-intensity model with
-and without generator sizing.
+models, an exact shared-control decomposition of cohort log gaps, and a
+specification diagnostic comparing a gross-intensity model with and without
+generator sizing.
 
 **Current answer:** The primary analysis is the 6,511-row raw-quantity
 decomposition. Installed kW has a processing-capacity elasticity of 1.532 (95%
@@ -141,6 +152,13 @@ throughput and installed-kW elasticities of 0.638 and 0.576. The separate
 5,806-row sizing diagnostic remains useful: adding generator design intensity
 raises `R^2` from 0.4737 to 0.8131 and leaves age at -0.0020 (`p = 0.2977`).
 That is specification evidence, not causal mediation.
+
+Under shared controls, the pre-1990, 1990s, and 2000s direct log gross-intensity
+gaps are -1.250, -0.690, and -0.272. Generator-design contributions are -1.565,
+-0.883, and -0.267; capacity-factor contributions are +0.016, +0.020, and
+-0.094; negative-utilization contributions are +0.299, +0.172, and +0.089.
+The terms sum exactly and identify sizing as the largest component in every
+older cohort. Excluding 14 cohort-switching lineages leaves the ordering intact.
 
 ## Data And Longitudinal Identity
 

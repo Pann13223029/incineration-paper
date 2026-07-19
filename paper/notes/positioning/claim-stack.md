@@ -8,9 +8,10 @@ generated files in `output/`; this note is not an independent evidence source.
 Japan's incineration fleet shows a count-volume divergence: installed
 electricity generation is reported by 41.1% of FY2024 facilities, but those
 facilities represent 80.1% of recorded waste throughput and 70.5% of
-waste-processing design capacity; first reported entry is strongly
-scale-selective, while generator vintage differences operate mainly through
-installed generator sizing rather than an independent age-performance effect.
+waste-processing design capacity; the long-run participation rise is mainly
+fleet-compositional, first reported entry is scale-selective, and a shared-
+control decomposition identifies installed sizing as the largest component of
+older-cohort gross-intensity gaps.
 
 ## Contribution
 
@@ -32,13 +33,16 @@ newer facilities generate more electricity in the abstract.
 |:--|:--|:--|
 | Identity | 23,593 retained records, 1,690 stable administrative lineages, 1,767 asset episodes; 16 accepted uncertain links exposed | Longitudinal units are reconstructed and audited rather than assumed from survey codes |
 | FY2024 fleet | 41.1% facility participation, 80.1% throughput coverage, 70.5% design-capacity coverage | A facility-count gap is not a waste-volume gap |
+| Endpoint composition | All-record installed prevalence rises 19.50 points; endpoint-common lineages rise 2.19 points; same-episode endpoint lineages rise 0.88 points | The annual trend is not widespread incumbent conversion; administrative appearance/disappearance is not verified opening/closure |
 | Entry description | 55 first observed capacity-entry events | Events are uncommon and pathway-heterogeneous |
 | Broad exact-year Firth frame | 15,154 lineage-years, 1,137 lineages, 35 events | Sparse-event inference requires bias reduction and restrained claims |
 | Prior-operation Firth frame | 13,072 lineage-years, 1,019 lineages, 33 events | Nested sensitivity requiring positive prior-year operation |
 | Continuity and linkage frames | Same episode: 15,095/1,135/24; identity certain: 15,107/1,130/35 rows/lineages/events | Age inference must be tested against continuity and linkage assumptions |
-| Scale contrast | Odds ratio 6.13 in the broad frame and 6.25 in the prior-operation frame for 300 versus 100 t/day | Scale selectivity is the stable entry result |
+| Scale contrast | Revision-frozen odds ratios 6.72/7.09/7.15/6.76 across broad/prior-operation/same-episode/identity-certain frames; event attacks 6.12-7.30 | Scale selectivity is the stable entry result |
+| Scale support | 300 t/day is the 98.98th empirical percentile with 315 risk rows and four events at or above it; predictions at 24/60/120 t/day are 0.68/1.37/3.29 per 1,000 | Keep the upper contrast secondary to support-aware absolute risks |
 | Age tests | Lineage-bootstrap joint p=0.380/0.186/0.051/0.357 across broad/prior/same-episode/identity-certain frames | Age coefficients do not support a universal headline and are continuity-sensitive |
 | Generator components | 6,511 engineering-valid rows across 493 stable administrative lineages | Generator sizing and annual use must be separated |
+| Common-control decomposition | Pre-1990 components -1.565 design, +0.016 factor, +0.299 negative utilization = -1.250 direct log gap; sizing is largest in every older cohort | Exact conditional accounting attribution, not causal mediation |
 | Sizing diagnostic | Separate 5,806-row plausible-heating-value frame with heating value controlled: legacy age -0.0349, capacity +0.1001, utilization +0.6699; after sizing, age -0.0020 (p=0.2977), capacity -0.0092 (p=0.1991), utilization -0.0995 (p=0.2038), sizing +0.7532 (p<0.001), and R-squared 0.4737 to 0.8131 | The former gross-MWh/t pattern is specification-sensitive after omitted generator sizing is added; this is not causal mediation and is distinct from the 6,511-row primary component analysis |
 
 ## Claim Hierarchy
@@ -54,7 +58,8 @@ newer facilities generate more electricity in the abstract.
 - Generation is much more concentrated in high-throughput facilities than the
   41.1% facility-participation statistic alone suggests.
 - Larger waste-processing facilities are substantially more likely to report
-  first installed generation capacity in both prespecified Firth frames.
+  first installed generation capacity in the revision-frozen Firth frames, but
+  300 t/day is an upper-tail contrast.
 - The age terms are not jointly significant, and their differences across
   frames are not statistically supported.
 - Older reported start-year cohorts have lower generator design intensity; the

@@ -28,6 +28,12 @@ FIGURE2_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure2_selective_tran
 FIGURE3_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure3_efficiency_structure.py"
 FIGURE4_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure4_post_entry_trajectories.py"
 ENTRY_FLOW_SCRIPT = REPO_ROOT / "paper" / "figures" / "build_figure_entry_sample_flow.py"
+THESIS_ENTRY_SUPPORT_SCRIPT = (
+    REPO_ROOT / "paper" / "figures" / "build_thesis_entry_support.py"
+)
+THESIS_COHORT_COMPONENTS_SCRIPT = (
+    REPO_ROOT / "paper" / "figures" / "build_thesis_cohort_components.py"
+)
 
 
 def tectonic_binary() -> str:
@@ -42,14 +48,20 @@ def tectonic_binary() -> str:
     raise SystemExit("Tectonic not found; cannot compile the LaTeX manuscript.")
 
 
-def build_figures() -> None:
-    for script in (
+def build_figures(profile: str) -> None:
+    scripts = [
         FIGURE1_SCRIPT,
         FIGURE2_SCRIPT,
         FIGURE3_SCRIPT,
         FIGURE4_SCRIPT,
         ENTRY_FLOW_SCRIPT,
-    ):
+    ]
+    if profile == "professor":
+        scripts.extend(
+            [THESIS_ENTRY_SUPPORT_SCRIPT, THESIS_COHORT_COMPONENTS_SCRIPT]
+        )
+
+    for script in scripts:
         if not script.exists():
             raise SystemExit(f"Figure build script not found: {script}")
         subprocess.run([sys.executable, str(script)], check=True)
@@ -101,7 +113,7 @@ def main() -> int:
 
     SUBMISSION_DIR.mkdir(parents=True, exist_ok=True)
     SHARE_DIR.mkdir(parents=True, exist_ok=True)
-    build_figures()
+    build_figures(args.profile)
 
     tectonic = tectonic_binary()
     latex_pdf = compile_latex(tectonic, manuscript_dir, latex_source)

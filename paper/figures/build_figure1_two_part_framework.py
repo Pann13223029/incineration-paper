@@ -18,18 +18,16 @@ DATA_PATH = ROOT / "output" / "fleet_decomposition.csv"
 PNG_OUT = FIGURE_DIR / "figure1_two_part_framework.png"
 PDF_OUT = FIGURE_DIR / "figure1_two_part_framework.pdf"
 
-INK = "#20262d"
-MUTED = "#59636e"
-GRID = "#d9dee3"
-BLUE = "#0072b2"
-ORANGE = "#d55e00"
-CHARCOAL = "#4b5258"
+INK = "#1a1a1a"
+MUTED = "#555555"
+LIGHT = "#858585"
+GRID = "#d2d2d2"
 
 SERIES = (
     (
         "facility_participation_pct",
         "Facilities",
-        BLUE,
+        INK,
         "-",
         "o",
         0.8,
@@ -37,16 +35,16 @@ SERIES = (
     (
         "throughput_coverage_pct",
         "Throughput",
-        CHARCOAL,
-        "-",
+        MUTED,
+        "--",
         "s",
         1.8,
     ),
     (
         "installed_design_capacity_share_pct",
         "Capacity",
-        ORANGE,
-        (0, (4, 2)),
+        LIGHT,
+        "-.",
         "^",
         -2.2,
     ),
@@ -56,8 +54,10 @@ SERIES = (
 def style_axes(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color(MUTED)
-    ax.spines["bottom"].set_color(MUTED)
+    ax.spines["left"].set_color(INK)
+    ax.spines["bottom"].set_color(INK)
+    ax.spines["left"].set_linewidth(0.7)
+    ax.spines["bottom"].set_linewidth(0.7)
     ax.tick_params(colors=INK, labelsize=8.0, length=3)
     ax.grid(axis="y", color=GRID, linewidth=0.65)
     ax.set_axisbelow(True)
@@ -86,7 +86,7 @@ def build() -> None:
     data = load_data()
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Sans",
+            "font.family": "DejaVu Serif",
             "font.size": 8.3,
             "axes.labelcolor": INK,
             "text.color": INK,
@@ -95,7 +95,7 @@ def build() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(4.6, 3.1), dpi=200)
+    fig, ax = plt.subplots(figsize=(5.2, 3.0), dpi=200)
     style_axes(ax)
 
     years = data["fiscal_year"]
@@ -106,13 +106,13 @@ def build() -> None:
             values,
             color=color,
             linestyle=linestyle,
-            linewidth=1.55,
+            linewidth=1.2,
             marker=marker,
             markevery=[0, 5, 10, 15, 19],
-            markersize=3.6,
+            markersize=3.4,
             markerfacecolor="white",
             markeredgecolor=color,
-            markeredgewidth=1.0,
+            markeredgewidth=0.9,
             zorder=3,
         )
         final = float(values.iloc[-1])
@@ -121,38 +121,21 @@ def build() -> None:
             xy=(2024, final),
             xytext=(2024.65, final + label_offset),
             color=color,
-            fontsize=7.5,
-            fontweight="semibold",
+            fontsize=7.1,
             ha="left",
             va="center",
             clip_on=False,
-            arrowprops={"arrowstyle": "-", "color": color, "linewidth": 0.8},
+            arrowprops={"arrowstyle": "-", "color": color, "linewidth": 0.7},
         )
 
-    ax.set_title(
-        "Fleet coverage differs by denominator",
-        loc="left",
-        fontsize=9.6,
-        fontweight="semibold",
-        pad=15,
-    )
-    ax.text(
-        0,
-        1.015,
-        "Municipal incinerators, FY2005-FY2024",
-        transform=ax.transAxes,
-        color=MUTED,
-        fontsize=7.5,
-        va="bottom",
-    )
     ax.set_xlabel("Fiscal year", fontsize=8.2)
     ax.set_ylabel("Share of fleet total (%)", fontsize=8.2)
-    ax.set_xlim(2005, 2033)
+    ax.set_xlim(2005, 2030)
     ax.set_ylim(0, 100)
     ax.set_xticks([2005, 2010, 2015, 2020, 2024])
     ax.set_yticks([0, 20, 40, 60, 80, 100])
 
-    fig.subplots_adjust(left=0.16, right=0.98, top=0.82, bottom=0.16)
+    fig.subplots_adjust(left=0.13, right=0.98, top=0.97, bottom=0.17)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)

@@ -17,14 +17,14 @@ components among operating generators.
 
 Three features provide the paper's main contribution. First, the FY2024
 analytical facility participation rate is 41.1%, while positive-output
-facilities handle 80.1% of recorded throughput. Second, bias-reduced
-discrete-time models show strong scale selection in sparse first-entry events,
-while all continuity frames and event-level attacks preserve the scale result.
-Third, a raw installed-kW model and exact engineering identity separate
-installed design from annual capacity factor and waste loading. Older cohorts
-have substantially smaller adjusted installed kW but not lower annual capacity
-factors. Gross electricity per tonne is therefore not a stand-alone measure of
-operating efficiency.
+facilities handle 80.1% of recorded throughput. The 19.50-point all-record rise
+since FY2005 falls to 2.19 points among endpoint-common lineages, showing that
+fleet composition matters. Second, bias-reduced discrete-time models show
+strong scale selection in sparse first-entry events, while support-aware
+predictions disclose that 300 t/day is an upper-tail contrast. Third, a shared-
+control identity decomposition shows that installed sizing is the largest
+component of every older-cohort gross-intensity gap. Gross electricity per
+tonne is therefore not a stand-alone measure of operating efficiency.
 
 The manuscript fits *Waste Management* because it provides a reproducible
 facility-level account of electricity-recovery coverage and heterogeneity in a

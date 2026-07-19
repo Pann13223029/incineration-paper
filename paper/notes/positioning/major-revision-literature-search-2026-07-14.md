@@ -10,6 +10,20 @@ Japanese facility-level studies, recent high-profile national waste-to-energy
 benchmarks, and methodological guidance relevant to reconstructed
 administrative lineages.
 
+## Audit status
+
+This is a retrospective comparator-search record, not a systematic-review
+protocol. The exact search strings, database hit counts, rejected-record list,
+and export files were not preserved contemporaneously. They must not be
+reconstructed from memory or presented as if they existed. The record is
+auditable only to the level of the search concepts, comparator classes,
+screening boundaries, retained sources, DOI records, and source links below.
+
+Consequently, the thesis uses the bounded phrase "within the literature
+reviewed for this thesis" and does not claim exhaustive novelty. A future
+journal submission should run and archive a new structured search before making
+any stronger priority claim.
+
 ## Search Logic
 
 Searches combined terms for Japan, municipal solid waste incineration,
@@ -26,6 +40,22 @@ The search established four comparator classes:
    optimization potential.
 4. Record-linkage guidance for longitudinal administrative data without a
    stable identifier.
+
+## Screening boundaries
+
+Sources were retained when they supplied at least one of the following:
+
+- facility-level Japanese evidence on heat or electricity recovery;
+- engineering interpretation of electricity generation per unit waste;
+- a national incinerator hierarchy or optimization benchmark; or
+- methodological guidance directly relevant to sparse events or longitudinal
+  record linkage.
+
+Sources were used as conceptual or methodological comparators, not as empirical
+inputs. No comparator data, code, fitted estimates, figures, or classification
+thresholds enter this thesis's calculations. General waste-policy sources were
+retained in the manuscript when needed for context but were not treated as
+closest novelty comparators.
 
 ## Closest Comparators and Boundaries
 

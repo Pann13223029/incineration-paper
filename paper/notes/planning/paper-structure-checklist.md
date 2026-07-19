@@ -89,13 +89,12 @@ Move to the supplement:
 
 ## Results Order
 
-1. **Fleet coverage:** 41.1% facilities, 80.1% throughput, 70.5% design capacity.
+1. **Fleet coverage and composition:** 41.1% facilities, 80.1% throughput, 70.5% design capacity; 19.50-point all-record rise versus 2.19 endpoint-common.
 2. **Entry:** 55 descriptive events; broad/prior/same-episode events of
-   35/33/24; scale odds ratios 6.13 and 6.25.
+   35/33/24; revision-frozen broad scale odds ratio 6.72 and support-aware absolute risks.
 3. **Age inference:** lineage-bootstrap joint p=0.380, 0.186, 0.051, and 0.357
    for broad, prior-operation, same-episode, and identity-certain frames.
-4. **Components:** 6,511 rows across 493 stable administrative lineages; strong vintage pattern in
-   installed design intensity.
+4. **Components:** 6,511 rows across 493 stable administrative lineages; common-control component sums identify sizing as the largest older-cohort gap component.
 5. **Sizing diagnostic:** in a separate 5,806-row frame with plausible heating
    value and heating value controlled, legacy age -0.0349, capacity +0.1001,
    and utilization +0.6699; after sizing, age -0.0020 (p=0.2977), capacity

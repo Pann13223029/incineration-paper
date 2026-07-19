@@ -1,0 +1,6 @@
+capacity_label,capacity_t_day,empirical_percentile_pct,risk_rows_at_or_above,risk_share_at_or_above_pct,modeled_events_at_or_above,modeled_event_share_at_or_above_pct,standardized_events_per_1000,bootstrap_ci_low_per_1000,bootstrap_ci_high_per_1000
+Risk-frame 25th percentile,24,25.43222911,11381,75.10228323,35,100,0.6824026048,0.3485974763,1.081353126
+Risk-frame median,60,52.98271084,7690,50.74567771,32,91.42857143,1.373723917,0.8425392499,1.965730872
+Frozen contrast lower level,100,70.88557477,4848,31.99155339,26,74.28571429,2.532415779,1.727813838,3.519685124
+Risk-frame 75th percentile,120,77.41190445,4056,26.76521051,26,74.28571429,3.287145519,2.284535188,4.574057967
+Frozen contrast upper level,300,98.97716774,315,2.0786591,4,11.42857143,16.65877499,9.514509679,29.65743577

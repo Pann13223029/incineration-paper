@@ -20,6 +20,10 @@ from panel_utils import (
 
 ANNUAL_PATH = os.path.join(OUTPUT_DIR, "fleet_decomposition.csv")
 SEGMENT_PATH = os.path.join(OUTPUT_DIR, "fy2024_fleet_segments.csv")
+TURNOVER_PATH = os.path.join(OUTPUT_DIR, "fleet_turnover_decomposition.csv")
+TURNOVER_REPORT_PATH = os.path.join(
+    OUTPUT_DIR, "fleet_turnover_decomposition.md"
+)
 REPORT_PATH = os.path.join(OUTPUT_DIR, "fleet_decomposition.md")
 
 
@@ -141,7 +145,124 @@ def build_fy2024_segments(panel: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
-def write_report(annual: pd.DataFrame, segments: pd.DataFrame) -> None:
+def build_turnover_decomposition(panel: pd.DataFrame) -> pd.DataFrame:
+    """Separate endpoint prevalence from changing administrative composition."""
+    frame = panel.copy()
+    frame["installed_generation"] = frame["has_power_gen"].fillna(False)
+    first_year = int(frame["fiscal_year"].min())
+    last_year = int(frame["fiscal_year"].max())
+    expected_years = last_year - first_year + 1
+    endpoints = {
+        year: frame[frame["fiscal_year"].eq(year)].set_index("stable_site_id")
+        for year in (first_year, last_year)
+    }
+    common = endpoints[first_year].index.intersection(endpoints[last_year].index)
+    same_episode = common[
+        endpoints[first_year].loc[common, "asset_episode_id"].astype(str).to_numpy()
+        == endpoints[last_year].loc[common, "asset_episode_id"].astype(str).to_numpy()
+    ]
+    years_observed = frame.groupby("stable_site_id")["fiscal_year"].nunique()
+    balanced = years_observed[years_observed.eq(expected_years)].index
+    first_only = endpoints[first_year].index.difference(endpoints[last_year].index)
+    last_only = endpoints[last_year].index.difference(endpoints[first_year].index)
+
+    groups = [
+        ("All endpoint records", first_year, endpoints[first_year].index),
+        ("All endpoint records", last_year, endpoints[last_year].index),
+        ("Endpoint-common lineages", first_year, common),
+        ("Endpoint-common lineages", last_year, common),
+        ("Endpoint-common same-episode lineages", first_year, same_episode),
+        ("Endpoint-common same-episode lineages", last_year, same_episode),
+        ("Balanced lineages", first_year, balanced),
+        ("Balanced lineages", last_year, balanced),
+        (f"{first_year}-only lineages", first_year, first_only),
+        (f"{last_year}-only lineages", last_year, last_only),
+    ]
+    definitions = {
+        "All endpoint records": "All retained administrative records in the endpoint year",
+        "Endpoint-common lineages": "Stable administrative lineages observed in both endpoint years",
+        "Endpoint-common same-episode lineages": (
+            "Endpoint-common lineages retaining the same reported asset episode"
+        ),
+        "Balanced lineages": (
+            f"Stable administrative lineages observed in every year from {first_year} to {last_year}"
+        ),
+        f"{first_year}-only lineages": (
+            f"Lineages observed in {first_year} but not {last_year}; not verified closures"
+        ),
+        f"{last_year}-only lineages": (
+            f"Lineages observed in {last_year} but not {first_year}; not verified openings"
+        ),
+    }
+    rows: list[dict[str, float | int | str]] = []
+    for group, year, ids in groups:
+        observed_ids = endpoints[year].index.intersection(ids)
+        observed = endpoints[year].loc[observed_ids]
+        installed = int(observed["installed_generation"].sum())
+        installed_share = (
+            float(installed / len(observed) * 100) if len(observed) else float("nan")
+        )
+        rows.append(
+            {
+                "analysis_group": group,
+                "fiscal_year": year,
+                "lineages": int(len(observed)),
+                "installed_capacity_lineages": installed,
+                "installed_capacity_share_pct": installed_share,
+                "definition": definitions[group],
+            }
+        )
+    result = pd.DataFrame(rows)
+    if result.duplicated(["analysis_group", "fiscal_year"]).any():
+        raise ValueError("Turnover decomposition contains duplicate group-years")
+    return result
+
+
+def write_turnover_report(turnover: pd.DataFrame) -> None:
+    first_year = int(turnover["fiscal_year"].min())
+    last_year = int(turnover["fiscal_year"].max())
+    indexed = turnover.set_index(["analysis_group", "fiscal_year"])
+
+    def share(group: str, year: int) -> float:
+        return float(indexed.loc[(group, year), "installed_capacity_share_pct"])
+
+    all_change = share("All endpoint records", last_year) - share(
+        "All endpoint records", first_year
+    )
+    common_change = share("Endpoint-common lineages", last_year) - share(
+        "Endpoint-common lineages", first_year
+    )
+    episode_change = share(
+        "Endpoint-common same-episode lineages", last_year
+    ) - share("Endpoint-common same-episode lineages", first_year)
+    with open(TURNOVER_REPORT_PATH, "w", encoding="utf-8") as handle:
+        handle.write("# Fleet Turnover And Endpoint Composition\n\n")
+        handle.write(
+            f"All-record installed-capacity prevalence increases by {all_change:.2f} "
+            f"percentage points between FY{first_year} and FY{last_year}. Among stable "
+            f"administrative lineages observed at both endpoints, the increase is "
+            f"{common_change:.2f} points; among endpoint-common lineages retaining the "
+            f"same reported asset episode, it is {episode_change:.2f} points. The much "
+            "larger repeated-cross-section change is therefore associated mainly with "
+            "changing fleet-record composition rather than a widespread within-lineage "
+            "state change. Because administrative appearance and disappearance are not "
+            "verified openings or closures, this is a composition diagnostic rather "
+            "than a physical turnover accounting identity.\n\n"
+        )
+        handle.write(turnover.to_markdown(index=False, floatfmt=".3f"))
+        handle.write(
+            "\n\nThe groups use different denominators and should not be subtracted as "
+            "an additive causal decomposition. Their purpose is to prevent the annual "
+            "cross-sectional series from being interpreted as incumbent-facility "
+            "diffusion.\n"
+        )
+
+
+def write_report(
+    annual: pd.DataFrame,
+    segments: pd.DataFrame,
+    turnover: pd.DataFrame,
+) -> None:
     fy2024 = annual.loc[annual["fiscal_year"].eq(2024)].iloc[0]
     with open(REPORT_PATH, "w", encoding="utf-8") as handle:
         handle.write("# Fleet Coverage And Conditional Generation Intensity\n\n")
@@ -207,8 +328,21 @@ def write_report(annual: pd.DataFrame, segments: pd.DataFrame) -> None:
             ]
         ]
         handle.write(display.to_markdown(index=False, floatfmt=".3f"))
+        handle.write("\n\n## Endpoint Composition Diagnostic\n\n")
+        turnover_display = turnover[
+            [
+                "analysis_group",
+                "fiscal_year",
+                "lineages",
+                "installed_capacity_lineages",
+                "installed_capacity_share_pct",
+            ]
+        ]
+        handle.write(turnover_display.to_markdown(index=False, floatfmt=".3f"))
         handle.write(
-            "\n\nGross generation is an administrative gross-output measure. It is not net "
+            "\n\nAnnual prevalence is a repeated-cross-section measure. Administrative "
+            "appearance and disappearance are not verified physical openings or closures. "
+            "Gross generation is an administrative gross-output measure. It is not net "
             "export, useful heat, R1 efficiency, lifecycle benefit, or a causal estimate "
             "of recoverable potential.\n"
         )
@@ -218,9 +352,12 @@ def main() -> None:
     panel = load_panel()
     annual = build_annual_decomposition(panel)
     segments = build_fy2024_segments(panel)
+    turnover = build_turnover_decomposition(panel)
     annual.to_csv(ANNUAL_PATH, index=False, float_format="%.10g")
     segments.to_csv(SEGMENT_PATH, index=False, float_format="%.10g")
-    write_report(annual, segments)
+    turnover.to_csv(TURNOVER_PATH, index=False, float_format="%.10g")
+    write_turnover_report(turnover)
+    write_report(annual, segments, turnover)
     fy2024 = annual.loc[annual["fiscal_year"].eq(2024)].iloc[0]
     manifest_path = write_stage_manifest(
         "05_fleet_decomposition",
@@ -228,6 +365,8 @@ def main() -> None:
         outputs=[
             "output/fleet_decomposition.csv",
             "output/fy2024_fleet_segments.csv",
+            "output/fleet_turnover_decomposition.csv",
+            "output/fleet_turnover_decomposition.md",
             "output/fleet_decomposition.md",
         ],
         metadata={
@@ -258,10 +397,24 @@ def main() -> None:
                     - annual["identity_product_mwh_t"]
                 ).abs().max()
             ),
+            "turnover": {
+                f"fy{int(row.fiscal_year)}_{str(row.analysis_group).lower().replace(' ', '_').replace('-', '_')}": {
+                    "lineages": int(row.lineages),
+                    "installed_capacity_lineages": int(
+                        row.installed_capacity_lineages
+                    ),
+                    "installed_capacity_share_pct": float(
+                        row.installed_capacity_share_pct
+                    ),
+                }
+                for row in turnover.itertuples(index=False)
+            },
         },
     )
     print(f"Saved: {ANNUAL_PATH}")
     print(f"Saved: {SEGMENT_PATH}")
+    print(f"Saved: {TURNOVER_PATH}")
+    print(f"Saved: {TURNOVER_REPORT_PATH}")
     print(f"Saved: {REPORT_PATH}")
     print(f"Manifest: {manifest_path}")
 

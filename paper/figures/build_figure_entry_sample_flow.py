@@ -9,7 +9,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.patches import Rectangle
 import pandas as pd
 
 
@@ -19,11 +19,11 @@ DATA_PATH = ROOT / "output" / "entry_sample_flow.csv"
 PNG_OUT = FIGURE_DIR / "figure_entry_sample_flow.png"
 PDF_OUT = FIGURE_DIR / "figure_entry_sample_flow.pdf"
 
-INK = "#20262d"
-MUTED = "#5e6872"
-LINE = "#7b858f"
-FILL = "#f4f6f7"
-ACCENT_FILL = "#eaf2f7"
+INK = "#1a1a1a"
+MUTED = "#555555"
+LINE = "#4a4a4a"
+FILL = "#ffffff"
+ACCENT_FILL = "#ededed"
 
 
 def load_data() -> pd.DataFrame:
@@ -58,35 +58,34 @@ def add_box(
     *,
     accent: bool = False,
 ) -> None:
-    box = FancyBboxPatch(
-        (x, 0.54),
+    box = Rectangle(
+        (x, 0.42),
         0.205,
-        0.76,
-        boxstyle="round,pad=0.012,rounding_size=0.012",
-        linewidth=0.8,
+        0.64,
+        linewidth=0.75,
         edgecolor=LINE,
         facecolor=ACCENT_FILL if accent else FILL,
     )
     ax.add_patch(box)
     ax.text(
         x + 0.1025,
-        1.12,
+        0.91,
         title,
         ha="center",
         va="top",
         color=INK,
-        fontsize=7.8,
-        fontweight="semibold",
+        fontsize=7.5,
+        fontweight="bold",
         linespacing=1.15,
     )
     ax.text(
         x + 0.1025,
-        0.72,
+        0.57,
         detail,
         ha="center",
         va="center",
         color=MUTED,
-        fontsize=7.2,
+        fontsize=6.8,
         linespacing=1.28,
     )
 
@@ -94,18 +93,18 @@ def add_box(
 def add_arrow(ax: plt.Axes, start: float, end: float, label: str) -> None:
     ax.annotate(
         "",
-        xy=(end, 0.92),
-        xytext=(start, 0.92),
-        arrowprops={"arrowstyle": "-|>", "color": LINE, "lw": 0.85},
+        xy=(end, 0.74),
+        xytext=(start, 0.74),
+        arrowprops={"arrowstyle": "-|>", "color": LINE, "lw": 0.75},
     )
     ax.text(
         (start + end) / 2,
-        1.38,
+        1.25,
         label,
         ha="center",
         va="bottom",
         color=MUTED,
-        fontsize=6.2,
+        fontsize=6.3,
         linespacing=1.15,
     )
 
@@ -122,15 +121,15 @@ def build() -> None:
 
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Sans",
+            "font.family": "DejaVu Serif",
             "text.color": INK,
             "pdf.fonttype": 42,
             "ps.fonttype": 42,
         }
     )
-    fig, ax = plt.subplots(figsize=(6.7, 2.25), dpi=200)
+    fig, ax = plt.subplots(figsize=(6.7, 1.65), dpi=200)
     ax.set_xlim(0, 1)
-    ax.set_ylim(0.15, 1.72)
+    ax.set_ylim(0.25, 1.48)
     ax.axis("off")
 
     x_positions = [0.01, 0.265, 0.52, 0.775]
@@ -182,26 +181,7 @@ def build() -> None:
         "Require positive\nprior-year throughput",
     )
 
-    fig.text(
-        0.01,
-        0.95,
-        "Entry analysis conditions on observed non-generators",
-        ha="left",
-        va="top",
-        fontsize=10.0,
-        fontweight="semibold",
-        color=INK,
-    )
-    fig.text(
-        0.01,
-        0.055,
-        "Counts describe administrative lineages and facility-years; excluded initial generators are left-censored, not non-adopters.",
-        ha="left",
-        va="bottom",
-        fontsize=6.7,
-        color=MUTED,
-    )
-    fig.subplots_adjust(left=0.01, right=0.99, top=0.88, bottom=0.08)
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.96, bottom=0.06)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)
