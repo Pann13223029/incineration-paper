@@ -101,9 +101,9 @@ def build() -> None:
     fig, axes = plt.subplots(
         1,
         2,
-        figsize=(4.6, 2.8),
+        figsize=(4.9, 2.8),
         dpi=200,
-        gridspec_kw={"width_ratios": [2.45, 1.0]},
+        gridspec_kw={"width_ratios": [2.35, 1.2]},
     )
     main_ax, tail_ax = axes
     for ax in axes:
@@ -134,7 +134,7 @@ def build() -> None:
 
     draw_points(tail_ax, tail, LIGHT, marker="s")
     tail_ax.set_xlim(285, 315)
-    tail_ax.set_ylim(0, 32)
+    tail_ax.set_ylim(0, 35)
     tail_ax.set_xticks([300])
     tail_ax.set_yticks([0, 10, 20, 30])
     tail_ax.set_title(
@@ -146,14 +146,14 @@ def build() -> None:
     tail_ax.annotate(
         f"{tail_row['standardized_events_per_1000']:.2f}",
         (tail_row["capacity_t_day"], tail_row["standardized_events_per_1000"]),
-        xytext=(0, 8),
+        xytext=(8, 0),
         textcoords="offset points",
-        ha="center",
-        va="bottom",
+        ha="left",
+        va="center",
         fontsize=6.5,
         color=INK,
     )
-    fig.subplots_adjust(left=0.15, right=0.98, top=0.92, bottom=0.22, wspace=0.45)
+    fig.subplots_adjust(left=0.14, right=0.97, top=0.90, bottom=0.22, wspace=0.42)
     fig.savefig(PNG_OUT, dpi=300, facecolor="white")
     fig.savefig(PDF_OUT, facecolor="white", bbox_inches=None)
     plt.close(fig)
